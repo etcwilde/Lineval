@@ -1,5 +1,8 @@
 latexfile 	= linvis
-figures		= figures/base_viewer.png figures/base_viewer_fail.png
+figures		= figures/tree_viewer.png figures/tree_viewer_large.png \
+		  figures/list_viewer.png figures/list_viewer_large.png \
+		  figures/github_viewer.png figures/gitk.png\
+		  figures/breadcrumbs.png
 
 $(latexfile).pdf : $(figures) $(latexfile).tex # references.bib
 	rubber --pdf $(latexfile)
