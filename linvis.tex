@@ -60,214 +60,277 @@
 \author{
 \IEEEauthorblockA{\TheAuthors}
 \IEEEauthorblockN{Department of Computer Science,
-                    University of Victoria,
-	    Canada.}
+                    University of Victoria, Canada.}
 \IEEEauthorblockA{Email: \TheEmails}
 }
 \maketitle
 \begin{abstract}
 
-With an average of $x$ \evantodo{Fill in this number} merges into the Linux
-kernel per release, containing thousands of commits, maintenance of older
-versions of the kernel becomes nearly impossible. For security, performance,
-and changing hardware, maintainers must understand the changes made to current
-versions of the kernel, and how these changes fit into older versions in order
-to merge them into the older versions. Current tools provide information about
-the directed acyclic graph (DAG)\evan{Should I just replace this with DAG?}
-which can be helpful for smaller projects, but with the scale and the number of
-branches in the kernel, becomes overwhelming very quickly, if the tool doesn't
-crash before generating the graph and handling the vast quantities information.
+	With an average of over 900 top-level merges into the Linux kernel per
+	release, each containing thousands of commits, maintenance of older
+	versions of the kernel becomes nearly impossible. For security,
+	performance, and changing hardware, maintainers must understand the
+	changes made to current versions of the kernel, and show these changes
+	fit into older versions in order to make the necessary merges and
+	modifications to the older versions. Current tools provide information
+	about repositories through the directed acyclic graph (DAG) which is
+	helpful for smaller projects, but with the scale and number of branches
+	in the kernel, the DAG becomes overwhelming very quickly.
 
-In this paper, I present a tool that uses the dataset collected by Daniel
-German for \evantodo{Paper name\ldots} to generate a tool that can provide
-better visualizations and better filtering.
+	In this paper, we present a tool that uses the dataset collected by
+	German et al. to build a tool that uses a vine model instead of the
+	DAG. This tool is designed to cater to the needs of users looking for a
+	top-down approach, or a bottom-up approach to navigating the commit
+	information of the kernel.
 \end{abstract}
+
 \begin{IEEEkeywords}
 \TheKeywords
 \end{IEEEkeywords}
 
 \section{Introduction}
 
-Maintainers of older versions of the Linux kernel must sift through massive
-number of commits with tools that are unable to filter and visualize the kernel
-into a manageable size. Tools like gitk provide users with a full
-view of the DAG (\ref{fig:DAG}), which for smaller projects can give a good
-view of how the project is evolving. With larger, modular projects like the
-Linux Kernel, the DAG becomes a tangled mess of lines that lose their meaning.
-GitHub will also provide a DAG for most projects, but is unable to display it
-for projects as large as the Linux Kernel (\ref{fig:github dag}).
+Maintainers of older version of the Linux kernel must sift through thousands of
+commits with tools that are unable to filter and effectively visualize projects
+that are of the scale of the kernel. Tools like gitk provide users with the
+full view of the DAG, showing all merges and commits. For smaller projects,
+this information is useful to show the relation between various branches. With
+larger, modular projects like the Linux Kernel, the DAG becomes a tangled mess
+of lines that lose meaning. Github provides a DAG view for most projects, but is
+unable to display the DAG of projects as large as the Linux Kernel.
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[height=1.5in]{figures/gitk.png}
-	\caption{Portion of the Linux Kernel DAG}
-	\label{fig:DAG}
-\end{figure}
+German et al. recorded the metadata of every commit and merge in the Linux git
+repository from 2012 to 2015, including data that is not stored by git. We are
+able to use this information to generate sets of trees rather than a DAG. The
+root node of each tree is the top-level merge performed by Linus, which merges
+a given commit into the kernel.
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[height=1.5in]{figures/github_viewer.png}
-	\caption{Github Error message}
-	\label{fig:github dag}
-\end{figure}
-
+In this paper, we present the design decisions behind a web-based tool that
+demonstrates the advantages of using the tree model over the use of a DAG. Our
+tool provides information about the location of a given commit in the
+respective merge tree, the files edited in the commit or merge, the modules
+edited in the commit or merge, and the commit message of a given commit or
+merge. The tool allows users various filters, including the release, a keyword
+or phrase from a log, the name of the author, or the commit id. The user can
+request all the top-level merges containing a commit or merge that matches the
+query, or all commits and merges that match the query.
 
 \section{Related Work}
-Daniel German, et. al \evantodo{Find paper} recorded the Linux git repository
-metadata from 2012 until 2015\evan{?}, storing information not available. They
-also developed a heuristic to convert the DAG to a set of trees strung together
-by the root as a linked list. We will call this structure a vine.
 
-\evantodo{Make an picture of a vine with regards to the Linux kernel}
+Gitk, Gitg, and other similar git repository visualizing tools display the DAG.
+For smaller projects, this model is able to provide meaningful information, but
+in large projects like the Linux kernel, the branches become too tangled and
+deep to derive any meaning from the DAG.
 
-We built a web-based tool\footnote{\url{li.turingmachine.org}} to experiment
-with the various ways to display and organize the release information of the
-kernel.
+%% Check for papers if they exist
+%% This tool isn't specifically designed for showing Linux
 
-%% The parts that make the tool usable
-\section{Navigation}
-
-Our system has multiple methods of allowing users to navigate through the data.
-
-\subsection{Search}
-
-Users search to filter out results they are not interested. We break the data
-down by releases. From there, a user can further trim how many trees they want
-to see by including a begin or end commit date, an author name, the commit id,
-or keyword from a log preview to search for commits that match what they are
-looking for.
-
-\begin{figure}[h]
+\evantodo{Picture of gitk DAG and github failing}
+\begin{figure}[h!]
 	\centering
-	\includegraphics[height=1.5in]{figures/search_view.png}
-	\caption{Search view}
-	\label{fig:search_view}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[height=1.5in]{figures/results_view.png}
-	\caption{Results when searching for commits by Andrew Morton in Linux
-	3.10}
-	\label{fig:results_view}
+	\includegraphics[width=0.47\textwidth]{figures/empty.png}
+	\caption{}
+	\label{}
 \end{figure}
 
 
-\subsection{Breadcrumbs}
+University of Maryland presented a treemap design for displaying all the files
+in a given release. This information doesn't provide meaining about what has
+changed. The information within the treemap does not provide clear insight on
+the meaning of the files, what changes were made, or even the size. The treemap
+structure provides information on where in the directory tree the file exists.
 
-\begin{figure}[h]
+%% https://www.cs.umd.edu/hcil/millionvis/Treemap_Visualization_of_the_Linux_Kernel_2_5_33.html
+%% Find paper for this maybe?
+
+\evantodo{Picture of visualization}
+\begin{figure}[h!]
 	\centering
-	\includegraphics[height=1.0in]{figures/breadcrumbs.png}
-	\caption{Generated Breadcrumbs}
-	\label{fig:breadcrumbs}
-\end{figure}
-
-Our system provides breadcrumbs, allowing a user to move toward the root of the
-tree and view the detailed view of the parent merge.
-
-\section{Presentation}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[height=1.5in]{figures/page.png}
-	\caption{View of page}
-	\label{fig:full page}
-\end{figure}
-
-We can provide information about what files were edited by a given commit or
-merge. Due to the tree-structure of the data, we can perform a tree traversal
-to determine the number of files and modules touched within the merges.
-
-
-
-%% The special parts that make the tool special
-\section{Date Range Queries}
-
-Git does not store the date that a given commit is merged into another branch,
-it stores the date that the commit was authored. This is why the data collected
-by Daniel German becomes important. His recording system monitored each commit
-as it moved through the kernel, storing the commit and author dates of each
-commit.
-
-A commit may be created and not be merged with the kernel until much later. It
-is these merges that make performing date range queries using the conventional
-tools useless as they will not be included even though they are having an
-effect on the kernel in the requested date range. Our system splits the kernel
-into releases, and only looks at the dates of the merges performed by Linus
-directly into the master branch. From there, we are able to construct the trees
-below each of these merges, which may contain commits from before the begin
-date of the selected range, or after the end date for the given range. This
-provides information about the commits that come from older branches that were
-pulled forward, or patches that were merged backward into an older version of
-the kernel as part of maintenance.
-
-
-\section{Visualization}
-
-Recognizing each merge with the master branch of the kernel as a subtree helps
-remove information that is unnecessarily shown in other tools, like the DAG.
-There are many ways of visualizing trees, including a standard tree
-visualization(\ref{fig:moderate_tree_view}). An issue with a standard tree visualization
-is that it can only display a certain amount of information at each node before
-it becomes cluttered and incomprehensible, furthermore, as we can see in figure 
-(\ref{fig:large_tree_view}), if there are many nodes, even limited information
-becomes cluttered.
-
-\evantodo{Make the lines and nodes bigger and brighter in the tree screenshots}
-\begin{figure}[h]
-	\centering
-	\includegraphics[height=1.5in]{figures/tree_viewer.png}
-	\caption{Moderately sized tree view tree}
-	\label{fig:moderate_tree_view}
-	% CID: 042dd60ca6dec9a02cefa8edd67de386e35755d6
-\end{figure}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[height=2.5in]{figures/tree_viewer_large.png}
-	\caption{Large tree view tree}
-	\label{fig:large_tree_view}
-	% CID : 5f56886521d6ddd3648777fae44d82382dd8c87f
-\end{figure}
-
-Perhaps a more useful tree is the list-tree, which allows us to show the
-layers in the tree using indentation. This also allows us to create click-able
-links to the corresponding items in the tree.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[height=1.5in]{figures/list_viewer.png}
-	\caption{Moderately sized list view tree}
-	\label{fig:moderate_list_view}
-	% CID: 042dd60ca6dec9a02cefa8edd67de386e35755d6
-\end{figure}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[height=3.5in]{figures/list_viewer_large.png}
-	\caption{Large list view tree}
-	\label{fig:large_list_view}
-	% CID : 5f56886521d6ddd3648777fae44d82382dd8c87f
+	\includegraphics[width=0.47\textwidth]{figures/empty.png}
+	\caption{}
+	\label{}
 \end{figure}
 
 
-Figures \ref{fig:moderate_tree_view} and \ref{fig:moderate_list_view} display
-the same subtree, however, the list-based subtree provides a cleaner, faster
-way to navigate the tree, whereas the graphical tree view provides a way to
-hide unnecessary branches of the tree.
+Moghaddam designed a graph showing how various commits in the Kernel were
+linked together. This graph doesn't provide a clear picture of what is
+happening though, and gives no insight to the hierarchy of the data. It
+provides information about who authored the commit, and when the commit was
+authored.
+%% http://web.uvic.ca/~arasbm/gitVisualizations/linuxRGraph.html
+%% Find paper for this maybe?
 
-We can see in figures \ref{fig:large_tree_view} and \ref{fig:large_list_view}
-that neither representation of the trees can cope with the larger trees in a
-clean manner. These larger trees are, however, and exception to the rule. These
-trees are from one of the many memory management patches by Andrew Morton,
-which get the name ``Andrews patch bombs''. Andrews patches are very wide trees
-that have only leaves and no internal merging. Conversely, the networking
-modules are far larger with massive breadth and some depth. Overall the Linux
-kernel has a very flat structure wit little depth, the deepest node being $5$
-merges away \evantodo{verify this} from the root merge into the kernel.
+\evantodo{Picture of graph}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.47\textwidth]{figures/empty.png}
+	\caption{}
+	\label{}
+\end{figure}
 
 
-\evantodo{Build sunburst tree into visualizer, then add pictures}
+\section{Design}
+
+Our primary focus was looking for a way to remove as much information as
+possible to narrow the results that we wanted to return. Right now, the largest
+set of data that a search could return is the entire set of commits that
+pertain to a given release. While this set is massive, it pales in comparison
+to every commit and merge generated for all versions of the kernel. From there,
+the design is centered around the merge tree. These are all of the commits and
+merges that eventually are merged by a top-level merge into the kernel. The
+design centers around a vine-shape. The top-level merges form a linked list,
+each node being a logical section within the kernel. These sections are defined
+by Linus. Within each of these top-level merges is a tree of merges and
+commits. The merges form the inner-nodes, and the commits form the leaf-nodes.
+
+\evantodo{Make a vine diagram}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.47\textwidth]{figures/empty.png}
+	\caption{}
+	\label{}
+\end{figure}
+
+
+Different kinds of users need to be able to use the tool differently.
+Some users may be looking for a top-down approach, trying to find the merge
+closest to the top-level merge that works with a given set of files. Other uses
+may be looking for a bottom-up approach, given a commit, what top-level merge
+includes this commit. Other users are interested in what happens in a given
+release cycle without any other requirements.
+
+To build an effective tool, we focused on two main areas, the navigation
+and presentation.
+
+
+\subsection{Navigation}
+
+A user is greeted by the search screen. We break the kernel down by release,
+limiting the maximum information a user can query to help minimize being
+overwhelmed. From there, users can either search by author name, commit id, or
+keyword from the log preview. A user may also request the top-level merges that
+meet the requirements. If the checkbox is unchecked, a user is able to query
+all commits and merges that happened in the selected release cycle. If the box
+is checked, the user will get all of the top-level merges in the release cycle
+that contain a commit or merge that match the given criteria. If no criteria
+are provided and the box is checked, the user will simply be given all
+top-level merges for that release cycle. This helps separate the use-cases,
+allowing users wanting the bottom-up approach to perform searches, and users
+wanting a top-down approach to perform searches.
+
+Once a user has found either the top-level merge or commit that they are
+interested in, they should be able to move freely between the commits and
+merges in the tree. We use three mechanisms to provide better navigation
+through the tree. The tree view, the list tree, and breadcrumbs.
+
+The tree view provides most of the
+navigational functionality, allowing users to jump to any commit or merge in
+the current tree. The main tree view displays all the commits and merges, the
+root is the top-level merge of all the commits and merges in the group. Users
+are able to see all commits and merges of all the merges.
+
+\evantodo{Picture of tree}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.47\textwidth]{figures/empty.png}
+	\caption{}
+	\label{}
+\end{figure}
+
+The list tree shows the merges and commits of the current subtree, built as
+nested lists of links to the respective commits and merges. The information in
+this tree is a subset of the main tree view, providing a method users with a
+view of what commits and merges are below the current commit or merge. If the
+current position is a commit, the tree will be empty, as commits are leaf
+nodes in the tree representation. This is designed for letting users move
+quickly down in the tree.
+
+\evantodo{Picture of list tree}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.47\textwidth]{figures/empty.png}
+	\caption{}
+	\label{}
+\end{figure}
+
+
+The breadcrumbs show the path of merges that are above the current commit or
+merge, up to the top-level merge. This allows users a fast way to move up in
+the tree.
+
+\evantodo{Picture of breadcrumbs}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.47\textwidth]{figures/empty.png}
+	\caption{}
+	\label{}
+\end{figure}
+
+
+\subsection{Information and Presentation}
+
+Navigation is only effective if the destination contains the desired
+information. We present the commit log, what files were edited, and what
+modules were edited at a given commit or merge. Normal tools are unable to
+provide information about what files are edited in a merge because they do no
+use the tree structure. From our tree structure, we are able to traverse the
+subtree, making note of what files are edited and how many lines are added and
+removed at every commit.
+
+\evantodo{Picture of files}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.47\textwidth]{figures/empty.png}
+	\caption{}
+	\label{}
+\end{figure}
+
+The tree views provide navigation, but are also able to present implied
+information about the depth and number of commits in a given merge.
+
+\section{Discussion}
+
+Our search provides mechanisms for users looking for top-down and bottom-up
+approaches. In figures \ref{fig:AndrewMortonMerges} and \ref{fig:AndrewMorton}
+we see the difference in responses when looking for the merges by Linus and the
+commits authored by Andrew Morton.
+\evantodo{Picture of results for top-down and bottom-up}
+
+%% http://localhost:8080/search?version=Linux+3.14&commit_date_begin=&commit_date_end=&search-text=Morton&search-type=Author&merges=on
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.47\textwidth]{figures/empty.png}
+	\caption{}
+	\label{fig:AndrewMortonMerges}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.47\textwidth]{figures/empty.png}
+	\caption{}
+	\label{fig:AndrewMorton}
+\end{figure}
+
+
+
+
+\section{Future Work}
+We have limited search functionality regarding actual files involved in
+commits. If a user knows which file they are working with and what has changed
+in a given file, they are unable to look specifically for commits pertaining to
+that file. Adding a search filter for searching by file would allow maintainers
+to perform this search.
+
+Currently, there are still various features that have bad performance. More
+work is required to get those features responding more quickly, or providing an
+asynchronous mechanism and loading bars to improve user experience.
+
+At this time, we have no evidence that our tool is able to improve the
+work-flow of maintainers. We believe that the tool is able to improve the
+work-flow and performance of maintainers because it is able to better assist
+users because it provides cleaner mechanisms of working with the data. It is
+able to provide more relevant information, while removing information that is
+irrelevant to a given module or set of merges.
 
 \end{document}
-
