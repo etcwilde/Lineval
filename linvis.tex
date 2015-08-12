@@ -95,9 +95,9 @@ Maintainers of older version of the Linux kernel must sift through thousands of
 commits with tools that are unable to filter and effectively visualize projects
 that are of the scale of the kernel. Tools like gitk provide users with the
 full view of the DAG, showing all merges and commits. For smaller projects,
-this information is useful to show the relation between various branches. With
-larger, modular projects like the Linux Kernel, the DAG becomes a tangled mess
-of lines that lose meaning. Github provides a DAG view for most projects, but is
+this information is useful to show the relation between various branches.
+With larger, modular projects like the Linux Kernel, the DAG becomes a tangled
+mess (\ref{fig:gitk}). Github provides a DAG view for most projects, but is
 unable to display the DAG of projects as large as the Linux Kernel.
 
 \begin{figure}
@@ -107,9 +107,9 @@ unable to display the DAG of projects as large as the Linux Kernel.
 	\label{fig:gitk}
 \end{figure}
 
-The second issue with performing searches is that git log, gitk, and other
-tools only store the authored date of a commit. A commit may be merged at any
-time, regardless of when the commit was authored. Because of this, performing
+Another issue with performing searches is that git log, gitk, and other tools
+only store the authored date of a commit. A commit may be merged at any time,
+regardless of when the commit was authored. Because of this, performing
 date-range queries does not provide meaningful results. Performing a date-range
 query using other tools over the span of a release will contain results that
 are for previous versions of the kernel, and may not contain all of the results
@@ -125,11 +125,11 @@ In this paper, we present the design decisions behind a web-based tool,
 demonstrating the advantages of our tree model over the use of a DAG. Our tool
 provides information about the location of a given commit in the respective
 merge tree, the files edited, the modules edited, and the commit message in a
-given commit or merge. The tool allows users to apply various filters, including
-the release, a keyword or phrase from the log preview, the name of the author,
-or the commit id. The user can request all the top-level merges containing a
-commit or merge that matches the query, or all commits and merges that match
-the query.
+given commit or merge. The tool allows users to apply various filters,
+including the release, a keyword or phrase from the log preview, the name of
+the author, or the commit id. The user can request all the top-level merges
+containing a commit or merge that matches the query, or all commits and merges
+that match the query.
 
 Our model of the tool provides many advantages other tools. Breaking the data
 by merge tree removes the commits and merges to other components of the kernel
@@ -163,8 +163,6 @@ there} Other DAG visualization systems, like the GitHub viewer, are unable to
 provide a visualization for projects that are as large as the
 kernel.\evantodo{Show picture of github failing}
 
-
-
 %% Check for papers if they exist
 %% This tool isn't specifically designed for showing Linux
 
@@ -177,39 +175,63 @@ kernel.\evantodo{Show picture of github failing}
 
 \subsection{Treemap visualizer}
 University of Maryland presented a treemap design for displaying all the files
-in a given release. This information doesn't provide meaining about what has
-changed. The information within the treemap does not provide clear insight on
-the meaning of the files, what changes were made, or even the size. The treemap
-structure provides information on where in the directory tree the file exists.
+in a given release. Treemaps are good for displaying the topology of shallow,
+wide trees, making it a good candidate for displaying file systems. Treemaps
+are limited in what information can be displayed. The information within the
+treemap does not provide clear insight on what changes were made to the files
+in the given release. The treemap visualization only provides information on
+where the file is located within the filesystem\ref{fig:treemap}. File systems
+and the merge tree of the kernel share many similarities, in both cases, the
+representative trees are wide and shallow, suggesting that a treemap could
+potentially work to visualize the commit and merge structure of the kernel.
 
+The treemap is unable to take into account multiple merges at the same level
+with the same name. There is an additional dimension, in that the commits and
+merges are ordered in time. The treemap design is unable to show the ordering
+of the merges and commits.
+
+The treemap design is also designed for working with data of differing types.
+In the filesystem, there are many kinds of files.  There are text files,
+scripts, images, binary files, and other types. These can be given colours
+making differences stand out. There is no obvious way to assign meaningful
+types to the commits such that all the commits within a given merge do not all
+have the same colour.
+
+Finally, the treemap does not provide any additional information about the
+contents of each cell, only that the cell exists. The user is unable to see
+their current position within the map, or if we assume that their current
+position is the larges surrounding box, they can no-longer see how their
+current position interacts with the rest of the system.
 %% https://www.cs.umd.edu/hcil/millionvis/Treemap_Visualization_of_the_Linux_Kernel_2_5_33.html
 %% Find paper for this maybe?
 
-\evantodo{Picture of visualization}
-% \begin{figure}[h!]
-% 	\centering
-% 	\includegraphics[width=0.47\textwidth]{figures/empty.png}
-% 	\caption{}
-% 	\label{}
-% \end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.47\textwidth]{figures/kernel-files.png}
+	\caption{Treemap of Linux 2.5.33 file structure}
+	\label{fig:treemap}
+\end{figure}
 
 
 \subsection{List viewer}
-Moghaddam designed a graph showing how various commits in the Kernel were
-linked together. This graph doesn't provide a clear picture of what is
-happening though, and gives no insight to the hierarchy of the data. It
-provides information about who authored the commit, and when the commit was
-authored.
+Moghaddam designed a web-based visualization tool displaying the chain of
+merges into the kernel. There is no information on what commits are within a
+given merge, or what files were edited. The visualization tool provides
+information about who authored the commit and when it was authored.
+\evantodo{Link to tool}
 %% http://web.uvic.ca/~arasbm/gitVisualizations/linuxRGraph.html
 %% Find paper for this maybe?
 
-\evantodo{Picture of graph}
-% \begin{figure}[h!]
-% 	\centering
-% 	\includegraphics[width=0.47\textwidth]{figures/empty.png}
-% 	\caption{}
-% 	\label{}
-% \end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.47\textwidth]{figures/gitvis.png}
+	\caption{List Viewer}
+	\label{fig:listviewer}
+\end{figure}
+
+\section{Model}
+
+We use a tree.
 
 
 \section{Design}
@@ -242,8 +264,25 @@ may be looking for a bottom-up approach, given a commit, what top-level merge
 includes this commit. Other users are interested in what happens in a given
 release cycle without any other requirements.
 
-To build an effective tool, we focused on two main areas, the navigation
-and presentation.
+\subsection{Architecture}
+
+% Database
+We split the data presented among 5 tables; commits, filesmod, logs,
+pathtomerge, and releases. The commits table stores the metadata about a given
+commit or merge. This includes the author, the authored date, the committer,
+commit date, and the file-level diff. The filesmod table stores the information
+about the files modified in a commit. We have the commit id, or cid, of the
+commit, the filename, the number of lines added and the number of lines removed
+from the file. There may be multiple files within a given commit, and there may
+be multiple commits editing the same file, the database uses an index as the
+primary key, though the primary key could be the cid, filename pair.
+
+% Tables
+commits
+filesmod
+logs
+pathtomerge
+releases
 
 
 \subsection{Navigation}
@@ -317,8 +356,8 @@ information. We present the commit log, what files were edited, and what
 modules were edited at a given commit or merge. Normal tools are unable to
 provide information about what files are edited in a merge because they do no
 use the tree structure. From our tree structure, we are able to traverse the
-subtree, making note of what files are edited and how many lines are added and
-removed at every commit.
+subtree, making note of what files are edited and how many lines of code are
+added and removed at every commit.
 
 \evantodo{Picture of files}
 % \begin{figure}[h!]
