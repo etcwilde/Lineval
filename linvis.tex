@@ -93,12 +93,14 @@
 
 Maintainers of older version of the Linux kernel must sift through thousands of
 commits with tools that are unable to filter and effectively visualize projects
-that are of the scale of the kernel. Tools like gitk provide users with the
+that are of the scale of the kernel. Tools like Gitk provide users with the
 full view of the DAG, showing all merges and commits. For smaller projects,
-this information is useful to show the relation between various branches.
-With larger, modular projects like the Linux Kernel, the DAG becomes a tangled
-mess (\ref{fig:gitk}). Github provides a DAG view for most projects, but is
-unable to display the DAG of projects as large as the Linux Kernel.
+this information is useful for showing the relation between various branches.
+With large modular projects, like the Linux Kernel, the DAG becomes a tangled
+mess (\ref{fig:gitk}) of commits, merges, and the links between them, making it
+difficult to derive an explanation of the changes.  Github provides a DAG view
+for most projects, but is unable to display the DAG of projects as large as the
+Linux Kernel.
 
 \begin{figure}
 	\centering
@@ -107,41 +109,42 @@ unable to display the DAG of projects as large as the Linux Kernel.
 	\label{fig:gitk}
 \end{figure}
 
-Another issue with performing searches is that git log, gitk, and other tools
-only store the authored date of a commit. A commit may be merged at any time,
-regardless of when the commit was authored. Because of this, performing
-date-range queries does not provide meaningful results. Performing a date-range
-query using other tools over the span of a release will contain results that
-are for previous versions of the kernel, and may not contain all of the results
-for that kernel if patches were merged after the release date.
+Git log, Gitk, and other similar tools only store the authored date of a
+commit. A commit may be merged into the project at any time, regardless of when
+the commit was authored. Because of this, performing date-range queries does
+not provide meaningful results. Performing a date-range query using other tools
+over the span of a release will contain results that are for previous versions
+of the kernel, and may not contain all of the results for that kernel if
+patches were merged after the release date.
 
 German et al. recorded the metadata of every commit and merge in the Linux git
 repository from 2012 to 2015, including data that is not stored by git. We are
 able to use this information to generate sets of trees instead of a DAG. The
-root node of each tree is the top-level merge performed by Linus, which merges
-a given commit into the kernel.
+root of each tree is the top-level merge performed by Linus, which merges a
+given commit into the kernel.
 
-In this paper, we present the design decisions behind a web-based tool,
-demonstrating the advantages of our tree model over the use of a DAG. Our tool
-provides information about the location of a given commit in the respective
-merge tree, the files edited, the modules edited, and the commit message in a
-given commit or merge. The tool allows users to apply various filters,
-including the release, a keyword or phrase from the log preview, the name of
-the author, or the commit id. The user can request all the top-level merges
-containing a commit or merge that matches the query, or all commits and merges
-that match the query.
+In this paper, we present the design decisions behind a web-based tool built
+around a tree-based model instead of the DAG. We demonstrate the advantages of
+this model over the use of the DAG. Our tool provides information about the
+location of a given commit in the respective merge tree, the files edited, the
+modules edited, and the commit message in a given commit or merge. The tool
+allows users to apply various filters, including the release, a keyword or
+phrase from the log preview, the name of the author, or the commit id. The user
+can request all the top-level merges containing a commit or merge that matches
+the query, or all commits and merges that match the query.
 
-Our model of the tool provides many advantages other tools. Breaking the data
-by merge tree removes the commits and merges to other components of the kernel
+Our core model provides many advantages to other tools. Breaking the data by
+merge tree removes the commits and merges of other components of the kernel
 from the visualization, providing a clearer picture of what is happening in a
-given merge.
+given merge. This model provides additional support to edited file information.
 
-No top-level merges are merged to an earlier version of the kernel after the
-release date. Because of our tree construction, we are able to use these
-top-level merges to find all merges effecting a version of the kernel,
-regardless of when they were authored and merged. This provides us with
-mechanisms for performing date-range queries that are able to provide
-meaningful information.
+All top-level merges to a given version of the kernel are merged between the
+start and release date. Our tree construction allows us to use the top-level
+merges to find all merges and commits that have an effect on a given version of
+the kernel. The model allows us to better provide mechanisms for performing
+date-range queries, providing access to all commits that have an effect on a
+given release, even if the commit comes before the start date, or the release
+date.
 
 \section{Related Work}
 
@@ -152,38 +155,40 @@ providing meaningful information, but in larger projects like the Linux kernel,
 the branches become too tangled and too deep to derive any meaning from the
 DAG. The DAG model allows users to go to the next commit in the chain, go to
 the previous commit in the chain, or jump to the parent merge. This suggest
-that gitk and similar tools are designed for users working with a bottom-to-top
+that Gitk and similar tools are designed for users working with a bottom-to-top
 approach. With this model, it is difficult for users to see what other commits
 are involved with a given merge. Gitk only provides file information on
 commits, as it is unable to quickly find all files edited by a merge. It is up
 to the user to remember what files were edited in each of the commits involved
-in a given merge. For some of the large merges in the Kernel, this is an
-impossible task. \evantodo{Find a large one and report how many files are
-there} Other DAG visualization systems, like the GitHub viewer, are unable to
-provide a visualization for projects that are as large as the
-kernel.\evantodo{Show picture of github failing}
+in a given merge. In some of the larger merges, some containing over 1500
+edited files, this task become nearly impossible.
+% cid: 73287a43cc79ca06629a88d1a199cd283f42456a, 1800 commits, 1500 files
+Other DAG visualization systems, like the GitHub viewer (\ref{fig:gitfail}),
+are unable to provide a visualization for projects that are as large as the
+kernel.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.45\textwidth]{figures/github_viewer.png}
+	\caption{Github Failure Message}
+	\label{fig:gitfail}
+\end{figure}
 
 %% Check for papers if they exist
 %% This tool isn't specifically designed for showing Linux
 
-% \begin{figure}[h!]
-% 	\centering
-% 	\includegraphics[width=0.47\textwidth]{figures/empty.png}
-% 	\caption{}
-% 	\label{}
-% \end{figure}
-
 \subsection{Treemap visualizer}
-University of Maryland presented a treemap design for displaying all the files
-in a given release. Treemaps are good for displaying the topology of shallow,
-wide trees, making it a good candidate for displaying file systems. Treemaps
-are limited in what information can be displayed. The information within the
-treemap does not provide clear insight on what changes were made to the files
-in the given release. The treemap visualization only provides information on
-where the file is located within the filesystem\ref{fig:treemap}. File systems
-and the merge tree of the kernel share many similarities, in both cases, the
-representative trees are wide and shallow, suggesting that a treemap could
-potentially work to visualize the commit and merge structure of the kernel.
+University of Maryland presented a treemap design (\ref{fig:treemap}) for
+displaying all the file structure of a given version. Treemaps are good for
+displaying the topology of shallow, wide trees, making it a good candidate for
+displaying file systems. Treemaps are limited in what information can be
+displayed. The information within the treemap does not provide clear insight on
+what changes were made to the files in the given release. The treemap
+visualization only provides information on where the file is located within the
+filesystem. File systems and the merge tree of the kernel share many
+similarities, in both cases, the representative trees are wide and shallow,
+suggesting that a treemap could potentially work to visualize the commit and
+merge structure of the kernel.
 
 The treemap is unable to take into account multiple merges at the same level
 with the same name. There is an additional dimension, in that the commits and
@@ -231,12 +236,20 @@ information about who authored the commit and when it was authored.
 
 \section{Model}
 
-We use a tree.
-
-
 \section{Design}
 
-Our primary focus was looking for a way to remove as much information as
+The goal is to build a system that allows users to easily navigate and
+understand the changes within the kernel. To do this, the user must have the
+ability to perform searches
+
+The goal was to build a system that would allow users to easily navigate the
+commit information of
+
+Our primary focus was looking for a way to remove as much unnecessary
+information as possible narrow the results.
+
+
+information as
 possible to narrow the results that we wanted to return. Right now, the largest
 set of data that a search could return is the entire set of commits that
 pertain to a given release. While this set is massive, it pales in comparison
@@ -267,7 +280,7 @@ release cycle without any other requirements.
 \subsection{Architecture}
 
 % Database
-We split the data presented among 5 tables; commits, filesmod, logs,
+We split the data presented among five tables; commits, filesmod, logs,
 pathtomerge, and releases. The commits table stores the metadata about a given
 commit or merge. This includes the author, the authored date, the committer,
 commit date, and the file-level diff. The filesmod table stores the information
@@ -278,11 +291,13 @@ be multiple commits editing the same file, the database uses an index as the
 primary key, though the primary key could be the cid, filename pair.
 
 % Tables
-commits
-filesmod
-logs
-pathtomerge
-releases
+% commits
+% filesmod
+% logs
+% pathtomerge
+% releases
+
+%
 
 
 \subsection{Navigation}
