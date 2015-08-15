@@ -234,180 +234,215 @@ information about who authored the commit and when it was authored.
 	\label{fig:listviewer}
 \end{figure}
 
-\section{Model}
 
-\section{Design}
+\section{Core Model}
+Each merge may contain zero or more children of other merges or commits.
+Commits have no children, and therefore are always leaf nodes, but commits
+contain information about what files are edited, how many lines are edited, and
+other important information.
 
-The goal is to build a system that allows users to easily navigate and
-understand the changes within the kernel. To do this, the user must have the
-ability to perform searches
+Core Model:
+	Merges are inner nodes
+	Commits are leaf nodes
 
-The goal was to build a system that would allow users to easily navigate the
-commit information of
+\section{Implementation Details}
 
-Our primary focus was looking for a way to remove as much unnecessary
-information as possible narrow the results.
+We built a we-based tool to provide information about the kernel.
+We chose to use Nginx as the main web server, postgresql as the dbms, and Flask
+as the framework for generating the dynamic content.
 
+Nginx is a high-performance, scalable HTTP and mail server. Started in 2002,
+the project is much younger than the Apache project, and designed with massive
+scalability and multi-processing in mind. Instead of using request-driven
+threading, Nginx uses an event-driven architecture, making it more scalable,
+proving itself as being the web server behind Netflix, Hulu, GitHub, Tumblr,
+and many other popular sites.
 
-information as
-possible to narrow the results that we wanted to return. Right now, the largest
-set of data that a search could return is the entire set of commits that
-pertain to a given release. While this set is massive, it pales in comparison
-to every commit and merge generated for all versions of the kernel. From there,
-the design is centered around the merge tree. These are all of the commits and
-merges that eventually are merged by a top-level merge into the kernel. The
-design centers around a vine-shape. The top-level merges form a linked list,
-each node being a logical section within the kernel. These sections are defined
-by Linus. Within each of these top-level merges is a tree of merges and
-commits. The merges form the inner-nodes, and the commits form the leaf-nodes.
+Postgresql is our dbms of choice, providing fast and reliable results. There
+are multiple reasons behind choosing postgresql over another dbms. The main
+reason being that the dataset provided from \evantodo{paper} was generated from
+a postgresql database, allowing us to import the data directly without any
+further conversions. The secondary reason is that we are more familiar with
+postgresql than the other systems available.
 
-\evantodo{Make a vine diagram}
-% \begin{figure}[h!]
-% 	\centering
-% 	\includegraphics[width=0.47\textwidth]{figures/empty.png}
-% 	\caption{}
-% 	\label{}
-% \end{figure}
+We chose the python micro-framework Flask for generating the dynamic content.
+Working with flask is simple and easy.
 
-
-Different kinds of users need to be able to use the tool differently.
-Some users may be looking for a top-down approach, trying to find the merge
-closest to the top-level merge that works with a given set of files. Other uses
-may be looking for a bottom-up approach, given a commit, what top-level merge
-includes this commit. Other users are interested in what happens in a given
-release cycle without any other requirements.
-
-\subsection{Architecture}
-
-% Database
-We split the data presented among five tables; commits, filesmod, logs,
-pathtomerge, and releases. The commits table stores the metadata about a given
-commit or merge. This includes the author, the authored date, the committer,
-commit date, and the file-level diff. The filesmod table stores the information
-about the files modified in a commit. We have the commit id, or cid, of the
-commit, the filename, the number of lines added and the number of lines removed
-from the file. There may be multiple files within a given commit, and there may
-be multiple commits editing the same file, the database uses an index as the
-primary key, though the primary key could be the cid, filename pair.
-
-% Tables
-% commits
-% filesmod
-% logs
-% pathtomerge
-% releases
-
-%
+Tool Implementation Details:
+	Web Server: Nginx, Flask, postgresql
+	Database: 5 tables
 
 
-\subsection{Navigation}
-
-A user is greeted by the search screen. We break the kernel down by release,
-limiting the maximum information a user can query to help minimize being
-overwhelmed. From there, users can either search by author name, commit id, or
-keyword from the log preview. A user may also request the top-level merges that
-meet the requirements. If the checkbox is unchecked, a user is able to query
-all commits and merges that happened in the selected release cycle. If the box
-is checked, the user will get all of the top-level merges in the release cycle
-that contain a commit or merge that match the given criteria. If no criteria
-are provided and the box is checked, the user will simply be given all
-top-level merges for that release cycle. This helps separate the use-cases,
-allowing users wanting the bottom-up approach to perform searches, and users
-wanting a top-down approach to perform searches.
-
-Once a user has found either the top-level merge or commit that they are
-interested in, they should be able to move freely between the commits and
-merges in the tree. We use three mechanisms to provide better navigation
-through the tree. The tree view, the list tree, and breadcrumbs.
-
-The tree view provides most of the
-navigational functionality, allowing users to jump to any commit or merge in
-the current tree. The main tree view displays all the commits and merges, the
-root is the top-level merge of all the commits and merges in the group. Users
-are able to see all commits and merges of all the merges.
-
-\evantodo{Picture of tree}
-% \begin{figure}[h!]
-% 	\centering
-% 	\includegraphics[width=0.47\textwidth]{figures/empty.png}
-% 	\caption{}
-% 	\label{}
-% \end{figure}
-
-The list tree shows the merges and commits of the current subtree, built as
-nested lists of links to the respective commits and merges. The information in
-this tree is a subset of the main tree view, providing a method users with a
-view of what commits and merges are below the current commit or merge. If the
-current position is a commit, the tree will be empty, as commits are leaf
-nodes in the tree representation. This is designed for letting users move
-quickly down in the tree.
-
-\evantodo{Picture of list tree}
-% \begin{figure}[h!]
-% 	\centering
-% 	\includegraphics[width=0.47\textwidth]{figures/empty.png}
-% 	\caption{}
-% 	\label{}
-% \end{figure}
-
-
-The breadcrumbs show the path of merges that are above the current commit or
-merge, up to the top-level merge. This allows users a fast way to move up in
-the tree.
-
-\evantodo{Picture of breadcrumbs}
-% \begin{figure}[h!]
-% 	\centering
-% 	\includegraphics[width=0.47\textwidth]{figures/empty.png}
-% 	\caption{}
-% 	\label{}
-% \end{figure}
-
-
-\subsection{Information and Presentation}
-
-Navigation is only effective if the destination contains the desired
-information. We present the commit log, what files were edited, and what
-modules were edited at a given commit or merge. Normal tools are unable to
-provide information about what files are edited in a merge because they do no
-use the tree structure. From our tree structure, we are able to traverse the
-subtree, making note of what files are edited and how many lines of code are
-added and removed at every commit.
-
-\evantodo{Picture of files}
-% \begin{figure}[h!]
-% 	\centering
-% 	\includegraphics[width=0.47\textwidth]{figures/empty.png}
-% 	\caption{}
-% 	\label{}
-% \end{figure}
-
-The tree views provide navigation, but are also able to present implied
-information about the depth and number of commits in a given merge.
-
-\section{Discussion}
-
-Our search provides mechanisms for users looking for top-down and bottom-up
-approaches. In figures \ref{fig:AndrewMortonMerges} and \ref{fig:AndrewMorton}
-we see the difference in responses when looking for the merges by Linus and the
-commits authored by Andrew Morton.
-\evantodo{Picture of results for top-down and bottom-up}
-
-%% http://localhost:8080/search?version=Linux+3.14&commit_date_begin=&commit_date_end=&search-text=Morton&search-type=Author&merges=on
-
-% \begin{figure}[h!]
-% 	\centering
-% 	\includegraphics[width=0.47\textwidth]{figures/empty.png}
-% 	\caption{}
-% 	\label{fig:AndrewMortonMerges}
-% \end{figure}
-%
-% \begin{figure}[h!]
-% 	\centering
-% 	\includegraphics[width=0.47\textwidth]{figures/empty.png}
-% 	\caption{}
-% 	\label{fig:AndrewMorton}
-% \end{figure}
+% \section{Design}
+% 
+% The goal is to build a system that allows users to easily navigate and
+% understand the changes within the kernel. We provide a mechanism for performing
+% searches to filter out irrelevant commits and merges, and only work with
+% information that they are interested in. At the top level, the commits are
+% grouped by release version. \evan{We currently do not provide a mechanism for
+% checking real versions and release candidates\ldots Might be useful to at least
+% note in search results section}.
+% 
+% 
+% information as
+% possible to narrow the results that we wanted to return. Right now, the largest
+% set of data that a search could return is the entire set of commits that
+% pertain to a given release. While this set is massive, it pales in comparison
+% to every commit and merge generated for all versions of the kernel. From there,
+% the design is centered around the merge tree. These are all of the commits and
+% merges that eventually are merged by a top-level merge into the kernel. The
+% design centers around a vine-shape. The top-level merges form a linked list,
+% each node being a logical section within the kernel. These sections are defined
+% by Linus. Within each of these top-level merges is a tree of merges and
+% commits. The merges form the inner-nodes, and the commits form the leaf-nodes.
+% 
+% \evantodo{Make a vine diagram}
+% % \begin{figure}[h!]
+% % 	\centering
+% % 	\includegraphics[width=0.47\textwidth]{figures/empty.png}
+% % 	\caption{}
+% % 	\label{}
+% % \end{figure}
+% 
+% 
+% Different kinds of users need to be able to use the tool differently.
+% Some users may be looking for a top-down approach, trying to find the merge
+% closest to the top-level merge that works with a given set of files. Other uses
+% may be looking for a bottom-up approach, given a commit, what top-level merge
+% includes this commit. Other users are interested in what happens in a given
+% release cycle without any other requirements.
+% 
+% \subsection{Architecture}
+% 
+% % Database
+% We split the data presented among five tables; commits, filesmod, logs,
+% pathtomerge, and releases. The commits table stores the metadata about a given
+% commit or merge. This includes the author, the authored date, the committer,
+% commit date, and the file-level diff. The filesmod table stores the information
+% about the files modified in a commit. We have the commit id, or cid, of the
+% commit, the filename, the number of lines added and the number of lines removed
+% from the file. There may be multiple files within a given commit, and there may
+% be multiple commits editing the same file, the database uses an index as the
+% primary key, though the primary key could be the cid, filename pair.
+% 
+% % Tables
+% % commits
+% % filesmod
+% % logs
+% % pathtomerge
+% % releases
+% 
+% %
+% 
+% 
+% \subsection{Navigation}
+% 
+% A user is greeted by the search screen. We break the kernel down by release,
+% limiting the maximum information a user can query to help minimize being
+% overwhelmed. From there, users can either search by author name, commit id, or
+% keyword from the log preview. A user may also request the top-level merges that
+% meet the requirements. If the checkbox is unchecked, a user is able to query
+% all commits and merges that happened in the selected release cycle. If the box
+% is checked, the user will get all of the top-level merges in the release cycle
+% that contain a commit or merge that match the given criteria. If no criteria
+% are provided and the box is checked, the user will simply be given all
+% top-level merges for that release cycle. This helps separate the use-cases,
+% allowing users wanting the bottom-up approach to perform searches, and users
+% wanting a top-down approach to perform searches.
+% 
+% Once a user has found either the top-level merge or commit that they are
+% interested in, they should be able to move freely between the commits and
+% merges in the tree. We use three mechanisms to provide better navigation
+% through the tree. The tree view, the list tree, and breadcrumbs.
+% 
+% The tree view provides most of the
+% navigational functionality, allowing users to jump to any commit or merge in
+% the current tree. The main tree view displays all the commits and merges, the
+% root is the top-level merge of all the commits and merges in the group. Users
+% are able to see all commits and merges of all the merges.
+% 
+% \evantodo{Picture of tree}
+% % \begin{figure}[h!]
+% % 	\centering
+% % 	\includegraphics[width=0.47\textwidth]{figures/empty.png}
+% % 	\caption{}
+% % 	\label{}
+% % \end{figure}
+% 
+% The list tree shows the merges and commits of the current subtree, built as
+% nested lists of links to the respective commits and merges. The information in
+% this tree is a subset of the main tree view, providing a method users with a
+% view of what commits and merges are below the current commit or merge. If the
+% current position is a commit, the tree will be empty, as commits are leaf
+% nodes in the tree representation. This is designed for letting users move
+% quickly down in the tree.
+% 
+% \evantodo{Picture of list tree}
+% % \begin{figure}[h!]
+% % 	\centering
+% % 	\includegraphics[width=0.47\textwidth]{figures/empty.png}
+% % 	\caption{}
+% % 	\label{}
+% % \end{figure}
+% 
+% 
+% The breadcrumbs show the path of merges that are above the current commit or
+% merge, up to the top-level merge. This allows users a fast way to move up in
+% the tree.
+% 
+% \evantodo{Picture of breadcrumbs}
+% % \begin{figure}[h!]
+% % 	\centering
+% % 	\includegraphics[width=0.47\textwidth]{figures/empty.png}
+% % 	\caption{}
+% % 	\label{}
+% % \end{figure}
+% 
+% 
+% \subsection{Information and Presentation}
+% 
+% Navigation is only effective if the destination contains the desired
+% information. We present the commit log, what files were edited, and what
+% modules were edited at a given commit or merge. Normal tools are unable to
+% provide information about what files are edited in a merge because they do no
+% use the tree structure. From our tree structure, we are able to traverse the
+% subtree, making note of what files are edited and how many lines of code are
+% added and removed at every commit.
+% 
+% \evantodo{Picture of files}
+% % \begin{figure}[h!]
+% % 	\centering
+% % 	\includegraphics[width=0.47\textwidth]{figures/empty.png}
+% % 	\caption{}
+% % 	\label{}
+% % \end{figure}
+% 
+% The tree views provide navigation, but are also able to present implied
+% information about the depth and number of commits in a given merge.
+% 
+% \section{Discussion}
+% 
+% Our search provides mechanisms for users looking for top-down and bottom-up
+% approaches. In figures \ref{fig:AndrewMortonMerges} and \ref{fig:AndrewMorton}
+% we see the difference in responses when looking for the merges by Linus and the
+% commits authored by Andrew Morton.
+% \evantodo{Picture of results for top-down and bottom-up}
+% 
+% %% http://localhost:8080/search?version=Linux+3.14&commit_date_begin=&commit_date_end=&search-text=Morton&search-type=Author&merges=on
+% 
+% % \begin{figure}[h!]
+% % 	\centering
+% % 	\includegraphics[width=0.47\textwidth]{figures/empty.png}
+% % 	\caption{}
+% % 	\label{fig:AndrewMortonMerges}
+% % \end{figure}
+% %
+% % \begin{figure}[h!]
+% % 	\centering
+% % 	\includegraphics[width=0.47\textwidth]{figures/empty.png}
+% % 	\caption{}
+% % 	\label{fig:AndrewMorton}
+% % \end{figure}
 
 
 
