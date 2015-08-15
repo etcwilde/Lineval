@@ -268,9 +268,39 @@ postgresql than the other systems available.
 We chose the python micro-framework Flask for generating the dynamic content.
 Working with flask is simple and easy.
 
-Tool Implementation Details:
-	Web Server: Nginx, Flask, postgresql
-	Database: 5 tables
+The database itself is broken down into 5 main tables; commits, filesmod, logs,
+pathtomerge, and releases. Commits contains most of the metadata for each
+commit, it contains the author, the authored date, and committer, the commit
+date, a boolean saying what is a merge, and the diff. Filesmod contains the
+information on what files were modified for the commits. Since a file may be
+modified by multiple commits, and a commit may be modifying multiple files, we
+can do one of two things for the primary key. We could use both the filename
+and the commit id as the primary key, but we just use an index. The filesmod
+table contains the filename, the commit id, the number of lines added, and the
+number of lines removed. Trivially, it contains the index, but that isn't
+necessary for anything beyond the primary key. Logs contains the information
+for each commit log, this is the one-liner preview message and the full
+message. Pathtomerge is the important table. Pathtomerge contains the commit
+id, the number of merges between the commit and the top-level merge with the
+kernel, the next merge in the merge path up to the top-level merge with the
+kernel, the top-level merge into the kernel, and when it get merged into the
+kernel. The information in this table must be generated periodically by the
+server because we are unable to generate the tree structure correctly straight
+from the information stored by git. Pathtomerge does not contain any top-level
+merges, as these will never have a next merge in the tree, since we are only
+storing the parents and not the children, storing the top-level merge is
+redundant and unnecessary. The releases table stores the release information.
+It contains the version name, whether the version is a candidate release or a
+real release, the previous version, the previous non-candidate release version
+the previous version commit id, the previous non-candidate release version
+commit id, and the commit id of this version. The version commit id represents
+the last top-level merge into the version of the kernel. Using this and the
+commits table, we are able to determine the release date of any version of the
+kernel. Then using the previous release date, we can find the range of dates
+where valid top-level merges are found for that version.
+
+\evantodo{Talk a bit about the heuristics used for building the tree from the
+DAG}
 
 \section{Design}
 
