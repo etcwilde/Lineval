@@ -217,7 +217,6 @@ current position interacts with the rest of the system.
 	\label{fig:treemap}
 \end{figure}
 
-
 \subsection{List viewer}
 Moghaddam designed a web-based visualization tool displaying the chain of
 merges into the kernel. There is no information on what commits are within a
@@ -424,29 +423,50 @@ order.}
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.47\textwidth]{figures/tree_view.png}
-	\caption{Commit Tree View}
-	\label{fig:files}
+	\includegraphics[width=0.47\textwidth]{figures/modules.png}
+	\caption{Commit Modules}
+	\label{fig:modules}
 \end{figure}
 
-The third tab shows the tree view. The tree view is what makes this tool unique
-to the other tools. It provides a full view of the entire merge tree. It
-originally centres at the current commit or merge, but allows a user to inspect
-the other commits and merges surrounding it. A user may then navigate to any of
-the commits by simply double-clicking on it.
+The modules tab shows the modules that are contained within the commit. Modules
+are not natively recognized by git, and are not going to be present in all
+repositories. In the Linux repository, authors put the module they are working
+on in the one-line preview of the log-message.  We heuristically extract the
+module by taking all text in the log preview until the first colon. Modules are
+logical partitions of the information in the kernel. Depending on where the
+author was working, modules can be general, such as ``bluetooth'' and
+``wireless'', or can be quite specific for individual hardware, such as
+``ath9k\_hw'' and ``wl1251''. Like files, we are able to show what modules are
+edited in merges and in commits. The image in figure \ref{fig:modules} shows
+the modules for a commit. A commit will only ever have one module that it is
+associated with.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.47\textwidth]{figures/tree_view.png}
+	\caption{Commit Tree View}
+	\label{fig:tree}
+\end{figure}
+
+The third tab shows the tree view (\ref{fig:tree}). The tree view is what makes
+this tool unique to the other tools. It provides a full view of the entire
+merge tree. It originally centres at the current commit or merge, but allows a
+user to inspect the other commits and merges surrounding it. A user may then
+navigate to any of the commits by simply double-clicking on it.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.47\textwidth]{figures/tree_zoom.png}
 	\caption{Tree zoomed out}
-	\label{fig:files}
+	\label{fig:zoomed_tree}
 \end{figure}
 
-Some of the merge trees are very large, containing thousands of commits and
-merges. Clicking on subtrees will cause them to minimize, only showing parts of
-the tree that are of interest to the user. Furthermore, the user can zoom the
-tree by scrolling the mouse wheel to see more of the topology of the tree, or
-to see the details of a given part of the tree.
+Some of the merge trees are very large (\ref{fig:zoomed_tree}), containing
+thousands of commits and merges. Clicking on subtrees will cause them to
+minimize, only showing parts of the tree that are of interest to the user.
+Furthermore, the user can zoom the tree by scrolling the mouse wheel to see
+more of the topology of the tree, or to see the details of a given part of the
+tree.
 
 The last tab contains another type of tree view. This tree is in the form of
 nested lists, and is designed to more closely model the tree hierarchy view of
@@ -456,6 +476,7 @@ tab, as it is a leaf node, so it cannot contain subtrees. To accompany the
 tree, we include breadcrumbs at the top. The last item in the breadcrumb list
 is the current commit, the next item is the parent of the current commit, and
 the first item is the top-level merge into the kernel.
+
 
 
 \section{Future Work}
