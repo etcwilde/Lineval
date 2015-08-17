@@ -260,47 +260,50 @@ information simpler, while providing an explanation of the changes occurring at
 each commit and merge. Part of making the information usable is to narrow the
 results down into only the information that is relevant to what the user is
 looking for. We designed the tool with two use-cases in mind, though a user may
-switch roles many times as they work.
+switch roles as they work.
 
 \textit{Use-case 1: top-to-bottom approach}\\
 These are users that are maintaining a section of the kernel and would like to
-pick a merge from the future merges and merge it directly into their current
-repository. This is useful for minimizing required implementation on the side
-of the maintainer. We must provide them with methods of navigating from a more
-general set of merges toward a specific set of merges and commits.
+pick a merge and merge it directly into their current repository. This is
+useful for minimizing required implementation on the side of the maintainer,
+allowing them to see what changes are made higher up in the kernel and bundle
+multiple changes together. We must provide them with methods of navigating from
+a more general set of merges toward a specific set of merges and commits.
 
 \textit{Use-case 2: bottom-to-top approach}\\
 These are users that know what merge or commit they are working with and would
-like to see what else is happening around their current commit. This is useful
-to see how changes to a given file will break other changes made by other
-commits. This is primarily for maintainers that have to perform some
-implementation work in order to correctly merge the patches from the future.
-These users may also know what module(s) they are dealing with, and are looking
-for modules that are relevant to the area they are working on. We must provide
-them methods of navigating from a specific commit to a more general merge,
-allowing them to see a bigger picture.
+like to see what else is happening around their commit. This is useful to see
+how changes to a given file will break other changes made in other commits.
+This is primarily for maintainers that have to perform some implementation work
+in order to correctly merge the patches from the future. These users may also
+know what module(s) they are dealing with, and are looking for modules that are
+relevant to the area they are working on. We must provide them methods of
+navigating from a specific commit to a more general merge, allowing them to see
+a bigger picture.
 
 \subsection{Core Model}
 Each top-level merge into the kernel is the root-node to a tree. Each merge
-may contain zero or more children of other merges or commits. Commits have no
-children, and therefore are always leaf nodes, but commits contain information
-about what files are edited and how many lines are edited, along with what
-modules are involved in a merge.
+may contain zero or more children made of other merges or commits. Commits have
+no children, and therefore are always leaf nodes.  The commits contain the
+information about the files that are edited along with how many lines are added
+and removed from each file. Commits also store the module of the kernel that
+they are working with.
 
 \subsection{Command-line Shell}
-Our initial intuition was to work with the commits and merges as trees, like in
-a file structure. There are many similarities in the structure of a file system
-and the structure of the commit information within the kernel. The primary
-similarity is that they are both trees, and both trees are generally fairly
-shallow and very wide. File systems have been around for quite some time, and
-there are many tools for visualizing and working withe the file structure. The
-first tool was the command-line. We built a small command-line shell
-(\ref{fig:shell}) that allowed navigation through the commit and merges instead
-of files and directory. The shell design permitted a user to move through the
-merges like they would through directories. They could use the cat command to
-see the preview of the log, or the more command to see the preview and what
-files were edited in the commit and how many lines were added and removed from
-each file.
+Our initial intuition was to work with the commits and merges as trees. We use
+the merges as directories, and commits as files, like in a file structure.
+There are many similarities between a file system and the structure of the
+commit information. The primary similarity is that they are both trees, and
+both trees are generally fairly shallow and wide. File systems have been
+around for quite some time, and there are many tools for visualizing and
+working withe the file structure. The first tool was the command-line. We built
+a small command-line shell (\ref{fig:shell}) that allows navigation through
+the commit and merges instead of files and directory. The shell design
+permitted a user to move through the merges like they would through
+directories with the \textit{cd} and \textit{ls} commands. Users can use the
+\textit{cat} command to see the preview of the log, or the \textit{more}
+command to see the preview and what files were edited in the commit and how
+many lines were added and removed from each file.
 
 \begin{figure}[h]
 	\centering
@@ -309,24 +312,24 @@ each file.
 	\label{fig:shell}
 \end{figure}
 
-There are two issues with this design. One issue with this design is that a
-user will always move from the top-down without any additional filtering. This
-only serves one of our use-cases. The second issue being that it presents the
-user with the commit hashes, providing no explanation of what the commit or
-merge may contain.
+There are two issues with this design. One issue with is that a user will
+always move from the top-down without any additional filtering. This only
+serves one of our use-cases and can be very overwhelming. The second issue
+being that it presents the user with the commit hashes, providing no
+explanation of what the commit or merge may contain.
 
 \subsection{Web-based Tool}
 There are multiple reasons for building the system into a web-based tool.
 Putting the tool on the web enables users to use the system without having to
-install any software, making the system more accessible and platform
-independent.A web-based tool can utilize more interactive means of navigation,
-and provide a better explanation of what each commit or merge may contain than
-the command-line variant.
+install any software, making the system more accessible, more easily
+maintained, and platform independent. A web-based tool can utilize more
+interactive means of navigation, and provide a better explanation of what each
+commit or merge may contain than the command-line shell.
 
 Our implementation of the web-based tool provides many mechanisms to enable
 users to better navigate and understand changes in the kernel. These mechanisms
-include searching, commit messages, files edited, modules edited, and two types
-of tree viewers.
+include searching, the commit messages, the files edited, the modules edited,
+and two types of tree viewers.
 
 \begin{figure}[h]
 	\centering
@@ -335,14 +338,14 @@ of tree viewers.
 	\label{fig:search}
 \end{figure}
 
-Searching allows a user to filter our commits and merges that are irrelevant.
+Searching allows a user to filter commits and merges that are irrelevant.
 The search mechanism breaks down the results by release version. A user can
-further narrow down the search range using the commit date range. This commit
+further narrow down the search range using the commit date range. The commit
 date refers to the date of the creation of the top-level merge. Commits and
 merges that are returned may have a commit date beyond the given range if they
-were merged to a top-level merge within the date range. A user may then provide
-a search text, filtering on the author name, the commit id, or keyword from the
-log. Any part of the author name may show up in the results, including
+were merged to a top-level merge that is within the date range. A user may then
+provide a search text, filtering on the author name, the commit id, or keyword
+from the log. Any part of the author name may show up in the results, including
 searching by email address. The commit ID must be specified from the first
 character to the last character. For example, the commit
 `c267548755a184ef97301071300c1739a564e135' is returned when the user searches
@@ -355,14 +358,13 @@ for a commit id of `c26' in the 3.10 Linux kernel.
 	\label{fig:results}
 \end{figure}
 
-In the search results , the user is presented with the one-line log message
+In the search results, the user is presented with the one-line log message
 preview, the author's name and email, the date the commit was authored, and the
-date the commit was committed. \evantodo{a better definition for commit date}
-The commit date and author date will usually be the same, however, if the
-commit has been rebased, the commit date will be different than the authored
-date, and will always be after the authored date. The first and third entries
-in figure \ref{fig:results} have been rebased in the past. \evan{We are unable
-to show the rebases.}
+date the commit was last committed.  The commit date and author date will
+usually be the same, however, if the commit has been rebased, the commit date
+will be different than the authored date, and will always be after the authored
+date. The first and third entries in figure \ref{fig:results} have been rebased
+in the past, though we are unable to highlight rebases at this time.
 
 \begin{figure}[h]
 	\centering
@@ -371,16 +373,16 @@ to show the rebases.}
 	\label{fig:message}
 \end{figure}
 
-The first view displays the full commit log. From this, a user is able to see
-hat they would see had they searched for the commit using git log. This doesn't
-provide additional information to the other tools, but helps to complete the
-functionality of the tool. This information provides a user with the
-information about the content of the commit and who has looked over the commit
-to ensure that it is good quality. The message for merges may also contain the
-information about the commits that are being merged into a given merge. The
-information within these messages is highly variable, and is completely
-dependent on the author's style. As the user moves toward the top-level merge,
-the quality of these messages generally improve.
+The first tab displays the full commit log. From this, a user is able to see
+what they would see had they searched for the commit using git log. This
+doesn't provide additional information to the other tools, but helps to
+complete the functionality of our tool. The commit log provides a user with
+the information about the content of the commit and who has signed-off on the
+commit to ensure that it is good quality. The message for merges may also
+contain the information about the commits that are being merged into a given
+merge. The information within these messages is highly variable, and is
+completely dependent on the author's style. As the user moves toward the
+top-level merge, the quality of these messages generally improves.
 
 \begin{figure}[h]
 	\centering
@@ -395,9 +397,7 @@ a given commit. This functionality is similar to the other tools available. Our
 tree-based design model allows us to extend this functionality to merges, which
 the other tools are unable to show. When a file is edited multiple times from
 different commits within a merge, we simply add the added and removed lines to
-the values already stored. \evan{At this time, we don't have a mechanism to
-process the diff information to determine which lines were changed, and in what
-order.}
+the values already stored.
 
 \begin{figure}[h]
 	\centering
@@ -410,12 +410,12 @@ The modules tab shows the modules that are contained within the commit. Modules
 are not natively recognized by git, and are not going to be present in all
 repositories. In the Linux repository, authors put the module they are working
 on in the one-line preview of the log-message. We heuristically extract the
-module by taking all text in the log preview until the first colon. Modules are
-logical partitions of the information in the kernel. Depending on where the
-author was working, modules can be general, such as ``bluetooth'' and
+module by taking all text in the log preview of commits until the first colon.
+Modules are logical partitions of the information in the kernel. Depending on
+where the author was working, modules can be general, such as ``bluetooth'' and
 ``wireless'', or can be quite specific for individual hardware, such as
 ``ath9k\_hw'' and ``wl1251''. Like files, we are able to show what modules are
-edited in merges and in commits. The image in figure \ref{fig:modules} shows
+edited in merges and commits. The image in figure \ref{fig:modules} shows
 the modules for a commit. A commit will only ever have one module that it is
 associated with.
 
@@ -427,8 +427,8 @@ associated with.
 \end{figure}
 
 The third tab shows the tree view (\ref{fig:tree}). The tree view is what makes
-this tool unique to the other tools. It provides a full view of the entire
-merge tree. It originally centres at the current commit or merge, but allows a
+this tool unique to the other tools, providing a full view of the entire merge
+tree. It originally centres at the current commit or merge, but allows a
 user to inspect the other commits and merges surrounding it. A user may then
 navigate to any of the commits by simply double-clicking on it.
 
