@@ -52,6 +52,7 @@
 % Extra support
 \usepackage{xspace}
 \usepackage{caption}
+\usepackage[nospace]{cite}
 
 % Fix any bad-hyphenations here
 \hyphenation{}
@@ -69,7 +70,6 @@
 }
 \maketitle
 \begin{abstract}
-
 	With an average of over 900 top-level merges into the Linux kernel per
 	release, some containing thousands of commits, many containing hundreds
 	of commits, maintenance of older versions of the kernel becomes nearly
@@ -83,10 +83,10 @@
         becomes overwhelming very quickly.
 
 	In this paper, we present a tool that uses the dataset collected by
-	German et al. to build a tool that uses a vine model instead of the
-	DAG. This tool is designed to cater to the needs of users looking for a
-	top-down approach, or a bottom-up approach to navigating the commit
-	information of the kernel.
+	German et al. to build a tool that uses a tree-based model instead of
+        the DAG. This tool is designed to cater to the needs of users looking
+        for a top-down approach, or a bottom-up approach to navigating the
+        commit information of the kernel.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -100,11 +100,12 @@ commits with tools that are unable to filter and effectively visualize projects
 that are of the scale of the kernel. Tools like Gitk provide users with the
 full view of the DAG, showing all merges and commits. For smaller projects,
 this information is useful for showing the relation between various branches.
-With large modular projects, like the Linux Kernel, the DAG becomes a tangled
-mess (\ref{fig:gitk}) of commits, merges, and the links between them, making it
-difficult to derive an explanation of the changes.  Github provides a DAG view
-for most projects, but is unable to display the DAG of projects as large as the
-Linux Kernel.
+The DAG becomes a tangled mess (\ref{fig:gitk}) of commits, merges, and the
+links between them with large modular projects, like the Linux kernel. This
+makes it difficult to derive an explanation of the changes made. In other
+cases, the kernel is simply too large for the system to generate a
+visualization for. Github provides a DAG view for most projects, but is unable
+to display the visualization for projects as large as the Linux kernel.
 
 \begin{figure}
 	\centering
@@ -115,44 +116,52 @@ Linux Kernel.
 
 Git log, Gitk, and other similar tools only store the authored date of a
 commit. A commit may be merged into the project at any time, regardless of when
-the commit was authored. Because of this, performing date-range queries does
-not provide meaningful results. Performing a date-range query using other tools
-over the span of a release will contain results that are for previous versions
-of the kernel, and may not contain all of the results for that kernel if
-patches were merged after the release date.
+the commit was authored, making date-range queries meaningless. Performing a
+date-range query using other tools over the span of a release will contain
+results that are for previous versions of the kernel, and may not contain all
+of the results for that kernel if patches were merged after the release date.
 
 German et al. recorded the metadata of every commit and merge in the Linux git
-repository from 2012 to 2015, including data that is not stored by git. We are
-able to use this information to generate sets of trees instead of a DAG. The
-root of each tree is the top-level merge performed by Linus, which merges a
-given commit into the kernel.
+repository starting in 2011 \cite{German}, including chronological data that is
+not stored by git. We are able to use this information to generate sets of
+trees instead of a DAG. The root of each tree is the top-level merge performed
+by Linus, which merges branches or sets of commits into the kernel.
 
-In this paper, we present the design decisions behind a web-based tool built
-around a tree-based model instead of the DAG.
+In this paper, we present the design decisions behind a web-based
+tool\footnote{\url{http://li.turingmachine.org}} built around a tree-based
+model instead of the DAG.  We demonstrate the advantages of this model over the
+DAG two main use-cases.  Our tool provides information about the location of a
+given commit in the respective merge tree, the files edited, the modules
+edited, and the commit message in a given commit or merge.  The tool allows
+users to apply various filters, including the release, a keyword or phrase from
+the log preview, the name of the author, or the commit id. The user can request
+all the top-level merges containing a commit or merge that matches the query,
+or all commits and merges that match the query.
 
-We demonstrate the advantages of this model over the DAG two main use-cases.
-Our tool provides information about the location of a given commit in the
-respective merge tree, the files edited, the modules edited, and the commit
-message in a given commit or merge. The tool allows users to apply various
-filters, including the release, a keyword or phrase from the log preview, the
-name of the author, or the commit id. The user can request all the top-level
-merges containing a commit or merge that matches the query, or all commits and
-merges that match the query.
-
-Our core model provides many advantages to other tools. Breaking the data by
-merge tree removes the commits and merges of other components of the kernel
-from the visualization, providing a clearer picture of what is happening in a
-given merge. This model provides additional support to edited file information.
+Our core model provides advantages to the DAG model used by other tools.
+Breaking the commits and merges by merge tree removes the commits and merges of
+other components of the kernel from the visualization, providing a clearer
+picture of what is happening in a given merge. This model provides additional
+support to edited file information. Furthermore, we are able to understand the
+changes being made in the order they are brought into the kernel.
 
 All top-level merges to a given version of the kernel are merged between the
 start and release date. Our tree construction allows us to use the top-level
 merges to find all merges and commits that have an effect on a given version of
 the kernel. The model allows us to better provide mechanisms for performing
 date-range queries, providing access to all commits that have an effect on a
-given release, even if the commit comes before the start date, or the release
-date.
+given release, even if the commit comes before the start date, or after the
+release date.
 
 \section{Related Work}
+
+To our knowledge, no repository visualization systems using a tree-based model
+are being used. This may be due to the fact that more information than what
+is stored by the normal tools is required to create the trees, so servers must
+sit and watch as the repository changes over time. Many of the visualization
+tools are designed for a general-purpose approach, where any repository is
+directly usable, without additional information. Polling for this additional
+information makes the application specific to a single repository, or project.
 
 \subsection{Gitk}
 Gitk, Gitg, and other similar git repository visualizing tools use the DAG as
@@ -184,7 +193,9 @@ kernel.
 %% This tool isn't specifically designed for showing Linux
 
 \subsection{Treemap visualizer}
-University of Maryland presented a treemap design (\ref{fig:treemap}) for
+University of Maryland presented a treemap visualization
+tool\footnote{\url{https://www.cs.umd.edu/hcil/millionvis/Treemap_Visualization_of_the_Linux_Kernel_2_5_33.html}},
+pictured in figure \ref{fig:treemap}, for
 displaying all the file structure of a given version. Treemaps are good for
 displaying the topology of shallow, wide trees, making it a good candidate for
 displaying file systems. Treemaps are limited in what information can be
@@ -216,7 +227,7 @@ current position interacts with the rest of the system.
 %% https://www.cs.umd.edu/hcil/millionvis/Treemap_Visualization_of_the_Linux_Kernel_2_5_33.html
 %% Find paper for this maybe?
 
-\begin{figure}[h!]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.47\textwidth]{figures/kernel-files.png}
 	\caption{Treemap of Linux 2.5.33 file structure}
@@ -224,27 +235,25 @@ current position interacts with the rest of the system.
 \end{figure}
 
 \subsection{List viewer}
-Moghaddam designed a web-based visualization tool displaying the chain of
-merges into the kernel. There is no information on what commits are within a
-given merge, or what files were edited. The visualization tool provides
-information about who authored the commit and when it was authored.
-\evantodo{Link to tool}
+Moghaddam designed a web-based visualization
+tool\footnote{\url{http://web.uvic.ca/~arasbm/gitVisualizations/linuxRGraph.html}}
+displaying the chain of merges into the kernel. There is no information on what
+commits are within a given merge, or what files were edited. The visualization
+tool provides information about who authored the commit and when it was
+authored. We can see the visualization tool in figure \ref{fig:listviewer}
+displaying a part of the kernel commit information, from commit ``26b23ac''
+according to the tool.
+
 %% http://web.uvic.ca/~arasbm/gitVisualizations/linuxRGraph.html
 %% Find paper for this maybe?
 
-\begin{figure}[h!]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.47\textwidth]{figures/gitvis.png}
 	\caption{List Viewer}
 	\label{fig:listviewer}
 \end{figure}
 
-
-\section{Core Model}
-Each merge may contain zero or more children of other merges or commits.
-Commits have no children, and therefore are always leaf nodes, but commits
-contain information about what files are edited, how many lines are edited, and
-other important information.
 
 \section{Design}
 
@@ -254,7 +263,6 @@ each commit and merge. Part of making the information usable is to narrow the
 results down into only the information that is relevant to what the user is
 looking for. We designed the tool with two use-cases in mind, though a user may
 switch roles many times as they work.
-
 
 \textit{Use-case 1: top-to-bottom approach}\\
 These are users that are maintaining a section of the kernel and would like to
@@ -274,6 +282,12 @@ for modules that are relevant to the area they are working on. We must provide
 them methods of navigating from a specific commit to a more general merge,
 allowing them to see a bigger picture.
 
+\subsection{Core Model}
+Each top-level merge into the kernel is the root-node to a tree. Each merge
+may contain zero or more children of other merges or commits. Commits have no
+children, and therefore are always leaf nodes, but commits contain information
+about what files are edited and how many lines are edited, along with what
+modules are involved in a merge.
 
 \subsection{Command-line Shell}
 
@@ -298,23 +312,25 @@ each file.
 	\label{fig:shell}
 \end{figure}
 
-\evantodo{Put this in discussion section}
-The main issue with this design is that a user will always move from the
-top-down without any additional filtering. Furthermore, it presents the user
-with the commit hashes, which provide no explanation of what the commit or
+There are two issues with this design. One issue with this design is that a
+user will always move from the top-down without any additional filtering. This
+only serves one of our use-cases. The second issue being that it presents the
+user with the commit hashes, providing no explanation of what the commit or
 merge may contain.
 
 \subsection{Web-based Tool}
 
 There are multiple reasons for building the system into a web-based tool.
-Putting the tool onto the web enables users to use the system without having to
-install anything, making the system platform independent. A web-based tool can
-utilize more interactive means of navigation, and provide a better explanation
-of what each commit or merge may contain.
+Putting the tool on the web enables users to use the system without having to
+install any software, making the system more accessible and platform
+independent.A web-based tool can utilize more interactive means of navigation,
+and provide a better explanation of what each commit or merge may contain than
+the command-line variant.
 
-The web-based tool provides many mechanisms to enable users to better navigate
-and understand changes in the kernel. These mechanisms include searching,
-commit messages, files edited, modules edited, and two types of tree viewers.
+Our implementation of the web-based tool provides many mechanisms to enable
+users to better navigate and understand changes in the kernel. These mechanisms
+include searching, commit messages, files edited, modules edited, and two types
+of tree viewers.
 
 \begin{figure}[h]
 	\centering
@@ -580,6 +596,7 @@ current = cid
 breadcrumbs = [cid]
 while current is not top-level merge:
         breadcrumbs.append(current.next)
+	current = current.next
 return reverse(breacrumbs)
 \end{verbatim}
 
@@ -639,10 +656,7 @@ full response format for the file response looks like:
                 fields. Null if no children.
 \end{itemize}
 
-
-
 \section{Future Work}
-
 This project was implemented over the course of 4 months, interleaved with
 other course projects and assignments. There are still many areas that could
 use improvements before the full potential of our model can be reached and
@@ -653,18 +667,20 @@ attention.
 We have limited functionality surrounding files, for both search and presented
 information.
 
-\evantodo{User cases integrated into files}
+There is currently no functionality surrounding searching by filename. Use-case
+2 may know what file they are editing and try to determine how it may work with
+the other commits and merges in the module. It is possible that a third
+use-case may arise, where the user wants to determine all commits that effect a
+given file. In both cases, a bottom-to-top approach is used. With this
+functionality, implementing the top-to-bottom search feature becomes trivial.
 
-% There is currently no functionality surrounding searching for a given file.
-% Users who know what file they are working with
-%
-% We have limited search functionality regarding actual files involved in
-% commits. If a user knows which file they are working with and what has changed
-% in a given file, they are unable to look specifically for commits pertaining to
-% that file. Adding a search filter for searching by file would allow maintainers
-% to perform this search.
-
-
+There is limited functionality to the presentation of the file information. At
+a minimum, the patches for the commits can be displayed. The patches can then
+be used for many more additional features. The patches can be used to piece
+together parts of the file to generate a full patch at a given merge rather
+than displaying each patch individually. The patches can also be used for
+determining what kinds of changes were made, if the lines are being added,
+removed, or replaced.
 
 \subsection{Testing}
 At this time, we have no evidence that our tool is able to improve the
@@ -678,11 +694,27 @@ We could perform user-testing, or have some example cases where the tool is
 used and the users provide feedback on how it improves or hurts their work
 flow.
 
+\subsection{Performance}
+The modules and list tree view still use the old method of gathering the
+information for the respective view type. For single commits or very small
+merges, getting everything directly from the database and performing everything
+server-side performs better than using the asynchronous requests, as there
+isn't the overhead of multiple round trips; however, as the size of the merges
+grow, the performance becomes far worse than the asynchronous system and in
+some cases will time out. The asynchronous approach adds some overhead,
+profiled at roughly 500ms, regardless of the response size. The asynchronous
+approach has many benefits, over building the response on the server, including
+the ability to add spinners, which is an improvement to user-experience over
+looking at a blank page. Further work can be done to improve the results beyond
+the response time of 500ms using improved queries and more efficient methods of
+building the tree.
 
+\section{Conclusion}
 
-Currently, there are still various features that have bad performance. More
-work is required to get those features responding more quickly, or providing an
-asynchronous mechanism and loading bars to improve user experience.
+\evantodo{DO IT! JUST DO IT!}
 
+\bibliographystyle{plain}
+\bibliography{citations}
 
+% \balance
 \end{document}
