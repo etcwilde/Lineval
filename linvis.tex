@@ -2,7 +2,7 @@
 % -*- mode: latex; coding: UTF-8; -*-
 
 \newif\ifdraft
-\drafttrue
+% \drafttrue
 
 \ifdraft
 	\documentclass[conference, draftclsnofoot]{IEEEtran}
@@ -397,7 +397,7 @@ a given commit. This functionality is similar to the other tools available. Our
 tree-based design model allows us to extend this functionality to merges, which
 the other tools are unable to show. When a file is edited multiple times from
 different commits within a merge, we simply add the added and removed lines to
-the values already stored.
+the values already stored.\newpage
 
 \begin{figure}[h]
 	\centering
@@ -603,7 +603,7 @@ around 3 seconds to at most 500ms.
 We use similar methods to generate the file information and the tree. Both are
 generated asynchronously, allowing us to use spinners to help improve the user
 experience. We are using AJAX requests to generate the asynchronous requests,
-are are having very good results.
+are are having very good results.\newpage
 
 \subsection{Extendability}
 Due to how the asynchronous requests are performed, it is possible to query the
@@ -698,8 +698,7 @@ roughly 500ms, regardless of the response size. The asynchronous approach has
 many benefits over building the response on the server, including spinners, a
 public API, and lower response times for larger merges. Further work can be
 done to improve the results beyond the response time of 500ms using improved
-queries and more efficient methods of building the tree.
-
+queries and more efficient methods of building the tree.\newpage
 \section{Conclusion}
 Our tool shows promising results, providing a clearer picture of the relation
 between the merges and commits when compared to DAG-based models. Not only are
