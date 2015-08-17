@@ -514,9 +514,9 @@ DAG}
 \section{Discussion}
 
 Our tool provides mechanisms and visualizations that other tools are unable to
-produce. Continuous mining of the repository provides an additional dimension
-to the dataset that would otherwise be lost, enabling us to reliably build
-trees from the information we have.
+produce. Continuous mining of the repository\cite{German} provides an
+additional dimension to the dataset that would otherwise be lost, enabling us
+to reliably build trees from the information we have.
 
 \begin{figure}[h]
 	\centering
@@ -533,48 +533,51 @@ trees from the information we have.
 \end{figure}
 
 Our goal was to build a tool to enable maintainers to effectively navigate and
-pull explanation of the changes performed to the kernel over a release.
-Achieving this goal includes removing information that does not pertain to given
-users. In figure \ref{fig:dag_view} and figure \ref{fig:tree_view}, we can
-visually compare the results returned from gitk and our tool for the top-level
-merge ``042dd60ca6dec9a02cefa8edd67de386e35755d6'' from kernel version 3.10.
-The relevant information in both of these figures is identical, but the
-presentation durastically changes our understanding of what we are seeing.
+pull explanation of the changes performed to the kernel over the period of a
+release.  Achieving this goal includes removing information that does not
+pertain to given users. In figure \ref{fig:dag_view} and figure
+\ref{fig:tree_view}, we can visually compare the results returned from gitk and
+our tool for the top-level merge ``042dd60ca6dec9a02cefa8edd67de386e35755d6''
+from kernel version 3.10. The relevant information in both of these figures is
+identical, but the presentation drastically changes our ability to comprehend
+what we are seeing. The primary difference is the removal of irrelevant
+information. In gitk (\ref{fig:dag_view}), the visualization results include
+commits and merges from other components of the kernel, while our tool
+(\ref{fig:tree_view}) only includes the results that are specific to the
+component of the kernel that we are interested in.
 
 This merge is relatively small, containing only four merges, three of which
 only contain a single commit, and the last containing two commits. With our
 tool, we are able to immediately see what commits and merges pertain to our
 section of the kernel. The DAG view of this provides almost no explanation,
-futhermore, users must work to determine where this merge ends and the next one
+furthermore, users must work to determine where this merge ends and the next one
 begins.
 
 Our tool further enhances our understanding by immediately giving us the files
-that were edited and the modules. We are able to determine that three files,
+and modules that were edited. We are able to determine that three files,
 ``palamas-regulator.c'' had two lines added and two lines removed,
 ``dbx500-prcmu.c'' had 12 lines added and 12 lines removed, and ``core.c'' had
-5 lines added and 2 lines removed in the merge. Finally, we are able to
-determine that only the module ``regulator'' was modified in this merge, and
-there were 5 commits in the merge to this module.
-
+5 lines added and 2 lines removed. Finally, we are able to determine that only
+the ``regulator'' module was modified in this merge and was modified by 5
+commits.
 
 \subsection{Performance Evaluation}
+Originally, we were performing all of our tree-navigation, file information
+gathering, and module information gathering using recursive SQL queries.
+Recursive queries have terrible performance, with the average response time
+from the database being around 3 seconds for a single operation. We found that
+it was far more response time-efficient to load an entire merge tree directly
+into memory, then iterate over the objects returned to build the tree
+structures, than it was to have the dbms perform the tree traversals, building
+the specific trees for a commit. At this time, we have re-implemented the
+breadcrumbs, the files, and the main tree views to enhance the response times.
+We will discuss some We will discuss the changes made.
 
-Re-structuring the kernel into a tree changes the runtime for the structures.
-Originally, we were performing all of our tree-navigation using recursive SQL
-queries. Recursive queries have terrible performance, with the average response
-time from the database being around 3 seconds for a single operation. We found
-that it was far more time-efficient to load an entire tree directly into
-memory, then iterate over the objects returned to build the tree structures,
-than it was to have the dbms perform the tree traversals, building the specific
-trees for a commit. At this time, we have re-implemented the breadcrumbs, the
-files, and the main tree to enhance the response times. We will discuss some We
-will discuss the changes made.
-
-The breadcrumbs are generated at response
-time, so they must be generated quickly. We began with a single recursive SQL
-query, but was unable get the results in the required time, causing all result
-pages to render slowly. We replaced the recursive query with a single query
-that would grab the entire merge tree, rooted at the top-level merge.
+The breadcrumbs are generated on page-load, so they must be generated quickly.
+We began with a single recursive SQL query, but was unable get the results in
+the desired time, causing all results pages to render slowly. We replaced the
+recursive query with a single query that would grab the entire merge tree,
+rooted at the top-level merge.
 
 The items returned from the database contained the commit id, the commit id of
 the merge with the Linux kernel, and the next merge in the path to the
@@ -594,7 +597,8 @@ return reverse(breacrumbs)
 \end{verbatim}
 
 This maintains the O(n) runtime for generating the breadcrumbs, while using an
-iterative method for traversing the tree.
+iterative method for traversing the tree and dropping the response time from
+around 3 seconds to at most 500ms.
 
 We use similar methods to generate the file information and the tree. Both are
 generated asynchronously, allowing us to use spinners to help improve the user
@@ -603,8 +607,8 @@ are are having very good results.
 
 \subsection{Extendability}
 Due to how the asynchronous requests are performed, it is possible to query the
-server for the tree and file information directly, allowing other users to
-build their own front-ends for working with our tree-based system.
+server for the tree and file information directly, allowing users to build
+their own front-ends for working with our tree-based system.
 
 The tree and file information is accessible through
 http://li.turingmachine.org/data/tree/JSON/<commit id> and
@@ -614,8 +618,8 @@ not contain any notion of the current commit and will only return the entire
 merge tree.
 
 The tree responses are generated as a single object. This object is the root
-node of the tree, and may contain many objects with the same fields in the
-``children'' field. The full response format for the tree looks like:
+node of the tree, and may contain a list of children in the ``children'' field.
+The full response format for the tree looks like:
 
 \begin{itemize}
         \item ``cid'': string, commit id
@@ -628,11 +632,11 @@ node of the tree, and may contain many objects with the same fields in the
                 no children
 \end{itemize}
 
-The file responses contain only the files that the current merge or commit
+The file responses contain only the files that the selected merge or commit
 works with. The response is a single object in the form of a tree. This object
 is the root of the tree, and represents the current merge or commit. If the
 current position in the tree is an inner node, the response will contain the
-children in the ``children'' field, otherwise ``children'' will be null. The
+child nodes in the ``children'' field, otherwise ``children'' will be null. The
 full response format for the file response looks like:
 
 \begin{itemize}
