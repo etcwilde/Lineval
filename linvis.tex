@@ -128,14 +128,16 @@ root of each tree is the top-level merge performed by Linus, which merges a
 given commit into the kernel.
 
 In this paper, we present the design decisions behind a web-based tool built
-around a tree-based model instead of the DAG. We demonstrate the advantages of
-this model over the use of the DAG. Our tool provides information about the
-location of a given commit in the respective merge tree, the files edited, the
-modules edited, and the commit message in a given commit or merge. The tool
-allows users to apply various filters, including the release, a keyword or
-phrase from the log preview, the name of the author, or the commit id. The user
-can request all the top-level merges containing a commit or merge that matches
-the query, or all commits and merges that match the query.
+around a tree-based model instead of the DAG.
+
+We demonstrate the advantages of this model over the DAG two main use-cases.
+Our tool provides information about the location of a given commit in the
+respective merge tree, the files edited, the modules edited, and the commit
+message in a given commit or merge. The tool allows users to apply various
+filters, including the release, a keyword or phrase from the log preview, the
+name of the author, or the commit id. The user can request all the top-level
+merges containing a commit or merge that matches the query, or all commits and
+merges that match the query.
 
 Our core model provides many advantages to other tools. Breaking the data by
 merge tree removes the commits and merges of other components of the kernel
@@ -244,74 +246,34 @@ Commits have no children, and therefore are always leaf nodes, but commits
 contain information about what files are edited, how many lines are edited, and
 other important information.
 
-Core Model:
-	Merges are inner nodes
-	Commits are leaf nodes
-
-\section{Implementation Details}
-
-We built a we-based tool to provide information about the kernel.
-We chose to use Nginx as the main web server, postgresql as the dbms, and Flask
-as the framework for generating the dynamic content.
-
-Nginx is a high-performance, scalable HTTP and mail server. Started in 2002,
-the project is much younger than the Apache project, and designed with massive
-scalability and multi-processing in mind. Instead of using request-driven
-threading, Nginx uses an event-driven architecture, making it more scalable,
-proving itself as being the web server behind Netflix, Hulu, GitHub, Tumblr,
-and many other popular sites.
-
-Postgresql is our dbms of choice, providing fast and reliable results. There
-are multiple reasons behind choosing postgresql over another dbms. The main
-reason being that the dataset provided from \evantodo{paper} was generated from
-a postgresql database, allowing us to import the data directly without any
-further conversions. The secondary reason is that we are more familiar with
-postgresql than the other systems available.
-
-We chose the python micro-framework Flask for generating the dynamic content.
-Working with flask is simple and easy.
-
-The database itself is broken down into 5 main tables; commits, filesmod, logs,
-pathtomerge, and releases. Commits contains most of the metadata for each
-commit, it contains the author, the authored date, and committer, the commit
-date, a boolean saying what is a merge, and the diff. Filesmod contains the
-information on what files were modified for the commits. Since a file may be
-modified by multiple commits, and a commit may be modifying multiple files, we
-can do one of two things for the primary key. We could use both the filename
-and the commit id as the primary key, but we just use an index. The filesmod
-table contains the filename, the commit id, the number of lines added, and the
-number of lines removed. Trivially, it contains the index, but that isn't
-necessary for anything beyond the primary key. Logs contains the information
-for each commit log, this is the one-liner preview message and the full
-message. Pathtomerge is the important table. Pathtomerge contains the commit
-id, the number of merges between the commit and the top-level merge with the
-kernel, the next merge in the merge path up to the top-level merge with the
-kernel, the top-level merge into the kernel, and when it get merged into the
-kernel. The information in this table must be generated periodically by the
-server because we are unable to generate the tree structure correctly straight
-from the information stored by git. Pathtomerge does not contain any top-level
-merges, as these will never have a next merge in the tree, since we are only
-storing the parents and not the children, storing the top-level merge is
-redundant and unnecessary. The releases table stores the release information.
-It contains the version name, whether the version is a candidate release or a
-real release, the previous version, the previous non-candidate release version
-the previous version commit id, the previous non-candidate release version
-commit id, and the commit id of this version. The version commit id represents
-the last top-level merge into the version of the kernel. Using this and the
-commits table, we are able to determine the release date of any version of the
-kernel. Then using the previous release date, we can find the range of dates
-where valid top-level merges are found for that version.
-
-\evantodo{Talk a bit about the heuristics used for building the tree from the
-DAG}
-
 \section{Design}
 
 The goal is to build a tool that make navigation of the kernel commit
 information simpler, while providing an explanation of the changes occurring at
 each commit and merge. Part of making the information usable is to narrow the
 results down into only the information that is relevant to what the user is
-looking for.
+looking for. We designed the tool with two use-cases in mind, though a user may
+switch roles many times as they work.
+
+
+\textit{Use-case 1: top-to-bottom approach}\\
+These are users that are maintaining a section of the kernel and would like to
+pick a merge from the future merges and merge it directly into their current
+repository. This is useful for minimizing required implementation on the side
+of the maintainer. We must provide them with methods of navigating from a more
+general set of merges toward a specific set of merges and commits.
+
+\textit{Use-case 2: bottom-to-top approach}\\
+These are users that know what merge or commit they are working with and would
+like to see what else is happening around their current commit. This is useful
+to see how changes to a given file will break other changes made by other
+commits. This is primarily for maintainers that have to perform some
+implementation work in order to correctly merge the patches from the future.
+These users may also know what module(s) they are dealing with, and are looking
+for modules that are relevant to the area they are working on. We must provide
+them methods of navigating from a specific commit to a more general merge,
+allowing them to see a bigger picture.
+
 
 \subsection{Command-line Shell}
 
@@ -482,6 +444,63 @@ is the current commit, the next item is the parent of the current commit, and
 the first item is the top-level merge into the kernel.
 
 
+
+\section{Implementation Details}
+
+We built a we-based tool to provide information about the kernel.
+We chose to use Nginx as the main web server, postgresql as the dbms, and Flask
+as the framework for generating the dynamic content.
+
+Nginx is a high-performance, scalable HTTP and mail server. Started in 2002,
+the project is much younger than the Apache project, and designed with massive
+scalability and multi-processing in mind. Instead of using request-driven
+threading, Nginx uses an event-driven architecture, making it more scalable,
+proving itself as being the web server behind Netflix, Hulu, GitHub, Tumblr,
+and many other popular sites.
+
+Postgresql is our dbms of choice, providing fast and reliable results. There
+are multiple reasons behind choosing postgresql over another dbms. The main
+reason being that the dataset provided from \evantodo{paper} was generated from
+a postgresql database, allowing us to import the data directly without any
+further conversions. The secondary reason is that we are more familiar with
+postgresql than the other systems available.
+
+We chose the python micro-framework Flask for generating the dynamic content.
+Working with flask is simple and easy.
+
+The database itself is broken down into 5 main tables; commits, filesmod, logs,
+pathtomerge, and releases. Commits contains most of the metadata for each
+commit, it contains the author, the authored date, and committer, the commit
+date, a boolean saying what is a merge, and the diff. Filesmod contains the
+information on what files were modified for the commits. Since a file may be
+modified by multiple commits, and a commit may be modifying multiple files, we
+can do one of two things for the primary key. We could use both the filename
+and the commit id as the primary key, but we just use an index. The filesmod
+table contains the filename, the commit id, the number of lines added, and the
+number of lines removed. Trivially, it contains the index, but that isn't
+necessary for anything beyond the primary key. Logs contains the information
+for each commit log, this is the one-liner preview message and the full
+message. Pathtomerge is the important table. Pathtomerge contains the commit
+id, the number of merges between the commit and the top-level merge with the
+kernel, the next merge in the merge path up to the top-level merge with the
+kernel, the top-level merge into the kernel, and when it get merged into the
+kernel. The information in this table must be generated periodically by the
+server because we are unable to generate the tree structure correctly straight
+from the information stored by git. Pathtomerge does not contain any top-level
+merges, as these will never have a next merge in the tree, since we are only
+storing the parents and not the children, storing the top-level merge is
+redundant and unnecessary. The releases table stores the release information.
+It contains the version name, whether the version is a candidate release or a
+real release, the previous version, the previous non-candidate release version
+the previous version commit id, the previous non-candidate release version
+commit id, and the commit id of this version. The version commit id represents
+the last top-level merge into the version of the kernel. Using this and the
+commits table, we are able to determine the release date of any version of the
+kernel. Then using the previous release date, we can find the range of dates
+where valid top-level merges are found for that version.
+
+\evantodo{Talk a bit about the heuristics used for building the tree from the
+DAG}
 
 \section{Discussion}
 
