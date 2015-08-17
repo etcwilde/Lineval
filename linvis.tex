@@ -97,12 +97,12 @@
 
 Maintainers of older version of the Linux kernel must sift through thousands of
 commits with tools that are unable to filter and effectively visualize projects
-that are of the scale of the kernel. Tools like Gitk provide users with the
-full view of the DAG, showing all merges and commits. For smaller projects,
-this information is useful for showing the relation between various branches.
-The DAG becomes a tangled mess (\ref{fig:gitk}) of commits, merges, and the
-links between them with large modular projects, like the Linux kernel. This
-makes it difficult to derive an explanation of the changes made. In other
+that are the scale of the kernel. Tools like Gitk provide users with the
+full view of the DAG, showing all of the merges and commits. For smaller
+projects, this information is useful, showing the relation between various
+branches. The DAG becomes a tangled mess (\ref{fig:gitk}) of commits, merges,
+and the links between them with large modular projects, like the Linux kernel,
+making it difficult to derive an explanation of the changes made. In other
 cases, the kernel is simply too large for the system to generate a
 visualization for. Github provides a DAG view for most projects, but is unable
 to display the visualization for projects as large as the Linux kernel.
@@ -117,66 +117,64 @@ to display the visualization for projects as large as the Linux kernel.
 Git log, Gitk, and other similar tools only store the authored date of a
 commit. A commit may be merged into the project at any time, regardless of when
 the commit was authored, making date-range queries meaningless. Performing a
-date-range query using other tools over the span of a release will contain
-results that are for previous versions of the kernel, and may not contain all
+date-range query using these tools over the span of a release will contain
+results that are for previous versions of the kernel or may not contain all
 of the results for that kernel if patches were merged after the release date.
 
 German et al. recorded the metadata of every commit and merge in the Linux git
 repository starting in 2011 \cite{German}, including chronological data that is
 not stored by git. We are able to use this information to generate sets of
-trees instead of a DAG. The root of each tree is the top-level merge performed
-by Linus, which merges branches or sets of commits into the kernel.
+trees instead of a DAG. Each tree is rooted by the top-level merge, performed
+by Linus, which merges the branches or a set of commits into the kernel.
 
-In this paper, we present the design decisions behind a web-based
+In this paper, we present our design decisions behind a web-based
 tool\footnote{\url{http://li.turingmachine.org}} built around a tree-based
-model instead of the DAG.  We demonstrate the advantages of this model over the
-DAG two main use-cases.  Our tool provides information about the location of a
+model instead of a DAG. Our tool provides information about the location of a
 given commit in the respective merge tree, the files edited, the modules
-edited, and the commit message in a given commit or merge.  The tool allows
-users to apply various filters, including the release, a keyword or phrase from
-the log preview, the name of the author, or the commit id. The user can request
-all the top-level merges containing a commit or merge that matches the query,
-or all commits and merges that match the query.
+edited, and the commit message for a given commit or merge. The tool allows
+users to apply various filters, including the release version, along with a
+keyword or phrase from the log preview, the name of the author, or the commit
+id. The user can request all the top-level merges containing a commit or merge
+that matches the query, or all commits and merges that match the query.
 
 Our core model provides advantages to the DAG model used by other tools.
-Breaking the commits and merges by merge tree removes the commits and merges of
+Breaking the commits and merges by merge tree removes commits and merges of
 other components of the kernel from the visualization, providing a clearer
-picture of what is happening in a given merge. This model provides additional
-support to edited file information. Furthermore, we are able to understand the
-changes being made in the order they are brought into the kernel.
+picture of what is happening in a given merge and providing additional
+support for edited file information. Furthermore, we are able to understand the
+changes being made, in the order they are brought into the kernel.
 
 All top-level merges to a given version of the kernel are merged between the
 start and release date. Our tree construction allows us to use the top-level
 merges to find all merges and commits that have an effect on a given version of
 the kernel. The model allows us to better provide mechanisms for performing
 date-range queries, providing access to all commits that have an effect on a
-given release, even if the commit comes before the start date, or after the
+given release, even if the commit comes before the start date or after the
 release date.
 
 \section{Related Work}
-
-To our knowledge, no repository visualization systems using a tree-based model
-are being used. This may be due to the fact that more information than what
-is stored by the normal tools is required to create the trees, so servers must
-sit and watch as the repository changes over time. Many of the visualization
-tools are designed for a general-purpose approach, where any repository is
-directly usable, without additional information. Polling for this additional
-information makes the application specific to a single repository, or project.
+To our knowledge, we know of no repository visualization systems using a
+tree-based model. This may be due to the fact that more information is required
+to generate the trees than what is stored by git. A server must sit and monitor
+the repository as it changes over time. Many of the visualization tools are
+designed for a general-purpose approach, where any repository is directly
+usable without additional information. Polling for this additional information
+makes the application specific to a single repository or project.
 
 \subsection{Gitk}
 Gitk, Gitg, and other similar git repository visualizing tools use the DAG as
-the central organization. For smaller projects, this model is sufficient for
-providing meaningful information, but in larger projects like the Linux kernel,
-the branches become too tangled and too deep to derive any meaning from the
-DAG. The DAG model allows users to go to the next commit in the chain, go to
-the previous commit in the chain, or jump to the parent merge. This suggest
+the central organization model. For smaller projects, this model is sufficient
+for providing meaningful information, but in larger projects like the Linux
+kernel, the branches become too tangled and too deep to derive any meaning from
+the DAG. The DAG model allows users to go to the next commit in the chain, go
+to the previous commit in the chain, or jump to the parent merge. This suggest
 that Gitk and similar tools are designed for users working with a bottom-to-top
 approach. With this model, it is difficult for users to see what other commits
 are involved with a given merge. Gitk only provides file information on
-commits, as it is unable to quickly find all files edited by a merge. It is up
-to the user to remember what files were edited in each of the commits involved
-in a given merge. In some of the larger merges, some containing over 1500
-edited files, this task become nearly impossible.
+commits, as it is unable to quickly find all files edited by the commits within
+a merge. It is up to the user to remember what files were edited in each of the
+commits involved in a given merge. In some of the larger merges, some
+containing over 1500 edited files, this task become nearly impossible.
 % cid: 73287a43cc79ca06629a88d1a199cd283f42456a, 1800 commits, 1500 files
 Other DAG visualization systems, like the GitHub viewer (\ref{fig:gitfail}),
 are unable to provide a visualization for projects that are as large as the
@@ -196,34 +194,35 @@ kernel.
 University of Maryland presented a treemap visualization
 tool\footnote{\url{https://www.cs.umd.edu/hcil/millionvis/Treemap_Visualization_of_the_Linux_Kernel_2_5_33.html}},
 pictured in figure \ref{fig:treemap}, for
-displaying all the file structure of a given version. Treemaps are good for
-displaying the topology of shallow, wide trees, making it a good candidate for
-displaying file systems. Treemaps are limited in what information can be
+displaying the file structure of a given version. Treemaps are good for
+visualizing the topology of shallow, wide trees, making it a good candidate for
+showing file systems. Treemaps are limited in what information can be
 displayed. The information within the treemap does not provide clear insight on
-what changes were made to the files in the given release. The treemap
-visualization only provides information on where the file is located within the
-filesystem. File systems and the merge tree of the kernel share many
-similarities, in both cases, the representative trees are wide and shallow,
-suggesting that a treemap could potentially work to visualize the commit and
-merge structure of the kernel.
+what changes were made to the files in the given release, only providing
+information on where the file is located within the file system.
+File systems and the merge tree of the kernel share many similarities, in both
+cases, they represent trees that are wide and shallow, suggesting that a
+treemap could potentially work to visualize the commit and merge structure of
+the kernel.
 
-The treemap is unable to take into account multiple merges at the same level
-with the same name. There is an additional dimension, in that the commits and
-merges are ordered in time. The treemap design is unable to show the ordering
-of the merges and commits.
+The treemap is unable to take into account multiple commits behind the same
+merge with the same name. Commits and merges have an ordering in which they
+were added to the kernel, which cannot be represented by a treemap, but is
+important and can be used to assist in building the tree.
 
 The treemap design is also designed for working with data of differing types.
-In the filesystem, there are many kinds of files.  There are text files,
+In the filesystem, there are many kinds of files. There are text files,
 scripts, images, binary files, and other types. These can be given colours
 making differences stand out. There is no obvious way to assign meaningful
 types to the commits such that all the commits within a given merge do not all
 have the same colour.
 
 Finally, the treemap does not provide any additional information about the
-contents of each cell, only that the cell exists. The user is unable to see
-their current position within the map, or if we assume that their current
-position is the larges surrounding box, they can no-longer see how their
-current position interacts with the rest of the system.
+contents of each cell, only that the cell exists and where it exists in the
+tree. The user is unable to see their current position within the map, or if we
+assume that their current position is the largest surrounding box, they can
+no longer see how their current position interacts with the rest of the
+system.
 %% https://www.cs.umd.edu/hcil/millionvis/Treemap_Visualization_of_the_Linux_Kernel_2_5_33.html
 %% Find paper for this maybe?
 
@@ -256,8 +255,7 @@ according to the tool.
 
 
 \section{Design}
-
-The goal is to build a tool that make navigation of the kernel commit
+The goal is to build a tool that makes navigation of the kernel commit
 information simpler, while providing an explanation of the changes occurring at
 each commit and merge. Part of making the information usable is to narrow the
 results down into only the information that is relevant to what the user is
@@ -290,7 +288,6 @@ about what files are edited and how many lines are edited, along with what
 modules are involved in a merge.
 
 \subsection{Command-line Shell}
-
 Our initial intuition was to work with the commits and merges as trees, like in
 a file structure. There are many similarities in the structure of a file system
 and the structure of the commit information within the kernel. The primary
@@ -319,7 +316,6 @@ user with the commit hashes, providing no explanation of what the commit or
 merge may contain.
 
 \subsection{Web-based Tool}
-
 There are multiple reasons for building the system into a web-based tool.
 Putting the tool on the web enables users to use the system without having to
 install any software, making the system more accessible and platform
@@ -413,7 +409,7 @@ order.}
 The modules tab shows the modules that are contained within the commit. Modules
 are not natively recognized by git, and are not going to be present in all
 repositories. In the Linux repository, authors put the module they are working
-on in the one-line preview of the log-message.  We heuristically extract the
+on in the one-line preview of the log-message. We heuristically extract the
 module by taking all text in the log preview until the first colon. Modules are
 logical partitions of the information in the kernel. Depending on where the
 author was working, modules can be general, such as ``bluetooth'' and
@@ -459,10 +455,7 @@ tree, we include breadcrumbs at the top. The last item in the breadcrumb list
 is the current commit, the next item is the parent of the current commit, and
 the first item is the top-level merge into the kernel.
 
-
-
 \section{Implementation Details}
-
 We built a we-based tool to provide information about the kernel.
 We chose to use Nginx as the main web server, postgresql as the dbms, and Flask
 as the framework for generating the dynamic content.
@@ -712,7 +705,7 @@ building the tree.
 \section{Conclusion}
 Our tool shows promising results, providing a clearer picture of the relation
 between the merges and commits for sections of the kernel in relation to the
-DAG-based models.  Not only are we able to provide a clearer visualization, we
+DAG-based models. Not only are we able to provide a clearer visualization, we
 are able to provide information about the files edited by all of the commits
 contained within a merge.
 
