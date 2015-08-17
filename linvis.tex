@@ -456,7 +456,7 @@ is the current commit, the next item is the parent of the current commit, and
 the first item is the top-level merge into the kernel.
 
 \section{Implementation Details}
-We built a we-based tool to provide information about the kernel.
+We built a web-based tool to provide information about the kernel.
 We chose to use Nginx as the main web server, postgresql as the dbms, and Flask
 as the framework for generating the dynamic content.
 
@@ -464,18 +464,21 @@ Nginx is a high-performance, scalable HTTP and mail server. Started in 2002,
 the project is much younger than the Apache project, and designed with massive
 scalability and multi-processing in mind. Instead of using request-driven
 threading, Nginx uses an event-driven architecture, making it more scalable,
-proving itself as being the web server behind Netflix, Hulu, GitHub, Tumblr,
-and many other popular sites.
+proving itself as being the web server behind large sites like Netflix, Hulu,
+GitHub, Tumblr, and many other popular
+sites\footnote{\url{http://wiki.nginx.org/Main}}.
 
 Postgresql is our dbms of choice, providing fast and reliable results. There
 are multiple reasons behind choosing postgresql over another dbms. The main
-reason being that the dataset provided from \evantodo{paper} was generated from
+reason being that the dataset built by German et al. was generated from
 a postgresql database, allowing us to import the data directly without any
 further conversions. The secondary reason is that we are more familiar with
 postgresql than the other systems available.
 
-We chose the python micro-framework Flask for generating the dynamic content.
-Working with flask is simple and easy.
+We chose the python micro-framework
+Flask\footnote{\url{http://flask.pocoo.org/docs/0.10/}} for generating the
+dynamic content.  Working with flask is simple and easy, allowing us to work in
+Python.
 
 The database itself is broken down into 5 main tables; commits, filesmod, logs,
 pathtomerge, and releases. Commits contains most of the metadata for each
@@ -507,9 +510,6 @@ the last top-level merge into the version of the kernel. Using this and the
 commits table, we are able to determine the release date of any version of the
 kernel. Then using the previous release date, we can find the range of dates
 where valid top-level merges are found for that version.
-
-\evantodo{Talk a bit about the heuristics used for building the tree from the
-DAG}
 
 \section{Discussion}
 
@@ -698,7 +698,7 @@ roughly 500ms, regardless of the response size. The asynchronous approach has
 many benefits over building the response on the server, including spinners, a
 public API, and lower response times for larger merges. Further work can be
 done to improve the results beyond the response time of 500ms using improved
-queries and more efficient methods of building the tree. \newpage
+queries and more efficient methods of building the tree.
 
 \section{Conclusion}
 Our tool shows promising results, providing a clearer picture of the relation
