@@ -654,16 +654,12 @@ full response format for the file response looks like:
 \end{itemize}
 
 \section{Future Work}
-This project was implemented over the course of 4 months, interleaved with
-other course projects and assignments. There are still many areas that could
-use improvements before the full potential of our model can be reached and
-understood with our tool. Here, we outline various areas that still need more
-attention.
+This project was implemented over four months, interleaved with other course
+projects and assignments. There are still many areas that could use
+improvements before the full potential of our model can be realized.
+Here, we outline various areas that still need more attention.
 
 \subsection{Files}
-We have limited functionality surrounding files, for both search and presented
-information.
-
 There is currently no functionality surrounding searching by filename. Use-case
 2 may know what file they are editing and try to determine how it may work with
 the other commits and merges in the module. It is possible that a third
@@ -672,56 +668,55 @@ given file. In both cases, a bottom-to-top approach is used. With this
 functionality, implementing the top-to-bottom search feature becomes trivial.
 
 There is limited functionality to the presentation of the file information. At
-a minimum, the patches for the commits can be displayed. The patches can then
-be used for many more additional features. The patches can be used to piece
-together parts of the file to generate a full patch at a given merge rather
-than displaying each patch individually. The patches can also be used for
-determining what kinds of changes were made, if the lines are being added,
-removed, or replaced.
+a minimum, the patches for the commits can be displayed. From there, the
+patches can be used to piece together parts of the file to generate a single
+patch at a given merge rather than displaying each patch individually. The
+patches can also be used for determining what kinds of changes were made, if
+the lines are being added, removed, or replaced.
 
 \subsection{Testing}
 At this time, we have no evidence that our tool is able to improve the
 work-flow of maintainers. We believe that the tool is able to improve the
-work-flow and performance of maintainers because it is able to better assist
-users because it provides cleaner mechanisms of working with the data. It is
-able to provide more relevant information, while removing information that is
-irrelevant to a given module or set of merges.
+work-flow and performance of maintainers because it provides cleaner mechanisms
+of visualizing and presenting the commit information. It is able to provide
+more relevant information, while removing information that is irrelevant to a
+given module or set of merges.
 
-We could perform user-testing, or have some example cases where the tool is
-used and the users provide feedback on how it improves or hurts their work
-flow.
+We can either perform user-testing to show how a users workflow changes, or we
+could have maintainers evaluate and critique the tool and use their feedback to
+determine if the tool meets our goals.
 
 \subsection{Performance}
 The modules and list tree view still use the old method of gathering the
 information for the respective view type. For single commits or very small
-merges, getting everything directly from the database and performing everything
-server-side performs better than using the asynchronous requests, as there
-isn't the overhead of multiple round trips; however, as the size of the merges
-grow, the performance becomes far worse than the asynchronous system and in
-some cases will time out. The asynchronous approach adds some overhead,
-profiled at roughly 500ms, regardless of the response size. The asynchronous
-approach has many benefits, over building the response on the server, including
-the ability to add spinners, which is an improvement to user-experience over
-looking at a blank page. Further work can be done to improve the results beyond
-the response time of 500ms using improved queries and more efficient methods of
-building the tree.
+merges, getting everything directly from the database and generating the pages
+server-side performs better than using the asynchronous requests, there
+isn't the overhead of multiple round trips. As the size of the merges grow,
+the performance becomes far worse than the asynchronous system and in some
+cases will time out. The asynchronous approach adds some overhead, profiled at
+roughly 500ms, regardless of the response size. The asynchronous approach has
+many benefits over building the response on the server, including spinners, a
+public API, and lower response times for larger merges. Further work can be
+done to improve the results beyond the response time of 500ms using improved
+queries and more efficient methods of building the tree. \newpage
 
 \section{Conclusion}
 Our tool shows promising results, providing a clearer picture of the relation
-between the merges and commits for sections of the kernel in relation to the
-DAG-based models. Not only are we able to provide a clearer visualization, we
-are able to provide information about the files edited by all of the commits
-contained within a merge.
+between the merges and commits when compared to DAG-based models. Not only are
+we provide a clearer visualization, we provide information about the files
+edited by all of the commits contained within a merge, and we provide the
+information about what modules are edited in a merge.
 
-While we are able to gather a better explanation of the changes happening at
+While we are able to generate a better explanation of the changes happening at
 each commit and merge, the tree-model requires more information than what is
 provided by git, requiring a central server to monitor changes to the project.
 This breaks the design goals of decentralized version control systems and makes
 the tool specific to the project.
 
+A tree-based model appears to be sufficient for creating a clean visualization
+and explanation of the changes in the Linux kernel.
+
 \bibliographystyle{plain}
 \bibliography{citations}
-
-\balance
 
 \end{document}
