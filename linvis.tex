@@ -9,7 +9,11 @@
 	\def\baselinestretch{1}
 	\setlength{\marginparwidth}{2cm}
 \else
-	\documentclass[conferece, final]{IEEEtran}
+        \documentclass[conference]{IEEEtran}
+	\def\baselinestretch{1}
+	\setlength{\marginparwidth}{2cm}
+
+	% \documentclass[conferece, final]{IEEEtran}
 \fi
 
 \usepackage[T1]{fontenc}
@@ -69,14 +73,14 @@
 	With an average of over 900 top-level merges into the Linux kernel per
 	release, some containing thousands of commits, many containing hundreds
 	of commits, maintenance of older versions of the kernel becomes nearly
-	impossible. For security, performance, and changing hardware,
+	impossible. For security, performance, and changing hardware needs,
 	maintainers must understand the changes made to current versions of the
-	kernel, and show these changes fit into older versions in order to make
-	the necessary merges and modifications to the older versions. Current
-	tools provide information about repositories through the directed
-	acyclic graph (DAG) which is helpful for smaller projects, but with the
-	scale and number of branches in the kernel, the DAG becomes
-	overwhelming very quickly.
+	kernel, and understand how these changes fit into older version in
+        order to make the necessary merges and modifications to the older
+        versions. Current tools provide information about repositories through
+        the directed acyclic graph (DAG) which is helpful for smaller projects,
+        but with the scale and number of branches in the kernel, the DAG
+        becomes overwhelming very quickly.
 
 	In this paper, we present a tool that uses the dataset collected by
 	German et al. to build a tool that uses a vine model instead of the
@@ -479,22 +483,187 @@ the first item is the top-level merge into the kernel.
 
 
 
+\section{Discussion}
+
+Our tool provides mechanisms and visualizations that other tools are unable to
+produce. Continuous mining of the repository provides an additional dimension
+to the dataset that would otherwise be lost, enabling us to reliably build
+trees from the information we have.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.47\textwidth]{figures/042dd_DAG.png}
+	\caption{Merge Dag View}
+	\label{fig:dag_view}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.47\textwidth]{figures/042dd_tree.png}
+	\caption{Merge Tree View}
+	\label{fig:tree_view}
+\end{figure}
+
+Our goal was to build a tool to enable maintainers to effectively navigate and
+pull explanation of the changes performed to the kernel over a release.
+Achieving this goal includes removing information that does not pertain to given
+users. In figure \ref{fig:dag_view} and figure \ref{fig:tree_view}, we can
+visually compare the results returned from gitk and our tool for the top-level
+merge ``042dd60ca6dec9a02cefa8edd67de386e35755d6'' from kernel version 3.10.
+The relevant information in both of these figures is identical, but the
+presentation durastically changes our understanding of what we are seeing.
+
+This merge is relatively small, containing only four merges, three of which
+only contain a single commit, and the last containing two commits. With our
+tool, we are able to immediately see what commits and merges pertain to our
+section of the kernel. The DAG view of this provides almost no explanation,
+futhermore, users must work to determine where this merge ends and the next one
+begins.
+
+Our tool further enhances our understanding by immediately giving us the files
+that were edited and the modules. We are able to determine that three files,
+``palamas-regulator.c'' had two lines added and two lines removed,
+``dbx500-prcmu.c'' had 12 lines added and 12 lines removed, and ``core.c'' had
+5 lines added and 2 lines removed in the merge. Finally, we are able to
+determine that only the module ``regulator'' was modified in this merge, and
+there were 5 commits in the merge to this module.
+
+
+\subsection{Performance Evaluation}
+
+Re-structuring the kernel into a tree changes the runtime for the structures.
+Originally, we were performing all of our tree-navigation using recursive SQL
+queries. Recursive queries have terrible performance, with the average response
+time from the database being around 3 seconds for a single operation. We found
+that it was far more time-efficient to load an entire tree directly into
+memory, then iterate over the objects returned to build the tree structures,
+than it was to have the dbms perform the tree traversals, building the specific
+trees for a commit. At this time, we have re-implemented the breadcrumbs, the
+files, and the main tree to enhance the response times. We will discuss some We
+will discuss the changes made.
+
+The breadcrumbs are generated at response
+time, so they must be generated quickly. We began with a single recursive SQL
+query, but was unable get the results in the required time, causing all result
+pages to render slowly. We replaced the recursive query with a single query
+that would grab the entire merge tree, rooted at the top-level merge.
+
+The items returned from the database contained the commit id, the commit id of
+the merge with the Linux kernel, and the next merge in the path to the
+top-level merge.
+
+We placed each item in the results into a dictionary using the commit id as the
+key. Using the following method, we build the dictionary into a list of commit
+IDs for the breadcrumbs.
+
+\begin{verbatim}
+current = cid
+breadcrumbs = [cid]
+while current is not top-level merge:
+        breadcrumbs.append(current.next)
+return reverse(breacrumbs)
+\end{verbatim}
+
+This maintains the O(n) runtime for generating the breadcrumbs, while using an
+iterative method for traversing the tree.
+
+We use similar methods to generate the file information and the tree. Both are
+generated asynchronously, allowing us to use spinners to help improve the user
+experience. We are using AJAX requests to generate the asynchronous requests,
+are are having very good results.
+
+\subsection{Extendability}
+Due to how the asynchronous requests are performed, it is possible to query the
+server for the tree and file information directly, allowing other users to
+build their own front-ends for working with our tree-based system.
+
+The tree and file information is accessible through
+http://li.turingmachine.org/data/tree/JSON/<commit id> and
+http://li.turingmachine.org/data/files/JSON/<commit id>, respectively.
+The tree is generated as many nested javascript objects. The tree response does
+not contain any notion of the current commit and will only return the entire
+merge tree.
+
+The tree responses are generated as a single object. This object is the root
+node of the tree, and may contain many objects with the same fields in the
+``children'' field. The full response format for the tree looks like:
+
+\begin{itemize}
+        \item ``cid'': string, commit id
+        \item ``name'': string, One-line log preview
+        \item ``author'': string, Author's name
+        \item ``mlinus'': string, commit id of top-level merge
+        \item ``mnext'': string, commit id of the next merge on path to
+                top-level
+        \item ``children'': list, list of items with the same fields. Null if
+                no children
+\end{itemize}
+
+The file responses contain only the files that the current merge or commit
+works with. The response is a single object in the form of a tree. This object
+is the root of the tree, and represents the current merge or commit. If the
+current position in the tree is an inner node, the response will contain the
+children in the ``children'' field, otherwise ``children'' will be null. The
+full response format for the file response looks like:
+
+\begin{itemize}
+        \item ``cid'': string, commit id
+        \item ``files'': list, list of tulples in the format
+                \begin{enumerate}
+                        \item Filename: string
+                        \item Lines added: unsigned integer
+                        \item Lines removed: unsigned integer
+                \end{enumerate}
+        \item ``mnext'': string, the commit id of the next merge toward the
+                top-level merge
+        \item ``children'': list, List of all child objects with the same
+                fields. Null if no children.
+\end{itemize}
+
+
+
 \section{Future Work}
-We have limited search functionality regarding actual files involved in
-commits. If a user knows which file they are working with and what has changed
-in a given file, they are unable to look specifically for commits pertaining to
-that file. Adding a search filter for searching by file would allow maintainers
-to perform this search.
 
-Currently, there are still various features that have bad performance. More
-work is required to get those features responding more quickly, or providing an
-asynchronous mechanism and loading bars to improve user experience.
+This project was implemented over the course of 4 months, interleaved with
+other course projects and assignments. There are still many areas that could
+use improvements before the full potential of our model can be reached and
+understood with our tool. Here, we outline various areas that still need more
+attention.
 
+\subsection{Files}
+We have limited functionality surrounding files, for both search and presented
+information.
+
+\evantodo{User cases integrated into files}
+
+% There is currently no functionality surrounding searching for a given file.
+% Users who know what file they are working with
+%
+% We have limited search functionality regarding actual files involved in
+% commits. If a user knows which file they are working with and what has changed
+% in a given file, they are unable to look specifically for commits pertaining to
+% that file. Adding a search filter for searching by file would allow maintainers
+% to perform this search.
+
+
+
+\subsection{Testing}
 At this time, we have no evidence that our tool is able to improve the
 work-flow of maintainers. We believe that the tool is able to improve the
 work-flow and performance of maintainers because it is able to better assist
 users because it provides cleaner mechanisms of working with the data. It is
 able to provide more relevant information, while removing information that is
 irrelevant to a given module or set of merges.
+
+We could perform user-testing, or have some example cases where the tool is
+used and the users provide feedback on how it improves or hurts their work
+flow.
+
+
+
+Currently, there are still various features that have bad performance. More
+work is required to get those features responding more quickly, or providing an
+asynchronous mechanism and loading bars to improve user experience.
+
 
 \end{document}
