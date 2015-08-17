@@ -710,11 +710,21 @@ the response time of 500ms using improved queries and more efficient methods of
 building the tree.
 
 \section{Conclusion}
+Our tool shows promising results, providing a clearer picture of the relation
+between the merges and commits for sections of the kernel in relation to the
+DAG-based models.  Not only are we able to provide a clearer visualization, we
+are able to provide information about the files edited by all of the commits
+contained within a merge.
 
-\evantodo{DO IT! JUST DO IT!}
+While we are able to gather a better explanation of the changes happening at
+each commit and merge, the tree-model requires more information than what is
+provided by git, requiring a central server to monitor changes to the project.
+This breaks the design goals of decentralized version control systems and makes
+the tool specific to the project.
 
 \bibliographystyle{plain}
 \bibliography{citations}
 
-% \balance
+\balance
+
 \end{document}
