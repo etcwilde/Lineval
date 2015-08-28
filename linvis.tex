@@ -110,16 +110,16 @@ to display the visualization for projects as large as the Linux kernel.
 \begin{figure}
 	\centering
 	\includegraphics[width=0.47\textwidth]{figures/gitk.png}
-	\caption{DAG view in Gitk}
+	\caption{A sample DAG view of commits from Linux in Gitk}
 	\label{fig:gitk}
 \end{figure}
 
-Git log, Gitk, and other similar tools only store the authored date of a
-commit. A commit may be merged into the project at any time, regardless of when
-the commit was authored, making date-range queries meaningless. Performing a
-date-range query using these tools over the span of a release will contain
-results that are for previous versions of the kernel or may not contain all
-of the results for that kernel if patches were merged after the release date.
+Git log, Gitk, and other similar tools only store the name of the author, authored
+date of a commit. A commit may be merged into the project at any time, regardless of
+when the commit was authored, making date-range queries meaningless. Performing a
+date-range query using these tools over the span of a release will contain results
+that are for previous versions of the kernel or may not contain all of the results
+for that kernel if patches were merged after the release date.
 
 German et al. recorded the metadata of every commit and merge in the Linux git
 repository starting in 2011 \cite{German}, including chronological data that is
@@ -145,21 +145,19 @@ support for edited file information. Furthermore, we are able to understand the
 changes being made, in the order they are brought into the kernel.
 
 All top-level merges to a given version of the kernel are merged between the
-start and release date. Our tree construction allows us to use the top-level
-merges to find all merges and commits that have an effect on a given version of
-the kernel. The model allows us to better provide mechanisms for performing
-date-range queries, providing access to all commits that have an effect on a
-given release, even if the commit comes before the start date or after the
-release date.
+start and release date. The tree construction allows us to find all commits that are
+related to a given release of the kernel regardless of the authorship date, allowing
+our system to provide better mechanisms for performing date-range queries.
 
 \section{Related Work}
-To our knowledge, we know of no repository visualization systems using a
-tree-based model. This may be due to the fact that more information is required
-to generate the trees than what is stored by git. A server must sit and monitor
-the repository as it changes over time. Many of the visualization tools are
-designed for a general-purpose approach, where any repository is directly
-usable without additional information. Polling for this additional information
-makes the application specific to a single repository or project.
+To our knowledge, we know of no repository visualization systems that builds a tree
+from the merge. CVS and svn construct trees; however, the root node for these trees
+is the branch point. This may be due to the fact that more information is required
+to generate the trees than what is stored by git. A server must sit and monitor the
+repository as it changes over time. Many of the visualization tools are designed for
+a general-purpose approach, where any repository is directly usable without
+additional information. Polling for this additional information makes the
+application specific to a single repository or project.
 
 \subsection{Gitk}
 Gitk, Gitg, and other similar git repository visualizing tools use the DAG as
@@ -168,22 +166,20 @@ for providing meaningful information, but in larger projects like the Linux
 kernel, the branches become too tangled and too deep to derive any meaning from
 the DAG. The DAG model allows users to go to the next commit in the chain, go
 to the previous commit in the chain, or jump to the parent merge. This suggest
-that Gitk and similar tools are designed for users working with a bottom-to-top
-approach. With this model, it is difficult for users to see what other commits
-are involved with a given merge. Gitk only provides file information on
-commits, as it is unable to quickly find all files edited by the commits within
-a merge. It is up to the user to remember what files were edited in each of the
-commits involved in a given merge. In some of the larger merges, some
-containing over 1500 edited files, this task become nearly impossible.
-% cid: 73287a43cc79ca06629a88d1a199cd283f42456a, 1800 commits, 1500 files
-Other DAG visualization systems, like the GitHub viewer (\ref{fig:gitfail}),
-are unable to provide a visualization for projects that are as large as the
-kernel.
+that Gitk and similar tools are designed for users working from a given commit or
+leaf-node toward the root.  With this model, it is difficult for users to see what
+other commits are involved with a given merge. Gitk only provides file information
+on commits, as it is unable to quickly aggregate the files and commits that are part
+of a merge. It is up to the user to remember what files were edited in each of the
+commits involved in a given merge. In some of the larger merges, some containing
+over 1500 edited files, this task become nearly impossible.  % cid: 73287a43cc79ca06629a88d1a199cd283f42456a, 1800 commits, 1500 files 
+Other DAG visualization systems, like the GitHub viewer (\ref{fig:gitfail}), are
+unable to provide a visualization for projects that are as large as the kernel.
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.45\textwidth]{figures/github_viewer.png}
-	\caption{Github Failure Message}
+	\caption{Github Failure Message showing the DAG of the Linux Project}
 	\label{fig:gitfail}
 \end{figure}
 
@@ -194,21 +190,20 @@ kernel.
 University of Maryland presented a treemap visualization
 tool\footnote{\url{https://www.cs.umd.edu/hcil/millionvis/Treemap_Visualization_of_the_Linux_Kernel_2_5_33.html}},
 pictured in figure \ref{fig:treemap}, for
-displaying the file structure of a given version. Treemaps are good for
-visualizing the topology of shallow, wide trees, making it a good candidate for
-showing file systems. Treemaps are limited in what information can be
-displayed. The information within the treemap does not provide clear insight on
-what changes were made to the files in the given release, only providing
-information on where the file is located within the file system.
-File systems and the merge tree of the kernel share many similarities, in both
-cases, they represent trees that are wide and shallow, suggesting that a
-treemap could potentially work to visualize the commit and merge structure of
-the kernel.
+displaying the file structure of a given version of the kernel. Treemaps are good
+for visualizing the topology of shallow, wide trees, making it a good candidate for
+showing file systems. Treemaps are limited in what information can be displayed. The
+information within the treemap does not provide clear insight on what changes were
+made to the files in the given release, only providing information on where the file
+is located within the file system.  File systems and the merge tree of the kernel
+share many similarities, in both cases, they represent trees that are wide and
+shallow, suggesting that a treemap could potentially work to visualize the commit
+and merge structure of the kernel.
 
-The treemap is unable to take into account multiple commits behind the same
-merge with the same name. Commits and merges have an ordering in which they
-were added to the kernel, which cannot be represented by a treemap, but is
-important and can be used to assist in building the tree.
+The treemap is unable to take into account multiple commits behind the same merge
+with the same log preview message. Commits and merges have an ordering in which they
+were added to the kernel, which cannot be represented by a treemap, but is important
+and can be used to assist in building the tree.
 
 The treemap design is also designed for working with data of differing types.
 In the filesystem, there are many kinds of files. There are text files,
@@ -349,7 +344,8 @@ from the log. Any part of the author name may show up in the results, including
 searching by email address. The commit ID must be specified from the first
 character to the last character. For example, the commit
 `c267548755a184ef97301071300c1739a564e135' is returned when the user searches
-for a commit id of `c26' in the 3.10 Linux kernel.
+for a commit id of `c26' in the 3.10 Linux kernel. We will use this commit for
+showing each of the features of the tool.
 
 \begin{figure}[h]
 	\centering
@@ -554,12 +550,11 @@ furthermore, users must work to determine where this merge ends and the next one
 begins.
 
 Our tool further enhances our understanding by immediately giving us the files
-and modules that were edited. We are able to determine that three files,
-``palamas-regulator.c'' had two lines added and two lines removed,
-``dbx500-prcmu.c'' had 12 lines added and 12 lines removed, and ``core.c'' had
-5 lines added and 2 lines removed. Finally, we are able to determine that only
-the ``regulator'' module was modified in this merge and was modified by 5
-commits.
+and modules that were edited in the branch. We are able to determine that three
+files, ``palamas-regulator.c'' had two lines added and two lines removed,
+``dbx500-prcmu.c'' had 12 lines added and 12 lines removed, and ``core.c'' had 5
+lines added and 2 lines removed. Finally, we are able to determine that only the
+``regulator'' module was modified in this merge and was modified by 5 commits.
 
 \subsection{Performance Evaluation}
 Originally, we were performing all of our tree-navigation, file information
@@ -674,7 +669,7 @@ patch at a given merge rather than displaying each patch individually. The
 patches can also be used for determining what kinds of changes were made, if
 the lines are being added, removed, or replaced.
 
-\subsection{Testing}
+\subsection{Evaluation}
 At this time, we have no evidence that our tool is able to improve the
 work-flow of maintainers. We believe that the tool is able to improve the
 work-flow and performance of maintainers because it provides cleaner mechanisms
@@ -715,6 +710,7 @@ the tool specific to the project.
 A tree-based model appears to be sufficient for creating a clean visualization
 and explanation of the changes in the Linux kernel.
 
+\nocite{*}
 \bibliographystyle{plain}
 \bibliography{citations}
 

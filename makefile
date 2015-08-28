@@ -1,6 +1,6 @@
 latexfile 	= linvis
 figures		=
-$(latexfile).pdf : $(figures) $(latexfile).tex # references.bib
+$(latexfile).pdf : $(figures) $(latexfile).tex citations.bib
 	rubber --pdf $(latexfile)
 
 
