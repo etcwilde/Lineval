@@ -5,15 +5,15 @@
 % \drafttrue
 
 \ifdraft
-	\documentclass[conference, draftclsnofoot]{IEEEtran}
-	\def\baselinestretch{1}
-	\setlength{\marginparwidth}{2cm}
+        \documentclass[conference, draftclsnofoot]{IEEEtran}
+        \def\baselinestretch{1}
+        \setlength{\marginparwidth}{2cm}
 \else
         \documentclass[conference]{IEEEtran}
-	\def\baselinestretch{1}
-	\setlength{\marginparwidth}{2cm}
+        \def\baselinestretch{1}
+        \setlength{\marginparwidth}{2cm}
 
-	% \documentclass[conferece, final]{IEEEtran}
+        % \documentclass[conferece, final]{IEEEtran}
 \fi
 
 \usepackage[T1]{fontenc}
@@ -31,12 +31,12 @@
 \urlstyle{same}
 
 \ifdraft
-	\usepackage[unicode=true,bookmarks=false,breaklinks=false,
-		pdfborder={0 0 0},backref=none,colorlinks=true]{hyperref}
+        \usepackage[unicode=true,bookmarks=false,breaklinks=false,
+                pdfborder={0 0 0},backref=none,colorlinks=true]{hyperref}
 
 \else
-	\usepackage[unicode=true,bookmarks=false,breaklinks=false,
-		pdfborder={0 0 0},backref=none,colorlinks=false]{hyperref}
+        \usepackage[unicode=true,bookmarks=false,breaklinks=false,
+                pdfborder={0 0 0},backref=none,colorlinks=false]{hyperref}
 \fi
 
 \usepackage[nospace]{cite}
@@ -70,23 +70,28 @@
 }
 \maketitle
 \begin{abstract}
-	With an average of over 900 top-level merges into the Linux kernel per
-	release, some containing thousands of commits, many containing hundreds
-	of commits, maintenance of older versions of the kernel becomes nearly
-	impossible. For security, performance, and changing hardware needs,
-	maintainers must understand the changes made to current versions of the
-	kernel, and understand how these changes fit into older version in
-        order to make the necessary merges and modifications to the older
-        versions. Current tools provide information about repositories through
-        the directed acyclic graph (DAG) which is helpful for smaller projects,
-        but with the scale and number of branches in the kernel, the DAG
-        becomes overwhelming very quickly.
 
-	In this paper, we present a tool that uses the dataset collected by
-	German et al. to build a tool that uses a tree-based model instead of
-        the DAG. This tool is designed to cater to the needs of users looking
-        for a top-down approach, or a bottom-up approach to navigating the
-        commit information of the kernel.
+        With an average of more than 900 top-level merges into the Linux kernel per
+        release, many containing hundreds of commits and some containing thousands,
+        maintenance of older versions of the kernel becomes nearly impossible.
+
+        Various commercial products, such as the Android platform, run older
+        versions of the kernel. Due to security, performance, and changing hardware
+        needs, maintainers must understand how updates made to the current version
+        of the kernel fit into older versions in order to make the necessary
+        patches.
+
+        Current tools provide information about repositories through the directed
+        acyclic graph (DAG), which is helpful for smaller projects. However with the
+        scale and number of branches in the kernel the DAG becomes overwhelming very
+        quickly.
+
+        In this paper, we present a tool that uses a tree-based model, as described
+        by German et al., to construct a clearer summary of the changes made. This
+        tool is designed to allow users to explore the topology of the repository
+        for a given release of the kernel and view an aggregated summary of the
+        changes made.
+
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -96,22 +101,22 @@
 \section{Introduction}
 
 Maintainers of older version of the Linux kernel must sift through thousands of
-commits with tools that are unable to filter and effectively visualize projects
-that are the scale of the kernel. Tools like Gitk provide users with the
-full view of the DAG, showing all of the merges and commits. For smaller
-projects, this information is useful, showing the relation between various
-branches. The DAG becomes a tangled mess (\ref{fig:gitk}) of commits, merges,
-and the links between them with large modular projects, like the Linux kernel,
-making it difficult to derive an explanation of the changes made. In other
-cases, the kernel is simply too large for the system to generate a
-visualization for. Github provides a DAG view for most projects, but is unable
-to display the visualization for projects as large as the Linux kernel.
+commits with tools that are unable to filter and effectively visualize projects that
+are the scale of the kernel. Tools like Gitk provide users with the full view of the
+DAG, showing all of the merges and commits. This information is useful in smaller
+projects, showing the relation between various branches. The DAG becomes a tangled
+mess (\ref{fig:gitk}) of commits, merges, and the links between them with large
+modular projects, like the Linux kernel, making it difficult to derive an
+explanation of the changes made. In other cases, the kernel is simply too large for
+the system to generate a visualization for. Github provides a DAG view for most
+projects, but is unable to display the visualization for projects as large as the
+Linux kernel.
 
 \begin{figure}
-	\centering
-	\includegraphics[width=0.47\textwidth]{figures/gitk.png}
-	\caption{A sample DAG view of commits from Linux in Gitk}
-	\label{fig:gitk}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/gitk.png}
+        \caption{A sample DAG view of commits from Linux in Gitk}
+        \label{fig:gitk}
 \end{figure}
 
 Git log, Gitk, and other similar tools only store the name of the author, authored
@@ -172,15 +177,15 @@ other commits are involved with a given merge. Gitk only provides file informati
 on commits, as it is unable to quickly aggregate the files and commits that are part
 of a merge. It is up to the user to remember what files were edited in each of the
 commits involved in a given merge. In some of the larger merges, some containing
-over 1500 edited files, this task become nearly impossible.  % cid: 73287a43cc79ca06629a88d1a199cd283f42456a, 1800 commits, 1500 files 
+over 1500 edited files, this task become nearly impossible.  % cid: 73287a43cc79ca06629a88d1a199cd283f42456a, 1800 commits, 1500 files
 Other DAG visualization systems, like the GitHub viewer (\ref{fig:gitfail}), are
 unable to provide a visualization for projects that are as large as the kernel.
 
 \begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.45\textwidth]{figures/github_viewer.png}
-	\caption{Github Failure Message showing the DAG of the Linux Project}
-	\label{fig:gitfail}
+        \centering
+        \includegraphics[width=0.45\textwidth]{figures/github_viewer.png}
+        \caption{Github Failure Message showing the DAG of the Linux Project}
+        \label{fig:gitfail}
 \end{figure}
 
 %% Check for papers if they exist
@@ -222,10 +227,10 @@ system.
 %% Find paper for this maybe?
 
 \begin{figure}[h]
-	\centering
-	\includegraphics[width=0.47\textwidth]{figures/kernel-files.png}
-	\caption{Treemap of Linux 2.5.33 file structure}
-	\label{fig:treemap}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/kernel-files.png}
+        \caption{Treemap of Linux 2.5.33 file structure}
+        \label{fig:treemap}
 \end{figure}
 
 \subsection{List viewer}
@@ -242,10 +247,10 @@ according to the tool.
 %% Find paper for this maybe?
 
 \begin{figure}[h]
-	\centering
-	\includegraphics[width=0.47\textwidth]{figures/gitvis.png}
-	\caption{List Viewer}
-	\label{fig:listviewer}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/gitvis.png}
+        \caption{List Viewer}
+        \label{fig:listviewer}
 \end{figure}
 
 
@@ -301,10 +306,10 @@ command to see the preview and what files were edited in the commit and how
 many lines were added and removed from each file.
 
 \begin{figure}[h]
-	\centering
-	\includegraphics[width=0.47\textwidth]{figures/shell.png}
-	\caption{Shell Design}
-	\label{fig:shell}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/shell.png}
+        \caption{Shell Design}
+        \label{fig:shell}
 \end{figure}
 
 There are two issues with this design. One issue with is that a user will
@@ -327,10 +332,10 @@ include searching, the commit messages, the files edited, the modules edited,
 and two types of tree viewers.
 
 \begin{figure}[h]
-	\centering
-	\includegraphics[width=0.47\textwidth]{figures/search.png}
-	\caption{Search View}
-	\label{fig:search}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/search.png}
+        \caption{Search View}
+        \label{fig:search}
 \end{figure}
 
 Searching allows a user to filter commits and merges that are irrelevant.
@@ -348,10 +353,10 @@ for a commit id of `c26' in the 3.10 Linux kernel. We will use this commit for
 showing each of the features of the tool.
 
 \begin{figure}[h]
-	\centering
-	\includegraphics[width=0.47\textwidth]{figures/search_results.png}
-	\caption{Search Results}
-	\label{fig:results}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/search_results.png}
+        \caption{Search Results}
+        \label{fig:results}
 \end{figure}
 
 In the search results, the user is presented with the one-line log message
@@ -363,10 +368,10 @@ date. The first and third entries in figure \ref{fig:results} have been rebased
 in the past, though we are unable to highlight rebases at this time.
 
 \begin{figure}[h]
-	\centering
-	\includegraphics[width=0.47\textwidth]{figures/message_view.png}
-	\caption{Commit Message}
-	\label{fig:message}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/message_view.png}
+        \caption{Commit Message}
+        \label{fig:message}
 \end{figure}
 
 The first tab displays the full commit log. From this, a user is able to see
@@ -381,10 +386,10 @@ completely dependent on the author's style. As the user moves toward the
 top-level merge, the quality of these messages generally improves.
 
 \begin{figure}[h]
-	\centering
-	\includegraphics[width=0.47\textwidth]{figures/file_view.png}
-	\caption{Commit Files}
-	\label{fig:files}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/file_view.png}
+        \caption{Commit Files}
+        \label{fig:files}
 \end{figure}
 
 The second tab is the files tab. This tab provides information on what files
@@ -396,10 +401,10 @@ different commits within a merge, we simply add the added and removed lines to
 the values already stored.\newpage
 
 \begin{figure}[h]
-	\centering
-	\includegraphics[width=0.47\textwidth]{figures/modules.png}
-	\caption{Commit Modules}
-	\label{fig:modules}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/modules.png}
+        \caption{Commit Modules}
+        \label{fig:modules}
 \end{figure}
 
 The modules tab shows the modules that are contained within the commit. Modules
@@ -416,10 +421,10 @@ the modules for a commit. A commit will only ever have one module that it is
 associated with.
 
 \begin{figure}[h]
-	\centering
-	\includegraphics[width=0.47\textwidth]{figures/tree_view.png}
-	\caption{Commit Tree View}
-	\label{fig:tree}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/tree_view.png}
+        \caption{Commit Tree View}
+        \label{fig:tree}
 \end{figure}
 
 The third tab shows the tree view (\ref{fig:tree}). The tree view is what makes
@@ -429,10 +434,10 @@ user to inspect the other commits and merges surrounding it. A user may then
 navigate to any of the commits by simply double-clicking on it.
 
 \begin{figure}[h]
-	\centering
-	\includegraphics[width=0.47\textwidth]{figures/tree_zoom.png}
-	\caption{Tree zoomed out}
-	\label{fig:zoomed_tree}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/tree_zoom.png}
+        \caption{Tree zoomed out}
+        \label{fig:zoomed_tree}
 \end{figure}
 
 Some of the merge trees are very large (\ref{fig:zoomed_tree}), containing
@@ -515,17 +520,17 @@ additional dimension to the dataset that would otherwise be lost, enabling us
 to reliably build trees from the information we have.
 
 \begin{figure}[h]
-	\centering
-	\includegraphics[width=0.47\textwidth]{figures/042dd_DAG.png}
-	\caption{Merge Dag View}
-	\label{fig:dag_view}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/042dd_DAG.png}
+        \caption{Merge Dag View}
+        \label{fig:dag_view}
 \end{figure}
 
 \begin{figure}[h]
-	\centering
-	\includegraphics[width=0.47\textwidth]{figures/042dd_tree.png}
-	\caption{Merge Tree View}
-	\label{fig:tree_view}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/042dd_tree.png}
+        \caption{Merge Tree View}
+        \label{fig:tree_view}
 \end{figure}
 
 Our goal was to build a tool to enable maintainers to effectively navigate and
