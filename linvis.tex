@@ -638,19 +638,19 @@ snapshots of the repository.
         \label{fig:tree_view}
 \end{figure}
 
-Our goal was to build a tool to enable maintainers to effectively navigate and
-pull explanation of the changes performed to the kernel over the period of a
-release. Achieving this goal includes removing information that does not
-pertain to given users. In figure \ref{fig:dag_view} and figure
-\ref{fig:tree_view}, we can visually compare the results returned from gitk and
-our tool for the top-level merge ``042dd60ca6dec9a02cefa8edd67de386e35755d6''
-from kernel version 3.10. The relevant information in both of these figures is
-identical, but the presentation drastically changes our ability to comprehend
-what we are seeing. The primary difference is the removal of irrelevant
-information. In gitk (\ref{fig:dag_view}), the visualization results include
-commits and merges from other components of the kernel, while our tool
-(\ref{fig:tree_view}) only includes the results that are specific to the
-component of the kernel that we are interested in.
+Our goal was to build a tool to enable maintainers to effectively navigate and pull
+explanation of the changes performed to the kernel over the period of a release.
+Achieving this goal includes removing information that does not pertain to the area
+of the kernel that the user is interested in. In figure \ref{fig:dag_view} and
+figure \ref{fig:tree_view}, we can visually compare the results returned from gitk
+and our tool for the top-level merge ``042dd60ca6dec9a02cefa8edd67de386e35755d6''
+from kernel version 3.10. The relevant information to this commit in both of these
+figures is identical, but the presentation drastically changes our ability to
+comprehend what we are seeing. The primary difference is the removal of irrelevant
+information. In gitk (\ref{fig:dag_view}), the visualization results include commits
+and merges from other components of the kernel, while our tool (\ref{fig:tree_view})
+only includes the results that are specific to the component of the kernel that we
+are interested in.
 
 This merge is relatively small, containing only four merges, three of which
 only contain a single commit, and the last containing two commits. With our
@@ -671,10 +671,10 @@ lines added and 2 lines removed. Finally, we are able to determine that only the
 The front-end uses asynchronous requests to gather the information for the trees and
 tables. This enables third-parties to implement new front-ends, trying other
 designs, though this interface may change in the future. The tree, file, and module
-information is accessible through 
-http://li.turingmachine.org/data/tree/JSON/\verb|<commit id>|,
-http://li.turingmachine.org/data/files/JSON/\verb|<commit id>|,
-http://li.turingmachine.org/data/modules/JSON/\verb|<commit id>|, respectively.
+information is accessible through
+http://li.turingmachine.org/data/tree/JSON/\verb|<cid>|,
+http://li.turingmachine.org/data/files/JSON/\verb|<cid>|,
+http://li.turingmachine.org/data/modules/JSON/\verb|<cid>|, respectively.
 
 The response for the tree is a single object. This object is the root node of the
 tree, and may contain an object of children objects in the \verb|children| field,
@@ -684,13 +684,13 @@ id as the key.
 The tree node objects have the following fields:
 
 \begin{tabular}{ccl}
-        Field name & Data type & Description\\\hline
-        cid & string & Commit id\\
-        name & string & One-line log preview\\
-        mlinus & string & Root merge commit id\\
-        author & string & Author name and email\\
-        mnext & string & Parent merge commit id\\
-        children & object & Object of tree objects\\
+        Field name      & Data type & Description\\\hline
+        \verb|cid|      & string    & Commit id\\
+        \verb|name|     & string    & One-line log preview\\
+        \verb|mlinus|   & string    & Root merge commit id\\
+        \verb|author|   & string    & Author name and email\\
+        \verb|mnext|    & string    & Parent merge commit id\\
+        \verb|children| & object    & Object of tree objects\\
 \end{tabular}
 
 The file responses contain only the files that the selected merge or commit works
@@ -700,19 +700,19 @@ the tree is an inner node, the response will contain the child nodes in the
 ``children'' field, otherwise ``children'' will be an empty list. The full response
 format for the file response looks like:
 
-\begin{itemize}
-        \item ``cid'': string, commit id
-        \item ``files'': list, list of tuples in the format
-                \begin{enumerate}
-                        \item Filename: string
-                        \item Lines added: unsigned integer
-                        \item Lines removed: unsigned integer
-                \end{enumerate}
-        \item ``mnext'': string, the commit id of the next merge toward the
-                top-level merge
-        \item ``children'': list, List of all child objects with the same
-                fields. Null if no children.
-\end{itemize}
+\begin{tabular}{lll}
+        Field name & Data type & Description\\\hline
+        \verb|cid| & string & Commit id\\
+        \verb|mnext| & string & Parent merge commit id\\
+        \verb|children| & list & List of tree objects\\
+        \verb|files| & list of tuples&
+        \footnotesize{
+        \begin{tabular}{lc}
+                \verb|Filename| & String\\
+                \verb|Lines added| & uint\\
+                \verb|Lines removed| & uint\\
+        \end{tabular}}\\
+\end{tabular}
 
 \section{Future Work}
 
