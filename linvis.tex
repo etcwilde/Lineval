@@ -757,20 +757,31 @@ if the tool meets our goals.
 
 \section{Conclusion}
 
-Our tool shows promising results, providing a clearer picture of the relation
-between the merges and commits when compared to DAG-based models. Not only are
-we provide a clearer visualization, we provide information about the files
-edited by all of the commits contained within a merge, and we provide the
-information about what modules are edited in a merge.
+Our tool shows promising results in working toward our goals, building a tool that
+can more easily navigate the repository, and provide clearer explanations of the
+changes made. The filtering by searches and the various tree visualizations enable
+users to easily navigate through the kernel, finding the commits and merges that
+pertain to what they are interested in. The tree visualizations are able to both
+serve as a navigation piece, providing simpler navigation through the kernel, but
+also demonstrate which commits contribute to which merges, providing further
+explanation over the DAG. The tree model further improves the explanation by enabling
+the tool to aggregate metadata at the merges instead of requiring a user to manually
+aggregate the information. Our tool currently aggregates file information and the
+modules edited, but can be extended to include authorship information and aggregated
+patch information.
 
-While we are able to generate a better explanation of the changes happening at
-each commit and merge, the tree-model requires more information than what is
-provided by git, requiring a central server to monitor changes to the project.
-This breaks the design goals of decentralized version control systems and makes
-the tool specific to the project.
+The tree model requires more information than what is provided by git, requiring a
+central server to monitor changes to the project. This breaks the design goals of
+decentralized version control systems and makes the visualization tool specific to
+the project.
 
-A tree-based model appears to be sufficient for creating a clean visualization
-and explanation of the changes in the Linux kernel.
+While these are significant drawbacks for small projects, large projects will likely
+have a more centralized work flow with a master repository where contributions will
+eventually land, along with various servers that can watch this master repository
+for changes. Given that the importance of clear visualizations of the repository
+outweighs the cost of having a server monitor the state of the repository, the
+tree-based model appears to provide clean visualizations and explanations of the
+changes in the Linux kernel.
 
 \nocite{*}
 \bibliographystyle{plain}
