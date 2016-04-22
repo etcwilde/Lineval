@@ -315,8 +315,12 @@ of the model are outlined by German \cite{German2015}.
 
 \section{Design}
 
-In this section, we describe the progression of our tool design, showing the
-benefits and drawbacks of each component.
+
+We came up with two designs. We recognized that the structure of the repository was
+similar to the wide and shallow tree-structure of a file system. We began with a
+command-line shell interface. Then transitioned to a web-based tool where we looked
+beyond the file system structure. In this section, we describe the progression of
+our tool design, showing the benefits and drawbacks of each component.
 
 \subsection{Command-line Shell}
 
@@ -328,12 +332,14 @@ been studied for quite some time and there are many tools capable of visualizing
 working with the file structure.
 
 The first tool we implemented was a small command-line shell (figure
-\ref{fig:shell}) that allows users to navigate through the commits and merges rather
-than files and directories. The shell design permitted a user to move through merges
-like they would through directories with the \verb|cd| and \verb|ls| commands. Users
-can use the \verb|cat| command to see the log preview, or the \verb|more| command to
-see the preview and how many lines were added and removed from the files in the
-commit.
+\ref{fig:shell}) that allows users to navigate through the commits and merges as one
+might navigate through files and directories. A user could navigate toward the
+leaves of the tree by using the \verb|cd| command followed by the commit id of the
+next merge. The user could then navigate toward the root by issuing \verb|cd ../|,
+as they would in a file system. Users can use \verb|ls| to view what commits and
+merges exist in the current working merge, then use \verb|cat| to view the log
+preview of a commit or \verb|more| to see the preview and how many lines were added
+and removed from the files in the commit.
 
 \begin{figure}
         \centering
@@ -348,16 +354,17 @@ investigate, they must find it with another tool and navigate through the tree t
 find it. Furthermore, it does not aggregate information in the merges, so users must
 manually aggregate the metadata. Another issue with this design is that it presents
 the users with the commit hashes, which are quite long and unpleasant to remember
-type into the shell, but also do not provide any quick explanation of what the
+and type into the shell, but also do not provide any quick explanation of what the
 commit or merge may contain.
 
 \subsection{Web-based Tool}
 
 We replace the command-line interface with a web-based tool. Creating a web-based
-tool enables users to use the system without having to install software or carry a
-large database, making it more accessible, more easily maintainable, and platform
-independent. A web-based tool can utilize more interactive means of navigation and
-provide better explanations of commits and merges than the command-line interface.
+tool enables users to use the system without having to install additional software
+or carry a large database, making it more accessible, more easily maintainable, and
+platform independent. A web-based tool can utilize more interactive means of
+navigation and provide better explanations of commits and merges than the
+command-line interface.
 
 Our tool uses the following mechanisms to reach our goals of better navigation and
 better explanation of the changes.
@@ -377,18 +384,18 @@ better explanation of the changes.
         \label{fig:search}
 \end{figure}
 
-Searching allows a user to filter commits and merges that are irrelevant.  The
-search mechanism breaks down the results by release version. A user can further
-narrow down the search range using the commit date range. The commit date refers to
-the date of the creation of the top-level merge. Commits and merges that are
-returned may have a commit date beyond the given range if they were merged to a
-top-level merge that is within the date range. A user may then provide a search
-text, filtering on the author name, the commit id, or keyword from the log. Any part
-of the author name may show up in the results, including searching by email address.
-The commit ID must be specified from the first character to the last character. For
-example, the commit `c267548755a184ef97301071300c1739a564e135' is returned when the
-user searches for a commit id of `c26' in the 3.10 Linux kernel. We will use this
-commit for showing each of the features of the tool.
+Searching allows a user to filter commits and merges that are irrelevant. The search
+mechanism breaks down the results by release version. A user can further narrow down
+the search range using the commit date range. The commit date refers to the date of
+the creation of the top-level merge. The commits and merges that are returned may
+have a commit date beyond the given range if they were merged by Linus within the
+date range. A user may then provide a search text, filtering on the author name,
+the commit id, or keyword from the log. Any part of the author name may show up in
+the results, including searching by email address. The commit ID must be specified
+from the first character to the last character. For example, the commit
+`c267548755a184ef97301071300c1739a564e135' is returned when the user searches for a
+commit id of `c26' in the 3.10 Linux kernel. We will use this commit for showing
+each of the features of the tool.
 
 \begin{figure}
         \centering
@@ -439,7 +446,9 @@ commit. This functionality is similar to the other tools available. Our tree-bas
 design model allows us to extend this functionality to merges, which the other tools
 are unable to show. When a file is edited multiple times from different commits
 within a merge, we simply add the added and removed lines to the values already
-stored.
+stored, though this could be extended to use the diff information to determine when
+a line has been replaced rather than incrementing the lines removed and the lines
+added.
 
 \begin{figure}
         \centering
@@ -455,10 +464,12 @@ preview of the log-message. We heuristically extract the module by taking all te
 in the log preview of commits until the first colon.  Modules are logical partitions
 of the information in the kernel. Depending on where the author was working, modules
 can be general, such as ``bluetooth'' and ``wireless'', or can be quite specific for
-individual hardware, such as ``ath9k\_hw'' and ``wl1251''. Like files, we are able
-to show what modules are edited in merges and commits. The image in figure
-\ref{fig:modules} shows the modules for a commit. A commit will only ever have one
-module that it is associated with.
+individual hardware, such as ``ath9k\_hw'' and ``wl1251''. In a few cases, the
+author of a commit does not correctly follow this format and the hueristic approach
+fails. Like files, we are able to show what modules are edited in merges and
+commits. The image in figure \ref{fig:modules} shows the modules for a commit. A
+commit will only ever have one module that it is associated with, merges with more
+than one child will have more.
 
 Finally, we have the tree view tab. The tree view is designed for providing easy
 navigation within a tree and providing a clear topological view of the branch off
@@ -470,21 +481,22 @@ discuss the various tree designs in section \ref{treeview_section}.
 
 The tree view is what makes this tool unique to other tools, providing a full view
 of the entire merge tree. We have experimented with various types of trees; list
-trees are similar to the representation by many file system explorers,
-Reingold-Tilford trees which clearly represent the tree structure, and bubble trees
-which organize the data hierarchically by having the parent node contain the child
+trees are similar to the representation used in many file system explorers,
+Reingold-Tilford trees clearly represent the tree structure, and bubble trees
+organize the data hierarchically by having the parent node contain the child nodes
+similarly to tree maps, but clearly showing the parent-child relationships between
 nodes.
 
 \subsubsection{List Tree}
 
-The list tree  viewer is in the form of nested lists, and is designed to more
-closely model the tree hierarchy view found in file browsers. This tree only
-contains the commits and merges that are within the subtrees of the current merge. A
-commit will never have any items in this tree, as it is a leaf. To accompany the
-tree, we include breadcrumbs at the top of the page to enable a user to navigate
-both from the root to the leaves and from a leaf to the root. The last item in the
-breadcrumb list is the current commit, the next item is the parent of the current
-commit, and the first item is the root merge into the kernel.
+The list tree viewer is in the form of nested lists, and is designed to more closely
+model the tree hierarchy view found in file browsers. This tree only contains the
+commits and merges that are within the subtrees of the current merge. A commit will
+never have any items in this tree as it is a leaf. To accompany the tree, we include
+breadcrumbs at the top of the page to enable a user to navigate both from the root
+to the leaves and from a leaf to the root. The last item in the breadcrumb list is
+the current commit, the previous item is the parent of the current commit, and the
+first item is the root merge into the kernel.
 
 \begin{figure}
         \centering
@@ -528,7 +540,7 @@ visualization, it becomes much more difficult to understand.
 
 The bubble tree provides a very clear picture of where a commit is located in the
 hierarchy. The currently selected commit or merge is colored red, while non-selected
-merges use a blue color and commits use white. The depth of the blue colouring is
+merges use a shade of blue and commits use white. The depth of the blue colouring is
 dependent on how deep in the hierarchy that node is. The root is the lightest blue,
 and the contained merges are progressively darker.
 
@@ -547,7 +559,6 @@ detailed page for that commit or merge. If the user clicks on a node, the tree w
 zoom to that node and the information in the info pane will persist, enabling the
 user to click the link. This tree provides an easy mechanism for users to navigate
 from the root to the leaves and vice versa.
-
 
 \section{Implementation Details}
 
