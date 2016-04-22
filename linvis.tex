@@ -717,39 +717,31 @@ format for the file response looks like:
 \section{Future Work}
 
 There are still many areas that can be improved before the full potential of our
-model can be realized. Here, we outline various areas that still need more
-attention.
+model can be realized. Here, we outline various areas of the tool that still need
+more attention.
 
 \subsection{Files}
 
-There is currently no functionality surrounding searching by filename. Use-case 2
-may know what file they are editing and try to determine how it may work with the
-other commits and merges in the module. It is possible that a third use-case may
-arise, where the user wants to determine all commits that effect a given file. In
-both cases, a bottom-to-top approach is used. With this functionality, implementing
-the top-to-bottom search feature becomes trivial.
+There is currently no functionality surrounding searching by filename. Users falling
+under use-case 2 may know what file they are editing and try to determine how it may
+work with the other commits and merges in the module. It is possible that a third
+use-case may arise, where the user wants to determine all commits that effect a
+given file. In both cases, bottom-to-top approach is applied.
 
 There is limited functionality to the presentation of the file information. At a
 minimum, the patches for the commits can be displayed. From there, the patches can
 be used to piece together parts of the file to generate a single patch at a given
 merge rather than displaying each patch individually. The patches can also be used
 for determining what kinds of changes were made, if the lines are being added,
-removed, or replaced.
+removed, or being replaced.
 
 \subsection{Authorship}
 
 Our model can aggregate more information than what we have implemented. The
 authorship information is important for licensing purposes, and we can show all
-authors contributing to a merge and how many commits they contributed to the merge.
-We could go further, providing information about what files they edited, how many
-lines they added and removed, and more.
-
-\subsection{Diff generation}
-
-Due to the construction of the tree, it is possible to generate a diff of a given
-file in a merge. This would remove areas that overlap, and provide users with a
-single patch at a merge rather than attempting to combine all of the diff files from
-the leaves.
+authors contributing to commits in a  merge and how many commits they contributed to
+the merge. We could go further, providing information about what files they edited,
+how many lines they added and removed, and more.
 
 \subsection{Evaluation}
 
