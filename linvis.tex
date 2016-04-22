@@ -2,7 +2,7 @@
 % -*- mode: latex; coding: UTF-8; -*-
 
 \newif\ifdraft
-% \drafttrue
+\drafttrue
 
 \ifdraft
         \documentclass[conference, draftclsnofoot]{IEEEtran}
@@ -101,15 +101,16 @@
 
 Maintainers of older versions of the Linux kernel must sift through thousands of
 commits with tools that are unable to filter and effectively visualize projects at
-the scale of the kernel. Tools like Gitk use the DAG model, showing all commits and
-merges in chronological order to when the commit was authored. This representation
-works in smaller projects, enabling users to see when changes are made, when these
-changes are merged, and how each branch is interacting. In large modular projects,
-like the Linux kernel, the DAG becomes a mess of merges and commits (figure
-\ref{fig:gitk}), losing its visual meaning. In some cases, the Linux kernel is
-simply too large for the system to generate a visualization. Github provides a DAG
-view for many projects, but is unable to display the visualization for projects as
-large as the Linux kernel (figure \ref{fig:gitfail}).
+the scale of the kernel. Tools like Gitk use a directed acyclic graph (DAG) model,
+showing all commits and merges in chronological order by when the commit was
+authored. This representation works in smaller projects; it enables users to see
+when changes are made, when these changes are merged, and how each branch is
+interacting.  In large modular projects, like the Linux kernel, the DAG becomes a
+mess of merges and commits (figure \ref{fig:gitk}) losing its visual meaning. In
+some cases, the Linux kernel is simply too large for the system to generate a
+visualization. Github provides a DAG view for many projects, but is unable to
+display the visualization for projects as large as the Linux kernel (figure
+\ref{fig:gitfail}).
 
 \begin{figure}
         \centering
@@ -119,16 +120,16 @@ large as the Linux kernel (figure \ref{fig:gitfail}).
 \end{figure}
 
 Git cannot store the date that a commit was merged into a branch due to the rebase
-operation.  When a rebase occurs, several changes could be made to the commit. It
-may be squashed with other commits, combining the effects of several commits into a
-single commit. It may be dropped altogether, in which case the commit is no-longer
-merged.  It may be that the entire branch has simply been re-rooted to another
-position on the DAG. Due to this, tools are unable to determine when a commit is
-merged. A user may decide that it is important to be able to see only the commits
-contributing to a given release, that is commits that were merged with the
-Linus-branch of the kernel between two given dates. This operation is not possible
-without the collection of additional data that is not provided by git. Git only
-enables users to see when commit was authored, not when it was merged into a branch.
+operation. A rebase can perform serveral changes to commits and merges. It may be
+squashed with other commits, combining the effects of several commits into a single
+commit. It may be dropped altogether, in which case the commit is no-longer merged.
+It may be that the entire branch has simply been re-rooted to another position on
+the DAG. Due to this, tools are unable to determine when a commit is merged. A user
+may decide that it is important to be able to see only the commits contributing to a
+given release, that is commits that were merged with the Linus-branch of the kernel
+between two given dates. This operation is not possible without the collection of
+additional data that is not provided by git. Git only enables users to see when a
+commit was authored, not when it was merged into a branch.
 
 German et al. recorded the metadata of every commit and merge in the Linux git
 repository starting in 2011 \cite{German2015}, including chronological data that is
@@ -140,7 +141,7 @@ using the DAG. Each tree is rooted by the top-level merge performed by Linus, wh
 merges the branches or a set of commits into the kernel.
 
 In this paper, we present our design decisions behind a web-based
-tool\footnote{\url{http://li.turingmachine.org}} built around a tree-based model
+tool\footnote{\url{http://li.turingmachine.org}} built around the tree-based model
 instead of a DAG. Our tool provides information about the location of a given commit
 in the respective merge tree, the files edited, the modules edited, and the commit
 message for a given commit or merge. The tool allows users to apply various filters,
@@ -154,16 +155,14 @@ drawbacks. The first drawback is that a server must query the state of the maste
 repository since time information is not stored by git. The second drawback is that
 the tree construction is a heuristic approach, and in some cases may break.
 
-Our core model provides advantages to the DAG model used by other tools. By
-separating and focusing on sub-trees from the whole repository, we are able to
-filter out commits and merges that do not pertain to a component of the kernel. This
-provides a clearer picture of what is happening in a given merge. The second benefit
-to the tree model is that it enables us to automatically aggregate metadata.
-
-In addition to this, the model provides us with a mechanism of performing date-range
-queries with meaningful results. Using the tree built by a continuous mining system
-enables us a mechanism to perform date-range queries with meaningful results.
-
+Our core model provides advantages to the DAG model used by other tools. We separate
+the commits and merges into sub-trees and focus on a single sub-tree at a time. This
+enables us to filter out commits and merges that do not pertain to the component of
+the kernel that we are interested in, providing a clearer picture of what is
+happening in a given merge. The tree model also enables us to aggregate metadata
+easily. With the addition of the continuous polling of the repository, the model
+provides us with a mechanism of performing date-range queries with meaningful
+results.
 
 \section{Related Work}
 
