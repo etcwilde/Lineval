@@ -96,18 +96,29 @@
 
 \section{Introduction}
 
-Maintainers of older versions of the Linux kernel must sift through thousands of
+Maintainers of older versions of the Linux kernel (such as those used in embedded systems and mobile phones) must keep track of changes to the current version
+of the current in order to determine what commits are relevant to their versions.
+Due to the ratio of growth of the kernel (every year, between 50 and 70 thousand commits get added to it)
+this process requires
+sifting through thousands of
 commits with tools that are unable to filter and effectively visualize projects at
 the scale of the kernel. Tools like Gitk use a directed acyclic graph (DAG) model,
 showing all commits and merges in chronological order by when the commit was
-authored. This representation works in smaller projects; it enables users to see
+authored, and not by then it arrives in the official repository. 
+
+This representation works in smaller projects; it enables users to see
 when changes are made, when these changes are merged, and how each branch is
-interacting.  In large modular projects, like the Linux kernel, the DAG becomes a
-mess of merges and commits (figure \ref{fig:gitk}) losing its visual meaning. In
+interacting.  
+In large modular projects, like the Linux kernel, the DAG becomes a
+mess of merges and commits (figure \ref{fig:gitk}) losing its visual meaning.  In
 some cases, the Linux kernel is simply too large for the system to generate a
-visualization. Github provides a DAG view for many projects, but is unable to
+visualization (eg. Github provides a DAG view for many projects, but is unable to
 display the visualization for projects as large as the Linux kernel (figure
 \ref{fig:gitfail}).
+Furthermore, Linux creates between 60 and 70k new commits every year and, according to \cite{emsePaper}, 
+a commit a median of YYYY days to arrive to the official repository from the moment it is authored. 
+This means that, if a person inspected the commits in this repository today, tomorrow it might contain  hundreds
+of commits that were authored months ago. However, distinguishing these new commits is not trivial. 
 
 \begin{figure}
         \centering
@@ -124,17 +135,16 @@ display the visualization for projects as large as the Linux kernel (figure
 \end{figure}
 
 
-Git cannot store the date that a commit was merged into a branch due to the rebase
-operation. A rebase can perform several changes to commits and merges. It may be
-squashed with other commits, combining the effects of several commits into a single
-commit. It may be dropped altogether, in which case the commit is no-longer merged.
-It may be that the entire branch has simply been re-rooted to another position on
-the DAG. Due to this, tools are unable to determine when a commit is merged. A user
-may decide that it is important to be able to see only the commits contributing to a
-given release, that is commits that were merged with the Linus-branch of the kernel
-between two given dates. This operation is not possible without the collection of
-additional data that is not provided by git. Git only enables users to see when a
-commit was authored, not when it was merged into a branch.
+One of the challenges with visualzing the arrival of commits to a repository is that
+in Git, commits are immutable, and Git does not store the date that a commit was merged into another branch (including master)
+To complicate the problem, the DAG points to the ancestors of a commit (a model necessary for the operation of Git), but developers 
+would prefer to know the path that a commit followed to reach the master repository. \dmg{perhaps a figure is good here}.
+In the context of Linux tracing the path that a commit followed to master would imply that for any given merge, it would be possible to know what commits were merged.
+With such a feature,  a user
+could inspect the commits that have arrived into master within a given time frame.
+ and decide that it is important. 
+
+\dmg{I am going to describe the method we used here... }
 
 German et al. recorded the metadata of every commit and merge in the Linux git
 repository starting in 2011 \cite{German2015}, including chronological data that is
@@ -799,3 +809,8 @@ changes in the Linux kernel.
 \bibliography{citations}
 
 \end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
