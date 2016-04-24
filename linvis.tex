@@ -144,26 +144,36 @@ With such a feature,  a user
 could inspect the commits that have arrived into master within a given time frame.
  and decide that it is important. 
 
-\dmg{I am going to describe the method we used here... }
+% \dmg{I am going to describe the method we used here... }
 
-German et al. recorded the metadata of every commit and merge in the Linux git
-repository starting in 2011 \cite{German2015}, including chronological data that is
-not stored by git. We are able to use this information to determine when a commit
-has been merged into the kernel, regardless of rebases preceding and proceeding that
-point in time. This information is then converted by a heuristic method, described
-by German, to generate sets of trees, which we use as our core model instead of
-using the DAG. Each tree is rooted by the top-level merge performed by Linus, which
-merges the branches or a set of commits into the kernel.
+% German et al. recorded the metadata of every commit and merge in the Linux git
+% repository starting in 2011 \cite{German2015}, including chronological data that is
+% not stored by git. We are able to use this information to determine when a commit
+% has been merged into the kernel, regardless of rebases preceding and proceeding that
+% point in time. This information is then converted by a heuristic method, described
+% by German, to generate sets of trees, which we use as our core model instead of
+% using the DAG. Each tree is rooted by the top-level merge performed by Linus, which
+% merges the branches or a set of commits into the kernel.
 
-In this paper, we present our design decisions behind a web-based
-tool\footnote{\url{http://li.turingmachine.org}} built around the tree-based model
-instead of the DAG. Our tool provides information about the location of a given
+ The contributions of this paper are two. First, we describe a method to convert the DAG of the Linux repository into a tree (we call this the tree model of the
+ reposisory) that represents the path used by
+ any commit to reach master. Second, 
+ we present a method to inspect and visualize the history of merges in the  Linux project using the tree-model of the repository
+ 
+These methods and visualizations have been implemented in a web-based
+tool\footnote{It is currently available at \url{http://li.turingmachine.org}}
+instead of the DAG. Our visualizations and tool provide information about the location of any given
 commit in the respective merge tree, the files edited, the modules edited, and the
-commit message for a given commit or merge. The tool allows users to apply various
+commit message for a given commit or merge. Our tool allows users to apply various
 filters, including the release version, along with a keyword or phrase from the log
 preview, the name of the author, or the commit ID. The user can request all the
 root-level merges containing a commit or merge that matches the query, or all
 commits and merges that match the query.
+
+
+
+
+\evantodo{move to discussion}
 
 Using the tree provides many advantages to the DAG model, but there are two
 drawbacks. The first drawback is that a server must query the state of the master
