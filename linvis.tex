@@ -163,7 +163,7 @@ inspect the commits that have arrived into master within a given time frame by s
  we present a method to inspect and visualize the history of merges in the  Linux project using the tree-model of the repository
  
 These methods and visualizations have been implemented in a web-based
-tool\footnote{It is currently available at \url{http://li.turingmachine.org}}
+tool\footnote{Our visualization tool is currently available at \url{http://li.turingmachine.org}}
 instead of the DAG. Our visualizations and tool provide information about the location of any given
 commit in the respective merge tree, the files edited, the modules edited, and the
 commit message for a given commit or merge. Our tool allows users to apply various
@@ -232,7 +232,7 @@ Master). Also, the DAG has been simplified, and it only shows for any commit, on
 \end{figure}
 
 
-\subsection{Computing the tree-model of the DAG of Linux}
+\subsection{Computing the merge-tree of the DAG of Linux}
 
 Computing the tree-model of a DAG of any repository might not be possible. However, certain features of the development process of Linux make it feasible to
 compute the its merge-tree model. In particular, the Master branch of Linux is maintained by Linus Torvalds and only him has write access to it. We have verified this
@@ -242,7 +242,7 @@ recursively, for
 every commit, using the DAG, determine the shortest path (in terms of time) from such commit to master using the inverted DAG.
 
 \begin{algorithm}
-\caption{Computing the tree-model of Linux Git's DAG}\label{fig:alg}
+\caption{Computing the merge-tree of Linux Git's DAG}\label{fig:alg}
 \begin{algorithmic}
 \Function{ComputeTreeModel}{DAG}: tree 
 \State {\# Compute the tree from the DAG of a git repository.}
@@ -482,6 +482,8 @@ the author of the merge, the log, the commit date, and the author date. The deta
 of the model are outlined in \cite{German2015}.
 
 \section{Design}
+
+\dmg{I would remove the command line shell, and use the space for related work}
 
 
 We came up with two designs. We recognized that the structure of the repository was
