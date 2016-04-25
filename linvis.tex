@@ -552,9 +552,6 @@ of the current commit, and the first item is the root merge into the kernel.
 
 \subsubsection{Reingold-Tilford Tree}
 
-
-\evantodo{we need a reference to these trees}
-
 To improve the visualization of the merge-tree, we first transform the merge-tree into a new tree, where each commit points to its next merge in the way to Master. However, we keep the topological order of the commits in the tree-merge as the order of the
 leaves for a given merge (e.g. if merge-tree contains two commits A, B merged into C, then the simplified tree contains links B and C directly to A, but it
 preserves the order of B with respect to C by showing B above C.
@@ -562,7 +559,7 @@ This allows the clustering of commits along their next merge, and avoid the spac
 present long sequences of commits without merges in between.
 
 
-The Reingold-Tilford tree (Figures \ref{fig:zoomed_tree} and \ref{fig:tree}) allows the visualization and navigation
+The Reingold-Tilford tree\cite{Reingold1981} (Figures \ref{fig:zoomed_tree} and \ref{fig:tree}) allows the visualization and navigation
 of the entire merge-tree in an intuitive representation of the tree. This illustrates a clear notion of
 root and leaves, and how to navigate in either direction. Some of the merge trees are very large (figure \ref{fig:zoomed_tree}), containing
 thousands of commits and merges. While the tree is capable of producing a
