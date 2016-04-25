@@ -115,10 +115,10 @@ some cases, the Linux kernel is simply too large for the system to generate a
 visualization (eg. Github provides a DAG view for many projects, but is unable to
 display the visualization for projects as large as the Linux kernel (figure
 \ref{fig:gitfail}).
-Furthermore, Linux creates between 60 and 70k new commits every year and, according to \cite{emsePaper}, 
-a commit a median of YYYY days to arrive to the official repository from the moment it is authored. 
-This means that, if a person inspected the commits in this repository today, tomorrow it might contain  hundreds
-of commits that were authored months ago. However, distinguishing these new commits is not trivial. 
+Furthermore, Linux creates between 60 and 70k new commits every year and, according to our previous work \cite{German2015}, 
+a commit takes a median of 30 days (from the moment it is authored) to the time it arrives to the official repository
+This means that, if a person inspected the commits in this repository today, tomorrow it might contain  many more
+of commits that were authored long before. However, distinguishing these new commits is not trivial. 
 
 \begin{figure}
         \centering
@@ -135,14 +135,12 @@ of commits that were authored months ago. However, distinguishing these new comm
 \end{figure}
 
 
-One of the challenges with visualzing the arrival of commits to a repository is that
-in Git, commits are immutable, and Git does not store the date that a commit was merged into another branch (including master)
+One of the challenges with visualizing the arrival of commits to a repository is that
+in Git, commits are immutable, and Git does not store the date that a commit was merged into another branch (including master).
 To complicate the problem, the DAG points to the ancestors of a commit (a model necessary for the operation of Git), but developers 
 would prefer to know the path that a commit followed to reach the master repository. \dmg{perhaps a figure is good here}.
-In the context of Linux tracing the path that a commit followed to master would imply that for any given merge, it would be possible to know what commits were merged.
-With such a feature,  a user
-could inspect the commits that have arrived into master within a given time frame.
- and decide that it is important. 
+Hence, tracing the path that any commit followed to master would imply that for any given merge, it would be possible to know what commits were merged. A user could
+inspect the commits that have arrived into master within a given time frame by simply checking which commits where merged during that time frame.
 
 % \dmg{I am going to describe the method we used here... }
 
@@ -155,8 +153,8 @@ could inspect the commits that have arrived into master within a given time fram
 % using the DAG. Each tree is rooted by the top-level merge performed by Linus, which
 % merges the branches or a set of commits into the kernel.
 
- The contributions of this paper are two. First, we describe a method to convert the DAG of the Linux repository into a tree (we call this the tree model of the
- reposisory) that represents the path used by
+ The contributions of this paper are two. First, we describe a method to convert the DAG of the Linux repository into a tree (we call this the \emph{tree-model of the
+ repository}) that represents the path used by
  any commit to reach master. Second, 
  we present a method to inspect and visualize the history of merges in the  Linux project using the tree-model of the repository
  
@@ -169,7 +167,6 @@ filters, including the release version, along with a keyword or phrase from the 
 preview, the name of the author, or the commit ID. The user can request all the
 root-level merges containing a commit or merge that matches the query, or all
 commits and merges that match the query.
-
 
 
 
@@ -189,21 +186,73 @@ easily. With the addition of the continuous polling of the repository, the model
 provides us with a mechanism of performing date-range queries with meaningful
 results.
 
+\section{Data model}
+
+Git uses a Directed Acyclic Graph (DAG) as its main data model. In this model, a commit has one or more ordered parents (ancestors), except the root commits of a repository which
+do not have ancestors--Linux git repository has two such commits. Commits are divided into merge commits (they merge two or more branches) and non-merge
+commits. Non-merge commits have only once parent, while merge commits have two or more. The order of the parents matter: the first parent is the branch in which
+the merge is being done; while the rest indicate the branches being merged (git allows any number of branches to be merged at the same time). Their order in the
+parents relationship indicate the order in which the branches are being merged (second parent first, third parent second, etc.).
+
+In Git commits are immutable. Once they are created, they never change. Git allows operations to alter commits or to reorder them. However, in such case, the
+commit changes its commit id, effectively becoming a new commit. This means that commits do not record the branches or repositories they have traversed in their
+way to master. 
+For instance, assume the sequence of commits  exemplified in Figure~\ref{fig:repoEvents}. In this case commits are performed in various repos and branches. The
+DAG representation of these commits is shown in Figure~\ref{fig:repoDAG}. Notice that this DAG loses information about what repository is Master (in fact, it
+loses all information about what repositories any commit has passed through). The tree-model of this DAG is shown in Figure~
+\ref{fig:reposTree}. Note that the direction edges of the DAG have been inverted. Instead of pointing to the ancestors, it points to its successors (the path to
+Master). Also, the DAG has been simplified, and it only shows for any commit, one edge (its path to Master).
+
+\subsection{Computing the tree-model of the DAG of Linux}
+
+Computing the tree-model of a DAG of any repository might not be possible. However, certain features of the development process of Linux make it possible to
+compute the its tree model. In particular, the Master branch of Linux is maintained by Linus Torvalds and only him has write access to it. We have verified this
+assertion if previous research~\cite{German2015}.
+
+\dmg{I'll continue after dinner}
+
+\evanTodo{Move related work to the end, try to match the text of the paper to my intro}
+
+
+\begin{figure}[htbp]
+  \centering
+        \includegraphics[width=\columnwidth]{figures/events.pdf}
+  \caption{Example of a sequence of events performed in different repositories. The horizontal axis represents time. Each horizontal section represents a
+    different branch and/or repository. Each commit points to its ancestor.}
+  \label{fig:repoEvents}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+        \includegraphics[width=.8\columnwidth]{figures/dag.pdf}
+  \caption{DAG representation of the commits represented in Figure~\ref{fig:repoEvents}. It loses information about what repository the commit is performed and
+    through which repositories it has passed in its way to Master. In fact, the DAG does not even know what Master is.}
+  \label{fig:repoDAG}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+        \includegraphics[width=\columnwidth]{figures/tree.pdf}
+  \caption{Tree-model of the commits  represented in Figure~\ref{fig:repoEvents} showing the path they followed to reach master. In this model the successors of
+    each commit represents the path followed by that commit to reach Master.}
+  \label{fig:repoTree}
+\end{figure}
 
 
 \section{Related Work}
 
 To our knowledge, we know of no git repository visualization tool that builds
-trees from the DAG provided by git. This may be because more information is required
-to generate the trees than what is stored by git. Git uses a DAG model, which
-enables history-altering actions, like rebases to occur, whereas older tools like
-CVS and svn construct trees\cite{CVS2008} but do not work with history-altering
-actions.
+a tree that maps the path commits follow to master
+from the DAG provided by git. This may be because more information is required
+to generate the tree-model than what is stored by git. % Git uses a DAG model, which
+% enables history-altering actions, like rebases to occur, whereas older tools like
+% CVS and svn construct trees\cite{CVS2008} but do not work with history-altering
+% actions.
 
-A server must sit and monitor the git repository as it changes over time to record
-the changes to history. Many of the visualization tools are designed for a
-general-purpose approach, where any repository is directly usable without additional
-information. Polling for this additional information makes the visualizer specific
+% A server must sit and monitor the git repository as it changes over time to record
+% the changes to history. Many of the visualization tools are designed for a
+% general-purpose approach, where any repository is directly usable without additional
+% information. Polling for this additional information makes the visualizer specific
 to a repository or project.
 
 \subsection{Other Visualizers}
@@ -213,9 +262,10 @@ central organization model. This model is sufficient for smaller projects, provi
 meaningful information; however, in larger projects, like the Linux kernel, the
 branches become too tangled and too deep to derive any meaning from the DAG. Users
 can interact with the DAG by going to the previous commit in the chain or jumping to
-the parent merge. This suggests that Gitk and similar tools are designed for users
-working from a given commit or leaf-node toward the root. With this model, it is
-difficult for users to see what other commits are involved within a given merge.
+the parent merge. Given the direction that each node in the DAG has (pointing to its parent)
+it can be assumed that tools that exploit the DAG (such as gitk and similar tools) are designed for users
+working from a given commit towards the past. Working in the opposite direction is hard, since merge commits provide multiple paths towards the present, with no
+way to distinguish which path is the one used by the current commit to be merged into master.
 
 Furthermore, the DAG model is only able to provide file-level information for
 commits. It is unable to quickly aggregate the file data over all commits that
