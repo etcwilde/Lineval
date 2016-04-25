@@ -329,115 +329,72 @@ to fast-forward commits performed in Linus Torvalds repository, this heuristic b
 
 \section{Related Work}
 
-\evantodo{Move related work to the end, try to match the text of the paper to my intro}
+\evantodo{pick 'gitk' or 'Gitk'}
 
+Version control systems monitor the development lifetime of software projects. This
+makes the version control system vital in providing information about how a software
+project is being developed. To our knowledge, we know of no git repository
+visualization tool that builds a tree that maps the path a commit follows to the
+master branch from the DAG provided by git. This may be because more information is
+required to generate the tree-model than what is stored by git. However, there has
+been a lot of work in providing visualizations of various repositories.
 
+Many of the tools work to address the issues of communication between developers and
+inter-team collaboration. Codebook uses a mining technique to determine the
+developer of a piece of code, the program manager who wrote the specification for
+the code, and the program managers and developers on the team who were working
+together\cite{Begel2010}. This is designed to help collaboration between developers
+on a project while the project is being developed.  In maintaining the code, the
+code has already been written, the original developer many not have seen this piece
+of code in years, and will most likely have moved to another problem. If the
+maintainer is pulling from a part of the kernel that has been recently updated, in
+the event of a zero-day attack for instance, the information about who is developing
+that portion of the kernel is of use; however, if the maintainer is pulling from
+sections that are older, then the maintainer must be able to understand the code
+using the provided tools, not the original developer.
 
-To our knowledge, we know of no git repository visualization tool that builds
-a tree that maps the path commits follow to master
-from the DAG provided by git. This may be because more information is required
-to generate the tree-model than what is stored by git. % Git uses a DAG model, which
-% enables history-altering actions, like rebases to occur, whereas older tools like
-% CVS and svn construct trees\cite{CVS2008} but do not work with history-altering
-% actions.
+Hipikat is another tool with a focus on communication issues between developers. It
+is designed for non-collocated teams, helping new developers understand design
+decisions of the system \cite{Cubranic2005}. It records artifacts about the project
+to build a "memory" of the project development that new users can work with to
+understand where and how to make modifications in large projects. The artifacts are
+recorded using tools like bugzilla and CVS. Such a tool could prove useful in
+understanding the changes between a maintainer's current version of an older kernel
+and the changes being made to the current master version of the kernel.
 
-% A server must sit and monitor the git repository as it changes over time to record
-% the changes to history. Many of the visualization tools are designed for a
-% general-purpose approach, where any repository is directly usable without additional
-% information. Polling for this additional information makes the visualizer specific
-to a repository or project.
+These tools work toward assisting the communications between developers and
+providing a summary of the project. Our goal includes providing a visual summary of
+the topology of the repository, as well as providing a summary of the changes made
+at a location within the repository. EPOSee, Gource, and Gitk are all tools designed
+for visualizing various aspects of repositories.
 
-\subsection{Other Visualizers}
+EPOSee is a tool for visualizing changes that often happen simultaneously in a
+commit or as a sequence of events \cite{Burch2005}. It produces visualizations about
+the confidence that changes are made either together or sequentially. For instance,
+changes in the header file may also indicate that a change was made in the
+implementation file. The visualization tool is designed to visualize implicit rules
+about the order of operations on various files, if too many outliers are detected,
+the project manager may want to restructure the project.  While this is useful for
+new projects, the development model of the Linux kernel is already structured and is
+unlikely to change without good reasons behind it.
 
-Gitk, Gitg, and other similar git repository visualization tools use the DAG as the
-central organization model. This model is sufficient for smaller projects, providing
-meaningful information; however, in larger projects, like the Linux kernel, the
-branches become too tangled and too deep to derive any meaning from the DAG. Users
-can interact with the DAG by going to the previous commit in the chain or jumping to
-the parent merge. Given the direction that each node in the DAG has (pointing to its parent)
-it can be assumed that tools that exploit the DAG (such as gitk and similar tools) are designed for users
-working from a given commit towards the past. Working in the opposite direction is hard, since merge commits provide multiple paths towards the present, with no
-way to distinguish which path is the one used by the current commit to be merged into master.
+Gource is a tool for providing an interactive timelapse of the state of a
+repository\cite{Caudwell2010}. In the timelapse, it shows who contributes and what
+type of contribution a developer is making. These contribution types are one of,
+adding a file, removing a file, and changing a file. While the timelapse is
+interesting to watch, it does not provide any additional explanation of the changes
+actually being made, only the frequency that they are being made and who is making
+them.
 
-Furthermore, the DAG model is only able to provide file-level information for
-commits. It is unable to quickly aggregate the file data over all commits that
-are part of a merge. If a user would like to view what files were edited at a merge,
-they must manually aggregate this information by hand. While some merges are
-relatively small, containing less than 10 commits, other merges are large,
-containing over 1500 edited files, as in the case of commit \textit{73287a4}. This
-issue is important for authorship and licensing. A merge can only show one author,
-the contributor making the merge, but does not show who wrote the commits contained
-within that merge.
-
-
-%% Check for papers if they exist
-%% This tool isn't specifically designed for showing Linux
-
-\subsection{Treemap visualizer}
-
-University of Maryland presented a treemap visualization
-tool\footnote{\url{https://www.cs.umd.edu/hcil/millionvis/Treemap_Visualization_of_the_Linux_Kernel_2_5_33.html}},
-pictured in figure \ref{fig:treemap}, for displaying the file structure of a given
-version of the kernel. Treemaps are good for visualizing the topology of shallow,
-wide trees, making it a good candidate for displaying file systems. Treemaps are
-limited in what information can be displayed. The information within the treemap
-does not provide clear insight into what changes were made to the files in the given
-release. It only provides information on where the file is located within the file
-system; they do not provide temporal information. File systems and the merge
-tree of the kernel share many similarities, in both cases, they represent trees that
-are wide and shallow, suggesting that a treemap could potentially work to visualize
-the commit and merge structure of the kernel.
-
-\begin{figure}
-        \centering
-        \includegraphics[width=0.47\textwidth]{figures/kernel-files.png}
-        \caption{Treemap of Linux 2.5.33 file structure}
-        \label{fig:treemap}
-\end{figure}
-
-The treemap is unable to take into account multiple commits behind the same merge
-with the same log preview message. Commits and merges have an ordering in which they
-were added to the kernel, which cannot be represented by a treemap, but is important
-and can be used to assist in building the tree.
-
-The treemap is also designed for working with data of differing types. In the
-filesystem, there are many kinds of files. There are text files, scripts, images,
-binary files, and other types. These can be given colours making differences stand
-out. There is no obvious way to assign meaningful types to the commits such that all
-the commits within a given merge do not have the same colour, although a user
-could be given a controller to colour by author or number of files edited.
-
-Finally, the treemap does not provide any additional information about the
-contents of each cell, only that the cell exists and where it exists in the
-tree. The user is unable to see their current position within the map, or if we
-assume that their current position is the largest surrounding box, they can
-no longer see how their current position interacts with the rest of the
-system.
-%% https://www.cs.umd.edu/hcil/millionvis/Treemap_Visualization_of_the_Linux_Kernel_2_5_33.html
-%% Find paper for this maybe?
-
-
-
-\subsection{List viewer}
-
-Moghaddam designed a web-based visualization
-tool\footnote{\url{http://web.uvic.ca/~arasbm/gitVisualizations/linuxRGraph.html}}
-displaying the chain of merges into the kernel. There is no information on what
-commits are within a given merge, or what files were edited. The visualization
-tool provides information about who authored the commit and when it was
-authored. We can see the visualization tool in figure \ref{fig:listviewer}
-displaying a part of the kernel commit information, from commit ``26b23ac''
-according to the tool.
-
-%% http://web.uvic.ca/~arasbm/gitVisualizations/linuxRGraph.html
-%% Find paper for this maybe?
-
-\begin{figure}
-        \centering
-        \includegraphics[width=0.47\textwidth]{figures/gitvis.png}
-        \caption{List Viewer}
-        \label{fig:listviewer}
-\end{figure}
+The current industry standard tool for git repository visualization is Gitk. The
+Gitk interface is built around the central DAG viewer. The DAG view displays the
+commits on their respective branches, the author of the commit or merge, and the
+date the commit or merge was authored. A user can select a single merge or commit
+to view additional information. For both merges and commits, gitk will present the
+user with the git log. If the user selected a commit, gitk will also present the
+user with the patch information and the names of the files edited. gitk is unable to
+provide the patches and filenames information in merges, as it is unable to
+aggregate commit information in merges.
 
 \section{Visualizing the merge-tree of Linux}
 
