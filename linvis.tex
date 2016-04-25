@@ -15,7 +15,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 
-\newcommand{\TheTitle}{Visualizing Release Information of Linux}
+\newcommand{\TheTitle}{Merge-tree: Visualizing the integration of commits into Linux}
 \newcommand{\TheAuthors}{Evan Wilde, Daniel German}
 \newcommand{\TheEmails}{etcwilde@uvic.ca, dmg@uvic.ca}
 \newcommand{\TheSubject}{Digesting large amounts of commit data}
@@ -86,11 +86,8 @@
         very quickly. Furthermore, the DAG contains every ancestor of every commit, while maintainers are 
         more interested in how and when a commmit arrives to Linux official repository.
 
-        In this paper, we present a tool that uses a tree-based model, as described
-        by German et al., to construct a clearer summary of the changes made. This
-        tool is designed to allow users to explore the topology of the repository
-        for a given release of the kernel and view an aggregated summary of the
-        changes made.
+        In this paper, we present \tool, a tool that uses a tree-based model to construct a clearer summary of the changes made. \tool is designed to allow
+        users to explore the topology of the repository for a given release of the kernel and view an aggregated summary of the changes made.
 
 \end{abstract}
 
@@ -119,22 +116,23 @@ some cases, the Linux kernel is simply too large for the system to generate a
 visualization (eg. Github provides a DAG view for many projects, but is unable to
 display the visualization for projects as large as the Linux kernel (figure
 \ref{fig:gitfail}).
-Furthermore, Linux creates between 60 and 70k new commits every year and, according to our previous work \cite{German2015}pdfl, 
-a commit takes a median of 30 days (from the moment it is authored) to the time it arrives to the official repository
+Furthermore, Linux creates between 60 and 70k new commits every year and, according to our previous work \cite{German2015}, 
+a commit takes a median of 30 days from the moment it is authored to the time it arrives to the official repository
 This means that, if a person inspected the commits in this repository today, tomorrow it might contain  many more
-of commits that were authored long before. However, distinguishing these new commits is not trivial. 
+commits that were authored long before. However, distinguishing these new commits is not trivial. 
 
 \begin{figure}
         \centering
         \includegraphics[width=0.47\textwidth]{figures/gitk.png}
-        \caption{A sample DAG view of commits from Linux in Gitk}
+        \caption{A sample DAG view of commits from Linux in gitk. Commits point towards their ancestors, and there is no clear indication of the way the travel
+          to reach Master. In fact, neither gitk nor git is capable of showing what commits were done in master.}
         \label{fig:gitk}
 \end{figure}
 
 \begin{figure}
         \centering
         \includegraphics[width=0.45\textwidth]{figures/github_viewer.png}
-        \caption{Github Failure Message showing the DAG of the Linux Project}
+        \caption{Github Failure Message showing the DAG of the Linux Project and its relationship to other forks.}
         \label{fig:gitfail}
 \end{figure}
 
@@ -142,7 +140,7 @@ of commits that were authored long before. However, distinguishing these new com
 One of the challenges with visualizing the arrival of commits to a repository is that
 in Git, commits are immutable, and Git does not store the date that a commit was merged into another branch (including master).
 To complicate the problem, the DAG points to the ancestors of a commit (a model necessary for the operation of Git), but developers 
-would prefer to know the path that a commit followed to reach the master repository. \dmg{perhaps a figure is good here}.
+would prefer to know the path that a commit followed to reach the master repository.
 Hence, tracing the path that any commit followed to master would imply that for any given merge, it would be possible to know what commits were merged. A user could
 inspect the commits that have arrived into master within a given time frame by simply checking which commits where merged during that time frame.
 
@@ -157,40 +155,24 @@ inspect the commits that have arrived into master within a given time frame by s
 % using the DAG. Each tree is rooted by the top-level merge performed by Linus, which
 % merges the branches or a set of commits into the kernel.
 
- The contributions of this paper are two. First, we describe a method to convert the DAG of the Linux repository into a tree (we call this the \emph{tree-model of the
+ The contributions of this paper are two. First, we describe a method to convert the DAG of the Linux repository into a tree (we call this the \emph{merge-tree of the
  repository}) that represents the path used by
  any commit to reach master. Second, 
  we present a method to inspect and visualize the history of merges in the  Linux project using the tree-model of the repository
  
 These methods and visualizations have been implemented in a web-based
-tool\footnote{Our visualization tool is currently available at \url{http://li.turingmachine.org}}
-instead of the DAG. Our visualizations and tool provide information about the location of any given
-commit in the respective merge tree, the files edited, the modules edited, and the
-commit message for a given commit or merge. Our tool allows users to apply various
+tool called \tool\footnote{\tool is currently available at \url{http://li.turingmachine.org}}. Our visualizations and tool provide information about the location of any given
+commit in its respective merge-tree, the files edited, the modules edited, and the
+commit message for a given commit or merge. \tool allows users to apply various
 filters, including the release version, along with a keyword or phrase from the log
 preview, the name of the author, or the commit ID. The user can request all the
 root-level merges containing a commit or merge that matches the query, or all
 commits and merges that match the query.
 
 
-
-\evantodo{move to discussion}
-
-Using the tree provides many advantages to the DAG model, but there are two
-drawbacks. The first drawback is that a server must query the state of the master
-repository since time information is not stored by git. The second drawback is that
-the tree construction is a heuristic approach, and in some cases may break.
-
-Our core model provides advantages to the DAG model used by other tools. We separate
-the commits and merges into sub-trees and focus on a single sub-tree at a time. This
-enables us to filter out commits and merges that do not pertain to the component of
-the kernel that we are interested in, providing a clearer picture of what is
-happening in a given merge. The tree model also enables us to aggregate metadata
-easily. With the addition of the continuous polling of the repository, the model
-provides us with a mechanism of performing date-range queries with meaningful
-results.
-
 \section{Merge-Tree model}
+\label{sec:mergetree}
+
 
 Git uses a Directed Acyclic Graph (DAG) as its main data model. In this model, a commit has one or more ordered parents (ancestors), except the root commits of a repository which
 do not have ancestors--Linux git repository has two such commits. Commits are divided into merge commits (they merge two or more branches) and non-merge
@@ -235,7 +217,7 @@ Master). Also, the DAG has been simplified, and it only shows for any commit, on
 \subsection{Computing the merge-tree of the DAG of Linux}
 
 Computing the tree-model of a DAG of any repository might not be possible. However, certain features of the development process of Linux make it feasible to
-compute the its merge-tree model. In particular, the Master branch of Linux is maintained by Linus Torvalds and only him has write access to it. We have verified this
+compute its merge-tree. In particular, the Master branch of Linux is maintained by Linus Torvalds and only him has write access to it. We have verified this
 assertion if previous research~\cite{German2015}. We have developed a heuristic that is presented in Algorithm~\ref{fig:alg}. In a nutshell, first identify the commits directly made
 to the master branch. Then,
 recursively, for
@@ -244,8 +226,8 @@ every commit, using the DAG, determine the shortest path (in terms of time) from
 \begin{algorithm}
 \caption{Computing the merge-tree of Linux Git's DAG}\label{fig:alg}
 \begin{algorithmic}
-\Function{ComputeTreeModel}{DAG}: tree 
-\State {\# Compute the tree from the DAG of a git repository.}
+\Function{ComputeMergeTree}{DAG}: tree 
+\State {\# Compute the tree from the DAG of Linux repository.}
 \State {\#  Returns $Tree$, a graph containing every commit }
 \State {\# in DAG with the path it followed to master.\\}
 
@@ -254,8 +236,9 @@ every commit, using the DAG, determine the shortest path (in terms of time) from
 \State \quad\quad\quad\quad $\textit{first ancestor until reaching root}$
 \State $nodes(Tree) \gets nodes(DAG)$
 \State \Function{distance2Master}{cid} : seconds 
-\State {\# Compute the shortest distance to master setting}
-\State {\# cid's successor (next) in its way to master.}
+\State {\# Helper function}
+\State {\# Recursively compute shortest distance to master}
+\State {\#  setting cid's successor (next) in its way to master.}
 \State {\# This function should be memoized. Otherwise it}
 \State {\# would run in exponential time.}
 \If {\textit{cid in master}} 
@@ -326,6 +309,501 @@ The results of this verification show that this heuristic detected no incorrect 
 to fast-forward commits performed in Linus Torvalds repository, this heuristic breaks apart on Oct 15, 2009, and no longer works for older merges. 
 
 
+\section{Visualizing the merge-tree of Linux}
+
+The goal of \tool was to simplify the  navigation of the kernel commit information, specifically by focusing on merges.
+This is done by leveraging the merge-tree view of Linux to inspect how commits are merged in their way to master.
+
+\subsection{Use cases}
+
+We designed \tool with two use-cases in mind, though a user may switch
+between the cases as they work.
+
+\noindent \textbf{Use-case 1: top-to-bottom approach}\label{sec:usecase1}\\
+These are users that are maintaining a section of the kernel and would like to pick
+a merge (including all the commits that it merges) and merge it directly into their current repository. This is useful for
+reducing the amount of re-implementation work. For these users, it is important to have the
+ability to aggregate metadata about files and modules being effected by the merge.
+It is also important for these users to be able to navigate from the root of the merge-tree toward the
+leaves.
+
+\noindent \textbf{Use-case 2: bottom-to-top approach}\label{sec:usecase2}\\
+These are users that start with a known merge or commit and would like to see what
+other changes are being made in commits that are in the same merge, including knowing the merge-tree they belong to. This is useful
+to see what other commits are related to the current commit and how they get collated into merges that eventually end in master.
+ This is primarily for maintainers that need to perform
+some specific cherry picking of commits. We
+must provide these users a mechanism for navigating from a single commit toward the
+master, allowing them to see other commits that might be related to it.
+
+\subsection{Data Model}
+
+In our visualizations, we leverage the Merge-Tree model described in Section~\ref{sec:mergetree}. In this model each commit is either already in Master, or is part of a tree which is rooted in the merge that merged it into Master. In that case, each
+commit (whether merge or non-merge) has only one successor at most (the root of each tree has none, as it was made by Linus Torvalds directly into Master).
+Commits contain the
+metadata for the changes made. This metadata includes the files changed, the lines
+added and removed from each file, the author, the date the commit was merged into
+the merge that led to being merged into the kernel, and the date the commit was
+authored, the patch, and the commit log. Merges contain less metadata, only storing
+the author of the merge, the log, the commit date, and the author date, and potentially, changes necessary to address conflicts during the merge. The details
+of the model are outlined in \cite{German2015}.
+
+\section{Design and Implementation}
+
+% \dmg{I would remove the command line shell, and use the space for related work}
+
+
+% We came up with two designs. We recognized that the structure of the repository was
+% similar to the wide and shallow tree-structure of a file system. We began with a
+% command-line shell interface. Then transitioned to a web-based tool where we looked
+% beyond the file system structure. In this section, we describe the progression of
+% our tool design, showing the benefits and drawbacks of each component.
+
+% \subsection{Command-line Shell}
+
+% Our initial intuition was to work with the commits and merges as directory trees
+% where the commits are files and the merges are directories. There are many
+% similarities between the tree structure of a file system and the tree structure of
+% the repository. Both trees are generally shallow, but very wide. File systems have
+% been studied for quite some time and there are many tools capable of visualizing and
+% working with the file structure.
+
+% The first tool we implemented was a small command-line shell (figure
+% \ref{fig:shell}) that allows users to navigate through the commits and merges as one
+% might navigate through files and directories. A user could navigate toward the
+% leaves of the tree by using the \verb|cd| command followed by the commit ID of the
+% next merge. The user could then navigate toward the root by issuing \verb|cd ../|
+% as they would in a file system. Users can use \verb|ls| to view what commits and
+% merges exist in the current working merge, then use \verb|cat| to view the log
+% preview of a commit or \verb|more| to see the preview and how many lines were added
+% and removed from the files in the commit.
+
+% \begin{figure}
+%         \centering
+%         \includegraphics[width=0.47\textwidth]{figures/shell.png}
+%         \caption{Shell Design}
+%         \label{fig:shell}
+% \end{figure}
+
+% The shell does not meet our design goals. It only provides users with the ability to
+% navigate from the root. If there is a commit or merge that they would like to
+% investigate, they must find it with another tool and navigate through the tree to
+% find it. Furthermore, it does not aggregate information in the merges, so users must
+% manually aggregate the metadata. Another issue with this design is that it presents
+% the users with the commit hashes, which are quite long and unpleasant to remember
+% and type into the shell, but also do not provide any quick explanation of what the
+% commit or merge may contain.
+
+% \subsection{Web-based Tool}
+
+To navigate and inspect the merge-tree view of the Kernel we
+created a web-based tool called \tool. Creating a web-based
+tool enables users to use the system without having to install additional software
+or store a large database, making it more accessible, more easily maintainable, and
+platform independent. 
+% A web-based tool can leverage interactive means of
+% navigation and provide better explanations of commits and merges than the
+% command-line interface.
+\tool uses the following mechanisms to reach our goals of better navigation and
+better explanation of the changes.
+
+\begin{itemize}
+        \item Filter by searching commits by when they are merged into Master.
+        \item View files edited
+        \item View modules
+        \item Tree viewer
+\end{itemize}
+
+
+\subsection{Searching by when they are merged into Master}
+
+
+\begin{figure}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/search.png}
+        \caption{Search View. It allows finding commits that were \textbf{merged} in a given period or by commit it.}
+        \label{fig:search}
+\end{figure}
+
+Searching (depicted in Figure \ref{fig:search}) allows a user to filter commits and merges that are irrelevant. The search mechanism breaks down the results by
+release version.  A user can further narrow down the search by \textbf{specifying a range of dates} in which such commits \textbf{were merged by Linus into
+  Master, not
+  when the commits were created.} This distinction is important. We have observed commits that take years
+to arrive into Master after they were originally committed. 
+
+A user may then provide a search text, filtering by the author name,
+the commit ID, or keyword from the log. Any part of the author name may show up in
+the results, including searching by email address. 
+
+\dmg{What is this commit? any commit id, or a merge into Master? Unclear.}
+If providing commit ID must be specified
+from the first character to the last character. For example, the commit
+`c267548755a184ef97301071300c1739a564e135' is returned when the user searches for a
+commit ID of `c26' in the 3.10 Linux kernel. We will use this commit for showing
+each of the features of \tool.
+
+\begin{figure}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/search_results_2.png}
+        \caption{Search Results. Each is a commit merged in the desired merged window.}
+        \label{fig:results}
+\end{figure}
+
+In the search results, the user is presented with the one-line log message preview,
+the author's name and email, the date the commit was authored, and the date the
+commit was last committed. The commit date and author date will usually be the same;
+however, if the commit has been rebased or cherry-picked into a merge that
+eventually is merged into the kernel, the commit date and authored date will be
+different. We can see this in the first and third entries in figure
+\ref{fig:results}.
+
+\begin{figure}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/log_view.png}
+        \caption{Panel showing the Commit Message of a commit.}
+        \label{fig:message}
+\end{figure}
+
+Once a user selects a commit or merge to investigate, they are presented with a
+tabbed pane allowing them to view the full commit log, the files edited, the modules
+involved, and the merge-tree view.
+
+The first tab displays the full commit log (figure \ref{fig:message}). From this, a
+user is able to see what they would see had they searched for the commit using git
+log. This doesn't provide additional information to the other tools, but helps to
+complete the functionality of \tool. The commit log provides a user with the
+information about the content of the commit and who has signed-off on the commit to
+ensure that it is good quality. The message for merges may contain a summary of the
+commits being merged.  The information within these messages is highly variable, and
+is completely dependent on the author's style. As the user moves toward the
+top-level merge, the quality of these messages generally improves.
+
+\begin{figure}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/files_view_2.png}
+        \caption{Panels showing the files modified by all the commits that are part of this merge.}
+        \label{fig:files}
+\end{figure}
+
+The second tab is the files tab (figure \ref{fig:files}). This tab provides information on what files have been edited, how many lines were added, and how many
+lines were removed in a given commit. For non-merges, this functionality is similar to the other tools available. Our tree-based design model allows us to
+extend this functionality to merges by aggregating information about all the commits that are children of the merge in the merge-tree (which the other tools are
+unable to show). To find the number of lines added to a file in a merge, we take the sum of the lines added to that file in each of the children of that
+merge. We do the same for calculating the number of lines removed. 
+% This could be extended to use the patch information to determine when a line has been
+% replaced rather than incrementing the lines added and removed.
+
+\begin{figure}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/modules_view_2.png}
+        \caption{Panel showing the modules changed by all the commits in this merge.}
+        \label{fig:modules}
+\end{figure}
+
+The modules tab (figure \ref{fig:modules}) shows the modules that are contained
+within the commit. Modules are not natively recognized by git, and are not going to
+be present in all repositories.  In the Linux repository, authors put the module
+they are working on in the one-line preview of the log-message; for example: the log \emph{gcov: add support for FCC 4.9} has updated the \emph{gcov} module
+(the coverage testing tool of the kernel). We heuristically
+extract the module by taking all text in the log preview of commits until the first
+colon.  Modules are logical partitions of the information in the kernel. Depending
+on where the author was working, modules can be general, such as ``bluetooth'' and
+``wireless'', or can be quite specific for individual hardware, such as
+``ath9k\_hw'' and ``wl1251''. In a few cases, the author of a commit does not
+correctly follow this format and the hueristic approach fails. As with the Files panels,
+non-merge commits show their corresponding information, but for merge commits we aggregate all the modules changed
+in all the commits that are part of that merge.
+The output of this view is shown in Figure~\ref{fig:modules}.
+
+Finally, we have the Tree view tab. The tree view is designed for providing easy
+navigation of the commits within the merge-tree that is rooted in the current merge. It also provides a clear topological view of the merge and the submerges it includes.We have experimented with various tree designs to find a design that
+allows for easy navigation and visualization of both large and small trees.  We discuss this panel in the next subsection.
+
+\subsection{Merge-Tree Views} \label{treeview_section}
+
+The merge-tree view is what makes \tool unique to other tools that inspect the DAG of a git repository. With it, a user can inspect how commits are merged
+on their way to Master. We have experimented with various types of trees:
+
+\begin{enumerate}
+\item List trees are a text-based representation of the merge-tree, and are easy to search and navigate.
+\item Reingold-Tilford trees provide a clear visual represent the tree structure of the merge-tree.
+\item Bubble trees organize the data hierarchically by having the parent node contain the child nodes similarly to tree maps, but
+clearly showing the parent-child relationships between commits and merges.
+\end{enumerate}
+
+
+\subsubsection{List Tree}
+
+The list tree viewer (figure \ref{fig:list_tree}) is in the form of nested lists,
+and is designed to more closely model the tree view found in file browsers. This
+tree only contains the commits and merges that are within the subtrees of the
+current merge. A commit will never have any items in this tree as it is a leaf. To
+accompany the tree, we include breadcrumbs at the top of the page to enable a user
+to navigate both from the root to the leaves and from a leaf to the root. The last
+item in the breadcrumb list is the current commit, the previous item is the parent
+of the current commit, and the first item is the root merge into the kernel.
+
+\begin{figure}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/list_tree.png}
+        \caption{List Tree}
+        \label{fig:list_tree}
+\end{figure}
+
+\subsubsection{Reingold-Tilford Tree}
+
+
+\evantodo{we need a reference to these trees}
+
+To improve the visualization of the merge-tree, we first transform the merge-tree into a new tree, where each commit points to its next merge in the way to Master. However, we keep the topological order of the commits in the tree-merge as the order of the
+leaves for a given merge (e.g. if merge-tree contains two commits A, B merged into C, then the simplified tree contains links B and C directly to A, but it
+preserves the order of B with respect to C by showing B above C.
+This allows the clustering of commits along their next merge, and avoid the space needed to
+present long sequences of commits without merges in between.
+
+
+The Reingold-Tilford tree (Figures \ref{fig:zoomed_tree} and \ref{fig:tree}) allows the visualization and navigation
+of the entire merge-tree in an intuitive representation of the tree. This illustrates a clear notion of
+root and leaves, and how to navigate in either direction. Some of the merge trees are very large (figure \ref{fig:zoomed_tree}), containing
+thousands of commits and merges. While the tree is capable of producing a
+visualization, it becomes much more difficult to understand. For example the merge 73287a43cc79ca06629a88d1a199cd283f42456a performed by Linus Torvalds in May
+1, 2013, merged 1722 non-merge commits and 91 merges. footnote{This commit can be inspected at \url{http://li.turingmachine.org/commits/73287a43cc79ca06629a88d1a199cd283f42456a}}
+
+\begin{figure}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/tree_zoom.png}
+        \caption{Entire Reingold-Tilford Tree of a merge. This merge by Linus (a992bf836f9c3039a16f4bd068d161c86c6c3e2c) contains 1722 includes non-merge commits
+          touching 239 modules and 1525 files.}
+        \label{fig:zoomed_tree}
+\end{figure}
+
+
+\begin{figure}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/tree_view.png}
+        \caption{Detail of the Reingold-Tilford Tree in Figure~\ref{fig:zoomed_tree}.}
+        \label{fig:tree}
+\end{figure}
+
+Clicking on subtrees will cause them to collapse, only showing parts of the tree
+that are of interest to the user. Furthermore, the user can zoom the tree by
+scrolling the mouse wheel to see more of the topology of the tree, or to see the
+details of a given part of the tree.
+
+\dmg{do you have a figure that shows the collapsed subtrees? Try to use the same HUGE commit}
+
+
+\subsubsection{Bubble Tree}
+
+\evantodo{we need reference to bubble trees}
+
+The bubble tree (figure \ref{fig:bubble_tree}) provides a very clear picture of
+where a commit is located in the tree hierarchy. The currently selected commit or merge
+is colored red, while non-selected merges use a shade of blue and commits use white.
+The depth of the blue colouring is dependent on how deep in the hierarchy that node
+is. The root is the lightest blue, and the contained merges are progressively
+darker.
+
+\begin{figure}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/bubble_tree.pdf}
+        \caption{Bubble Tree of a large merge, showing in red (the tiny dot close to the middle) the location of a specific commit of interest.}
+        \label{fig:bubble_tree}
+\end{figure}
+
+The bubble tree doesn't have an implicit way of providing additional information,
+placing any text near the nodes makes the tree impossible to read, so we include a
+separate pane in the web page. When a user hovers over a node, the pane shows
+additional information about the author and the commit message and a link to the
+detailed page for that commit or merge. If the user clicks on a node, the tree will
+zoom to that node and the information in the info pane will persist, enabling the
+user to click the link. This tree provides an easy mechanism for users to navigate
+from the root to the leaves and vice versa.
+
+\section{Implementation Details}
+
+\tool was built using Nginx as the main web server, postgresql as the dbms, and Flask as the framework for generating the dynamic content.
+
+Nginx is a high-performance, open source, scalable HTTP and mail server. It is designed with massive
+scalability and multi-processing in mind. Instead of using request-driven threading,
+Nginx uses an event-driven architecture, making it more scalable, proving itself as
+being the web server behind large sites like Netflix, Hulu, GitHub, Tumblr, and many
+other popular sites\footnote{\url{http://wiki.nginx.org/Main}}.
+
+Postgresql is our DBMS of choice, providing fast results.
+
+We chose the python micro-framework
+Flask\footnote{\url{http://flask.pocoo.org/docs/0.10/}} for generating the dynamic
+content. Working with flask is simple and easy, allowing us to work in Python.
+
+\subsection{Extendability}
+
+The front-end uses asynchronous requests to gather the information for the trees and
+tables. This enables third-parties to implement new front-ends, trying other
+designs, though this interface may change in the future. The tree, file, and module
+information is accessible through
+http://li.turingmachine.org/data/tree/JSON/\verb|<cid>|,
+http://li.turingmachine.org/data/files/JSON/\verb|<cid>|,
+http://li.turingmachine.org/data/modules/JSON/\verb|<cid>|, respectively.
+
+The response for the tree is a single object. This object is the root node of the
+tree, and may contain an object of children objects in the \verb|children| field,
+which are in the same format as the root object. The children object uses the commit
+ID as the key.
+
+The tree node objects have the following fields:
+
+\begin{tabular}{ccl}
+        Field name      & Data type & Description\\\hline
+        \verb|cid|      & string    & Commit ID\\
+        \verb|name|     & string    & One-line log preview\\
+        \verb|mlinus|   & string    & Root merge commit ID\\
+        \verb|author|   & string    & Author name and email\\
+        \verb|mnext|    & string    & Parent merge commit ID\\
+        \verb|children| & object    & Object of tree objects\\
+\end{tabular}
+
+The file responses contain only the files that the selected merge or commit works
+with. The response is a single object in the form of a tree. This object is the root
+of the tree, and represents the current merge or commit. If the current position in
+the tree is an inner node, the response will contain the child nodes in the
+``children'' field, otherwise ``children'' will be an empty list. The format of file
+response is as follows,
+
+\begin{tabular}{lll}
+        Field name & Data type & Description\\\hline
+        \verb|cid| & string & Commit ID\\
+        \verb|mnext| & string & Parent merge commit ID\\
+        \verb|children| & list & List of tree objects\\
+        \verb|files| & list of tuples&
+        \footnotesize{
+        \begin{tabular}{lc}
+                \verb|Filename| & string\\
+                \verb|Lines added| & uint\\
+                \verb|Lines removed| & uint\\
+        \end{tabular}}\\
+\end{tabular}
+
+
+\section{Discussion}
+
+From a developers point of view, the are two major disadvantages of the DAG model of git: a) its edges point backwards, i.e. commits point to their ancestor,
+not to the commit that succeeds them in their way to be integrated; and b) the DAG contains many more edges that are necessary to understand how integration
+happened. We addressed these two issues with the creation of the merge-tree model of the DAG of Linux. Effectively the merge-tree view recoveres the details of each merged
+branch into master.
+
+In our experience, no other git repository reaches the level of DAG complexity that Linux has. In most git repositories  every a merge into master does not
+merge other merges, and most merges bring very few new commits with them. However, even in those cases, the merge-tree will provide a valuable summary of how
+commits have been integrated into master, specially since the time of integration might be very different from the time the commits were created. 
+
+The biggest challenge, however, is computing the merge-tree. Our heuristic is applicable \textbf{only} to the Linux kernel, and only since July 2009 and it is
+very likely it will not work for other repositories, specially those that have fast-forward commits into Master (as the majority of repositories). One way to
+address this is lack of data is by monitoring at short intervals the arrival of commits into Master (as we did in \cite{German2015}, i.e.
+\emph{continuously mining} a git repo). This however, requires planning.
+
+Regarding \tool. Because it leverages the merge-tree of the kernel, it provides mechanisms and visualizations that other tools are unable to
+produce.  It gives us the ability to see how commits are being merged
+into the kernel, allowing us to better understand how code is integrated into the kernel.
+
+\begin{figure}
+        \centering
+        \includegraphics[width=0.47\textwidth]{figures/042dd_DAG.png}
+        \caption{Merge Dag View}
+        \label{fig:dag_view}
+\end{figure}
+
+\begin{figure*}
+        \centering
+        \includegraphics[width=0.97\textwidth]{figures/042dd_tree.png}
+        \caption{Merge Tree View \dmg{this figure is unreadable. Any chance you can make the text bigger?}}
+        \label{fig:tree_view}
+\end{figure*}
+
+Our goal was to build a tool to enable maintainers to effectively navigate and browse
+the changes performed to the kernel over the period of a release.
+Achieving this goal includes removing information that does not pertain to the area
+of the kernel that the user is interested in. In figure \ref{fig:dag_view} and
+figure \ref{fig:tree_view} we can visually compare the results returned from gitk
+and our tool for the top-level merge ``042dd60ca6dec9a02cefa8edd67de386e35755d6''
+from kernel version 3.10. Note first that gitk has no way to show that this is a merge into Master.
+
+The log information to this merge-commit in both of these
+figures is identical, but the presentation drastically changes our ability to
+comprehend what we are seeing. The primary difference is the removal of irrelevant
+information. In gitk (\ref{fig:dag_view}), the visualization results include commits
+and merges from other components of the kernel, while our tool (\ref{fig:tree_view})
+only includes the results that are specific to the component of the kernel that we
+are interested in.
+
+This merge is relatively small, containing only four sub-merges, three of which
+only contain a single commit, and the last containing two commits. With our
+tool, we are able to immediately see what section of the kernel these commits and merges pertain to. The DAG view of this provides almost no explanation,
+furthermore, users must work to determine where this merge ends and the next one
+begins.
+
+\tool further enhances our understanding by summarizing the files
+and modules that were edited in the entire branch being merged. We are able to determine that three
+files, ``palamas-regulator.c'' had two lines added and two lines removed,
+``dbx500-prcmu.c'' had 12 lines added and 12 lines removed, and ``core.c'' had 5
+lines added and 2 lines removed. Finally, we are able to determine that only the
+``regulator'' module was modified in this merge and was modified by 5 commits.
+
+
+Using \tool many advantages over the DAG model, but there are two
+drawbacks. The first drawback is that a server must query the state of the master
+repository since time information is not stored by git. The second drawback is the
+need to pre-compute the merge-tree of the repository.
+
+% Our core model provides advantages to the DAG model used by other tools. We separate
+% the commits and merges into sub-trees and focus on a single sub-tree at a time. This
+% enables us to filter out commits and merges that do not pertain to the component of
+% the kernel that we are interested in, providing a clearer picture of what is
+% happening in a given merge. The tree model also enables us to aggregate metadata
+% easily. With the addition of the continuous polling of the repository, the model
+% provides us with a mechanism of performing date-range queries with meaningful
+% results.
+
+
+\section{Future Work}
+
+There are still many areas that can be improved before the full potential of our
+model can be realized. Here, we outline various areas of the tool that still need
+more attention.
+
+\subsection{Files}
+
+There currently is no functionality surrounding searching by filename. Users falling
+under use-case 2 may know what file they are editing and try to determine how it may
+work with the other commits and merges in the module. It is possible that a third
+use-case may arise, where the user wants to determine all commits that effect a
+given file. In both cases, bottom-to-top approach is applied.
+
+There is limited functionality to the presentation of the file information. At a
+minimum, the patches for the commits can be displayed. From there, the patches can
+be used to piece together parts of the file to generate a single patch at a given
+merge rather than displaying each patch individually. The patches can also be used
+for determining what kinds of changes were made, if the lines are being added,
+removed, or being replaced.
+
+\subsection{Authorship}
+
+Our model can aggregate more information than what we have implemented. The
+authorship information is important for licensing purposes, and we can show all
+authors contributing to commits in a  merge and how many commits they contributed to
+the merge. We could go further, providing information about what files they edited,
+how many lines they added and removed, and more.
+
+\subsection{Evaluation}
+
+At this time, we have no evidence that our tool is able to improve the work-flow of
+maintainers. We believe that the tool is able to improve the work-flow and
+performance of maintainers because it provides cleaner mechanisms of visualizing and
+presenting the commit information. It is able to provide more relevant information,
+while removing information that is irrelevant to a given module or set of merges.
+
+We can either perform user-testing to show how a users workflow changes, or we could
+have maintainers evaluate and critique the tool and use their feedback to determine
+if the tool meets our goals.
 
 \section{Related Work}
 
@@ -439,498 +917,7 @@ according to the tool.
         \label{fig:listviewer}
 \end{figure}
 
-\section{Visualizing the merge-tree of Linux}
 
-The goal is to build a tool that simplifies  navigation of the kernel commit information, while providing an explanation of the changes occurring at each commit
-and, more importantly, indicates how commits are merged in their way to master.
-We designed the tool with two use-cases in mind, though a user may switch
-between the cases as they work.
-
-\noindent \textbf{Use-case 1: top-to-bottom approach}\label{sec:usecase1}\\
-These are users that are maintaining a section of the kernel and would like to pick
-a merge (including all the commits that it merges) and merge it directly into their current repository. This is useful for
-reducing the amount of re-implementation work. For these users, it is important to have the
-ability to aggregate metadata about files and modules being effected by the merge.
-\dmg{what is root?, what is leaves? perhaps remove unless you can be specific}
-It is also important for these users to be able to navigate from the root toward the
-leaves.
-
-\noindent \textbf{Use-case 2: bottom-to-top approach}\label{sec:usecase2}\\
-These are users that start with a known merge or commit and would like to see what
-other changes are being made in commits that are in the same merge. This is useful
-to see what other commits are related to the current commit and how they get collated into merges that eventually end in master.
- This is primarily for maintainers that need to perform
-some specific cherry picking of commits. We
-must provide these users a mechanism for navigating from a single commit toward the
-master, allowing them to see the bigger picture.
-
-\subsection{Core Model}
-
-In our visualizations, each commit is either made directly to Master, or is part of a Merge-tree, with its root in Master (a merge made by Linus Torvalds). Each merge may contain zero or more
-children, which are other merges and commits. 
-
-To improve the visualization of the merge-tree, we transform the merge-tree into a new tree, where each commit points to its next merge in the way to Master. In
-this model, commits have no children and are always leaf nodes. This allows the clustering of commits along their next merge, and avoid the space needed to
-present long sequences of commits without merges in between.
-
-Commits contain the
-metadata for the changes made. This metadata includes the files changed, the lines
-added and removed from each file, the author, the date the commit was merged into
-the merge that led to being merged into the kernel, and the date the commit was
-authored, the patch, and the commit log. Merges contain less metadata, only storing
-the author of the merge, the log, the commit date, and the author date. The details
-of the model are outlined in \cite{German2015}.
-
-\section{Design}
-
-\dmg{I would remove the command line shell, and use the space for related work}
-
-
-We came up with two designs. We recognized that the structure of the repository was
-similar to the wide and shallow tree-structure of a file system. We began with a
-command-line shell interface. Then transitioned to a web-based tool where we looked
-beyond the file system structure. In this section, we describe the progression of
-our tool design, showing the benefits and drawbacks of each component.
-
-\subsection{Command-line Shell}
-
-Our initial intuition was to work with the commits and merges as directory trees
-where the commits are files and the merges are directories. There are many
-similarities between the tree structure of a file system and the tree structure of
-the repository. Both trees are generally shallow, but very wide. File systems have
-been studied for quite some time and there are many tools capable of visualizing and
-working with the file structure.
-
-The first tool we implemented was a small command-line shell (figure
-\ref{fig:shell}) that allows users to navigate through the commits and merges as one
-might navigate through files and directories. A user could navigate toward the
-leaves of the tree by using the \verb|cd| command followed by the commit ID of the
-next merge. The user could then navigate toward the root by issuing \verb|cd ../|
-as they would in a file system. Users can use \verb|ls| to view what commits and
-merges exist in the current working merge, then use \verb|cat| to view the log
-preview of a commit or \verb|more| to see the preview and how many lines were added
-and removed from the files in the commit.
-
-\begin{figure}
-        \centering
-        \includegraphics[width=0.47\textwidth]{figures/shell.png}
-        \caption{Shell Design}
-        \label{fig:shell}
-\end{figure}
-
-The shell does not meet our design goals. It only provides users with the ability to
-navigate from the root. If there is a commit or merge that they would like to
-investigate, they must find it with another tool and navigate through the tree to
-find it. Furthermore, it does not aggregate information in the merges, so users must
-manually aggregate the metadata. Another issue with this design is that it presents
-the users with the commit hashes, which are quite long and unpleasant to remember
-and type into the shell, but also do not provide any quick explanation of what the
-commit or merge may contain.
-
-\subsection{Web-based Tool}
-
-We replace the command-line interface with a web-based tool. Creating a web-based
-tool enables users to use the system without having to install additional software
-or store a large database, making it more accessible, more easily maintainable, and
-platform independent. A web-based tool can utilize more interactive means of
-navigation and provide better explanations of commits and merges than the
-command-line interface.
-
-Our tool uses the following mechanisms to reach our goals of better navigation and
-better explanation of the changes.
-
-\begin{itemize}
-        \item Filter by search
-        \item View files edited
-        \item View modules
-        \item Tree viewer
-\end{itemize}
-
-
-\begin{figure}
-        \centering
-        \includegraphics[width=0.47\textwidth]{figures/search.png}
-        \caption{Search View}
-        \label{fig:search}
-\end{figure}
-
-Searching (figure \ref{fig:search}) allows a user to filter commits and merges that
-are irrelevant. The search mechanism breaks down the results by release version. A
-user can further narrow down the search range using the commit date range. The
-commit date refers to the date of the creation of the top-level merge. The commits
-and merges returned may have a commit date beyond the queried dates; the date-range
-query refers to the date that the commit is finally merged into the kernel by Linus.
-A commit may not be merged immediately, and in some cases may take years before
-being applied. A user may then provide a search text, filtering by the author name,
-the commit ID, or keyword from the log. Any part of the author name may show up in
-the results, including searching by email address. The commit ID must be specified
-from the first character to the last character. For example, the commit
-`c267548755a184ef97301071300c1739a564e135' is returned when the user searches for a
-commit ID of `c26' in the 3.10 Linux kernel. We will use this commit for showing
-each of the features of the tool.
-
-\begin{figure}
-        \centering
-        \includegraphics[width=0.47\textwidth]{figures/search_results.png}
-        \caption{Search Results}
-        \label{fig:results}
-\end{figure}
-
-In the search results, the user is presented with the one-line log message preview,
-the author's name and email, the date the commit was authored, and the date the
-commit was last committed. The commit date and author date will usually be the same;
-however, if the commit has been rebased or cherry-picked into a merge that
-eventually is merged into the kernel, the commit date and authored date will be
-different. We can see this in the first and third entries in figure
-\ref{fig:results}.
-
-\begin{figure}
-        \centering
-        \includegraphics[width=0.47\textwidth]{figures/message_view.png}
-        \caption{Commit Message}
-        \label{fig:message}
-\end{figure}
-
-Once a user selects a commit or merge to investigate, they are presented with a
-tabbed pane allowing them to view the full commit log, the files edited, the modules
-involved, and the tree views.
-
-The first tab displays the full commit log (figure \ref{fig:message}). From this, a
-user is able to see what they would see had they searched for the commit using git
-log. This doesn't provide additional information to the other tools, but helps to
-complete the functionality of our tool. The commit log provides a user with the
-information about the content of the commit and who has signed-off on the commit to
-ensure that it is good quality. The message for merges may contain a summary of the
-commits being merged.  The information within these messages is highly variable, and
-is completely dependent on the author's style. As the user moves toward the
-top-level merge, the quality of these messages generally improves.
-
-\begin{figure}
-        \centering
-        \includegraphics[width=0.47\textwidth]{figures/file_view.png}
-        \caption{Commit Files}
-        \label{fig:files}
-\end{figure}
-
-The second tab is the files tab (figure \ref{fig:files}). This tab provides
-information on what files have been edited, how many lines were added, and how many
-lines were removed in a given commit. This functionality is similar to the other
-tools available. Our tree-based design model allows us to extend this functionality
-to merges, which the other tools are unable to show. To find the number of lines
-added to a file in a merge, we take the sum of the lines added to that file in each
-of the children of that merge. We do the same for calculating the number of lines
-removed. This could be extended to use the patch information to determine when a
-line has been replaced rather than incrementing the lines added and removed.
-
-\begin{figure}
-        \centering
-        \includegraphics[width=0.47\textwidth]{figures/modules.png}
-        \caption{Commit Modules}
-        \label{fig:modules}
-\end{figure}
-
-The modules tab (figure \ref{fig:modules}) shows the modules that are contained
-within the commit. Modules are not natively recognized by git, and are not going to
-be present in all repositories.  In the Linux repository, authors put the module
-they are working on in the one-line preview of the log-message. We heuristically
-extract the module by taking all text in the log preview of commits until the first
-colon.  Modules are logical partitions of the information in the kernel. Depending
-on where the author was working, modules can be general, such as ``bluetooth'' and
-``wireless'', or can be quite specific for individual hardware, such as
-``ath9k\_hw'' and ``wl1251''. In a few cases, the author of a commit does not
-correctly follow this format and the hueristic approach fails. Like files, we are
-able to show what modules are edited in merges and commits. The image in figure
-\ref{fig:modules} shows the modules for a commit.  As commits have no children, they
-will only have a single module; merges with more than one child will have more.
-
-Finally, we have the tree view tab. The tree view is designed for providing easy
-navigation within a tree and providing a clear topological view of the branch of the
-main kernel. We have experimented with various tree designs to find a design that
-allows for easy navigation and visualization of both large and small trees. We
-discuss the various tree designs in section \ref{treeview_section}.
-
-\subsection{Tree Views} \label{treeview_section}
-
-The tree view is what makes this tool unique to other tools, providing a full view
-of the entire merge tree. We have experimented with various types of trees; list
-trees are similar to the representation used in many file system explorers,
-Reingold-Tilford trees clearly represent the tree structure, and bubble trees
-organize the data hierarchically by having the parent node contain the child nodes
-similarly to tree maps, but clearly showing the parent-child relationships between
-nodes.
-
-\subsubsection{List Tree}
-
-The list tree viewer (figure \ref{fig:list_tree}) is in the form of nested lists,
-and is designed to more closely model the tree view found in file browsers. This
-tree only contains the commits and merges that are within the subtrees of the
-current merge. A commit will never have any items in this tree as it is a leaf. To
-accompany the tree, we include breadcrumbs at the top of the page to enable a user
-to navigate both from the root to the leaves and from a leaf to the root. The last
-item in the breadcrumb list is the current commit, the previous item is the parent
-of the current commit, and the first item is the root merge into the kernel.
-
-\begin{figure}
-        \centering
-        \includegraphics[width=0.47\textwidth]{figures/list_tree.png}
-        \caption{List Tree}
-        \label{fig:list_tree}
-\end{figure}
-
-\subsubsection{Reingold-Tilford Tree}
-
-The Reingold-Tilford tree (figure \ref{fig:tree})produces very nice results,
-creating an intuitive representation of the tree. This illustrates a clear notion of
-root and leaves, and how to navigate in either direction.
-
-\begin{figure}
-        \centering
-        \includegraphics[width=0.47\textwidth]{figures/tree_view.png}
-        \caption{Reingold-Tilford Tree}
-        \label{fig:tree}
-\end{figure}
-
-Clicking on subtrees will cause them to minimize, only showing parts of the tree
-that are of interest to the user. Furthermore, the user can zoom the tree by
-scrolling the mouse wheel to see more of the topology of the tree, or to see the
-details of a given part of the tree.
-
-Some of the merge trees are very large (figure \ref{fig:zoomed_tree}), containing
-thousands of commits and merges. While the tree is capable of producing a
-visualization, it becomes much more difficult to understand.
-
-\begin{figure}
-        \centering
-        \includegraphics[width=0.47\textwidth]{figures/tree_zoom.png}
-        \caption{Reingold-Tilford Tree zoomed out}
-        \label{fig:zoomed_tree}
-\end{figure}
-
-\subsubsection{Bubble Tree}
-
-The bubble tree (figure \ref{fig:bubble_tree}) provides a very clear picture of
-where a commit is located in the hierarchy. The currently selected commit or merge
-is colored red, while non-selected merges use a shade of blue and commits use white.
-The depth of the blue colouring is dependent on how deep in the hierarchy that node
-is. The root is the lightest blue, and the contained merges are progressively
-darker.
-
-\begin{figure}
-        \centering
-        \includegraphics[width=0.47\textwidth]{figures/bubble_tree.pdf}
-        \caption{Bubble Tree}
-        \label{fig:bubble_tree}
-\end{figure}
-
-The bubble tree doesn't have an implicit way of providing additional information,
-placing any text near the nodes makes the tree impossible to read, so we include a
-separate pane in the web page. When a user hovers over a node, the pane shows
-additional information about the author and the commit message and a link to the
-detailed page for that commit or merge. If the user clicks on a node, the tree will
-zoom to that node and the information in the info pane will persist, enabling the
-user to click the link. This tree provides an easy mechanism for users to navigate
-from the root to the leaves and vice versa.
-
-\section{Implementation Details}
-
-\evan{Is this section necessary? The tables are probably useful, but the rest... not
-sure on}
-
-We built a web-based tool to provide information about the kernel.  We chose to use
-Nginx as the main web server, postgresql as the dbms, and Flask as the framework for
-generating the dynamic content.
-
-Nginx is a high-performance, open source, scalable HTTP and mail server. Started in
-2002, the project is much younger than the Apache project, and designed with massive
-scalability and multi-processing in mind. Instead of using request-driven threading,
-Nginx uses an event-driven architecture, making it more scalable, proving itself as
-being the web server behind large sites like Netflix, Hulu, GitHub, Tumblr, and many
-other popular sites\footnote{\url{http://wiki.nginx.org/Main}}.
-
-Postgresql is our dbms of choice, providing fast and reliable results. There are
-multiple reasons behind choosing postgresql over another dbms. The main reason being
-that the dataset built by German et al. was generated from a postgresql database,
-allowing us to import the data directly without any further conversions.
-
-We chose the python micro-framework
-Flask\footnote{\url{http://flask.pocoo.org/docs/0.10/}} for generating the dynamic
-content. Working with flask is simple and easy, allowing us to work in Python.
-
-The database itself is broken down into 5 main tables; commits, filesmod, logs,
-pathtomerge, and releases. Commits contains most of the metadata for each commit; it
-contains the author, the authored date, and committer, the commit date, a boolean
-saying what is a merge, and the patch. Filesmod contains the information on what
-files were modified for the commits. Since a file may be modified by multiple
-commits, and a commit may be modifying multiple files, we can do one of two things
-for the primary key. We could use both the filename and the commit ID as the primary
-key, but we just use an index. The filesmod table contains the filename, the commit
-ID, the number of lines added, and the number of lines removed. Trivially, it
-contains the index, but that isn't necessary for anything beyond the primary key.
-Logs contains the commit log preview and full commit log. Pathtomerge is the
-important table.  Pathtomerge contains the commit ID, the number of merges between
-the commit and the top-level merge with the kernel, the next merge in the merge path
-up to the top-level merge with the kernel, the top-level merge into the kernel, and
-the date it is merged into the kernel. The information in this table must be
-generated periodically by the server because we are unable to generate the tree
-structure correctly straight from the information stored by git. Pathtomerge does
-not contain any top-level merges, as these will never have a next merge in the tree;
-since we are only storing the parents and not the children, storing the top-level
-merge is redundant and unnecessary. The releases table stores the release
-information.
-
-It contains
-\begin{itemize}
-        \item Version name
-        \item Candidate releases versus real releases
-        \item Previous release
-        \item Previous real release
-        \item Previous release commit ID
-        \item Previous real release commit ID
-        \item Current version commit ID
-\end{itemize}
-The current version commit ID represents the last top-level merge into the version
-of the kernel. Using this and the commits table, we are able to determine the
-release date of any version of the kernel. Then using the previous release date, we
-can find the range of dates where valid top-level merges are found for that version.
-
-\section{Discussion}
-
-Our tool provides mechanisms and visualizations that other tools are unable to
-produce. Continuous mining of the repository provides more information about how the
-repository is changing. It gives us the ability to see how commits are being merged
-into the kernel, allowing us to more reliably build trees from the snapshots of the
-repository.
-
-\begin{figure}
-        \centering
-        \includegraphics[width=0.47\textwidth]{figures/042dd_DAG.png}
-        \caption{Merge Dag View}
-        \label{fig:dag_view}
-\end{figure}
-
-\begin{figure}
-        \centering
-        \includegraphics[width=0.47\textwidth]{figures/042dd_tree.png}
-        \caption{Merge Tree View}
-        \label{fig:tree_view}
-\end{figure}
-
-Our goal was to build a tool to enable maintainers to effectively navigate and pull
-an explanation of the changes performed to the kernel over the period of a release.
-Achieving this goal includes removing information that does not pertain to the area
-of the kernel that the user is interested in. In figure \ref{fig:dag_view} and
-figure \ref{fig:tree_view} we can visually compare the results returned from gitk
-and our tool for the top-level merge ``042dd60ca6dec9a02cefa8edd67de386e35755d6''
-from kernel version 3.10. The relevant information to this commit in both of these
-figures is identical, but the presentation drastically changes our ability to
-comprehend what we are seeing. The primary difference is the removal of irrelevant
-information. In gitk (\ref{fig:dag_view}), the visualization results include commits
-and merges from other components of the kernel, while our tool (\ref{fig:tree_view})
-only includes the results that are specific to the component of the kernel that we
-are interested in.
-
-This merge is relatively small, containing only four merges, three of which
-only contain a single commit, and the last containing two commits. With our
-tool, we are able to immediately see what commits and merges pertain to our
-section of the kernel. The DAG view of this provides almost no explanation,
-furthermore, users must work to determine where this merge ends and the next one
-begins.
-
-Our tool further enhances our understanding by immediately giving us the files
-and modules that were edited in the branch. We are able to determine that three
-files, ``palamas-regulator.c'' had two lines added and two lines removed,
-``dbx500-prcmu.c'' had 12 lines added and 12 lines removed, and ``core.c'' had 5
-lines added and 2 lines removed. Finally, we are able to determine that only the
-``regulator'' module was modified in this merge and was modified by 5 commits.
-
-\subsection{Extendability}
-
-The front-end uses asynchronous requests to gather the information for the trees and
-tables. This enables third-parties to implement new front-ends, trying other
-designs, though this interface may change in the future. The tree, file, and module
-information is accessible through
-http://li.turingmachine.org/data/tree/JSON/\verb|<cid>|,
-http://li.turingmachine.org/data/files/JSON/\verb|<cid>|,
-http://li.turingmachine.org/data/modules/JSON/\verb|<cid>|, respectively.
-
-The response for the tree is a single object. This object is the root node of the
-tree, and may contain an object of children objects in the \verb|children| field,
-which are in the same format as the root object. The children object uses the commit
-ID as the key.
-
-The tree node objects have the following fields:
-
-\begin{tabular}{ccl}
-        Field name      & Data type & Description\\\hline
-        \verb|cid|      & string    & Commit ID\\
-        \verb|name|     & string    & One-line log preview\\
-        \verb|mlinus|   & string    & Root merge commit ID\\
-        \verb|author|   & string    & Author name and email\\
-        \verb|mnext|    & string    & Parent merge commit ID\\
-        \verb|children| & object    & Object of tree objects\\
-\end{tabular}
-
-The file responses contain only the files that the selected merge or commit works
-with. The response is a single object in the form of a tree. This object is the root
-of the tree, and represents the current merge or commit. If the current position in
-the tree is an inner node, the response will contain the child nodes in the
-``children'' field, otherwise ``children'' will be an empty list. The format of file
-response is as follows,
-
-\begin{tabular}{lll}
-        Field name & Data type & Description\\\hline
-        \verb|cid| & string & Commit ID\\
-        \verb|mnext| & string & Parent merge commit ID\\
-        \verb|children| & list & List of tree objects\\
-        \verb|files| & list of tuples&
-        \footnotesize{
-        \begin{tabular}{lc}
-                \verb|Filename| & string\\
-                \verb|Lines added| & uint\\
-                \verb|Lines removed| & uint\\
-        \end{tabular}}\\
-\end{tabular}
-
-\section{Future Work}
-
-There are still many areas that can be improved before the full potential of our
-model can be realized. Here, we outline various areas of the tool that still need
-more attention.
-
-\subsection{Files}
-
-There currently is no functionality surrounding searching by filename. Users falling
-under use-case 2 may know what file they are editing and try to determine how it may
-work with the other commits and merges in the module. It is possible that a third
-use-case may arise, where the user wants to determine all commits that effect a
-given file. In both cases, bottom-to-top approach is applied.
-
-There is limited functionality to the presentation of the file information. At a
-minimum, the patches for the commits can be displayed. From there, the patches can
-be used to piece together parts of the file to generate a single patch at a given
-merge rather than displaying each patch individually. The patches can also be used
-for determining what kinds of changes were made, if the lines are being added,
-removed, or being replaced.
-
-\subsection{Authorship}
-
-Our model can aggregate more information than what we have implemented. The
-authorship information is important for licensing purposes, and we can show all
-authors contributing to commits in a  merge and how many commits they contributed to
-the merge. We could go further, providing information about what files they edited,
-how many lines they added and removed, and more.
-
-\subsection{Evaluation}
-
-At this time, we have no evidence that our tool is able to improve the work-flow of
-maintainers. We believe that the tool is able to improve the work-flow and
-performance of maintainers because it provides cleaner mechanisms of visualizing and
-presenting the commit information. It is able to provide more relevant information,
-while removing information that is irrelevant to a given module or set of merges.
-
-We can either perform user-testing to show how a users workflow changes, or we could
-have maintainers evaluate and critique the tool and use their feedback to determine
-if the tool meets our goals.
 
 \section{Conclusion}
 
