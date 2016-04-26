@@ -305,8 +305,9 @@ log description, the full logs of the merge commits that merge this subset, and 
 We use this information to evaluate the accuracy of the merge tree-model extracted from the DAG. We therefore compare, for commits with no conflict: a) the number of
 non-merge commits, b) the summaries of the commits available in the log, and c) the summaries of the merges included.
 
-The results of this verification show that this heuristic detected no incorrect merges since 2013, two incorrect merges in 2012, and two in 2011. However, due
-to fast-forward commits performed in Linus Torvalds repository, this heuristic breaks apart on Oct 15, 2009, and no longer works for older merges. 
+The results of this verification show that this heuristic detected no incorrect merges since 2013, two incorrect merges in 2012, and two in 2011. However, this
+heuristic breaks apart on Oct 15, 2009 due
+to the presence of so-called foxtrot commits that confound the true Master branch of a repository \footnote{See \url{http://bit-booster.blogspot.ca/2016/02/no-foxtrots-allowed.html} for a description of the issue}, and no longer works for older merges. 
 
 
 \section{Visualizing the merge-tree of Linux}
