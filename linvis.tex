@@ -2,7 +2,7 @@
 % -*- mode: latex; coding: UTF-8; -*-
 
 \newif\ifdraft
-%\drafttrue
+\drafttrue
 
 \ifdraft
         \documentclass[conference, draftclsnofoot, draft]{IEEEtran}
@@ -98,6 +98,20 @@
 
 \section{Introduction}
 
+\evantodo {
+        \begin{enumerate}
+                \item Add simplified abstract -- From email
+                \item replace figure reference with Figure~\\ref
+                \item Check captions
+                \item gitk to Gitk
+                \item git to Git
+                \item diff to patch
+                \item id to ID
+        \end{enumerate}
+}
+
+
+
 Between 50 and 70 thousand commits are added to the Linux kernel per version
 requiring maintainers of older versions of the Linux kernel to sift through
 thousands of commits and merges with tools that are unable to filter and effectively
@@ -130,7 +144,7 @@ snapshot from today is not trivial.
         \includegraphics[width=0.47\textwidth]{figures/gitk.png}
         \caption{A sample DAG view of commits from Linux in Gitk. Commits point
                 towards their ancestors, and there is no clear indication of the way
-                the travel to reach Master. In fact, neither Gitk nor git is capable 
+                the travel to reach Master. In fact, neither Gitk nor git is capable
                 of showing what commits were done in master.}
         \label{fig:gitk}
 \end{figure}
@@ -172,62 +186,82 @@ commits and merges that match the query.
 \section{Merge-Tree model}
 \label{sec:mergetree}
 
+Git uses a directed acyclic graph (DAG) as its main data model. In this model, a
+commit has one or more ordered parents (ancestors), except the root commits of a
+repository which do not have ancestors--Linux git repository has two such commits.
+Commits are divided into merge commits, merging two or more branches, and non-merge
+commits. Non-merge commits have only one parent, while merge commits have two or
+more. The order of the parents matter: the first parent is the branch in which the
+merge is being done, while the rest indicate the branches being merged (git allows
+merging multiple branches simultaneously). The second parent is the first branch
+merged, the third parent is the second branched merged.
 
-Git uses a Directed Acyclic Graph (DAG) as its main data model. In this model, a commit has one or more ordered parents (ancestors), except the root commits of a repository which
-do not have ancestors--Linux git repository has two such commits. Commits are divided into merge commits (they merge two or more branches) and non-merge
-commits. Non-merge commits have only one parent, while merge commits have two or more. The order of the parents matter: the first parent is the branch in which
-the merge is being done; while the rest indicate the branches being merged (git allows any number of branches to be merged at the same time). Their order in the
-parents relationship indicate the order in which the branches are being merged (second parent first, third parent second, etc.).
+Once a commit is created, it is never changed. Git allows operations to alter
+commits or reorder them, but it changes the commit id in the process, effectively
+making a new commit. This makes commits unable to record the traversal of merges
+from the commit to the merge into the master branch.
 
-In Git, commits are immutable. Once they are created, they never change. Git allows operations to alter commits or to reorder them. However, in such case, the
-commit changes its commit id, effectively becoming a new commit. This means that commits do not record the branches or repositories they have traversed in their
-way to master.
-For instance, assume the sequence of commits  exemplified in Figure~\ref{fig:repoEvents}. In this case commits are performed in various repos and branches. The
-DAG representation of these commits is shown in Figure~\ref{fig:repoDAG}. Notice that this DAG loses information about what repository is Master (in fact, it
-loses all information about what repositories any commit has passed through). The merge-tree view of this DAG is shown in Figure~
-\ref{fig:repoTree}. Note that the direction of the edges of the DAG has been inverted. Instead of pointing to the ancestors, it points to its successors (the path to
-Master). Also, the DAG has been simplified, and it only shows for any commit, one edge (its path to Master).
+A short example: assume the of commits represented in figure \ref{fig:repoEvents}
+shows the sequence of events in a repository. In this case, commits are performed in
+various repositories and branches. The DAG representation of the commits is shown in
+figure \ref{fig:repoDAG}. Notice that the DAG loses information about the master
+branch and the repository that the master branch is part of. The merge-tree view of
+this DAG is visible in figure \ref{fig:repoTree}. Note that the direction of the
+edges of the DAG has been inverted, instead of pointing from the child to the
+ancestors, it points from the ancestor to its successors, forming a path to the
+master branch. Also note that the DAG has been simplified, showing only a single
+edge on the path to master for any commit.
 
 \begin{figure}[htbp]
         \centering
         \includegraphics[width=\columnwidth]{figures/events.pdf}
-        \caption{Example of a sequence of events performed in different repositories. The horizontal axis represents time. Each horizontal section represents a
-                different branch and/or repository. Each commit points to its ancestor.}
+        \caption{Example of a sequence of events performed in different
+                repositories. The horizontal axis represents time. Each horizontal
+                section represents a different branch and/or repository. Each commit
+                points to its ancestor.}
         \label{fig:repoEvents}
 \end{figure}
 
 \begin{figure}[htbp]
         \centering
         \includegraphics[width=.8\columnwidth]{figures/dag.pdf}
-        \caption{DAG representation of the commits represented in Figure~\ref{fig:repoEvents}. It loses information about what repository the commit is performed and
-                through which repositories it has passed in its way to Master. In fact, the DAG does not even know what Master is.}
+        \caption{DAG representation of the commits represented in
+                Figure~\ref{fig:repoEvents}. It loses information about what
+                repository the commit is performed and through which repositories it
+                has passed in its way to Master. In fact, the DAG does not even know
+                what Master is.}
         \label{fig:repoDAG}
 \end{figure}
 
 \begin{figure}[htbp]
         \centering
         \includegraphics[width=\columnwidth]{figures/tree.pdf}
-        \caption{Merge-tree view of the commits  represented in Figure~\ref{fig:repoEvents} showing the path they followed to reach master. In this model the successors of
-                each commit represents the path followed by that commit to reach Master.}
+        \caption{Merge-tree view of the commits  represented in
+                Figure~\ref{fig:repoEvents} showing the path they followed to reach
+                master. In this model the successors of each commit represents the
+                path followed by that commit to reach Master.}
         \label{fig:repoTree}
 \end{figure}
 
 
 \subsection{Computing the merge-tree of the DAG of Linux}
 
-Computing the tree-model of a DAG of any repository might not be possible. However, certain features of the development process of Linux make it feasible to
-compute its merge-tree. In particular, the Master branch of Linux is maintained by Linus Torvalds and only him has write access to it. We have verified this
-assertion if previous research~\cite{German2015}. We have developed a heuristic that is presented in Algorithm~\ref{fig:alg}. In a nutshell, first identify the commits directly made
-to the master branch. Then,
-recursively, for
-every commit, using the DAG, determine the shortest path (in terms of time) from such commit to master using the inverted DAG.
+Computing the merge-tree from a DAG for any repository may not be possible; however,
+certain features of the development process of Linux make it feasible to compute the
+merge-tree for the Linux repository. First, the master branch of Linux is maintained
+by Linus Torvalds, and only Linus has write access to it. We have verified this
+assertion in previous research~\cite{German2015}. We have developed a heuristic that
+is presented in Algorithm~\ref{fig:alg}. In short, the algorithm first identifies
+the commits made directly to the master branch; whereafter it recursively determines
+the shortest path (in terms of time), using the DAG, from each commit to master
+using the inverted DAG.
 
 \begin{algorithm}
         \caption{Computing the merge-tree of Linux Git's DAG}\label{fig:alg}
         \begin{algorithmic}
                 \Function{ComputeMergeTree}{DAG}: tree
                 \State {\# Compute the tree from the DAG of Linux repository.}
-                \State {\#  Returns $Tree$, a graph containing every commit }
+                \State {\# Returns $Tree$, a graph containing every commit }
                 \State {\# in DAG with the path it followed to master.\\}
 
                 \State $head \gets \textit{Head of master of git repository}$
@@ -237,7 +271,7 @@ every commit, using the DAG, determine the shortest path (in terms of time) from
                 \State \Function{distance2Master}{cid} : seconds
                 \State {\# Helper function}
                 \State {\# Recursively compute shortest distance to master}
-                \State {\#  setting cid's successor (next) in its way to master.}
+                \State {\# setting cid's successor (next) in its way to master.}
                 \State {\# This function should be memoized. Otherwise it}
                 \State {\# would run in exponential time.}
                 \If {\textit{cid in master}}
@@ -274,39 +308,50 @@ every commit, using the DAG, determine the shortest path (in terms of time) from
 
 \subsection{Evaluation}
 
-Merges that do not have conflicts provide information to verify this heuristic. If a merge does not contain a conflict, it records a summary of the commits that
-it merges. See Figure~\ref{fig:sampleMerge} for an example. This summary contains a list of the first 20 non-merge commits in the merge, including their one-line
-log description, the full logs of the merge commits that merge this subset, and the total number of non-merge commits in the merge.
+Merges that do not have conflicts provide information to verify this heuristic. If a
+merge does not contain a conflict, it records a summary of the commits that it
+merges. See Figure~\ref{fig:sampleMerge} for an example. This summary contains a
+list of the first 20 non-merge commits in the merge, including their one-line log
+description, the full logs of the merge commits that merge this subset, and the
+total number of non-merge commits in the merge.
 
 \begin{figure}[htbp]
         \centering
         {\tiny
-                \begin{verbatim}
-                        Merge: 8cbd84f fd8aa2c
-                        Author: Linus Torvalds <torvalds@linux-foundation.org>
-                        Date:   Tue Aug 10 15:38:19 2010 -0700
+        \begin{verbatim}
+Merge: 8cbd84f fd8aa2c
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Aug 10 15:38:19 2010 -0700
 
-                        Merge branch 'for-linus' of git://neil.brown.name/md
+Merge branch 'for-linus' of git://neil.brown.name/md
 
-                        * 'for-linus' of git://neil.brown.name/md: (24 commits)
-                        md: clean up do_md_stop
-                        [... edited for the sake of space]
-                        md: split out md_rdev_init
-                        md: be more careful setting MD_CHANGE_CLEAN
-                        md/raid5: ensure we create a unique name for kmem_cache when mddev has no gendisk
-                        ...
-                \end{verbatim}}
-        \caption{Example of how merges record a subset of commits being merged. The commit only shows the first 20 one line log messages for the 24 non-merge commits
-                it merged. The ending ... is part of the log and represents that other commits were merged.}
+* 'for-linus' of git://neil.brown.name/md: (24 commits)
+md: clean up do_md_stop
+[... edited for the sake of space]
+md: split out md_rdev_init
+md: be more careful setting MD_CHANGE_CLEAN
+md/raid5: ensure we create a unique name for kmem_cache when mddev has no gendisk
+...
+        \end{verbatim}}
+        \caption{Example of how merges record a subset of commits being merged. The
+                commit only shows the first 20 one line log messages for the 24
+                non-merge commits it merged. The ending ... is part of the log and
+                represents that other commits were merged.}
         \label{fig:sampleMerge}
 \end{figure}
 
-We use this information to evaluate the accuracy of the merge tree-model extracted from the DAG. We therefore compare, for commits with no conflict: a) the number of
-non-merge commits, b) the summaries of the commits available in the log, and c) the summaries of the merges included.
+We use this information to evaluate the accuracy of the merge-tree model extracted
+from the DAG. For commits with no conflicts, we compare: 1) the number of non-merge
+commits, 2) the summaries of the commits available in the log, and 3) the summaries
+of the merges included.
 
-The results of this verification show that this heuristic detected no incorrect merges since 2013, two incorrect merges in 2012, and two in 2011. However, this
-heuristic breaks apart on Oct 15, 2009 due
-to the presence of so-called foxtrot commits that confound the true Master branch of a repository \footnote{See \url{http://bit-booster.blogspot.ca/2016/02/no-foxtrots-allowed.html} for a description of the issue}, and no longer works for older merges. 
+
+The verification detected no incorrect merges since 2013, two incorrect merges in
+2012, and two in 2011; however, the heuristic breaks in October 15 2009 due to the
+presence of \textit{foxtrot} commit, which confounds the true master branch of a
+repository \footnote{See
+        \url{http://bit-booster.blogspot.ca/2016/02/no-foxtrots-allowed.html} for a
+        description of the issue}, and will not work for older merges.
 
 \section{Visualizing the merge-tree of Linux}
 
@@ -459,7 +504,7 @@ colon.  Modules are logical partitions of the information in the kernel. Dependi
 on where the author was working, modules can be general, such as ``bluetooth'' and
 ``wireless'', or can be quite specific for individual hardware, such as
 ``ath9k\_hw'' and ``wl1251''. In a few cases, the author of a commit does not
-correctly follow this format and the hueristic approach fails. As with the Files panels,
+correctly follow this format and the heuristic approach fails. As with the Files panels,
 non-merge commits show their corresponding information, but for merge commits we aggregate all the modules changed
 in all the commits that are part of that merge.
 The output of this view is shown in Figure~\ref{fig:modules}.
@@ -757,8 +802,8 @@ makes the version control system vital in providing information about how a soft
 project is being developed. To our knowledge, we know of no git repository
 visualization tool that builds a tree that maps the path a commit follows to the
 master branch from the DAG provided by git. This may be because more information is
-required to generate the tree-model than what is stored by git. However, there has
-been a lot of work in providing visualizations of various repositories.
+required to generate the merge-tree model than what is stored by git. However, there
+has been a lot of work in providing visualizations of various repositories.
 
 Many tools work to address the issues in communication between developers in
 inter-team collaboration work. Codebook \cite{Begel2010} uses a data mining
