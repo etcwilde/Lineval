@@ -63,10 +63,10 @@
 
 \title{\TheTitle}
 \author{
-\IEEEauthorblockA{\TheAuthors}
-\IEEEauthorblockN{Department of Computer Science,
-                    University of Victoria, Canada.}
-\IEEEauthorblockA{Email: \TheEmails}
+        \IEEEauthorblockA{\TheAuthors}
+        \IEEEauthorblockN{Department of Computer Science,
+                University of Victoria, Canada.}
+        \IEEEauthorblockA{Email: \TheEmails}
 }
 \maketitle
 \begin{abstract}
@@ -92,7 +92,7 @@
 \end{abstract}
 
 \begin{IEEEkeywords}
-\TheKeywords
+        \TheKeywords
 \end{IEEEkeywords}
 
 \section{Introduction}
@@ -125,7 +125,7 @@ commits that were authored long before. However, distinguishing these new commit
         \centering
         \includegraphics[width=0.47\textwidth]{figures/gitk.png}
         \caption{A sample DAG view of commits from Linux in Gitk. Commits point towards their ancestors, and there is no clear indication of the way the travel
-          to reach Master. In fact, neither Gitk nor git is capable of showing what commits were done in master.}
+                to reach Master. In fact, neither Gitk nor git is capable of showing what commits were done in master.}
         \label{fig:gitk}
 \end{figure}
 
@@ -155,11 +155,11 @@ inspect the commits that have arrived into master within a given time frame by s
 % using the DAG. Each tree is rooted by the top-level merge performed by Linus, which
 % merges the branches or a set of commits into the kernel.
 
- The contributions of this paper are two. First, we describe a method to convert the DAG of the Linux repository into a tree (we call this the \emph{merge-tree of the
- repository}) that represents the path used by
- any commit to reach master. Second, 
- we present a method to inspect and visualize the history of merges in the  Linux project using the tree-model of the repository
- 
+The contributions of this paper are two. First, we describe a method to convert the DAG of the Linux repository into a tree (we call this the \emph{merge-tree of the
+        repository}) that represents the path used by
+any commit to reach master. Second, 
+we present a method to inspect and visualize the history of merges in the  Linux project using the tree-model of the repository
+
 These methods and visualizations have been implemented in a web-based
 tool called \tool\footnote{\tool is currently available at \url{http://li.turingmachine.org}}. Our visualizations and tool provide information about the location of any given
 commit in its respective merge-tree, the files edited, the modules edited, and the
@@ -190,27 +190,27 @@ loses all information about what repositories any commit has passed through). Th
 Master). Also, the DAG has been simplified, and it only shows for any commit, one edge (its path to Master).
 
 \begin{figure}[htbp]
-  \centering
+        \centering
         \includegraphics[width=\columnwidth]{figures/events.pdf}
-  \caption{Example of a sequence of events performed in different repositories. The horizontal axis represents time. Each horizontal section represents a
-    different branch and/or repository. Each commit points to its ancestor.}
-  \label{fig:repoEvents}
+        \caption{Example of a sequence of events performed in different repositories. The horizontal axis represents time. Each horizontal section represents a
+                different branch and/or repository. Each commit points to its ancestor.}
+        \label{fig:repoEvents}
 \end{figure}
 
 \begin{figure}[htbp]
-  \centering
+        \centering
         \includegraphics[width=.8\columnwidth]{figures/dag.pdf}
-  \caption{DAG representation of the commits represented in Figure~\ref{fig:repoEvents}. It loses information about what repository the commit is performed and
-    through which repositories it has passed in its way to Master. In fact, the DAG does not even know what Master is.}
-  \label{fig:repoDAG}
+        \caption{DAG representation of the commits represented in Figure~\ref{fig:repoEvents}. It loses information about what repository the commit is performed and
+                through which repositories it has passed in its way to Master. In fact, the DAG does not even know what Master is.}
+        \label{fig:repoDAG}
 \end{figure}
 
 \begin{figure}[htbp]
-  \centering
+        \centering
         \includegraphics[width=\columnwidth]{figures/tree.pdf}
-  \caption{Merge-tree view of the commits  represented in Figure~\ref{fig:repoEvents} showing the path they followed to reach master. In this model the successors of
-    each commit represents the path followed by that commit to reach Master.}
-  \label{fig:repoTree}
+        \caption{Merge-tree view of the commits  represented in Figure~\ref{fig:repoEvents} showing the path they followed to reach master. In this model the successors of
+                each commit represents the path followed by that commit to reach Master.}
+        \label{fig:repoTree}
 \end{figure}
 
 
@@ -224,53 +224,53 @@ recursively, for
 every commit, using the DAG, determine the shortest path (in terms of time) from such commit to master using the inverted DAG.
 
 \begin{algorithm}
-\caption{Computing the merge-tree of Linux Git's DAG}\label{fig:alg}
-\begin{algorithmic}
-\Function{ComputeMergeTree}{DAG}: tree 
-\State {\# Compute the tree from the DAG of Linux repository.}
-\State {\#  Returns $Tree$, a graph containing every commit }
-\State {\# in DAG with the path it followed to master.\\}
+        \caption{Computing the merge-tree of Linux Git's DAG}\label{fig:alg}
+        \begin{algorithmic}
+                \Function{ComputeMergeTree}{DAG}: tree 
+                \State {\# Compute the tree from the DAG of Linux repository.}
+                \State {\#  Returns $Tree$, a graph containing every commit }
+                \State {\# in DAG with the path it followed to master.\\}
 
-\State $head \gets \textit{Head of master of git repository}$
-\State $master \gets \textit{traverse DAG from head using }$
-\State \quad\quad\quad\quad $\textit{first ancestor until reaching root}$
-\State $nodes(Tree) \gets nodes(DAG)$
-\State \Function{distance2Master}{cid} : seconds 
-\State {\# Helper function}
-\State {\# Recursively compute shortest distance to master}
-\State {\#  setting cid's successor (next) in its way to master.}
-\State {\# This function should be memoized. Otherwise it}
-\State {\# would run in exponential time.}
-\If {\textit{cid in master}} 
-\State \Return 0
-\EndIf
-\State    $d \gets 	\infty$
-   \State {\# Traverse the inverted DAG}
-   \For{$c \in children(cid, DAG)$} 
-      \If {$c \in master$} 
-      \State $d_1 \gets commitTime(c)-commitTime(cid)$
-      \Else
-      \State {$d_1 \gets distance2Master(c)$} 
-      \EndIf
-    \If {$d_1 < d $} 
-    \State $next \gets c$
-   \State  $d \gets d_1$
-   \EndIf
-   \EndFor
-   \State {\# $c$ is the commit that follows $cid$}
-   \State {\# in its way to master}
-   \State add edge $(cid, next)$ to $Tree$
-   \State \Return $d$ 
-\EndFunction
+                \State $head \gets \textit{Head of master of git repository}$
+                \State $master \gets \textit{traverse DAG from head using }$
+                \State \quad\quad\quad\quad $\textit{first ancestor until reaching root}$
+                \State $nodes(Tree) \gets nodes(DAG)$
+                \State \Function{distance2Master}{cid} : seconds 
+                \State {\# Helper function}
+                \State {\# Recursively compute shortest distance to master}
+                \State {\#  setting cid's successor (next) in its way to master.}
+                \State {\# This function should be memoized. Otherwise it}
+                \State {\# would run in exponential time.}
+                \If {\textit{cid in master}} 
+                \State \Return 0
+                \EndIf
+                \State    $d \gets 	\infty$
+                \State {\# Traverse the inverted DAG}
+                \For{$c \in children(cid, DAG)$} 
+                \If {$c \in master$} 
+                \State $d_1 \gets commitTime(c)-commitTime(cid)$
+                \Else
+                \State {$d_1 \gets distance2Master(c)$} 
+                \EndIf
+                \If {$d_1 < d $} 
+                \State $next \gets c$
+                \State  $d \gets d_1$
+                \EndIf
+                \EndFor
+                \State {\# $c$ is the commit that follows $cid$}
+                \State {\# in its way to master}
+                \State add edge $(cid, next)$ to $Tree$
+                \State \Return $d$ 
+                \EndFunction
 
-\State {\# Compute the distance for each commit}
-\State {\# discarding result}
-\For{$c \in nodes(DAG)$}
-\State $distance2Master(c)$
-\EndFor
-\State \Return $Tree$
-\EndFunction
-\end{algorithmic}
+                \State {\# Compute the distance for each commit}
+                \State {\# discarding result}
+                \For{$c \in nodes(DAG)$}
+                \State $distance2Master(c)$
+                \EndFor
+                \State \Return $Tree$
+                \EndFunction
+        \end{algorithmic}
 \end{algorithm}
 
 \subsection{Evaluation}
@@ -280,26 +280,26 @@ it merges. See Figure~\ref{fig:sampleMerge} for an example. This summary contain
 log description, the full logs of the merge commits that merge this subset, and the total number of non-merge commits in the merge.  
 
 \begin{figure}[htbp]
-  \centering
-{\tiny
-\begin{verbatim}
-Merge: 8cbd84f fd8aa2c
-Author: Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Tue Aug 10 15:38:19 2010 -0700
+        \centering
+        {\tiny
+                \begin{verbatim}
+                        Merge: 8cbd84f fd8aa2c
+                        Author: Linus Torvalds <torvalds@linux-foundation.org>
+                        Date:   Tue Aug 10 15:38:19 2010 -0700
 
-    Merge branch 'for-linus' of git://neil.brown.name/md
-    
-    * 'for-linus' of git://neil.brown.name/md: (24 commits)
-      md: clean up do_md_stop
-[... edited for the sake of space]
-      md: split out md_rdev_init
-      md: be more careful setting MD_CHANGE_CLEAN
-      md/raid5: ensure we create a unique name for kmem_cache when mddev has no gendisk
-      ...
-\end{verbatim}}
-  \caption{Example of how merges record a subset of commits being merged. The commit only shows the first 20 one line log messages for the 24 non-merge commits
-    it merged. The ending ... is part of the log and represents that other commits were merged.}
-  \label{fig:sampleMerge}
+                        Merge branch 'for-linus' of git://neil.brown.name/md
+
+                        * 'for-linus' of git://neil.brown.name/md: (24 commits)
+                        md: clean up do_md_stop
+                        [... edited for the sake of space]
+                        md: split out md_rdev_init
+                        md: be more careful setting MD_CHANGE_CLEAN
+                        md/raid5: ensure we create a unique name for kmem_cache when mddev has no gendisk
+                        ...
+                \end{verbatim}}
+        \caption{Example of how merges record a subset of commits being merged. The commit only shows the first 20 one line log messages for the 24 non-merge commits
+                it merged. The ending ... is part of the log and represents that other commits were merged.}
+        \label{fig:sampleMerge}
 \end{figure}
 
 We use this information to evaluate the accuracy of the merge tree-model extracted from the DAG. We therefore compare, for commits with no conflict: a) the number of
@@ -331,7 +331,7 @@ leaves.
 These are users that start with a known merge or commit and would like to see what
 other changes are being made in commits that are in the same merge, including knowing the merge-tree they belong to. This is useful
 to see what other commits are related to the current commit and how they get collated into merges that eventually end in master.
- This is primarily for maintainers that need to perform
+This is primarily for maintainers that need to perform
 some specific cherry picking of commits. We
 must provide these users a mechanism for navigating from a single commit toward the
 master, allowing them to see other commits that might be related to it.
@@ -350,62 +350,12 @@ of the model are outlined in \cite{German2015}.
 
 \section{Design and Implementation}
 
-% \dmg{I would remove the command line shell, and use the space for related work}
-
-
-% We came up with two designs. We recognized that the structure of the repository was
-% similar to the wide and shallow tree-structure of a file system. We began with a
-% command-line shell interface. Then transitioned to a web-based tool where we looked
-% beyond the file system structure. In this section, we describe the progression of
-% our tool design, showing the benefits and drawbacks of each component.
-
-% \subsection{Command-line Shell}
-
-% Our initial intuition was to work with the commits and merges as directory trees
-% where the commits are files and the merges are directories. There are many
-% similarities between the tree structure of a file system and the tree structure of
-% the repository. Both trees are generally shallow, but very wide. File systems have
-% been studied for quite some time and there are many tools capable of visualizing and
-% working with the file structure.
-
-% The first tool we implemented was a small command-line shell (figure
-% \ref{fig:shell}) that allows users to navigate through the commits and merges as one
-% might navigate through files and directories. A user could navigate toward the
-% leaves of the tree by using the \verb|cd| command followed by the commit ID of the
-% next merge. The user could then navigate toward the root by issuing \verb|cd ../|
-% as they would in a file system. Users can use \verb|ls| to view what commits and
-% merges exist in the current working merge, then use \verb|cat| to view the log
-% preview of a commit or \verb|more| to see the preview and how many lines were added
-% and removed from the files in the commit.
-
-% \begin{figure}
-%         \centering
-%         \includegraphics[width=0.47\textwidth]{figures/shell.png}
-%         \caption{Shell Design}
-%         \label{fig:shell}
-% \end{figure}
-
-% The shell does not meet our design goals. It only provides users with the ability to
-% navigate from the root. If there is a commit or merge that they would like to
-% investigate, they must find it with another tool and navigate through the tree to
-% find it. Furthermore, it does not aggregate information in the merges, so users must
-% manually aggregate the metadata. Another issue with this design is that it presents
-% the users with the commit hashes, which are quite long and unpleasant to remember
-% and type into the shell, but also do not provide any quick explanation of what the
-% commit or merge may contain.
-
-% \subsection{Web-based Tool}
-
-To navigate and inspect the merge-tree view of the Kernel we
-created a web-based tool called \tool. Creating a web-based
-tool enables users to use the system without having to install additional software
-or store a large database, making it more accessible, more easily maintainable, and
-platform independent. 
-% A web-based tool can leverage interactive means of
-% navigation and provide better explanations of commits and merges than the
-% command-line interface.
-\tool uses the following mechanisms to reach our goals of better navigation and
-better explanation of the changes.
+To navigate and inspect the merge-tree view of the Kernel we created a web-based
+tool called \tool. Creating a web-based tool enables users to use the system without
+having to install additional software or store a large database, making it more
+accessible, more easily maintainable, and platform independent. \tool uses the
+following mechanisms to reach our goals of better navigation and better explanation
+of the changes.
 
 \begin{itemize}
         \item Filter by searching commits by when they are merged into Master.
@@ -427,8 +377,8 @@ better explanation of the changes.
 
 Searching (depicted in Figure \ref{fig:search}) allows a user to filter commits and merges that are irrelevant. The search mechanism breaks down the results by
 release version.  A user can further narrow down the search by \textbf{specifying a range of dates} in which such commits \textbf{were merged by Linus into
-  Master, not
-  when the commits were created.} This distinction is important. We have observed commits that take years
+        Master, not
+        when the commits were created.} This distinction is important. We have observed commits that take years
 to arrive into Master after they were originally committed. 
 
 A user may then provide a search text, filtering by the author name,
@@ -525,10 +475,10 @@ The merge-tree view is what makes \tool unique to other tools that inspect the D
 on their way to Master. We have experimented with various types of trees:
 
 \begin{enumerate}
-\item List trees are a text-based representation of the merge-tree, and are easy to search and navigate.
-\item Reingold-Tilford trees provide a clear visual represent the tree structure of the merge-tree.
-\item Bubble trees organize the data hierarchically by having the parent node contain the child nodes similarly to tree maps, but
-clearly showing the parent-child relationships between commits and merges.
+        \item List trees are a text-based representation of the merge-tree, and are easy to search and navigate.
+        \item Reingold-Tilford trees provide a clear visual represent the tree structure of the merge-tree.
+        \item Bubble trees organize the data hierarchically by having the parent node contain the child nodes similarly to tree maps, but
+                clearly showing the parent-child relationships between commits and merges.
 \end{enumerate}
 
 
@@ -570,7 +520,7 @@ visualization, it becomes much more difficult to understand. For example the mer
         \centering
         \includegraphics[width=0.47\textwidth]{figures/tree_zoom.png}
         \caption{Entire Reingold-Tilford Tree of a merge. This merge by Linus (a992bf836f9c3039a16f4bd068d161c86c6c3e2c) contains 1722 includes non-merge commits
-          touching 239 modules and 1525 files.}
+                touching 239 modules and 1525 files.}
         \label{fig:zoomed_tree}
 \end{figure}
 
@@ -594,12 +544,13 @@ details of a given part of the tree.
 
 \evantodo{we need reference to bubble trees}
 
-The bubble tree (figure \ref{fig:bubble_tree}) provides a very clear picture of
-where a commit is located in the tree hierarchy. The currently selected commit or merge
-is colored red, while non-selected merges use a shade of blue and commits use white.
-The depth of the blue colouring is dependent on how deep in the hierarchy that node
-is. The root is the lightest blue, and the contained merges are progressively
-darker.
+Bubble trees are useful for providing a clear visualization of hierarchal
+data\cite{Boardman2000}. The bubble tree (figure \ref{fig:bubble_tree}) provides a
+very clear picture of where a commit is located in the tree hierarchy. The currently
+selected commit or merge is colored red, while non-selected merges use a shade of
+blue and commits use white.  The depth of the blue colouring is dependent on how
+deep in the hierarchy that node is. The root is the lightest blue, and the contained
+merges are progressively darker.
 
 \begin{figure}
         \centering
@@ -674,11 +625,11 @@ response is as follows,
         \verb|children| & list & List of tree objects\\
         \verb|files| & list of tuples&
         \footnotesize{
-        \begin{tabular}{lc}
-                \verb|Filename| & string\\
-                \verb|Lines added| & uint\\
-                \verb|Lines removed| & uint\\
-        \end{tabular}}\\
+                \begin{tabular}{lc}
+                        \verb|Filename| & string\\
+                        \verb|Lines added| & uint\\
+                        \verb|Lines removed| & uint\\
+                \end{tabular}}\\
 \end{tabular}
 
 
@@ -812,44 +763,34 @@ master branch from the DAG provided by git. This may be because more information
 required to generate the tree-model than what is stored by git. However, there has
 been a lot of work in providing visualizations of various repositories.
 
-Many of the tools work to address the issues of communication between developers and
-inter-team collaboration. Codebook uses a mining technique to determine the
-developer of a piece of code, the program manager who wrote the specification for
-the code, and the program managers and developers on the team who were working
-together\cite{Begel2010}. This is designed to help collaboration between developers
-on a project while the project is being developed.  In maintaining the code, the
-code has already been written, the original developer many not have seen this piece
-of code in years, and will most likely have moved to another problem. If the
-maintainer is pulling from a part of the kernel that has been recently updated, in
-the event of a zero-day attack for instance, the information about who is developing
-that portion of the kernel is of use; however, if the maintainer is pulling from
-sections that are older, then the maintainer must be able to understand the code
-using the provided tools, not the original developer.
+Many tools work to address the issues in communication between developers in
+inter-team collaboration work. Codebook \cite{Begel2010} uses a data mining
+technique  to determine the developer of a piece of code, the program manager who
+wrote the specification for the code, and the program managers and developers on the
+team who were working together. Hipikat\cite{Cubranic2005} is another tool with a
+focus on communication. Where codebook focuses on developers working on a project,
+Hipikat is focused on enabling easier integration of new developers to a project by
+providing them with easily-searchable artifacts of the changes made. Codebook is
+useful for pairing a contributor with the original developer; however, the developer
+may not have worked with the piece of code in years. A Hipikat program may provide
+more information to the maintainer as it records the artifacts of why certain
+design decisions were made when they were made using other tools like Bugzilla and
+CVS. In both cases, our goal includes providing a summary of the topology of the
+kernel repository through a visual tree.
 
-Hipikat is another tool with a focus on communication issues between developers. It
-is designed for non-collocated teams, helping new developers understand design
-decisions of the system \cite{Cubranic2005}. It records artifacts about the project
-to build a "memory" of the project development that new users can work with to
-understand where and how to make modifications in large projects. The artifacts are
-recorded using tools like bugzilla and CVS. Such a tool could prove useful in
-understanding the changes between a maintainer's current version of an older kernel
-and the changes being made to the current master version of the kernel.
+Most visualizers provide a visual presentation of a certain aspect of a repository.
+Fractal Figures \cite{Ambros2005} uses a unit square to represent a portion of a
+project, then partitions the square based on the proportion of an author's
+contributions to that portion of the project. EPOSee\cite{Burch2005} and Evolution
+Radar\cite{Ambros2009} perform further analysis, determine which files are made
+together, and what changes are made over a sequence of commits, though the goals
+behind these projects is different.
 
-These tools work toward assisting the communications between developers and
-providing a summary of the project. Our goal includes providing a visual summary of
-the topology of the repository, as well as providing a summary of the changes made
-at a location within the repository. EPOSee, Gource, and Gitk are all tools designed
-for visualizing various aspects of repositories.
-
-EPOSee is a tool for visualizing changes that often happen simultaneously in a
-commit or as a sequence of events \cite{Burch2005}. It produces visualizations about
-the confidence that changes are made either together or sequentially. For instance,
-changes in the header file may also indicate that a change was made in the
-implementation file. The visualization tool is designed to visualize implicit rules
-about the order of operations on various files, if too many outliers are detected,
-the project manager may want to restructure the project.  While this is useful for
-new projects, the development model of the Linux kernel is already structured and is
-unlikely to change without good reasons behind it.
+Codebook, Hipikat, Fractal Figures, EPOSee, and Evolution Radar all work with data
+from CVS repositories. Our goal is to provide information about git repositories,
+specifically the Linux master repository. Fewer tools are available for generating
+visualizations and summaries of git repositories, potentially due to the DAG model
+used by git.
 
 Gource is a tool for providing an interactive timelapse of the state of a
 repository\cite{Caudwell2010}. In the timelapse, it shows who contributes and what
@@ -868,6 +809,14 @@ user with the git log. If the user selected a commit, Gitk will also present the
 user with the patch information and the names of the files edited. Gitk is unable to
 provide the patches and filenames information in merges, as it is unable to
 aggregate commit information in merges.
+
+Our tool is primarily aimed at presenting the hierarchical structure of the Linux
+git repository. We use tables for presenting the summarized information of the
+commits and merges, but this information could also be presented in a graphical
+form. Various graphical forms for displaying file and authorship data exist, the
+principal forms being matrix views, city scapes, bar and pie charts, and networks
+\cite{Eick2002}. Any of these data visualization metaphors are applicable to our
+system.
 
 \section{Conclusion}
 
@@ -897,7 +846,7 @@ outweighs the cost of having a server monitor the state of the repository, the
 tree-based model appears to provide clean visualizations and explanations of the
 changes in the Linux kernel.
 
-\nocite{*}
+% \nocite{*}
 
 \bibliographystyle{IEEEtran}
 \bibliography{citations}
