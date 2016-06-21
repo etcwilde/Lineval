@@ -132,10 +132,11 @@ snapshot from today is not trivial.
 \begin{figure*}
         \centering
         \includegraphics[width=0.97\textwidth]{figures/gitk.png}
-        \caption{A sample DAG view of commits from Linux in Gitk. Commits point
-                towards their ancestors and there is no clear path from the commit
-                to the merge with the master branch. In fact, neither Gitk nor Git
-                are capable of showing what commits were done in master.}
+        \caption{A view of the Gitk interface centered on merge
+          b34870fc9ff15fe46c4066faeeec437a4e63e2d8 by Miller. Commits point toward
+          their ancestors and there is no clear path from the commit to the merge
+          with the master branch. Neither Gitk nor Git are capable of showing the
+          commits in master.}
         \label{fig:gitk}
 \end{figure*}
 
@@ -570,8 +571,9 @@ merged 1722 non-merge commits and 91 merges. \footnote{
 \begin{figure}
         \centering
         \includegraphics[width=0.47\textwidth]{figures/tree_zoom.png}
-        \caption{Entire Reingold-Tilford Tree of a merge. This merge by Linus (73287a43cc79ca06629a88d1a199cd283f42456a) contains 1722 includes non-merge commits
-                touching 239 modules and 1525 files.}
+        \caption{The complete Reingold-Tilford tree of a merge by Linus
+          (73287a43cc79ca06629a88d1a199cd283f42456a) containing 1722 non-merge
+          commits touching 239 modules and 1525 files.}
         \label{fig:zoomed_tree}
 \end{figure}
 
@@ -590,13 +592,16 @@ or to see the details of a given part of the tree.
 
 \subsubsection{Bubble Tree}
 
-Bubble trees are useful for providing a clear visualization of hierarchical
-data\cite{Boardman2000}. The bubble tree (Figure~\ref{fig:bubble_tree}) provides a
-very clear picture of where a commit is located in the tree hierarchy. The currently
-selected commit or merge is colored red, while non-selected merges use a shade of
-blue and commits use white.  The depth of the blue colouring is dependent on how
-deep in the hierarchy that node is. The root is the lightest blue, and the contained
-merges are progressively darker.
+Bubble trees are useful for providing a clear visualization of wide, hierarchical
+data\cite{Boardman2000}. The tree structure is represented by the nesting of nodes;
+the largest circle is the root, containing all the other nodes. The smallest circles
+do not contain any nodes and therefore represent the leaf nodes.
+
+Our implementation of the bubble tree (Figure~\ref{fig:bubble_tree}) provides the
+user with a clear picture of where a commit is located in the merge tree. We
+highlight the selected commit or merge in red. Non-selected merges are in a shade of
+blue determined by the depth of a node in the tree. The root is the lightest shade
+of blue, while the contained merges are progressively darker; the commits are white.
 
 \begin{figure}
         \centering
@@ -618,22 +623,7 @@ from the root to the leaves and vice versa.
 
 \section{Implementation Details}
 
-\tool was built using Nginx as the main web server, postgresql as the DBMS, and
-Flask as the framework for generating the dynamic content.
-
-Nginx is a high-performance, open source, scalable HTTP and mail server. It is designed with massive
-scalability and multi-processing in mind. Instead of using request-driven threading,
-Nginx uses an event-driven architecture, making it more scalable, proving itself as
-being the web server behind large sites like Netflix, Hulu, GitHub, Tumblr, and many
-other popular sites\footnote{\url{http://wiki.nginx.org/Main}}.
-
-Postgresql is our DBMS of choice, providing fast results.
-
-We chose the python micro-framework
-Flask\footnote{\url{http://flask.pocoo.org/docs/0.10/}} for generating the dynamic
-content. Working with flask is simple and easy, allowing us to work in Python.
-
-\subsection{Extendability}
+\evantodo{See if we can move API section to be part of another section}
 
 The front-end uses asynchronous requests to gather the information for the trees and
 tables. This enables third-parties to implement new front-ends, trying other
@@ -681,7 +671,6 @@ response is as follows,
                 \end{tabular}}\\
 \end{tabular}
 
-
 \section{Discussion}
 
 From a developers point of view, the are two major disadvantages of the DAG model of
@@ -699,15 +688,16 @@ in these simplified cases, the merge-tree can provide a valuable summary of how
 commits are integrated into the master branch, specifically since the time of
 integration may be very different from the time the commits were authored.
 
+\evan{Check accuracy of this paragraph}
 
-
-The biggest challenge, however, is computing the merge-tree. Our heuristic only
-applies to the Linux kernel repository, and only since July 2009. It is very likely
-that the heuristic will not work with other repositories, specifically those with
-fast-forward commits into the master branch (a majority of repositories). We can
-address the lack of information by monitoring the state of the repository at short
-intervals as we did in \cite{German2015}. This continuous mining of the repository
-requires foresight and planning.
+The biggest challenge is computing the merge-tree of the Linux kernel repository. It
+is likely that our heuristic for computing the merge-tree will not work with other
+repositories. The heuristic requires that there are no fast-forward merges into the
+master branch of the repository (a majority of repositories), and that there are no
+foxtrot merges. We are able to use our heuristic with the Linux kernel because of
+the strict integration model imposed by Linus. To validate the results of the
+heuristic, we use the continuous mining technique described in \cite{German2015}.
+The continuous mining of the repository requiring foresight and planning.
 
 Because \tool leverages the merge-tree model of the kernel, it provides mechanisms
 and visualizations that other tools are unable to produce. It gives us the ability to
@@ -897,10 +887,13 @@ aggregate the information. Our tool currently aggregates file information and th
 modules edited, but can be extended to include authorship information and aggregated
 patch information.
 
-The tree model requires more information than what is provided by Git, requiring a
-central server to monitor changes to the project. This breaks the design goals of
-decentralized version control systems and makes the visualization tool specific to
-the project.
+\evan{Check the validity of this paragraph}
+We use a heuristic method to generate the tree from the repository. The heuristic
+requires that the repository does not have fast-forward merges into the master
+branch or foxtrot merges, which obfuscate the master branch. In either case, the
+heuristic will break and result in a tree that does not accurately represent the
+repository. Validation of the results from the heuristic requires continuous mining
+of the repository.
 
 While these are significant drawbacks for small projects, large projects will likely
 have a more centralized work flow with a master repository where contributions will
