@@ -53,10 +53,17 @@
 \usepackage{amsmath}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{color}
 
 % Fix any bad-hyphenations here
 \hyphenation{contained}
 
+% Tikz libraries
+\usetikzlibrary{positioning}
+
+\input{colors.tex}
 \input{macros.tex}
 
 \begin{document}
@@ -204,37 +211,129 @@ master branch. Also note that the DAG has been simplified, showing only a single
 edge on the path to master for any commit.
 
 \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=\columnwidth]{figures/events.pdf}
-        \caption{Example of a sequence of events performed in different
-                repositories. The horizontal axis represents time. Each horizontal
-                section represents a different branch and/or repository. Each commit
-                points to its ancestor.}
-        \label{fig:repoEvents}
+  \centering
+  \begin{tikzpicture}[auto, on grid, semithick, state/.style={circle, text=black}]
+    \foreach \x in {0, 1, 2, 3, 4, 5, 6, 7}
+    \draw[shift={(\x + 0.5, -0.5)}, color=black] (0cm, 4cm) -- (0pt, -0.2cm);
+
+    \node[state, draw=chartblue] (1) {1};
+    \node[state, draw=chartyellow, above right= of 1] (2) {2};
+    \node[state, draw=chartmagenta, above right= 2cm and 1cm of 2] (3) {3};
+    \node[state, draw=chartblue, right= 2cm of 1] (4) {4};
+    \node[state, draw=chartyellow, above right=of 4] (5) {5};
+    \node[state, draw=chartred, above right=of 5] (6) {6};
+    \node[state, draw=chartyellow, right=of 5] (7) {7};
+    \node[state, draw=chartmagenta, above right= 2cm and 1cm of 7](8) {8};
+    \node[state, draw=chartyellow, right= 2cm of 7] (9) {9};
+    \node[state, draw=chartyellow, right=of 9] (10) {10};
+    \node[state, draw=chartblue, below right=of 9] (11) {11};
+    \node[state, draw=chartblue, below right=of 10] (12) {12};
+
+    \draw (12) edge[-stealth] (11) edge[chartyellow, -stealth] (10);
+    \draw (11) edge[-stealth] (4) edge[chartyellow, -stealth] (9);
+    \draw (10) edge[chartyellow, -stealth] (9);
+    \draw (9) edge[chartmagenta, -stealth] (8) edge[chartred, -stealth] (6)
+              edge[chartyellow, -stealth] (7);
+    \draw (8) edge[chartmagenta, -stealth] (7);
+    \draw (7) edge[chartyellow, -stealth] (5);
+    \draw (6) edge[chartred, -stealth] (5);
+    \draw (5) edge[chartmagenta, -stealth] (3) edge[chartyellow,-stealth] (2)
+              edge[chartyellow, -stealth] (4);
+    \draw (4) edge[-stealth] (1);
+    \draw (3) edge[chartmagenta, -stealth] (2);
+    \draw (2) edge[chartyellow, -stealth] (1);
+
+    \node [draw=chartblue, below = 1.5cm of 1] (l1) {Master};
+    \node [draw=chartyellow, right = 1.5cm of l1] (l2) {Repo A};
+    \node [draw=chartred, right = 2.5cm of l2] (l3) {Branch of Repo A};
+    \node [draw=chartmagenta, right= 2.5cm of l3] (l4) {Repo B};
+
+        \foreach \x in {0, 1, 2, 3, 4, 5, 6, 7, 8}
+    \node[shift={(\x, -0.6)}, color=black] {$t_\x$};
+  \end{tikzpicture}
+  \caption{Example of a sequence of events performed in different
+    repositories. The horizontal axis represents time. Each horizontal
+    section represents a different branch and/or repository. Each commit
+    points to its ancestor.}
+  \label{fig:repoEvents}
 \end{figure}
 
 \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=.8\columnwidth]{figures/dag.pdf}
-        \caption{DAG representation of the commits represented in
-                Figure~\ref{fig:repoEvents}. The DAG loses information about which
-                repository the commit is performed in and through which merges it
-                has passed on its way to the master branch. The DAG does not even
-                distinguish the master branch from other branches.}
-        \label{fig:repoDAG}
+  \centering
+  \begin{tikzpicture}[auto, on grid, semithick, state/.style={circle, text=black}]
+    \node[state, draw=chartblue] (1) {1};
+    \node[state, draw=chartyellow, above right= of 1] (2) {2};
+    \node[state, draw=chartmagenta, above right= 2cm and 1cm of 2] (3) {3};
+    \node[state, draw=chartblue, right= 2cm of 1] (4) {4};
+    \node[state, draw=chartyellow, above right=of 4] (5) {5};
+    \node[state, draw=chartred, above right=of 5] (6) {6};
+    \node[state, draw=chartyellow, right=of 5] (7) {7};
+    \node[state, draw=chartmagenta, above right= 2cm and 1cm of 7](8) {8};
+    \node[state, draw=chartyellow, right= 2cm of 7] (9) {9};
+    \node[state, draw=chartyellow, right=of 9] (10) {10};
+    \node[state, draw=chartblue, below right=of 9] (11) {11};
+    \node[state, draw=chartblue, below right=of 10] (12) {12};
+
+    \draw (12) edge[-stealth] (11) edge[chartyellow, -stealth] (10);
+    \draw (11) edge[-stealth] (4) edge[chartyellow, -stealth] (9);
+    \draw (10) edge[chartyellow, -stealth] (9);
+    \draw (9) edge[chartmagenta, -stealth] (8) edge[chartred, -stealth] (6)
+              edge[chartyellow, -stealth] (7);
+    \draw (8) edge[chartmagenta, -stealth] (7);
+    \draw (7) edge[chartyellow, -stealth] (5);
+    \draw (6) edge[chartred, -stealth] (5);
+    \draw (5) edge[chartmagenta, -stealth] (3) edge[chartyellow,-stealth] (2)
+              edge[chartyellow, -stealth] (4);
+    \draw (4) edge[-stealth] (1);
+    \draw (3) edge[chartmagenta, -stealth] (2);
+    \draw (2) edge[chartyellow, -stealth] (1);
+  \end{tikzpicture}
+  \caption{DAG representation of the commits represented in
+    Figure~\ref{fig:repoEvents}. The DAG loses information about which
+    repository the commit is performed in and through which merges it
+    has passed on its way to the master branch. The DAG does not even
+    distinguish the master branch from other branches.}
+  \label{fig:repoDAG}
 \end{figure}
 
 \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=\columnwidth]{figures/tree.pdf}
-        \caption{Merge-tree view of the commits  represented in
-                Figure~\ref{fig:repoEvents} showing the path they followed to reach
-                the master branch. In this model the successors of each commit
-                represents the path followed by that commit to reach the master
-                branch.}
-        \label{fig:repoTree}
-\end{figure}
+  \centering
+  \begin{tikzpicture}[auto, on grid, semithick, state/.style={circle, text=black}]
 
+    \draw[chartblue]
+      (-0.5, -0.5) -- (8.5, -0.5) -- (8.5, 0.5) -- (-0.5, 0.5) -- (-0.5, -0.5);
+
+    \node[state, draw=chartblue] (1) {1};
+    \node[state, draw=chartyellow, above right= of 1] (2) {2};
+    \node[state, draw=chartmagenta, above right= 2cm and 1cm of 2] (3) {3};
+    \node[state, draw=chartblue, right= 2cm of 1] (4) {4};
+    \node[state, draw=chartyellow, above right=of 4] (5) {5};
+    \node[state, draw=chartred, above right=of 5] (6) {6};
+    \node[state, draw=chartyellow, right=of 5] (7) {7};
+    \node[state, draw=chartmagenta, above right= 2cm and 1cm of 7](8) {8};
+    \node[state, draw=chartyellow, right= 2cm of 7] (9) {9};
+    \node[state, draw=chartyellow, right=of 9] (10) {10};
+    \node[state, draw=chartblue, below right=of 9] (11) {11};
+    \node[state, draw=chartblue, below right=of 10] (12) {12};
+
+    \draw (2) edge[chartyellow, -stealth] (5)
+          (3) edge[chartmagenta, -stealth](5)
+          (5) edge[chartyellow, -stealth] (7)
+          (7) edge[chartyellow, -stealth] (9)
+          (6) edge[chartred, -stealth] (9)
+          (8) edge[chartmagenta, -stealth] (9)
+          (9) edge[chartyellow, -stealth] (11)
+          (10) edge[chartyellow, -stealth] (12);
+
+
+  \end{tikzpicture}
+  \caption{Merge-tree view of the commits  represented in
+    Figure~\ref{fig:repoEvents} showing the path they followed to reach
+    the master branch. In this model the successors of each commit
+    represents the path followed by that commit to reach the master
+    branch.}
+  \label{fig:repoTree}
+\end{figure}
 
 \subsection{Computing the merge-tree of the DAG of Linux}
 
