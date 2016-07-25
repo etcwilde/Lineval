@@ -121,6 +121,29 @@ graph (DAG) model of the repository, showing all commits and merges in chronolog
 order by when the commit was authored, not by when it arrived in the official Linux
 repository.
 
+\begin{figure*}
+        \centering
+        \includegraphics[width=0.97\textwidth]{figures/gitk.png}
+        \caption{A view of the Gitk interface centered on merge
+          b34870fc9ff15fe46c4066faeeec437a4e63e2d8 by Miller. Commits point toward
+          their ancestors and there is no clear path from the commit to the merge
+          with the master branch. Neither Gitk nor Git are capable of showing the
+          commits in master.}
+        \label{fig:gitk}
+%\vspace{-4mm}
+\end{figure*}
+
+
+\begin{figure}
+        \centering
+        \includegraphics[width=0.45\textwidth]{figures/github_viewer.png}
+        \caption{Github Failure Message showing the DAG of the Linux Project and its
+                relationship to other forks.}
+        \label{fig:gitfail}
+%\vspace{-2mm}
+\end{figure}
+
+
 This representation works in smaller projects; it enables users to see when changes
 are made, when these changes are merged, how each branch is interacting, and the
 point where a branch forks from the master branch. In large modular projects, like
@@ -136,24 +159,6 @@ tomorrow may be different than the snapshot from today, containing new commits
 authored in the past; distinguishing these new commits from the commits in the
 snapshot from today is not trivial.
 
-\begin{figure*}
-        \centering
-        \includegraphics[width=0.97\textwidth]{figures/gitk.png}
-        \caption{A view of the Gitk interface centered on merge
-          b34870fc9ff15fe46c4066faeeec437a4e63e2d8 by Miller. Commits point toward
-          their ancestors and there is no clear path from the commit to the merge
-          with the master branch. Neither Gitk nor Git are capable of showing the
-          commits in master.}
-        \label{fig:gitk}
-\end{figure*}
-
-\begin{figure}
-        \centering
-        \includegraphics[width=0.45\textwidth]{figures/github_viewer.png}
-        \caption{Github Failure Message showing the DAG of the Linux Project and its
-                relationship to other forks.}
-        \label{fig:gitfail}
-\end{figure}
 
 One major challenge with visualizing the arrival of commits to a repository is that
 Git does not store the date that a commit was merged into another branch, including
@@ -256,6 +261,7 @@ edge on the path to master for any commit.
     section represents a different branch and/or repository. Each commit
     points to its ancestor.}
   \label{fig:repoEvents}
+%\vspace{-3mm}
 \end{figure}
 
 \begin{figure}[htbp]
@@ -294,6 +300,7 @@ edge on the path to master for any commit.
     has passed on its way to the master branch. The DAG does not even
     distinguish the master branch from other branches.}
   \label{fig:repoDAG}
+%\vspace{-3mm}
 \end{figure}
 
 \begin{figure}[htbp]
@@ -333,6 +340,7 @@ edge on the path to master for any commit.
     represents the path followed by that commit to reach the master
     branch.}
   \label{fig:repoTree}
+\vspace{-3mm}
 \end{figure}
 
 \subsection{Computing the merge-tree of the DAG of Linux}
@@ -353,7 +361,7 @@ branch using the inverted DAG.
                 \Function{ComputeMergeTree}{DAG}: tree
                 \State {\# Compute the tree from the DAG of Linux repository.}
                 \State {\# Returns $Tree$, a graph containing every commit }
-                \State {\# in DAG with the path it followed to master.\\}
+                \State {\# in DAG with the path it followed to master.}
 
                 \State $head \gets \textit{Head of master of git repository}$
                 \State $master \gets \textit{traverse DAG from head using }$
@@ -423,27 +431,48 @@ md: split out md_rdev_init
 md: be more careful setting MD_CHANGE_CLEAN
 md/raid5: ensure we create a unique name for kmem_cache...
 ...
-        \end{verbatim}}
+        \end{verbatim}}\vspace{-5mm}
         \caption{Example of how merges record a subset of commits being merged. The
-                commit only shows the first 20 one-line log messages for the 24
+                commit only shows the first 20 one-line summaries messages for the 24
                 non-merge commits it merged. The ending ``...'' is part of the log
                 and represents that other commits were merged.}
         \label{fig:sampleMerge}
 \end{figure}
 
-\textbf{rewrite}
-
-We use this information to evaluate the accuracy of the merge-tree model extracted
-from the DAG. For commits with no conflicts, we compare: 1) the number of non-merge
-commits, 2) the summaries of the commits available in the log, and 3) the summaries
-of the merges included.
 
 
-The verification detected no incorrect merges since 2013, two incorrect merges in
-2012, and two in 2011; however, the heuristic breaks in October, 15, 2009 due to the
-presence of \textit{foxtrot} commits, which confounds the true master branch of a
+We used this information to evaluate the accuracy of the merge-tree model extracted from the DAG. The method we followed
+started with the extraction of the commit history up to July 20, 2016. We computed the merge tree of every commit until
+then. Since Linus Torvalds mostly does merging directly into master, we assumed that every merge by him is the root of a
+merge-tree. As described above, the log of a commit usually contains the number of commits in the merge the first 20
+summaries of commits being merged. We extracted merges by Linus Torvalds using the command \mycode{log --merges --author='Torvalds} and compared
+the number of commits in according to the log with the number of commits in the  merge-tree rooted in this commit. We
+also used the summaries of the commits found in the merge (not necessarily all---see above) to make sure those 
+commits were in their corresponding merge tree. For example, for the merge in Figure~\ref{sampleMerge} we would expect
+that the merge tree rooted at \mycode{8cbd84f} contains 24 commits, and the one-line summaries corresponds to commits in
+that merge-tree. We also inspected those with differences to make sure they were true errors.
+
+The results can be summarized as follows:
+
+\begin{itemize}
+\item 5 merges were false-erros because their logs did not contain accurate information (were probably edited by
+  hand). For example in \mycode{42a579a0f...}) one commit summary was missing (the line was empty), in another  \mycode
+  {c55d267}) the summaries were reordered.
+\item The heuristic works correctly for all merges except between Jun 7, 2014 and Jun 2, 2014 (92 merges) and before
+  Sept 4, 2007. Before this date merges did not include a summary of the commits they included, hence making it
+  impossible to verify; however, we correctly identified the merges by Linus into master. 
+\item Before Dec. 12, 2006 (1542 merges) our heuristic breaks due to the
+presence of \textit{foxtrot} commits, which confound the true master branch of a
 repository
-\footnote{See \url{http://bit-booster.blogspot.ca/2016/02/no-foxtrots-allowed.html} for a description of the issue}, and will not work for older merges.
+\footnote{See \url{http://bit-booster.blogspot.ca/2016/02/no-foxtrots-allowed.html} for a description of the issue}, and
+is not capable of identifying most of the merges before this date.
+\end{itemize}
+
+Of the merges after Sept 4, 2007, in 99.4\% fo them (16,768 out of 16,860)  our heuristic was correct. Overall, we
+correctly identified the merge trees of 87.15\% of the merges into master in Linux.
+ 
+The verification detected no incorrect merges since 2013, two incorrect merges in
+2012, and two in 2011; however, the heuristic breaks in October, 15, 2009 
 
 \section{Visualizing the merge-tree of Linux}
 
