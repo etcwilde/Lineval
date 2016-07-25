@@ -1,0 +1,1844 @@
+No match [01565479e99882e873e4dd2f6f067b7cba3acf8f][Date:   Sun Aug 16 15:11:25 2015 -0700][0][3]
+cid [01565479e99882e873e4dd2f6f067b7cba3acf8f][Date:   Sun Aug 16 15:11:25 2015 -0700] count log [0] dbcount [3].... NO Match :(
+Merge: 8ed1f0e 12e244f
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sun Aug 16 15:11:25 2015 -0700
+
+    Merge branch 'x86-urgent-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+    
+    Merge x86 fixes from Ingo Molnar:
+     "Two followup fixes related to the previous LDT fix"
+    
+    Also applied a further FPU emulation fix from Andy Lutomirski to the
+    branch before actually merging it.
+    
+    * 'x86-urgent-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+      x86/ldt: Further fix FPU emulation
+      x86/ldt: Correct FPU emulation access to LDT
+      x86/ldt: Correct LDT access in single stepping logic
+
+commit 1efdb5f0a9243ca8f3460a5ce1b407b06a021f02
+
+----------
+Merge branch 'x86-urgent-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+   x86/ldt: Further fix FPU emulation
+   x86/ldt: Correct FPU emulation access to LDT
+   x86/ldt: Correct LDT access in single stepping logic
+Total;01565479e99882e873e4dd2f6f067b7cba3acf8f;3
+
+----------
+No match [c5ce28df0e7c01a1de23c36ebdefcd803f2b6cbb][Date:   Tue Feb 10 20:01:30 2015 -0800][0][1495]
+cid [c5ce28df0e7c01a1de23c36ebdefcd803f2b6cbb][Date:   Tue Feb 10 20:01:30 2015 -0800] count log [0] dbcount [1495].... NO Match :(
+Merge: 29afc4e 9399f0c
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Feb 10 20:01:30 2015 -0800
+
+    Merge git://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next
+    
+    Pull networking updates from David Miller:
+    
+     1) More iov_iter conversion work from Al Viro.
+    
+        [ The "crypto: switch af_alg_make_sg() to iov_iter" commit was
+          wrong, and this pull actually adds an extra commit on top of the
+          branch I'm pulling to fix that up, so that the pre-merge state is
+          ok.   - Linus ]
+    
+     2) Various optimizations to the ipv4 forwarding information base trie
+        lookup implementation.  From Alexander Duyck.
+    
+     3) Remove sock_iocb altogether, from CHristoph Hellwig.
+    
+     4) Allow congestion control algorithm selection via routing metrics.
+        From Daniel Borkmann.
+    
+     5) Make ipv4 uncached route list per-cpu, from Eric Dumazet.
+    
+     6) Handle rfs hash collisions more gracefully, also from Eric Dumazet.
+    
+     7) Add xmit_more support to r8169, e1000, and e1000e drivers.  From
+        Florian Westphal.
+    
+     8) Transparent Ethernet Bridging support for GRO, from Jesse Gross.
+    
+     9) Add BPF packet actions to packet scheduler, from Jiri Pirko.
+    
+    10) Add support for uniqu flow IDs to openvswitch, from Joe Stringer.
+    
+    11) New NetCP ethernet driver, from Muralidharan Karicheri and Wingman
+        Kwok.
+    
+    12) More sanely handle out-of-window dupacks, which can result in
+        serious ACK storms.  From Neal Cardwell.
+    
+    13) Various rhashtable bug fixes and enhancements, from Herbert Xu,
+        Patrick McHardy, and Thomas Graf.
+    
+    14) Support xmit_more in be2net, from Sathya Perla.
+    
+    15) Group Policy extensions for vxlan, from Thomas Graf.
+    
+    16) Remove Checksum Offload support for vxlan, from Tom Herbert.
+    
+    17) Like ipv4, support lockless transmit over ipv6 UDP sockets.  From
+        Vlad Yasevich.
+    
+    * git://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next: (1494+1 commits)
+      crypto: fix af_alg_make_sg() conversion to iov_iter
+      ipv4: Namespecify TCP PMTU mechanism
+      i40e: Fix for stats init function call in Rx setup
+      tcp: don't include Fast Open option in SYN-ACK on pure SYN-data
+      openvswitch: Only set TUNNEL_VXLAN_OPT if VXLAN-GBP metadata is set
+      ipv6: Make __ipv6_select_ident static
+      ipv6: Fix fragment id assignment on LE arches.
+      bridge: Fix inability to add non-vlan fdb entry
+      net: Mellanox: Delete unnecessary checks before the function call "vunmap"
+      cxgb4: Add support in cxgb4 to get expansion rom version via ethtool
+      ethtool: rename reserved1 memeber in ethtool_drvinfo for expansion ROM version
+      net: dsa: Remove redundant phy_attach()
+      IB/mlx4: Reset flow support for IB kernel ULPs
+      IB/mlx4: Always use the correct port for mirrored multicast attachments
+      net/bonding: Fix potential bad memory access during bonding events
+      tipc: remove tipc_snprintf
+      tipc: nl compat add noop and remove legacy nl framework
+      tipc: convert legacy nl stats show to nl compat
+      tipc: convert legacy nl net id get to nl compat
+      tipc: convert legacy nl net id set to nl compat
+      ...
+
+commit 29afc4e9a408f2304e09c6dd0dbcfbd2356d0faa
+
+----------
+Merge git://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next
+   crypto: fix af_alg_make_sg() conversion to iov_iter
+   ipv4: Namespecify TCP PMTU mechanism
+   i40e: Fix for stats init function call in Rx setup
+   Merge git://git.kernel.org/pub/scm/linux/kernel/git/davem/net
+      tcp: don't include Fast Open option in SYN-ACK on pure SYN-data
+      Merge branch 'ipv6_ufo_fix'
+         ipv6: Make __ipv6_select_ident static
+         ipv6: Fix fragment id assignment on LE arches.
+      bridge: Fix inability to add non-vlan fdb entry
+      net: dsa: Remove redundant phy_attach()
+      vxlan: Wrong type passed to %pIS
+      amd-xgbe: Check per channel DMA interrupt use in main ISR
+      net: use netif_rx_ni() from process context
+      rtnetlink: ifla_vf_policy: fix misuses of NLA_BINARY
+      dsa: correctly determine the number of switches in a system
+      dsa: do not dereference non-existing routing table
+      ipv6: addrconf: add missing validate_link_af handler
+      net: sxgbe: fix error handling in init_rx_ring()
+      ARCNET: Add missing error check for devm_kzalloc
+      pktgen: fix UDP checksum computation
+      net: ipv6: allow explicitly choosing optimistic addresses
+      flowcache: Fix kernel panic in flow_cache_flush_task
+   openvswitch: Only set TUNNEL_VXLAN_OPT if VXLAN-GBP metadata is set
+   Merge branch 'master' of git://git.kernel.org/pub/scm/linux/kernel/git/jkirsher/net-next
+      i40e/i40evf: Add call to u64_stats_init to init
+      i40e: Enable Loopback for the FCOE vsi as well
+      i40e: use dev_port for fcoe netdev
+      i40e: Fix function header
+      i40e: fix led blink toggle to enable steady state
+      i40evf: Force Tx writeback on ITR
+      i40e: stop the service task at shutdown
+      i40evf: stop the watchdog for shutdown
+      i40evf: ignore bogus messages from FW
+      i40evf: reset on module unload
+      i40e: add locking around VF reset
+      i40e: Use even more ARQ descriptors
+      i40e: delay after VF reset
+      i40e: avoid use of uninitialized v_budget in i40e_init_msix
+      i40e: i40e_fcoe.c: Remove unused function
+   net: Mellanox: Delete unnecessary checks before the function call "vunmap"
+   Merge branch 'expansion_rom'
+      cxgb4: Add support in cxgb4 to get expansion rom version via ethtool
+      ethtool: rename reserved1 memeber in ethtool_drvinfo for expansion ROM version
+   Merge branch 'mlx4_bond_notify'
+      IB/mlx4: Reset flow support for IB kernel ULPs
+      IB/mlx4: Always use the correct port for mirrored multicast attachments
+      net/bonding: Fix potential bad memory access during bonding events
+   Merge branch 'tipc-next'
+      tipc: remove tipc_snprintf
+      tipc: nl compat add noop and remove legacy nl framework
+      tipc: convert legacy nl stats show to nl compat
+      tipc: convert legacy nl net id get to nl compat
+      tipc: convert legacy nl net id set to nl compat
+      tipc: convert legacy nl node addr set to nl compat
+      tipc: convert legacy nl node dump to nl compat
+      tipc: convert legacy nl media dump to nl compat
+      tipc: convert legacy nl socket dump to nl compat
+      tipc: convert legacy nl name table dump to nl compat
+      tipc: convert legacy nl link stat reset to nl compat
+      tipc: convert legacy nl link prop set to nl compat
+      tipc: convert legacy nl link dump to nl compat
+      tipc: convert legacy nl link stat to nl compat
+      tipc: convert legacy nl bearer enable/disable to nl compat
+      tipc: convert legacy nl bearer dump to nl compat
+      tipc: move and rename the legacy nl api to "nl compat"
+   Merge tag 'wireless-drivers-next-for-davem-2015-02-07' of git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next
+      Merge ath-next from ath.git
+         ath10k: enable qca6174 hw3.2
+         ath10k: add log level configuration for fw_dbglog
+         ath10k: Use TX cksum offload only for CHECKSUM_PARTIAL
+         ath10k: fix beacon deadlock
+         ath10k: change dma beacon cmd prototype
+         ath10k: prevent setting wrong key idx for station
+         ath10k: fix target wakeup timeout
+         ath10k: Enable the MCS8 and MCS9 at 2.4G band
+         ath10k: disable sta keepalive
+         ath10k: implement sta keepalive command
+         ath10k: use per-vif wmm param setup if possible
+         ath10k: implement per-vdev wmm param setup command
+         ath10k: move wmm param storage to vif
+         ath10k: fix pmf for wmi-tlv on qca6174
+         ath10k: remove sw encryption for pmf
+         ath10k: disable irqs after fw crash
+         ath10k: disable uapsd autotrigger
+         ath10k: implement uapsd autotrigger command
+         ath10k: fix nullfunc workaround
+         ath10k: fix dtim period with beacon templates
+         ath10k: use idr api for msdu_ids
+         ath10k: fix 10.2 fw stats parsing
+         ath10k: split fw pdev stats parsing
+         ath10k: add support for qca6174
+         ath10k: add support for qca6174 Rx descriptors
+         ath10k: reset chip before reading chip_id in probe
+         ath10k: implement rx reorder support
+         ath10k: introduce struct ath10k_skb_rxcb
+         ath10k: implement diag event
+         ath10k: implement diag data container event
+         ath10k: fix hwmon temperature input units
+         ath10k: document switch case fall-through in __ath10k_scan_finish
+         ath10k: prevent fw reg dump spam
+         ath10k: fix duration calculation for quiet param
+         ath10k: implement support for ap beacon offloading
+         ath10k: implement p2p bcn ie command
+         ath10k: implement prb tmpl wmi command
+         ath10k: implement beacon template command
+         ath10k: implement new beacon tx status event
+         ath10k: fix config_enabled check for hwmon
+         ath10k: Fix potential Rx ring corruption
+         ath10k: fixup wait_for_completion_timeout return handling
+         ath10k: fill max_num_vdevs for wmi-tlv
+         ath10k: Remove unused htt->max_throughput_mbps
+         ath10k: fix error return code
+         ath10k: add support to send delba
+         ath10k: add support to send addba response
+         ath10k: add support to send addba request
+         ath10k: Implement sta_add_debugfs
+         ath10k: add wmi support for delba_send
+         ath10k: add wmi support for addba_set_resp
+         ath10k: add wmi support for addba_send
+         ath10k: add wmi support for addba_clear_resp
+         ath10k: Enable RX batching
+         ath10k: Fix DMA burst size
+      Merge tag 'iwlwifi-next-for-kalle-2015-02-03' of https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next
+         iwlwifi: mvm: reduce quota threshold
+         iwlwifi: mvm: don't send a command the firmware doesn't know
+         iwlwifi: mvm: Fix building channels in scan_config_cmd
+         iwlwifi: mvm: Enable EBS also in single scan on umac interface
+         iwlwifi: mvm: fix failure path when power_update fails in add_interface
+         iwlwifi: mvm: Fix a few EBS error handling bugs
+         iwlwifi: allow to define the stuck queue timer per queue
+         iwlwifi: mvm: enable watchdog on Tx queues for mvm
+         iwlwifi: mvm: ignore stale TDLS ch-switch responses
+         iwlwifi: mvm: improve TDLS ch-sw state machine
+         iwlwifi: pcie: disable the SCD_BASE_ADDR when we resume from WoWLAN
+         iwlwifi: pcie: prepare the enablement of 31 TFD queues
+         iwlwifi: mvm: rs: enable forcing single stream Tx decision
+         iwlwifi: mvm: add beamformer support
+         iwlwifi: pcie: don't dump useless data when a TFD queue hangs
+         iwlwifi: mvm: always use mac color zero
+         iwlwifi: mvm: remove space padding after sysassert description
+         iwlwifi: mvm: don't reprobe if we fail during reconfig and fw_restart is false
+         iwlwifi: mvm: check IWL_UCODE_TLV_API_SCD_CFG in API and not in capa
+         iwlwifi: mvm: fix rx chains configuration in phy ctxt cmd
+         iwlwifi: pcie: support secured boot flow for family 8000 B step
+         iwlwifi: mvm: rs: remove stats argument from functions
+         iwlwifi: mvm: use a new API for enabling STBC
+         iwlwifi: mvm: rs: refactor ht/vht init
+         iwlwifi: mvm: really disable TDLS queues
+         iwlwifi: mvm: Do not consider invalid HW queues in queue mask
+         iwlwifi: mvm: BT Coex - set all the co-running values to 0
+         iwlwifi: mvm: support family 8000 C step
+         iwlwifi: pcie: init ref_lock
+         iwlwifi: mvm: document switch case fall-through in iwl_mvm_send_sta_key
+         iwlwifi: mvm: rs: use STBC regardless of power save mode
+         Revert "iwlwifi: mvm: drop non VO frames when flushing"
+         iwlwifi: mvm: add support for new LTR command
+         iwlwifi: mvm: BT Coex - fine tune the MPLUT register
+         Merge remote-tracking branch 'iwlwifi-fixes/master' into iwlwifi-next
+            iwlwifi: mvm: validate tid and sta_id in ba_notif
+         iwlwifi: mvm: move U-APSD decision to authentication
+         Merge tag 'tags/mac80211-next-for-davem-2015-01-19' into iwlwifi-next
+         iwlwifi: mvm: ignore temperature updates in the RX statistics notification
+         iwlwifi: mvm: rs: cleanup unuseful and overflowing traces
+         iwlwifi: mvm: generate statistics debugfs code
+         iwlwifi: mvm: move statistics API to new header file
+         iwlwifi: mvm: sync statistics firmware API
+         iwlwifi: correctly set the NMI register
+         iwlwifi: mvm: add rxf and txf to dump data
+         iwlwifi: mvm: add support for dumping a secondary SRAM
+         iwlwifi: mvm: add debugfs file for misbehaving U-APSD AP
+         iwlwifi: mvm: let the firmware configure the scheduler
+         iwlwifi: mvm: scan dwell time corrections
+         iwlwifi: remove unused TLV capability flags
+         iwlwifi: mvm: add print of he nvm version
+         iwlwifi: mvm: set max_out_time equal to frag_passive_dwell in fragmented scan
+         iwlwifi: mvm: rs: allow to disable MIMO for P2P only
+         iwlwifi: mvm: allow to collect debug data from non-sleepable context
+         iwlwifi: mvm: make sure state isn't in d0i3 when stopping fw monitor
+         iwlwifi: mvm: Add debugfs entry to enable scan offload notification
+         iwlwifi: add new config and PCI IDs for 4165 series
+         iwlwifi: mvm: make sure state isn't in d0i3 when collecting fw dbg
+         iwlwifi: mvm: rs: repeat initial legacy rates in LQ table
+         iwlwifi: mvm: don't indicate no BA if STA was in powersave
+         iwlwifi: mvm: rs: organize and cleanup consts
+         iwlwifi: mvm: Alter passive scan fragmentation parameters in case of multi-MAC
+         iwlwifi: mvm: call to pcie_apply_destination also on family 8000 B step
+         iwlwifi: mvm: Configure EBS scan ratio
+         iwlwifi: mvm: ask the fw to wakeup (from d0i3) on sysassert
+         iwlwifi: tlv: add support for IWL_UCODE_TLV_SDIO_ADMA_ADDR TLV
+         iwlwifi: mvm: use iwl_mvm_sta_from_mac80211() consistently
+         iwlwifi: mvm: use iwl_mvm_vif_from_mac80211() consistently
+         iwlwifi: remove useless extern definition of iwl4265_2ac_sdio_cfg
+         iwlwifi: mvm: clean refs before stop_device()
+         iwlwifi: dvm: main: Use setup_timer
+         iwlwifi: dvm: tt: Use setup_timer
+         iwlwifi: mvm: support 2 different channels
+         iwlwifi: mvm: wait for d0i3 exit on hw restart
+         iwlwifi: mvm: consider d0i3_disable in iwl_mvm_is_d0i3_supported()
+         iwlwifi: mvm: support IWL_D0I3_MODE_ON_SUSPEND d0i3 mode
+         iwlwifi: support multiple d0i3 modes
+         iwlwifi: mvm: allow both d0i3 and d3 wowlan configuration modes
+         iwlwifi: pcie: add basic reference accounting
+         iwlwifi: mvm: convert the SRAM dump to the generic memory dump
+         iwlwifi: mvm: change SMEM dump to general purpose memory dump
+         iwlwifi: mvm: add smem content to dump data
+         iwlwifi: mvm: support additional nvm_file in family 8000 B step
+         iwlwifi: mvm: rs: fix max rate allowed if no rate is allowed
+         iwlwifi: mvm: clear tt values when entering CT-kill
+         iwlwifi: mvm: Set the HW step in the core dump
+         iwlwifi: mvm: allow RSSI compensation
+         iwlwifi: mvm: add debugfs to trigger fw debug logs collection
+         iwlwifi: pcie: let the Manageability Engine know when we leave
+         iwlwifi: mvm: support LnP 1x1 antenna configuration
+         Revert "iwlwifi: use correct fw file in 8000 b-step"
+         iwlwifi: mvm: add fw runtime stack to dump data
+         iwlwifi: remove MODULE_VERSION
+      brcm80211: Delete unnecessary checks before two function calls
+      hostap: Delete an unnecessary check before the function call "kfree"
+      orinoco: Delete an unnecessary check before the function call "kfree"
+      ath9k: Delete an unnecessary check before the function call "relay_close"
+      cw1200: Less function calls in cw1200_load_firmware_cw1200() after error detection
+      cw1200: Delete an unnecessary check before the function call "release_firmware"
+      orinoco: orinoco_tmd use msecs_to_jiffies for conversion
+      orinoco: orinoco_pci use msecs_to_jiffies for conversion
+      orinoco: orinoco_plx use msecs_to_jiffies for conversion
+      cw1200: use msecs_to_jiffies for conversion
+      ath5k: fix spontaneus AR5312 freezes
+      ath9k: Choose correct rate for 2GHz channel
+      ath9k: Clear TSF2 properly
+      ath9k: Program AR_WA correctly
+      ath9k: Fix issues with WoW enable
+      ath9k: Register correct WOW details with mac80211
+      ath9k: Add support for more WOW patterns
+      rtlwifi: rtl8192ee: Fix problems with calculating free space in FIFO
+      rtlwifi: rtl8192ee: Fix handling of new style descriptors
+      wil6210: Remove msm platform related code
+      wil6210: print ciphers in debug info
+      wil6210: more Tx debug
+      wil6210: fix race between xmit and Tx vring de-allocation
+      wil6210: avoid Tx descriptor double write
+      wil6210: remove old Tx work-around
+      ath9k: Fix max pattern check
+      ath9k: Cleanup reg_wow.h
+      ath9k: Remove incorrect register macros
+      ath9k: Move WOW registers to reg_wow.h
+      ath9k: Register max WOW patterns
+      ath9k: Add a HW structure for WOW
+      ath9k: Simplify user pattern configuration
+      ath9k: Add a debugfs file for WOW
+      ath9k: Remove ath9k_hw_wow_event_to_string
+      ath9k: Remove unused BMISS processing
+      ath9k: Check WOW triggers properly
+      ath9k: Fix wow init/deinit
+      ath9k: Check multi-channel context for WOW
+      ath9k: Check early for multi-vif/STA conditions
+      ath9k: Remove redundant device_can_wakeup() check
+      ath9k: Return early for error conditions
+      ath9k: Remove ATH9K_HW_WOW_DEVICE_CAPABLE
+      mwifiex: disable UAPSD mode when AP starts
+      mwifiex: fix NULL packet downloading issues
+      mwifiex: fix memory leak in mwifiex_send_processed_packet()
+      mwifiex: correction in wakeup timer handling
+      rtlwifi: rtl8192ee: Fix DMA stalls
+      rtlwifi: rtl8192ee: Fix parsing of received packet
+      rtlwifi: rtl8192ee: Fix TX hang due to failure to update TX write point
+      rtlwifi: rtl8192ee: Fix adhoc fail
+      b43: AC-PHY: prepare place for developing new PHY support
+      b43: support bcma core reset on AC-PHY hardware
+      bcma: implement host code support for PCIe Gen 2 devices
+      bcma: add early_init function for PCIe core and move some fix into it
+      bcma: add empty PCIe hostmode functions if support is disabled
+      bcma: detect SPROM revision 11
+      bcma: simplify freeing cores (internal devices structs)
+      bcma: fix watchdog on some ARM chipsets
+      ath9k: Enable manual peak detect calibration
+      ath9k: Set correct peak detect threshold
+      ath9k: Fix manual peak calibration initialization
+      ath9k: Add a macro to identify PCOEM chips
+      ath9k: Update AR955x initvals
+      ath9k: Update QCA953x initvals
+      b43: Fix locking FIXME in beacon update top half
+      mwifiex: 11h handling for AP interface
+      mwifiex: channel switch support for mwifiex
+      mwifiex: handle radar detect event from FW
+      mwifiex: support for channel report for radar detection
+      mwifiex: add cfg80211 start_radar_detection handler
+      mwifiex: separate function for parsing head and tail IEs
+      mwifiex: refactor start_ap handler
+      mwifiex: update IEs after AP has started
+      mwifiex: store AP configuration in private structure
+      mwifiex: do not send regulatory update while starting AP
+      mwifiex: support conversion to any virtual interface type
+      mwifiex: handle PS events on AP interface as well
+      mwifiex: manage virtual interface limits efficiently
+      mwifiex: add init parameter to init command routine
+      mwifiex: store permanant mac address in adapter structure
+      mwifiex: do not declare wdev as pointer
+      mwifiex: set wiphy params only once
+      mwifiex: remove redundant nick_name variable
+      ssb: Fix Sparse error in main
+      brcmfmac: fix nvram processing
+      brcmfmac: store revinfo retrieval result
+      brcmfmac: show firmware release info in ethtool driver info
+      brcmfmac: always obtain device revision info upon intialization
+      brcmfmac: determine chip info when not provided by bus layer
+      brcmutil: use define for boardrev string function
+      brcmfmac: do not load firmware when device is already running
+      brcmfmac: Reopen netdev queue on bus state data.
+      brcmfmac: SDIO: avoid using bus state for private states.
+      brcmfmac: wait for driver to go idle during suspend
+      brcmfmac: pass DEAUTH/DISASSOC reason code to user-space
+      brcmfmac: use SDIO DPC for control frames.
+      brcmfmac: prevent possible deadlock on resuming SDIO device.
+      brcmfmac: Relax scheduling of msgbuf worker on high throughput.
+      wil6210: move Rx reorder buffer allocation out of spinlock
+      wil6210: implement cfg80211 probe_client() op
+      wil6210: implement skb Tx status reporting
+      wil6210: remove unnecessary interrupt moderation module parameters
+      wil6210: interrupt moderation configuration update
+      wil6210: tuning rings size
+      wil6210: Add Tx queue len configuration
+      wil6210: ignore firmware failure to gracefully stop AP
+      wil6210: fix timing of netif_carrier_on indication
+      wil6210: sync WMI with firmware
+      rtlwifi: rtl8192cu: Set fw_ready flag
+      mwifiex: selectively choose ext_scan support
+      mwifiex: add support for USB8801
+      mwifiex: add support for SD8801
+      ath9k and ath9k_htc: rename variable "led_blink"
+      rtl8192cu: fix the mesh beaconing
+      rtlwifi: add support to send beacon frame.
+      mwifiex: set netif carrier off in ndo_open
+      bcma: use standard bus scanning during early register
+      atmel: Remove open-coded and wrong strcasecmp
+      p54pci: add handling of signal case
+      p54: add handling of the signal case
+      ath5k: document a fall-through case in ath5k_hw_set_opmode
+      ath9k_htc: remove dead code in error path of ath9k_htc_txcompletion_cb
+      brcmfmac: Use put_unaligned_le32
+      bcma: clean bus initialization code
+      b43: stop leds during suspend
+      wlcore: unlock on error in wl1271_op_suspend()
+      rtlwifi/rtl8192de: remove redundant else if check
+      ath9k_htc: Add a module parameter to disable blink
+      wcn36xx: initiate TX BA sessions
+      wcn36xx: move set_tx_pdu inside set_tx_data/mgmt
+      wcn36xx: initialize dxe lock
+      wcn36xx: initialize skb_lock
+      wcn36xx: don't process 'valid' descriptors
+      wcn36xx: let device generate qos seq numbers
+      wcn36xx: use !! when assigning int as a boolean
+      wcn36xx: initialize device defaults on start
+      wlcore: fix copy-paste bug: assign from src struct not dest
+      mwifiex: do not emit messages while holding spinlock
+      mwifiex: check driver status in connect and scan handlers
+      ath9k: Fix no-ack frame status
+      Merge tag 'iwlwifi-next-for-kalle-2015-01-22' of https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next
+      Merge commit 'c1e140bf79d817d4a7aa9932eb98b0359c87af33' from mac80211-next
+      MAINTAINERS: remove ath5k mailing list
+      b43legacy: Remove unused b43legacy_radio_set_tx_iq()
+      orinoco/hermes: select CFG80211_WEXT
+      ath9k: Update PCI IDs for AR9565
+      ath9k: enable per-packet TPC on AR9002 based chips
+      ath9k: add TPC to TX path for AR9002 based chips
+      ath9k: add power per-rate tables for AR9002 chips
+      adm8211: fix error return code
+      bcma: fix three coding style issues, more than 80 characters per line
+      ath: ath9k: use debugfs_create_devm_seqfile() helper for seq_file entries
+      wil6210: relax spinlocks in rx reorder
+      wil6210: workaround for BACK establishment race
+      wil6210: Tx/Rx descriptors documentation
+      wil6210: fix reordering for MCAST
+      wil6210: RX high threshold interrupt configuration
+      wil6210: add advanced interrupt moderation
+      wil6210: use HW capabilities mask in reset
+      wil6210: detect HW capabilities
+      wil6210: rework debugfs for BACK
+      wil6210: fix Tx VRING for STA mode
+      wil6210: use bitmap API for "status"
+      wil6210: Increase number of associated stations
+      wil6210: consider SNAP header in MTU calculations
+      wil6210: fix max. MPDU size
+      wil6210: delba for responder
+      wil6210: control AMSDU on Tx side of Block Ack
+      wil6210: improve debugfs for VRING
+      wil6210: fix disconnect 1 STA in AP
+      wil6210: improve debugfs for reorder buffer
+      wil6210: allow to configure ADDBA request
+      wil6210: simple ADDBA on originator (Tx) side
+      wil6210: ADDBA/DELBA flows
+      ath9k: Add QCA956x HW support
+      ath9k: Fix register definitions for QCA956x
+      ath9k: Add initvals for QCA956x
+      ath9k: Add HW IDs for QCA956x
+      Merge ath-next from ath.git
+         ath10k: fix build error when hwmon is off
+         ath10k: set phymode to 11b when NO_OFDM flag set
+         ath10k: send (re)assoc peer command when NSS changed
+         ath10k: fix low TX rates when IBSS and HT
+         ath10k: add thermal sensor device support
+         ath10k: add wmi interface for pdev_get_temperature
+         ath10k: add thermal cooling device support
+         ath10k: add wmi support for pdev_set_quiet_mode
+         ath10k: add 10.2.4 firmware support
+         ath10k: print ath10k wmi op version
+         ath10k: use wmi op version to check which iface combination to use
+         ath10k: set max_num_vdevs based on wmi op version
+         ath10k: advertise p2p dev support
+         ath10k: enable per-vif sta powersave
+         ath10k: prevent invalid ps timeout config
+         ath10k: fix STA u-APSD
+         ath10k: improve 11b coex
+         ath10k: unregister and remove frag_threshold callback
+         ath10k: add new wmi interface of NF cal period
+         ath10k: add new pdev parameters for fw 10.2
+         ath10k: implement wmi-tlv backend
+         ath10k: make some wmi functions public
+         ath10k: introduce wmi ops
+         ath10k: implement intermediate event args
+         ath10k: set max_num_pending_tx in ath10k_core_init_firmware_features()
+         ath10k: add ATH10K_FW_IE_WMI_OP_VERSION
+         ath10k: create ath10k_core_init_features()
+         ath10k: clean up error handling in ath10k_core_probe_fw()
+         ath10k: move uart pin config into hw_params
+         ath10k: put board size into hw_params
+         ath10k: create a chip revision whitelist
+         ath10k: read calibration data from Device Tree
+         dt: bindings: add ath10k wireless device
+      rtlwifi: Move macro definitions to core
+      rtlwifi: rtl8821ae: Convert driver to use common DM table initialization
+      rtlwifi: rtl8723be: Convert driver to use common DM table initialization
+      rtlwifi: rtl8723ae: Convert driver to use common DM table initialization
+      rtlwifi: rtl8192ee: Convert driver to use common DM table initialization
+      rtlwifi: rtl8192de: Convert driver to use common DM table initialization
+      rtlwifi: rtl8192c-common: Convert driver to use common DM table initialization
+      rtlwifi: rtl8188ee: Convert driver to use the common DM table init routine
+      rtlwifi: Create new routine to initialize the DM tables
+      rtlwifi: rtl8723be: Improve modinfo output
+      rtlwifi: Unify variable naming for all drivers
+      brcmfmac: get rid of duplicate SDIO device identifiers
+      wl18xx: declare radar_detect_widths support for ap interfaces
+      wlcore: add dfs region to reg domain update cmd
+      wlcore: allow using dfs channels
+      wlcore: add dfs master restart calls
+      wlcore: add support for ap csa
+      wl18xx: add debugfs file to emulate radar event
+      wl18xx: add radar detection implementation
+      wlcore: enable sleep during AP mode operation
+      wlcore: enable AP wowlan
+      wlcore: add ability to reduce FW interrupts during suspend
+      wlcore/wl18xx: handle rc updates in a separate work
+      wlcore: fix sparse warning
+      wlcore: fix WLCORE_VENDOR_ATTR_GROUP_KEY policy
+      mwifiex: tdls: Use setup_timer
+      mwifiex: 11n_rxreorder: Use setup_timer
+      mwifiex: main: Use setup_timer
+      orinoco_usb: Use setup_timer
+      iwl3945: Use setup_timer
+      iwl4965: Use setup_timer
+      cw1200: queue: Use setup_timer
+      cw1200: main: Use setup_timer
+      wireless: cw1200: Use setup_timer
+      rt2x00: use helper to check capability/requirement
+      wil6210: use 'uint64_t' instead of 'cycles_t' to avoid warnings
+      mwifiex: Add support for wowlan disconnect
+      mwifiex: Move code for wowlan magic-packet and patterns to a function
+      mwifiex: Increase priority of firmware download message
+      mwifiex: do not release lock during list_for_each_entry_safe()
+      mwifiex: wakeup pending wait queues
+      mwifiex: add wakeup timer based recovery mechanism
+      mwifiex: increase delay during card reset
+      mwifiex: Adjust calling place of mwifiex_terminate_workqueue
+      mwifiex: remove redundant flag MWIFIEX_HW_STATUS_FW_READY
+      mwifiex: get supported BA stream info from FW
+      mwifiex: make tx packet 64 byte DMA aligned
+      mwifiex: do not send key material cmd when delete wep key
+      mwifiex: enable -D__CHECK_ENDIAN__ for sparse by default
+      brcmfmac: Add support for bcm43340/1 wireless chipsets
+      mwifiex: module parameter for deep sleep configuration
+      mwifiex: save sdio register values before firmware dump
+      mwifiex: save driver information to file when firmware dump
+      mwifiex: move debug_data dump function to common utililty file
+      mwifiex: move pm_wakeup_card_complete definition to usb.c
+      mwifiex: add rx histogram statistics support
+      mwifiex: add bcn_rcv_cnt and bcn_miss_cnt in getlog debugfs
+      mwifiex: report tdls peers in debugfs
+      ath5k: drop owner assignment from platform_drivers
+      brcmfmac: enable 802.11d support in firmware
+      brcmfmac: signal completion of 802.1x.
+      brcmfmac: follow user-space regulatory domain selection
+      brcmfmac: Change error log in standard log for rxbufpost.
+      brcmfmac: Fix WEP configuration for AP mode.
+      brcmfmac: remove unused/duplicate defines in chip.c
+      brcmfmac: Fix incorrect casting of 64 bit physical address.
+      Merge tag 'iwlwifi-next-for-kalle-2014-12-30' of https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next
+   net:rfs: adjust table size checking
+   cxgb4: Fix trace observed while dumping clip_tbl
+   rhashtable: using ERR_PTR requires linux/err.h
+   Driver: Vmxnet3: Change the hex constant to its decimal equivalent
+   net: rfs: add hash collision detection
+   net: fix a typo in skb_checksum_validate_zero_check
+   gre/ipip: use be16 variants of netlink functions
+   tipc: fix bug in socket reception function
+   rt6_probe_deferred: Do not depend on struct ordering
+   Merge branch 'tcp_ack_loops'
+      tcp: mitigate ACK loops for connections as tcp_timewait_sock
+      tcp: mitigate ACK loops for connections as tcp_sock
+      tcp: mitigate ACK loops for connections as tcp_request_sock
+      tcp: helpers to mitigate ACK loops by rate-limiting out-of-window dupacks
+   openvswitch: Initialize unmasked key and uid len
+   Merge branch 'cxgb4'
+      cxgb4: Add support in debugfs to dump the congestion control table
+      cxgb4: Add support to dump mailbox content in debugfs
+      cxgb4: Add support for ULP RX logic analyzer output in debugfs
+      cxgb4: Added support in debugfs to display TP logic analyzer output
+      cxgb4: Add support in debugfs to display sensor information
+   Merge branch 'be2net'
+      be2net: avoid unncessary swapping of fields in eth_tx_wrb
+      be2net: process port misconfig async event
+      be2net: refactor be_set_rx_mode() and be_vid_config() for readability
+      be2net: remove duplicate code in be_cmd_rx_filter()
+      be2net: use offset based FW flashing for Skyhawk chip
+      be2net: avoid flashing SH-B0 UFI image on SH-P2 chip
+      be2net: refactor code that checks flash file compatibility
+      be2net: replace (1 << x) with BIT(x)
+      be2net: move un-exported routines from be.h to respective src files
+   bridge: add missing bridge port check for offloads
+   Merge branch 'master' of git://git.kernel.org/pub/scm/linux/kernel/git/jkirsher/net-next
+      ixgbe: add Tx anti spoofing support
+      ixgbevf: combine all of the tasks into a single service task
+      ixgbevf: rewrite watchdog task to function similar to igbvf
+      ixgbevf: Add code to check for Tx hang
+      ixgbevf: Fix ordering of shutdown to correctly disable Rx and Tx
+      ixgbevf: set vlan_features in a single write instead of several ORs
+      ixgbe: add VXLAN offload support for X550 devices
+      ixgbe: Cleanup probe to remove redundant attempt to ID PHY
+      ixgbe: cleanup redundant default method set_rxpba
+      ixgbe: fix setting port VLAN
+      ixgbevf: add RSS support for X550
+      ixgbevf: enable multiple queue support
+      ixgbe: allow multiple queues in SRIOV mode
+      ixgbe: cleanup sparse errors in new ixgbe_x550.c file
+      fm10k: Resolve compile warnings with W=1
+      fm10k: Validate VLAN ID in fm10k_update_xc_addr_pf
+   Merge branch 'r8152'
+      r8152: use BIT macro
+      r8152: replace get_protocol with vlan_get_protocol
+      r8152: adjust the line feed for hw_features
+      r8152: check RTL8152_UNPLUG for rtl8152_close
+      r8152: check linking status with netif_carrier_ok
+      r8152: adjust lpm timer
+      r8152: adjust rx_bottom
+   rds: Make rds_message_copy_from_user() return 0 on success.
+   net: rds: Remove repeated function names from debug output
+   net: openvswitch: Support masked set actions.
+   Merge branch 'dsa-next'
+      net: dsa: bcm_sf2: implement GPHY power down
+      net: dsa: bcm_sf2: move GPHY enabling to its own function
+   Merge tag 'nfc-next-3.20-2' of git://git.kernel.org/pub/scm/linux/kernel/git/sameo/nfc-next
+      NFC: nci: Move NFCEE discovery logic
+      NFC: nci: Move logical connection structure allocation
+      NFC: nci: Change credits field to credits_cnt
+      NFC: nci: Support all destinations type when creating a connection
+      NFC: nci: Add reference to the RF logical connection
+      NFC: st21nfca: Add HCI transaction event support
+      NFC: st21nfcb: Add HCI transaction event support
+      NFC: nci: Change NCI state machine to LISTEN_ACTIVE
+      NFC: nci: Add RF NFCEE action notification support
+      NFC: Forward NFC_EVT_TRANSACTION to user space
+      NFC: st21nfcb: Add support for secure element
+      NFC: nci: Add HCI over NCI protocol support
+      NFC: nci: Support logical connections management
+      NFC: nci: Add NFCEE enabling and disabling support
+      NFC: nci: Add NFCEE discover support
+      NFC: nci: Add NCI NFCEE constants
+      NFC: nci: Add dynamic logical connections support
+   rhashtable: Fix remove logic to avoid cross references between buckets
+   Merge branch 'rhashtable-next'
+      rhashtable: Avoid bucket cross reference after removal
+      rhashtable: Add more lock verification
+      rhashtable: Dump bucket tables on locking violation under PROVE_LOCKING
+      rhashtable: Wait for RCU readers after final unzip work
+      rhashtable: Use a single bucket lock for sibling buckets
+      rhashtable: key_hashfn() must return full hash value
+   vxge: fix sparse warning
+   xen-netback: fix sparse warning
+   net/macb: fix sparse warning
+   net: bnx2x: fix sparse warnings
+   enic: enic_main: fix sparse warnings
+   enic: enic_ethtool: fix sparse warning
+   be2net: fix sparse warning
+   chelsio: cxgb4: fix sparse warning
+   hyperv: fix sparse warnings
+   Merge branch 'tipc-next'
+      tipc: eliminate race condition at multicast reception
+      tipc: simplify socket multicast reception
+      tipc: simplify connection abort notifications when links break
+      tipc: resolve race problem at unicast message reception
+      tipc: use existing sk_write_queue for outgoing packet chain
+      tipc: split up function tipc_msg_eval()
+      tipc: enqueue arrived buffers in socket in separate function
+      tipc: simplify message forwarding and rejection in socket layer
+      tipc: reduce usage of context info in socket and link
+   hso: Use static attribute groups for sysfs entry
+   Merge branch 'isdnloop_checkpatch'
+      drivers: isdn: isdnloop: isdnloop.c: Remove parenthesis around return values, as specified in CodingStyle.
+      drivers: isdn: isdnloop: isdnloop.c: Fix brace positions according to CodingStyle specifications.
+      drivers: isdn: isdnloop: isdnloop.c: remove assignment of variables in if conditions, in accordance with the CodingStyle.
+   Merge git://git.kernel.org/pub/scm/linux/kernel/git/davem/net
+   vxlan: Only set has-GBP bit in header if any other bits would be set
+   net: ep93xx_eth: Delete unnecessary checks before the function call "kfree"
+   xen-netfront: Use static attribute groups for sysfs entries
+   tun: Use static attribute groups for sysfs entries
+   qlogic: Deletion of unnecessary checks before two function calls
+   Merge tag 'linux-can-next-for-3.20-20150204' of git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can-next
+      can: kvaser_usb: Ignore spurious error events after a busoff
+      can: janz-ican3: fix type mismatch in assignment
+   net: ethernet: ti/cpsw-common.c: fix sparse warning
+   netxen: Delete an unnecessary check before the function call "kfree"
+   net: fec: Delete unnecessary checks before the function call "kfree"
+   myri10ge: Delete an unnecessary check before the function call "kfree"
+   cxgb4: Delete an unnecessary check before the function call "release_firmware"
+   cxgb4: Add low latency socket busy_poll support
+   Revert "bridge: Let bridge not age 'externally' learnt FDB entries, they are removed when 'external' entity notifies the aging"
+   pkt_sched: fq: better control of DDOS traffic
+   Merge branch 'for-davem' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs
+      vhost: vhost_scsi_handle_vq() should just use copy_from_user()
+      vhost: don't bother copying iovecs in handle_rx(), kill memcpy_toiovecend()
+      vhost: don't bother with copying iovec in handle_tx()
+      vhost: switch vhost get_indirect() to iov_iter, kill memcpy_fromiovec()
+      net: switch sockets to ->read_iter/->write_iter
+      net/socket.c: fold do_sock_{read,write} into callers
+      crypto: switch af_alg_make_sg() to iov_iter
+      net: bury net/core/iovec.c - nothing in there is used anymore
+      tipc: tipc ->sendmsg() conversion
+      net: switch memcpy_fromiovec()/memcpy_fromiovecend() users to copy_from_iter()
+      ip: convert tcp_sendmsg() to iov_iter primitives
+      ip: stash a pointer to msghdr in struct ping_fakehdr
+      rxrpc: make the users of rxrpc_kernel_send_data() set kvec-backed msg_iter properly
+      rxrpc: switch rxrpc_send_data() to iov_iter primitives
+      vmci: propagate msghdr all way down to __qp_memcpy_to_queue()
+      ipv6: rawv6_send_hdrinc(): pass msghdr
+      ipv4: raw_send_hdrinc(): pass msghdr
+      netlink: make the check for "send from tx_ring" deterministic
+   tcp: do not pace pure ack packets
+   Merge branch 'rhashtable-next'
+      netfilter: Use rhashtable walk iterator
+      netlink: Use rhashtable walk iterator
+      rhashtable: Introduce rhashtable_walk_*
+      rhashtable: Fix potential crash on destroy in rhashtable_shrink
+   NetCP: Deletion of unnecessary checks before two function calls
+   IBM-EMAC: Delete an unnecessary check before the function call "of_dev_put"
+   Merge branch 'mlx4-next'
+      net/mlx4_en: Notify TX Vlan offload change
+      net/mlx4_en: Adjust RX frag strides to frag sizes
+      net/mlx4_en: Print page allocator information
+      net/mlx5_core: Move to use hex PCI device IDs
+      net/mlx4_core: Fix misleading debug print on CQE stride support
+      net/mlx4: mlx4_config_dev_retrieval() - Initialize struct config_dev before using
+      net/mlx4_core: Fix mpt_entry initialization in mlx4_mr_rereg_mem_write()
+   Merge branch 'mlx4-next'
+      IB/mlx4: Load balance ports in port aggregation mode
+      IB/mlx4: Create mirror flows in port aggregation mode
+      IB/mlx4: Add port aggregation support
+      IB/mlx4: Reuse mlx4_mac_to_u64()
+      net/mlx4_en: Port aggregation configuration
+      net/mlx4_core: Port aggregation upper layer interface
+      net/mlx4_core: Port aggregation low level interface
+      net/bonding: Notify state change on slaves
+      net/bonding: Move slave state changes to a helper function
+      net/core: Add event for a change in slave state
+   Merge branch 'tipc-next'
+      tipc: separate link starting event from link timeout event
+      tipc: eliminate race during node creation
+      tipc: avoid stale link after aborted failover
+      tipc: add reference count to struct tipc_link
+   Merge tag 'mac80211-next-for-davem-2015-02-03' of git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next
+      net: rfkill: Add Broadcom BCM2E40 bluetooth ACPI ID
+      nl80211: don't document per-wiphy interface dump
+      wireless: docs: fix 'make pdfdocs' failure
+      mac80111: Add BIP-GMAC-128 and BIP-GMAC-256 ciphers
+      mac80111: Add BIP-CMAC-256 cipher
+      mac80111: Add CCMP-256 cipher
+      mac80111: Add GCMP and GCMP-256 ciphers
+      cfg80211: Add new GCMP, CCMP-256, BIP-GMAC, BIP-CMAC-256 ciphers
+      cfg80211: Fix BIP (AES-CMAC) cipher validation
+      ath10k: use IEEE80211_HW_SW_CRYPTO_CONTROL
+      mac80211: handle potential race between suspend and scan completion
+      mac80211: support beacon statistics
+      mac80211: fix per-TID RX-MSDU counter
+      mac80211: tdls: disentangle HT supported conditions
+      mac80211: tdls: remove shadowing variable
+      nl80211: suppress smatch warnings
+      Revert "mac80211: keep sending peer candidate events while in listen state"
+      mac80211: complete scan work immediately if quiesced or suspended
+      mac80211: avoid races related to suspend flow
+      mac80211: synchronize_net() before flushing the queues
+      nl80211: add an attribute to allow delaying the first scheduled scan cycle
+      mac80211: enable TPC through mac80211 stack
+      nl80211: Allow set network namespace by fd
+      mac80211: allow drivers to control software crypto
+      mac80211: fix HW registration error paths
+      mac80211: delete the assoc/auth timer upon suspend
+      Revert "wireless: Support of IFLA_INFO_KIND rtnl attribute"
+      cfg80211: fix checking nl80211_send_station() return value
+      mac80211: remove doubled semicolon
+      cfg80211: change bandwidth reporting to explicit field
+      cfg80211: remove 80+80 MHz rate reporting
+      mac80211: remove 80+80 MHz rate reporting
+   csiostor:Use firmware version from cxgb4/t4fw_version.h
+   tlan: msecs_to_jiffies convrsion
+   tlan: use msecs_to_jiffies for conversion
+   Merge branch 'for-upstream' of git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next
+      Bluetooth: Fix potential NULL dereference
+      Bluetooth: btusb: Add support for Lite-On (04ca) Broadcom based, BCM43142
+      Bluetooth: Remove mgmt_rp_read_local_oob_ext_data struct
+      Bluetooth: Set HCI_QUIRK_STRICT_DUPLICATE_FILTER for BTUSB_INTEL_NEW
+      Bluetooth: Add restarting to service discovery
+      Bluetooth: Add le_scan_restart work for LE scan restarting
+      ieee802154: cc2520: Fix space before , coding style issue
+      ieee802154: cc2520: Replace shift operations by BIT macro
+      Bluetooth: Fix OOB data present for BR/EDR Secure Connections Only mode
+      Bluetooth: Expose remote OOB information as debugfs entry
+      Bluetooth: Expose hardware error code as debugfs entry
+      Bluetooth: Expose debug keys usage setting via debugfs
+      Bluetooth: Track changes from HCI Write Simple Pairing Debug Mode command
+      Bluetooth: Expose Secure Simple Pairing debug mode setting in debugfs
+      Bluetooth: Allow remote OOB data to only provide P-192 or P-256 values
+      Bluetooth: Fix OOB data present value for SMP pairing
+      Bluetooth: Fix OOB data present value for BR/EDR Secure Connections
+      Bluetooth: Store OOB data present value for each set of remote OOB data
+      Bluetooth: Set HCI_QUIRK_STRICT_DUPLICATE_FILTER for BTUSB_INTEL
+      Bluetooth: btusb: Use wait_on_bit_timeout() for BTUSB_BOOTING
+      Bluetooth: btusb: Fix race when waiting for BTUSB_DOWNLOADING
+      Bluetooth: btusb: Limit hardware error handling to Intel Snowfield Peak
+      Bluetooth: Set HCI_QUIRK_STRICT_DUPLICATE_FILTER for BTUSB_ATH3012
+      Bluetooth: ath3k: workaround the compatibility issue with xHCI controller
+      Bluetooth: Fix sending Read Remote Extended Features command
+      Bluetooth: btusb: Add support for USB based AMP controllers
+      Bluetooth: btusb: Ignore unknown Intel devices with generic descriptor
+      Bluetooth: btusb: Sort USB_DEVICE entries for Marvell by vendor id
+      Bluetooth: Move smp_unregister() into hci_dev_do_close() function
+      Bluetooth: btusb: Provide hardware error handler for Intel devices
+      Bluetooth: Perform a power cycle when receiving hardware error event
+      Bluetooth: Introduce hci_dev_do_reset helper function
+      Bluetooth: Fix notifying discovery state when powering off
+      Bluetooth: Fix notifying discovery state upon reset
+      Bluetooth: Fix check for SSP when enabling SC
+      Bluetooth: btusb: Remove redundant call to btusb_free_frags()
+      Bluetooth: btusb: Handle out of order firmware loading complete event
+      Bluetooth: Check for P-256 OOB values in Secure Connections Only mode
+      Bluetooth: Use helper function to determine BR/EDR OOB data present
+      Bluetooth: Clear P-192 values for OOB when in Secure Connections Only mode
+      Bluetooth: Enforce zero-valued hash/rand192 for LE OOB
+      Bluetooth: btusb: Add firmware loading for Intel Snowfield Peak devices
+      Bluetooth: btusb: Add support for Dynex/Insignia USB dongles
+      Bluetooth: Fix nested sleeps
+      Bluetooth: Convert Set SC to use HCI Request
+      Bluetooth: Remove incorrect check for BDADDR_BREDR address type
+      Bluetooth: Check for valid bdaddr in add_remote_oob_data
+      Bluetooth: Require SSP enabling before BR/EDR Secure Connections
+      Bluetooth: Limit BR/EDR switching for LE only with secure connections
+      Bluetooth: Fix dependency for BR/EDR Secure Connections mode on SSP
+      Bluetooth: Fix reporting invalid RSSI for LE devices
+      Bluetooth: btusb: Add Broadcom patchram support for ASUSTek devices
+      Bluetooth: ath3k: Add support of AR3012 bluetooth 13d3:3423 device
+   net: add skb functions to process remote checksum offload
+   bridge: Let bridge not age 'externally' learnt FDB entries, they are removed when 'external' entity notifies the aging
+   net: fs_enet: Implement NETIF_F_SG feature
+   xps: fix xps for stacked devices
+   Merge branch 'netlabel-next'
+      netlabel: Less function calls in netlbl_mgmt_add_common() after error detection
+      netlabel: Deletion of an unnecessary check before the function call "cipso_v4_doi_free"
+      netlabel: Deletion of an unnecessary check before the function call "cipso_v4_doi_putdef"
+   net/fsl_pq_mdio: Document supported compatibles
+   net: sctp: Deletion of an unnecessary check before the function call "kfree"
+   Merge branch 'udpv6_lockless_send'
+      ipv6: Allow for partial checksums on non-ufo packets
+      udpv6: Add lockless sendmsg() support
+      ipv6: Introduce udpv6_send_skb()
+      ipv6: introduce ipv6_make_skb
+      ipv6: Append sending data to arbitrary queue
+      ipv6: pull cork initialization into its own function.
+   cxgb4 : Improve IEEE DCBx support, other minor open-lldp fixes
+   net/tulip: don't warn about unknown ARM architecture
+   net: hip04: add missing MODULE_LICENSE
+   net: dctcp: loosen requirement to assert ECT(0) during 3WHS
+   Merge branch 'net-timestamp'
+      net-timestamp: no-payload option in txtimestamp test
+      net-timestamp: no-payload only sysctl
+      net-timestamp: no-payload option
+   net: rocker: Add support for retrieving port level statistics
+   Merge branch 'switchdev_offload_flags'
+      team: handle NETIF_F_HW_SWITCH_OFFLOAD flag and add ndo_bridge_setlink/dellink handlers
+      bonding: handle NETIF_F_HW_SWITCH_OFFLOAD flag and add ndo_bridge_setlink/dellink handlers
+      rocker: set feature NETIF_F_HW_SWITCH_OFFLOAD
+      bridge: offload bridge port attributes to switch asic if feature flag set
+      swdevice: add new apis to set and del bridge port attributes
+      bridge: add flags argument to ndo_bridge_setlink and ndo_bridge_dellink
+      netdev: introduce new NETIF_F_HW_SWITCH_OFFLOAD feature flag for switch device offloads
+   stmmac: DMA threshold mode or SF mode can be different among multiple device instance
+   cxgb4: Remove preprocessor check for CONFIG_CXGB4_DCB
+   Merge branch 'hso-next'
+      hso: fix rfkill name conflicts
+      hso: add missing cancel_work_sync in disconnect()
+      hso: update serial_table in usb disconnect method
+      hso: move tty_unregister outside hso_serial_common_free()
+      hso: replace reset_device work by usb_queue_reset_device()
+      hso: rename hso_dev into serial in hso_free_interface()
+      hso: fix small indentation error
+      hso: fix memory leak in hso_create_rfkill()
+      hso: fix memory leak when device disconnects
+      hso: fix crash when device disappears while serial port is open
+      hso: remove useless header file timer.h
+   ipv4: icmp: use percpu allocation
+   drivers: net: cpsw: make cpsw_ale.c a module to allow re-use on Keystone
+   tcp: use SACK RTTs for CC
+   irda: use msecs_to_jiffies for conversions
+   rhashtable: Make selftest modular
+   net: mark some potential candidates __read_mostly
+   Merge branch 'cpsw_macid'
+      net: davinci_emac: Get device MAC on 3517
+      net: davinci_emac: Get device dm816x MAC address using the cpsw code
+      net: cpsw: Add a minimal cpsw-common module for shared code
+   Merge tag 'linux-can-next-for-3.20-20150128' of git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can-next
+      can: peak_usb: add support for PEAK new CANFD USB adapters
+      can: peak_usb: add peak_usb_netif_rx() new function
+      can: peak_usb: export pcan_usb_pro functions
+      can: peak_usb: upgrade core to new struct canfd_frame
+      can: peak_usb: upgrade core to data bittiming specs
+      can: peak_usb: add adapter BEC callback definition
+      can: peak_usb: export ctrlmode_supported to adapter specific definition
+      can: peak_usb: constify struct peak_usb_adapter
+      can: peak_usb: use ARRAY_SIZE instead of NULL termination for peak_usb_adapters_list
+      can: kvaser_usb: Add support for the USBcan-II family
+      can: kvaser_usb: Consolidate and unify state change handling
+      can: kvaser_usb: Update interface state before exiting on OOM
+   net: gianfar: remove the unneeded check of disabled device
+   dev: add per net_device packet type chains
+   rtnetlink: pass link_net to the newlink handler
+   pkt_sched: fq: remove useless TIME_WAIT check
+   act_connmark: fix dependencies better
+   net: remove sock_iocb
+   hisilicon: add some missing curly braces
+   openvswitch: Add support for checksums on UDP tunnels.
+   Merge tag 'nfc-next-3.20-1' of git://git.kernel.org/pub/scm/linux/kernel/git/sameo/nfc-next
+      NFC: Add ACPI support for NXP PN544
+      NFC: PN544: GPIO access that may sleep
+      NFC: dts: st21nfca: Document ese-present & uicc-present DTS property
+      NFC: st21nfca: Adding support for secure element
+      NFC: hci: Remove nfc_hci_pipe2gate function
+      NFC: microread: Change event_received gate parameter to pipe
+      NFC: pn544: Change event_received gate parameter to pipe
+      NFC: hci: Add cmd_received handler
+      NFC: hci: Reference every pipe information according to notification
+      NFC: hci: Change nfc_hci_send_response gate parameter to pipe
+      NFC: hci: Add pipes table to reference them with a tuple {gate, host}
+      NFC: hci: Change event_received handler gate parameter to pipe
+      NFC: st21nfcb: Fix copy/paste error in comment
+      NFC: st21nfcb: Remove useless include
+      NFC: st21nfcb: Fix "NULL pointer dereference" possible error
+      NFC: st21nfca: Fix some skb memory leaks
+      NFC: st21nfca: Remove checkpatch.pl warning Possible unnecessary 'out of memory' message
+      NFC: st21nfca: Remove skb_pipe_list and skb_pipe_info useless allocation
+      NFC: nfc_disable_se Remove useless blank line at beginning of function
+      NFC: nfc_enable_se Remove useless blank line at beginning of function
+      NFC: st21nfcb: Avoid use of skb after free
+      NFC: st21nfca: Remove unreachable code
+      NFC: st21nfcb: Fix "WARNING: invalid free of devm_ allocated data"
+      NFC: dts: st21nfcb: Fix compatible string spelling to follow other drivers
+      NFC: dts: st21nfca: Fix compatible string spelling to follow other drivers
+   Merge branch 'stmmac-pci'
+      stmmac: pci: add MSI support for Intel Quark X1000
+      stmmac: pci: introduce Intel Quark X1000 runtime detection
+      stmmac: pci: add support for Intel Quark X1000
+   net: netcp: remove unused kconfig option and code
+   cxgb4: Move firmware version MACRO to t4fw_version.h
+   csiostor:T5 Firmware fix and cleanup.
+   Merge branch 'mlx4-next'
+      net/mlx4_core: Update the HCA core clock frequency after INIT_PORT
+      net/mlx4_core: Fix device capabilities dumping
+      net/mlx4: Fix memory corruption in mlx4_MAD_IFC_wrapper
+      net/mlx4_en: Use ethtool cmd->autoneg as a hint for ethtool set settings
+      net/mlx4_core: Remove duplicate code line from procedure mlx4_bf_alloc
+      net/mlx4_core: Fix struct mlx4_vhcr_cmd to make implicit padding explicit
+      net/mlx4_core: Fix HW2SW_EQ to conform to the firmware spec
+      net/mlx4_core: Adjust command timeouts to conform to the firmware spec
+      net/mlx4_core: Fix mem leak in SRIOV mlx4_init_one error flow
+      net/mlx4_core: Add reserved lkey for VFs to QUERY_FUNC_CAP
+      net/mlx4_core: Add bad-cable event support
+   vxlan: advertise link netns in fdb messages
+   Merge branch 'bonding-next'
+      bonding: cleanup and remove dead code
+      bonding: fix LACP PDU not sent on slave port sometimes
+      bonding: fix incorrect lacp mux state when agg not active
+      bonding: fix bond_open() don't always set slave active flag
+      bonding: update bond carrier state when min_links option changes
+   hyperv: match wait_for_completion_timeout return type
+   hyperv: netvsc.c: match wait_for_completion_timeout return type
+   Merge git://git.kernel.org/pub/scm/linux/kernel/git/davem/net
+   netlink: Kill redundant net argument in netlink_insert
+   net: phy: Invalidate LP advertising flags when restarting or disabling AN
+   Merge branch 'sunvnet-next'
+      sunvnet: improve error handling when a remote crashes
+      sunvnet: free pending tx buffers before clearing ring data
+   Merge branch 'phy-next'
+      net: phy: avoid suspending twice a PHY
+      net: phy: keep track of the PHY suspend state
+      net: phy: document has_fixups field
+      net: phy: utilize phy_suspend and phy_resume
+   Merge branch 'cxgb4-next'
+      cxgb4: Added support in debugfs to dump different timer and clock values of the adapter
+      cxgb4: Added support in debugfs to dump PM module stats
+      cxgb4: Addded support in debugfs to dump CIM outbound queue content
+      cxgb4: Added support in debugfs to dump cim ingress bound queue contents
+      cxgb4: Added support in debugfs to dump sge_qinfo
+   net: dsa/mv88e6352: make mv88e6352_wait generic
+   net: dsa/mv88e6xxx: add reg read and write debug
+   net: macb: Remove CONFIG_PM ifdef because of compilation warning
+   net: macb: allow deffered probe of the driver
+   flow_dissector: add tipc support
+   tipc: fix excessive network event logging
+   Merge branch 'master' of git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next
+   net: act_bpf: fix size mismatch on filter preparation
+   net: cls_basic: return from walking on match in basic_get
+   stmmac: Add an optional device tree property "snps,burst_len"
+   stmmac: hardware TX COE doesn't work when force_thresh_dma_mode is set
+   stmmac: if force_thresh_dma_mode is set, pass tc to both txmode and rxmode in tx_hard_error_bump_tc interrupt
+   Merge branch 'ovs_flowids'
+      openvswitch: Add support for unique flow IDs.
+      genetlink: Add genlmsg_parse() helper function.
+      openvswitch: Use sw_flow_key_range for key ranges.
+      openvswitch: Refactor ovs_flow_tbl_insert().
+      openvswitch: Refactor ovs_nla_fill_match().
+   Merge tag 'linux-can-next-for-3.20-20150121' of git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can-next
+      can: at91_can: remove unused variable
+      can: flexcan: remove unused variable
+      can: dev: fix semicolon.cocci warnings
+      can: move can_stats.bus_off++ from can_bus_off into can_change_state
+   Merge branch 'sh_eth'
+      sh_eth: add more PM methods
+      sh_eth: use SET_RUNTIME_PM_OPS()
+   net: stmmac: add BQL support
+   cxgb4: Fixes cxgb4_inet6addr_notifier unregister call
+   rhashtable: rhashtable_remove() must unlink in both tbl and future_tbl
+   ipv6: tcp: fix race in IPV6_2292PKTOPTIONS
+   rhashtable: fix rht_for_each_entry_safe() endless loop
+   net/fsl: Replace spin_event_timeout() with arch independent in xgmac_mdio
+   net/fsl: drop in_be32() & out_be32() in xgmac_mdio
+   bonding: handle more gso types
+   bridge: simplify br_getlink() a bit
+   Merge branch 'phy_dsa'
+      net: dsa: bcm_sf2: factor interrupt disabling in a function
+      net: phy: fixed: allow setting no update_link callback
+   net: ipv6: Add sysctl entry to disable MTU updates from RA
+   Merge branch 'fib_trie_next'
+      fib_trie: Various clean-ups for handling slen
+      fib_trie: Move fib_find_alias to file where it is used
+      fib_trie: Use empty_children instead of counting empty nodes in stats collection
+      fib_trie: Add collapse() and should_collapse() to resize
+      fib_trie: Fall back to slen update on inflate/halve failure
+      fib_trie: Fix RCU bug and merge similar bits of inflate/halve
+      fib_trie: Use index & (~0ul << n->bits) instead of index >> n->bits
+   Merge branch 'mlx4-next'
+      net/mlx4_core: Reset flow activation upon SRIOV fatal command cases
+      net/mlx4_core: Enable device recovery flow with SRIOV
+      net/mlx4_core: Handle AER flow properly
+      net/mlx4_core: Manage interface state for Reset flow cases
+      net/mlx4_core: Activate reset flow upon fatal command cases
+      net/mlx4_core: Enhance the catas flow to support device reset
+      net/mlx4_core: Refactor the catas flow to work per device
+      net/mlx4_core: Set device configuration data to be persistent across reset
+      net/mlx4_core: Maintain a persistent memory for mlx4 device
+   cxgb3: re-use native hex2bin()
+   usbnet: re-use native hex2bin()
+   Merge branch 'master' of git://git.kernel.org/pub/scm/linux/kernel/git/jkirsher/net-next
+      net: e1000e: support txtd update delay via xmit_more
+      net: e1000: support txtd update delay via xmit_more
+      igb: Indicate failure on vf reset for empty mac address
+      fm10k: Increase the timeout for the data path reset
+      fm10k: Check tunnel header length in encap offload
+      net/fm10k: Avoid double setting of NETIF_F_SG for the HW encapsulation feature mask
+      igb: enable auxiliary PHC functions for the i210
+      igb: enable internal PPS for the i210
+      igb: serialize access to the time sync interrupt registers
+      igb: refactor time sync interrupt handling
+      fm10k: Clean-up page reuse code
+      igb: Clean-up page reuse code
+      virtio_net: add software timestamp support
+      e1000e: Fix 82572EI that has no hardware timestamp support
+      e1000: fix time comparison
+   Merge branch 'vxlan_tx'
+      vxlan: Eliminate dependency on UDP socket in transmit path
+      udp: Do not require sock in udp_tunnel_xmit_skb
+   net: fec: fix the warning found by dma debug
+   Merge branch 'be2net-next'
+      be2net: Fix TX rate limiting on Lancer/Skyhawk-R VFs
+      be2net: move definitions related to FW cmdsfrom be_hw.h to be_cmds.h
+      be2net: issue function reset cmd in resume path
+      be2net: add a log message for POST timeout in Lancer
+      be2net: fail VF link config change via ndo_set_vf_link_state() on BE3/Lancer
+      be2net: fix failure case in setting flow control
+      be2net: move interface create code to a separate routine
+   Merge branch 'stmmac-dwmac-rk'
+      dt-bindings: Document phy-supply property in rockchip-dwmac
+      net: stmmac: dwmac-rk: Use standard devicetree property for phy regulator
+      ARM: dts: Add regulator voltage settings for vcc_phy in rk3288-evb.dtsi
+      net: stmmac: dwmac-rk: Don't set the regulator voltage for phy from the driver
+   Merge branch 'cxgb4-next'
+      cxgb4: Add debugfs options to dump the rss key, config for PF, VF, etc
+      cxgb4: Add debugfs entry to dump the contents of the flash
+   xen-netback: always fully coalesce guest Rx packets
+   Merge branch 'link_netns_advertise'
+      vxlan: advertise netns of vxlan dev in fdb msg
+      veth: advertise link netns via netlink
+      macvlan: advertise link netns via netlink
+      vlan: advertise link netns via netlink
+      ip6gretap: advertise link netns via netlink
+      rtnl: fix error path when adding an iface with a link net
+   act_connmark: Add missing dependency on NF_CONNTRACK_MARK
+   Merge tag 'mac80211-next-for-davem-2015-01-19' of git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next
+   phonet netlink: allow multiple messages per skb in route dump
+   ARM: dts: imx6sx: correct i.MX6sx sdb board enet phy address
+   net: sched: Introduce connmark action
+   Merge branch 'dsa-next'
+      net: bridge: reject DSA-enabled master netdevices as bridge members
+      net: ipv4: handle DSA enabled master network devices
+   mii: Handle link state changes for forced modes in mii_check_media()
+   Merge branch 'csiostor'
+      csiostor:Removed file csio_hw_t4.c
+      csiostor:Remove T4 FCoE Support.
+   Merge branch 'netcp'
+      net: netcp: Enhance GBE driver to support 10G Ethernet
+      net: netcp: Add Keystone NetCP GbE driver
+      net: netcp: Add Keystone NetCP core ethernet driver
+      Documentation: dt: net: Add binding doc for Keystone NetCP ethernet driver
+   net: ethernet: ti: cpsw: fix buld break when NET_POLL_CONTROLLER
+   Merge branch 'link_netns'
+      rtnl: allow to create device with IFLA_LINK_NETNSID set
+      tunnels: advertise link netns via netlink
+      rtnl: add link netns id to interface messages
+      netns: add rtnl cmd to add and get peer netns ids
+   bridge: remove oflags from setlink/dellink.
+   netlink: Fix bugs in nlmsg_end() conversions.
+   switchdev: fix typo in inline function definition
+   ip_tunnel: Create percpu gro_cell
+   net: rocker: Add basic netdev counters - v2
+   net: ethernet: cpsw: don't requests IRQs we don't use
+   net: ethernet: cpsw: unroll IRQ request loop
+   netlink: make nlmsg_end() and genlmsg_end() void
+   atm: remove deprecated use of pci api
+   Drivers: Isdn: sc: Fixed coding style & spelling mistakes.
+   tipc: fix socket list regression in new nl api
+   Merge branch 'for-upstream' of git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next
+      Bluetooth: Remove unused function
+      Bluetooth: Add paranoid check for existing LE and BR/EDR SMP channels
+      Bluetooth: Fix lookup of fixed channels by local bdaddr
+      Bluetooth: Add helpers for src/dst bdaddr type conversion
+      Bluetooth: Bind the SMP channel registration to management power state
+      Bluetooth: Don't register any SMP channel if LE is not supported
+      Bluetooth: Fix LE SMP channel source address and source address type
+      Bluetooth: Fix issue with switching BR/EDR back on when disabled
+      Bluetooth: Show device address type for L2CAP debugfs entries
+      Bluetooth: 6lowpan: Remove PSM setting code
+      Bluetooth: Fix valid Identity Address check
+      Bluetooth: Remove dead code
+      Bluetooth: Use %llu for printing duration details of selftests
+      Bluetooth: Move Delete Stored Link Key to 4th phase of initialization
+      Bluetooth: btusb: Add internal recv_event callback for event processing
+      Bluetooth: Process result of HCI Delete Stored Link Key command
+      Bluetooth: Add missing response structure for HCI Delete Stored Link Key
+      Bluetooth: Read stored link key information when powering on controller
+      Bluetooth: Handle command complete event for HCI Read Stored Link Keys
+      Bluetooth: Add defintions for HCI Read Stored Link Key command
+      Bluetooth: Replace send_monitor_event with queue_monitor_skb
+      Bluetooth: Create generic queue_monitor_skb helper function
+      Bluetooth: Simplify packet copy in hci_send_to_monitor function
+      Bluetooth: Add BUILD_BUG_ON for size of struct sockaddr_sco
+      Bluetooth: Add BUILD_BUG_ON for size of struct sockaddr_rc
+      Bluetooth: Add BUILD_BUG_ON for size of struct sockaddr_l2
+      Bluetooth: Add BUILD_BUG_ON for size of struct sockaddr_hci
+      Bluetooth: Add opcode parameter to hci_req_complete_t callback
+      ieee802154: 6lowpan: fix Makefile entry
+      ieee802154: 6lowpan: rename to core
+      ieee802154: 6lowpan: move transmit functionality
+      ieee802154: 6lowpan: move receive functionality
+      ieee802154: 6lowpan: rename internal header
+      ieee802154: create 6lowpan sub-directory
+      Bluetooth: btmrvl: fix card reset and suspend race issue
+      Bluetooth: btmrvl: use msecs_to_jiffies within macro definition
+      bluetooth: btmrvl: increase the priority of firmware download message
+      Bluetooth: btmrvl: add surprise_removed flag
+      Bluetooth: btmrvl: error path handling in setup handler
+      Bluetooth: btmrvl: fix race issue while stopping main thread
+      Bluetooth: Use HCI_QUIRK_FIXUP_INQUIRY_MODE for Silicon Wave devices
+      Bluetooth: Introduce HCI_QUIRK_FIXUP_INQUIRY_MODE option
+      Bluetooth: Remove dead code for manufacturer inquiry mode quirks
+      mac802154: fix kbuild test robot warning
+      ieee802154: handle config as menuconfig
+      ieee802154: rename af_ieee802154.c to socket.c
+      ieee802154: socket: fix checkpatch issue
+      ieee802154: socket: put handling into one file
+      ieee802154: socket: change module name
+      ieee802154: handle socket functionality as module
+      Bluetooth: Fix issue with Roper Class 1 Bluetooth Dongle
+      Bluetooth: Fix SMP channel registration for unconfigured controllers
+      Bluetooth: Fix for a leftover debug of pairing credentials
+      Bluetooth: Fix scope of sc_only_mode debugfs entry
+      Bluetooth: Remove no longer needed force_sc_support debugfs option
+      Bluetooth: Remove broken force_lesc_support debugfs option
+      Bluetooth: Introduce force_bredr_smp debugfs option for testing
+   net: replace br_fdb_external_learn_* calls with switchdev notifier events
+   switchdev: introduce switchdev notifier
+   niu: remove one compound_head() call
+   socket: use ki_nbytes instead of iov_length()
+   Merge branch 's390-next'
+      qeth: Remove unneeded structure member
+      qeth: sysfs: replace strcmp() with sysfs_streq()
+      qeth: use qeth_card_hw_is_reachable() everywhere
+      s390/net: Delete useless checks before function calls
+      s390/ctcm, netiucv: migrate variables to handle y2038 problem
+   tc: cls_bpf: rename bpf_len to bpf_num_ops
+   tc: add BPF based action
+   bridge: fix setlink/dellink notifications
+   Merge branch 'master' of git://git.kernel.org/pub/scm/linux/kernel/git/jkirsher/net-next
+      i40e/i40evf: Bump i40e and i40evf versions
+      i40e: Support for NPAR iSCSI partition with DCB
+      i40e: when Rx timestamps disabled set specific mode
+      i40e: use same check for Rx hang as for Rx timestamps
+      i40e: AQ API updates for new commands
+      i40e: AQ API updates
+      i40e: add more struct size checks
+      i40e: Issue "Stop LLDP" command for firmware older than v4.3
+      i40e: check I40E_FLAG_PTP before handling Tx or Rx timestamps
+      i40e: only enable PTP interrupt cause if PTP is enabled
+      i40e/i40evf: Bump i40e/i40evf versions
+      i40e: Dump Stats string removed from debugfs help command
+      i40e: Add define for interrupt name string len
+      i40e: don't give up on DCB error after reset
+      i40e: fix proc/int descriptions
+      i40e/i40evf: Increase ASQ timeout
+      i40e/i40evf: AdminQ updates ww36
+   Merge branch 'amd-xgbe'
+      amd-xgbe-phy: Allow certain PHY settings to be set by UEFI
+      amd-xgbe: Add ACPI support
+      amd-xgbe-phy: Use the proper auto-negotiation XNP registers
+      amd-xgbe-phy: Properly support the FEC auto-negotiation
+      amd-xgbe-phy: Change auto-negotiation logic
+      amd-xgbe: Remove need for Tx path spinlock
+      amd-xgbe: Simplify the Rx desciptor ring tracking
+      amd-xgbe: Clear all state during a device restart
+      amd-xgbe-phy: On suspend, save CTRL1 reg for use on resume
+      amd-xgbe: Add check to be sure amd-xgbe-phy driver is used
+      amd-xgbe-phy: Checkpatch fixes
+      amd-xgbe: Checkpatch fixes
+   netlink: Fix netlink_insert EADDRINUSE error
+   rhashtable: Fix race in rhashtable_destroy() and use regular work_struct
+   Merge branch 'iw_cxgb4-next'
+      iw_cxgb4: Cleanup register defines/MACROS defined in t4fw_ri_api.h
+      iw_cxgb4: Cleanup register defines/MACROS defined in t4.h
+   iw_cxgb4: Cleanup register defines/MACROS defined in t4fw_ri_api.h
+   iw_cxgb4: Cleanup register defines/MACROS defined in t4.h
+   net/macb: Create gem_ethtool_ops for new statistics functions
+   net/macb: Add whitespace around arithmetic operators
+   net/macb: Fix comments to meet style guidelines
+   Driver: Vmxnet3: Fix ethtool -S to return correct rx queue stats
+   bridge: use MDBA_SET_ENTRY_MAX for maxtype in nlmsg_parse()
+   net: smc91x: Add Atari EtherNAT support
+   Merge tag 'mac80211-next-for-davem-2015-01-15' of git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next
+      cfg80211: docs: remove station_info_flags
+      nl80211: send netdetect configuration info in NL80211_CMD_GET_WOWLAN
+      cfg80211: avoid reg-hints in self-managed only systems
+      cfg80211: introduce sync regdom set API for self-managed
+      mac80211: don't defer scans in case of radar detection
+      mac80211: consider only relevant vifs for radar_required calculation
+      mac80211: remove local->radar_detect_enabled
+      mac80211: add TDLS supported channels correctly
+      mac80211: let flush() drop packets when possible
+      rfkill: document rfkill module parameters
+      mac80211: fix handling TIM IE when stations disconnect
+      mac80211_hwsim: fix PS debugfs file locking
+      mac80211: provide per-TID RX/TX MSDU counters
+      nl80211: support per-TID station statistics
+      nl80211: clarify packet statistics descriptions
+      cfg80211: add nl80211 beacon-only statistics
+      cfg80211: remove enum station_info_flags
+      mac80211: allow drivers to provide most station statistics
+      mac80211: send statistics with delete station event
+      cfg80211: allow including station info in delete event
+      cfg80211: add scan time to survey data
+      cfg80211: allow survey data to return global data
+      cfg80211: remove "channel" from survey names
+      mac80211: Re-fix accounting of the tailroom-needed counter
+      Merge branch 'mac80211' into mac80211-next
+      mac80211: skip disabled channels in VHT check
+      nl80211: define multicast group names in header
+      cfg80211: add extensible feature flag attribute
+      nl80211: document NL80211_BSS_STATUS_AUTHENTICATED isn't used
+      mac80211: fix dot11MulticastTransmittedFrameCount tested address
+      mac80211_hwsim: fix check for custom world regdom array size
+      mac80211: minstrel: reduce size of struct minstrel_rate_stats
+      nl80211: increase the max number of rules in regdomain
+      nl80211: Stop scheduled scan if netlink client disappears
+      nl80211: Convert sched_scan_req pointer to RCU pointer
+      mac80211: avoid reconfig if no interfaces are up
+      mac80211: remove unused variable in ieee80211_parse_ch_switch_ie()
+      mac80211: update sta bw on ht chanwidth action frame
+      mac80211: handle power constraint and country IEs in RRM
+      mac80211: Fix ignored HT override configurations
+      cfg80211: avoid intersection when applying self-managed reg
+      cfg80211: return private regdom for self-managed devices
+      cfg80211: allow wiphy specific regdomain management
+      cfg80211: allow usermode to query wiphy specific regdom
+      mac80211: keep sending peer candidate events while in listen state
+      mac80211: notify channel switch at the end of ieee80211_chswitch_post_beacon()
+      mac80211: notify NSS changed when IBSS and HT
+      mac80211: move U-APSD enablement to vif flags
+      mac80211: ask driver to look at power level when starting AP
+      mac80211: Fix accounting of multicast frames
+      mac80211: Move IEEE80211_TX_CTL_PS_RESPONSE
+      wireless: Support of IFLA_INFO_KIND rtnl attribute
+      cfg80211: use __force __rcu to suppress sparse warning
+   Merge branch 'cxgb4-next'
+      cxgb4i : Call into recently added cxgb4 ipv6 api
+      cxgb4 : Update ipv6 address handling api
+   ipv4: per cpu uncached list
+   net: sh_eth: Use u32 for 32-bit register data
+   dm9000: Add regulator and reset support to dm9000
+   socket: use iov_length()
+   Merge git://git.kernel.org/pub/scm/linux/kernel/git/pablo/nf-next
+      netfilter: conntrack: Remove nf_ct_conntrack_flush_report
+      netfilter: conntrack: Flush connections with a given mark
+      netfilter: nf_ct_seqadj: print ack seq in the right host byte order
+      netfilter: nfnetlink_cthelper: Remove 'const' and '&' to avoid warnings
+      netfilter: nfnetlink: remove redundant variable nskb
+      netfilter: log: remove unnecessary sizeof(char)
+      netfilter: xt_osf: Use continue to reduce indentation
+      netfilter: conntrack: adjust nf_conntrack_buckets default value
+   Merge branch 'vxlan_group_policy_extension'
+      openvswitch: Support VXLAN Group Policy extension
+      openvswitch: Allow for any level of nesting in flow attributes
+      openvswitch: Rename GENEVE_TUN_OPTS() to TUN_METADATA_OPTS()
+      vxlan: Only bind to sockets with compatible flags enabled
+      vxlan: Group Policy extension
+   Merge git://git.kernel.org/pub/scm/linux/kernel/git/davem/net
+   ipv6:icmp:remove unnecessary brackets
+   openvswitch: Introduce ovs_tunnel_route_lookup
+   Merge branch 'vxlan_rco'
+      vxlan: Remote checksum offload
+      udp: pass udp_offload struct to UDP gro callbacks
+   r8152: replace tasklet with NAPI
+   Merge branch 'hip04'
+      net: hisilicon: new hip04 ethernet driver
+      net: hisilicon: new hip04 MDIO driver
+      Documentation: add Device tree bindings for Hisilicon hip04 ethernet
+   net/macb: improved ethtool statistics support
+   net/macb: Adding comments to various #defs to make interpretation easier
+   Merge branch 'xen-netfront-next'
+      xen-netfront: refactor making Tx requests
+      xen-netfront: refactor skb slot counting
+      xen: add page_to_mfn()
+   rhashtable: Add MAINTAINERS entry
+   rhashtable: Lower/upper bucket may map to same lock while shrinking
+   net: rename vlan_tx_* helpers since "tx" is misleading there
+   net: sched: fix skb->protocol use in case of accelerated vlan path
+   atm: horizon: Remove some unused functions
+   atm: lanai: Remove unused function
+   tipc: correctly handle releasing a not fully initialized sock
+   sunvnet: fix rx packet length check to allow for TSO
+   mISDN: avoid arch specific __builtin_return_address call
+   infiniband: mlx5: avoid a compile-time warning
+   mlx5: avoid build warnings on 32-bit
+   rocker: fix harmless warning on 32-bit machines
+   cxgb4: Ripping out old hard-wired initialization code in driver
+   tipc: remove redundant timer defined in tipc_sock struct
+   net/fsl: replace (1 << x) with BIT(x) for bit definitions in xgmac_mdio
+   net/fsl: fix a bug in xgmac_mdio
+   bridge: fix uninitialized variable warning
+   ipv6: directly include libc-compat.h in ipv6.h
+   Merge branch 'master' of git://git.kernel.org/pub/scm/linux/kernel/git/jkirsher/net-next
+      i40e: limit sriov to partition 1 of NPAR configurations
+      i40e: Don't exit link event early if link speed has changed
+      i40e: limit WoL and link settings to partition 1
+      i40e: Adding function for reading PBA String
+      i40e/i40evf: find partition_id in npar mode
+      i40e: remove VN2VN related mac filters
+      i40e: Add warning for NPAR partitions with link speed less than 10Gbps
+      i40evf: kick a stalled admin queue
+      i40evf: enable interrupt 0 appropriately
+      i40evf: don't fire traffic IRQs when the interface is down
+      i40evf: remove leftover VLAN filters
+      i40evf: refactor shutdown code
+      i40evf: Remove some scary log messages
+      i40evf: remove redundant code
+      i40e: disable IOV before freeing resources
+   openvswitch: Remove unnecessary version.h inclusion
+   tcp: avoid reducing cwnd when ACK+DSACK is received
+   Merge branch 'rhashtable-next'
+      rhashtable: add a note for grow and shrink decision functions
+      netlink: eliminate nl_sk_hash_lock
+      rhashtable: involve rhashtable_lookup_compare_insert routine
+   Merge branch 'tuntap_queues'
+      tuntap: Increase the number of queues in tun.
+      net: allow large number of rx queues
+   team: Remove dead code
+   net: bnx2x: avoid macro redefinition
+   net: sched: sch_teql: Remove unused function
+   net: xfrm: xfrm_algo: Remove unused function
+   Merge branch 'bridge_vlan_ranges'
+      bridge: new function to pack vlans into ranges during gets
+      rtnetlink: new filter RTEXT_FILTER_BRVLAN_COMPRESSED
+      bridge: support for multiple vlans and vlan ranges in setlink and dellink requests
+   drivers: net: xen-netfront: remove residual dead code
+   Driver: Vmxnet3: Reinitialize vmxnet3 backend on wakeup from hibernate
+   bonding: cleanup bond_opts array
+   Merge branch 'tipc-namespaces'
+      tipc: make netlink support net namespace
+      tipc: make tipc random value aware of net namespace
+      tipc: make subscriber server support net namespace
+      tipc: make tipc node address support net namespace
+      tipc: name tipc name table support net namespace
+      tipc: make tipc socket support net namespace
+      tipc: make tipc broadcast link support net namespace
+      tipc: make bearer list support net namespace
+      tipc: make tipc node table aware of net namespace
+      tipc: involve namespace infrastructure
+      tipc: remove unused tipc_link_get_max_pkt routine
+      tipc: feed tipc sock pointer to tipc_sk_timeout routine
+      tipc: cleanup core.c and core.h files
+      tipc: remove unnecessary wrapper functions of kernel timer APIs
+      tipc: remove tipc_core_start/stop routines
+      tipc: fix bug in broadcast retransmit code
+   Merge branch 'cxgb4-next'
+      iw_cxgb4/cxgb4/cxgb4vf/cxgb4i/csiostor: Cleanup register defines/macros related to all other cpl messages
+      iw_cxgb4/cxgb4/cxgb4i: Cleanup register defines/MACROS related to CM CPL messages
+   bridge: Add ability to enable TSO
+   Merge branch 'r8152-next'
+      r8152: check the status before submitting rx
+      r8152: call rtl_start_rx after netif_carrier_on
+   vxlan: Improve support for header flags
+   packet: make packet too small warning match condition
+   tg3: move init/deinit from open/close to probe/remove
+   net: eth: xgene: devm_ioremap() returns NULL on error
+   csiostor:fix sparse warnings
+   doc: fix the compile fix of txtimestamp.c
+   Merge branch 'irda-next'
+      irda: vlsi_ir: Replace timeval with ktime_t
+      irda: stir4200: Replace timeval with ktime_t
+      irda: nsc-ircc: Replace timeval with ktime_t
+      irda: irda-usb: Replace timeval with ktime_t
+      irda: ali-ircc: Replace timeval with ktime_t
+      irda: Removed all unused timeval variables
+   Merge branch 'sti_drivers'
+      stmmac: dwmac-sti: Pass sysconfig register offset via syscon dt property.
+      ARM: multi_v7_defconfig: Enable stih407 usb picophy
+      ARM: STi: DT: STiH410: Add DT nodes for the ehci and ohci usb controllers.
+      ARM: STi: DT: STiH410: Add usb2 picophy dt nodes
+      ARM: STi: DT: STiH407: Add usb2 picophy dt nodes
+      phy: miphy365x: Pass sysconfig register offsets via syscfg dt property.
+      phy: phy-stih407-usb: Pass sysconfig register offsets via syscfg property.
+   Merge tag 'batman-adv-for-davem' of git://git.open-mesh.org/linux-merge
+      batman-adv: Kconfig, Add missing DEBUG_FS dependency
+      batman-adv: Start new development cycle
+      batman-adv: fix misspelled words
+      batman-adv: clear control block of received socket buffers
+      batman-adv: checkpatch - remove unnecessary parentheses
+      batman-adv: checkpatch - Please don't use multiple blank lines
+      batman-adv: checkpatch - Please use a blank line after declarations
+      batman-adv: checkpatch - No space is necessary after a cast
+      batman-adv: checkpatch - else is not generally useful after a break or return
+      batman-adv: kernel doc fixes for main.{c, h}
+      batman-adv: kernel doc fix for distributed-arp-table.h
+      batman-adv: kernel doc fixes for bridge_loop_avoidance.c
+      batman-adv: kernel doc fixes for bat_iv_ogm.c
+      batman-adv: remove obsolete variable primary_iface from orig_node
+      batman-adv: avoid useless return in void functions
+   csiostor:firmware upgrade fix
+   Revert "ARM: dts: imx6qdl: enable FEC magic-packet feature"
+   Revert "ARM: imx: add FEC sleep mode callback function"
+   r8169: add support for xmit_more
+   Merge branch 'rhashtable-next'
+      tipc: convert tipc reference table to use generic rhashtable
+      rhashtable: initialize atomic nelems variable
+      rhashtable: avoid unnecessary wakeup for worker queue
+      rhashtable: future table needs to be traversed when remove an object
+      rhashtable: involve rhashtable_lookup_insert routine
+      rhashtable: introduce rhashtable_wakeup_worker helper function
+      rhashtable: optimize rhashtable_lookup routine
+   Merge branch 'cxgb4-next'
+      cxgb4: Add support for mps_tcam debugfs
+      cxgb4: Add support for cim_qcfg entry in debugfs
+      cxgb4: Add support for cim_la entry in debugfs
+      cxgb4: Add support for devlog
+   doc: fix the compile error of txtimestamp.c
+   ipv6: fix redefinition of in6_pktinfo and ip6_mtuinfo
+   Merge git://git.kernel.org/pub/scm/linux/kernel/git/davem/net
+   net: eth: xgene: change APM X-Gene SoC platform ethernet to support ACPI
+   net/fsl: Add mEMAC MDIO support to XGMAC MDIO
+   ethtool: Extend ethtool plugin module eeprom API to phylib
+   Driver: Vmxnet3: Make Rx ring 2 size configurable
+   arm_arch_timer: include clocksource.h directly
+   cxgb4: Add PCI device ID for new T5 adapter
+   Merge branch 'rt_cong_ctrl'
+      net: tcp: add per route congestion control
+      net: tcp: add RTAX_CC_ALGO fib handling
+      net: tcp: add key management to congestion control
+      net: tcp: refactor reinitialization of congestion control
+      net: fib6: convert cfg metric to u32 outside of table write lock
+      net: fib6: fib6_commit_metrics: fix potential NULL pointer dereference
+   net: Do not call ndo_dflt_fdb_dump if ndo_fdb_dump is defined
+   Merge branch 'ip_cmsg_csum'
+      ip: Add offset parameter to ip_cmsg_recv
+      ip: Add offset parameter to ip_cmsg_recv
+      ip: IP cmsg cleanup
+      ip: Move checksum convert defines to inet
+   netlink: Warn on unordered or illegal nla_nest_cancel() or nlmsg_cancel()
+   Merge branch 'cxgb4-next'
+      cxgb4/cxgb4vf/csiostor: Cleanup PL, XGMAC, SF and MC related register defines
+      cxgb4/csiostor: Cleanup TP, MPS and TCAM related register defines
+      cxgb4/cxg4vf/csiostor: Cleanup MC, MA and CIM related register defines
+      cxgb4/cxgb4vf/csiostor: Cleanup SGE and PCI related register defines
+      RDMA/cxgb4/cxgb4vf/csiostor: Cleanup SGE register defines
+   be2net: support TX batching using skb->xmit_more flag
+   at86rf230: Constify struct regmap_config
+   list_nulls: fix missing header
+   rhashtable: fix missing header
+   qlcnic: Fix dump_skb output
+   enic: reconfigure resources for kdump crash kernel
+   Merge branch 'geneve-next'
+      geneve: Check family when reusing sockets.
+      geneve: Remove socket hash table.
+      geneve: Simplify locking.
+      geneve: Remove workqueue.
+   Merge branch 'rhashtable-next'
+      netlink: Lockless lookup with RCU grace period in socket release
+      rhashtable: Supports for nulls marker
+      rhashtable: Per bucket locks & deferred expansion/shrinking
+      spinlock: Add spin_lock_bh_nested()
+      nft_hash: Remove rhashtable_remove_pprev()
+      rhashtable: Factor out bucket_tail() function
+      rhashtable: Convert bucket iterators to take table and index
+      rhashtable: Use rht_obj() instead of manual offset calculation
+      rhashtable: Do hashing inside of rhashtable_lookup_compare()
+   Merge branch 'timecounter-next'
+      microblaze: include the new timecounter header.
+      mlx4: include clocksource.h again
+      ixgbe: convert to CYCLECOUNTER_MASK macro.
+      igb: convert to CYCLECOUNTER_MASK macro.
+      e1000e: convert to CYCLECOUNTER_MASK macro.
+      bnx2x: convert to CYCLECOUNTER_MASK macro.
+      timecounter: provide a macro to initialize the cyclecounter mask field.
+   MAINTAINERS: Update Open vSwitch entry.
+   Merge tag 'wireless-drivers-next-for-davem-2015-01-02' of git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next
+      ath9k: fix typo
+      ath9k: add debugfs support for hw TPC
+      ath9k: enable TPC by default
+      rtlwifi: rtl8723be: phy.c: Remove unused function
+      rtlwifi: rtl8192ee: trx.c: Remove unused function
+      rtlwifi: rtl8821ae: Switch to use common rate control routine
+      rtlwifi: rtl8192de: Rework calls to rate-control routine
+      rtlwifi: rtl8192cu: Rework calls to rate-control routine
+      rtlwifi: rtl8821ae: Add VHT rate descriptors
+      rtlwifi: Convert all drivers to use a common set of rate descriptors
+      rtlwifi: rtl8192ee: Convert driver to use common rate-mapping code
+      rtlwifi: rtl8723ae: Modify driver to use rate-mapping routine in core
+      rtlwifi: rtl8188ee: Switch to use common rate-mapping routine
+      rtlwifi: rtl8723be: Switch to use common rate-mapping routine
+      rtlwifi: Remove extraneous argument for rate mapping
+      rtlwifi: rtl8192ce: Improve RF sleep routine
+      rtlwifi: rtl8192ce: Update rate setting routines
+      rtlwifi: rtl8192ce: Update setting of the media status
+      rtlwifi: rtl8192ce: Add code to set the keep-alive operation
+      rtlwifi: rtl8821ae: Fix typos in power-sequence macro
+      rtlwifi: rtl8821ae: Simplify loading of WOWLAN firmware
+      ath: fix incorrect PPB on FCC radar type 5
+      rsi: fix memory leak in rsi_load_ta_instructions()
+      rtlwifi: rtl8192de: fw.c: Remove unused function
+   net: ethernet: cisco: enic: enic_dev: Remove some unused functions
+   isdn: hisax: hfc4s8s_l1: Remove some unused functions
+   net: fddi: skfp: smt.c: Remove unused function
+   net: ethernet: chelsio: cxgb3: mc5.c: Remove some unused functions
+   net: skbuff: don't zero tc members when freeing skb
+   Merge branch 'for-upstream' of git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next
+      Bluetooth: Add timing information to ECDH test case runs
+      Bluetooth: Add timing information to SMP test case runs
+      Bluetooth: Add LE Secure Connections tests for SMP
+      Bluetooth: Add legacy SMP tests
+      Bluetooth: Add skeleton for SMP self-tests
+      Bluetooth: Add support for ECDH test cases
+      Bluetooth: Add support for self testing framework
+      Bluetooth: Fix const declarations for smp_f5 and smp_f6
+      cc2520: fix zero perm_extended_addr address
+      cc2520: remove 'ret' goto label
+      cc2520: use devm_kzalloc(.., sizeof(*pointer), ..) pattern
+      net: ieee802154: don't use devm_pinctrl_get_select_default() in probe
+      Bluetooth: Remove BlueFritz! specific check from initialization
+      Bluetooth: btusb: Set the HCI_QUIRK_BROKEN_LOCAL_COMMANDS quirk
+      Bluetooth: bfusb: Set the HCI_QUIRK_BROKEN_LOCAL_COMMANDS quirk
+      Bluetooth: Introduce HCI_QUIRK_BROKEN_LOCAL_COMMANDS constant
+      Bluetooth: Remove duplicate constant for RFCOMM PSM
+      Bluetooth: Create debugfs directory for each connection handle
+      Bluetooth: Store default and maximum LE data length settings
+      Bluetooth: Enable basics for LE Data Length Extension feature
+      Bluetooth: Add structures for LE Data Length Extension feature
+      Bluetooth: Move LE debugfs file creation into hci_debugfs.c
+      Bluetooth: Move BR/EDR debugfs file creation into hci_debugfs.c
+      Bluetooth: Move common debugfs file creation into hci_debugfs.c
+      Bluetooth: Add skeleton functions for debugfs creation
+      Bluetooth: Support static address when BR/EDR has been disabled
+      ieee802154: iface: move multiple node type check
+      mac802154: iface: check concurrent ifaces
+      Bluetooth: Move hci_update_page_scan to hci_request.c
+      Bluetooth: Add return parameter to cmd_complete callbacks
+      Bluetooth: Fix Add Device to wait for HCI before sending cmd_complete
+      Bluetooth: Fix Remove Device to wait for HCI before sending cmd_complete
+      Bluetooth: Add hci_request support for hci_update_background_scan
+      Bluetooth: Split hci_request helpers to hci_request.[ch]
+      Bluetooth: Split hci_update_page_scan into two functions
+      at86rf230: cleanup check on trac status
+      Bluetooth: 6lowpan: Add IPSP PSM value
+      at86rf230: remove version check for AT86RF212
+      at86rf230: fix register read for part version
+      at86rf230: remove unnecessary assign
+      at86rf230: fix context pointer handling
+      at86rf230: make at86rf230_async_error inline
+      at86rf230: remove if branch
+      ieee802154/mrf24j40: Fix alignment of parenthesis
+      ieee802154/mrf24j40: Fix typo begining -> beginning
+      ieee802154/cc2520: Remove extra blank lines
+      ieee802154/at86rf230: Fix typo unkown -> unknown
+      ieee802154/at86rf230: Align to opening parenthesis
+      ieee802154/at86rf230: Remove unneeded blank lines
+      at86rf230: add reset state cca handling
+      nl802154: introduce support for cca settings
+      ieee802154: rework cca setting
+      nl802154: introduce cca mode enums
+      Bluetooth: btusb: support public address configuration for ath3012
+   geneve: Add Geneve GRO support
+   net: Add Transparent Ethernet Bridging GRO support.
+   net/fsl: remove hardcoded clock setting from xgmac_mdio
+   net/fsl: remove irq assignment from xgmac_mdio
+   net/fsl: remove reset from xgmac_mdio
+   Merge branch 'gmac-next'
+      GMAC: add document for Rockchip RK3288 GMAC
+      ARM: dts: rockchip: enable gmac on RK3288 evb board
+      ARM: dts: rockchip: add gmac info for rk3288
+      GMAC: modify CRU config for Rockchip RK3288 SoCs integrated GMAC
+      GMAC: define clock ID used for GMAC
+      GMAC: add driver for Rockchip RK3288 SoCs integrated GMAC
+   igb_ptp: Include clocksource.h to get CLOCKSOURCE_MASK.
+   e1000e: Include clocksource.h to get CLOCKSOURCE_MASK.
+   Merge branch 'fib_trie-next'
+      fib_trie: Add tracking value for suffix length
+      fib_trie: Remove checks for index >= tnode_child_length from tnode_get_child
+      fib_trie: inflate/halve nodes in a more RCU friendly way
+      fib_trie: Push tnode flushing down to inflate/halve
+      fib_trie: Push assignment of child to parent down into inflate/halve
+      fib_trie: Add functions should_inflate and should_halve
+      fib_trie: Move resize to after inflate/halve
+      fib_trie: Push rcu_read_lock/unlock to callers
+      fib_trie: Use unsigned long for anything dealing with a shift by bits
+      fib_trie: Update meaning of pos to represent unchecked bits
+      fib_trie: Optimize fib_table_insert
+      fib_trie: Optimize fib_find_node
+      fib_trie: Optimize fib_table_lookup to avoid wasting time on loops/variables
+      fib_trie: Merge leaf into tnode
+      fib_trie: Merge tnode_free and leaf_free into node_free
+      fib_trie: Make leaf and tnode more uniform
+      fib_trie: Update usage stats to be percpu instead of global variables
+   gre: allow live address change
+   l2tp : multicast notification to the registered listeners
+   tun: return proper error code from tun_do_read
+   tun: Fixed unsigned/signed comparison
+   tipc: replace 0 by NULL for pointers
+   Merge branch 'enic-next'
+      enic: add stats for dma mapping error
+      enic: check dma_mapping_error
+      enic: make vnic_wq_buf doubly linked
+   Merge branch 'fec-next'
+      ARM: dts: imx6qdl: enable FEC magic-packet feature
+      ARM: imx: add FEC sleep mode callback function
+      net: fec: add Wake-on-LAN support
+   net: gianfar: add missing __iomem annotation
+   net: gianfar: mark the local functions static
+   virtio-net: don't do header check for dodgy gso packets
+   arm: sa1100: move irda header to linux/platform_data
+   net: sxgbe: Use setup_timer
+   ksz884x: Use setup_timer
+   atl1e: Use setup_timer
+   atheros: atlx: Use setup_timer
+   Merge branch 'timecounter'
+      timecounter: keep track of accumulated fractional nanoseconds
+      net: cpts: convert to timecounter adjtime.
+      net: mlx4: convert to timecounter adjtime.
+      net: ixgbe: convert to timecounter adjtime.
+      net: igb: convert to timecounter adjtime.
+      net: e1000e: convert to timecounter adjtime.
+      net: fec: convert to timecounter adjtime.
+      net: bnx2x: convert to timecounter adjtime.
+      net: xgbe: convert to timecounter adjtime.
+      timecounter: provide a helper function to shift the time.
+      time: move the timecounter/cyclecounter code into its own file.
+Total;c5ce28df0e7c01a1de23c36ebdefcd803f2b6cbb;1495
+
+----------
+No match [54be8200198ddfc6cb396720460c19881fac2d5a][Date:   Sun Jul 14 15:14:29 2013 -0700][0][15]
+cid [54be8200198ddfc6cb396720460c19881fac2d5a][Date:   Sun Jul 14 15:14:29 2013 -0700] count log [0] dbcount [15].... NO Match :(
+Merge: 41d9884c c25f195
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sun Jul 14 15:14:29 2013 -0700
+
+    Merge branch 'slab/for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/penberg/linux
+    
+    Pull slab update from Pekka Enberg:
+     "Highlights:
+    
+      - Fix for boot-time problems on some architectures due to
+        init_lock_keys() not respecting kmalloc_caches boundaries
+        (Christoph Lameter)
+    
+      - CONFIG_SLUB_CPU_PARTIAL requested by RT folks (Joonsoo Kim)
+    
+      - Fix for excessive slab freelist draining (Wanpeng Li)
+    
+      - SLUB and SLOB cleanups and fixes (various people)"
+    
+    I ended up editing the branch, and this avoids two commits at the end
+    that were immediately reverted, and I instead just applied the oneliner
+    fix in between myself.
+    
+    * 'slab/for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/penberg/linux
+      slub: Check for page NULL before doing the node_match check
+      mm/slab: Give s_next and s_stop slab-specific names
+      slob: Check for NULL pointer before calling ctor()
+      slub: Make cpu partial slab support configurable
+      slab: add kmalloc() to kernel API documentation
+      slab: fix init_lock_keys
+      slob: use DIV_ROUND_UP where possible
+      slub: do not put a slab to cpu partial list when cpu_partial is 0
+      mm/slub: Use node_nr_slabs and node_nr_objs in get_slabinfo
+      mm/slub: Drop unnecessary nr_partials
+      mm/slab: Fix /proc/slabinfo unwriteable for slab
+      mm/slab: Sharing s_next and s_stop between slab and slub
+      mm/slab: Fix drain freelist excessively
+      slob: Rework #ifdeffery in slab.h
+      mm, slab: moved kmem_cache_alloc_node comment to correct place
+
+commit 41d9884c44237cd66e2bdbc412028b29196b344c
+
+----------
+Merge branch 'slab/for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/penberg/linux
+   slub: Check for page NULL before doing the node_match check
+   mm/slab: Give s_next and s_stop slab-specific names
+   slob: Check for NULL pointer before calling ctor()
+   slub: Make cpu partial slab support configurable
+   slab: add kmalloc() to kernel API documentation
+   slab: fix init_lock_keys
+   slob: use DIV_ROUND_UP where possible
+   slub: do not put a slab to cpu partial list when cpu_partial is 0
+   mm/slub: Use node_nr_slabs and node_nr_objs in get_slabinfo
+   mm/slub: Drop unnecessary nr_partials
+   mm/slab: Fix /proc/slabinfo unwriteable for slab
+   mm/slab: Sharing s_next and s_stop between slab and slub
+   mm/slab: Fix drain freelist excessively
+   slob: Rework #ifdeffery in slab.h
+   mm, slab: moved kmem_cache_alloc_node comment to correct place
+Total;54be8200198ddfc6cb396720460c19881fac2d5a;15
+
+----------
+No match [bd0704111e625ebe75418531550cf471215c3267][Date:   Thu Oct 15 14:59:24 2009 -0700][0][3]
+cid [bd0704111e625ebe75418531550cf471215c3267][Date:   Thu Oct 15 14:59:24 2009 -0700] count log [0] dbcount [3].... NO Match :(
+Merge: a3ccf63 97ad5a0
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu Oct 15 14:59:24 2009 -0700
+
+    Merge the right tty-fixes branch
+    
+    * branch 'tty-fixes'
+      tty: use the new 'flush_delayed_work()' helper to do ldisc flush
+      workqueue: add 'flush_delayed_work()' to run and wait for delayed work
+      tty: Make flush_to_ldisc() locking more robust
+
+commit a3ccf63ee643ef243cbf8918da8b3f9238f10029
+
+----------
+Merge the right tty-fixes branch
+   tty: use the new 'flush_delayed_work()' helper to do ldisc flush
+   workqueue: add 'flush_delayed_work()' to run and wait for delayed work
+   tty: Make flush_to_ldisc() locking more robust
+Total;bd0704111e625ebe75418531550cf471215c3267;3
+
+----------
+No match [83afdf2464ac17ad6321a68b2fe7528c9aa88016][Date:   Fri Feb 29 08:32:15 2008 -0800][3][11]
+cid [83afdf2464ac17ad6321a68b2fe7528c9aa88016][Date:   Fri Feb 29 08:32:15 2008 -0800] count log [3] dbcount [11].... NO Match :(
+   values of regions [3]
+Merge: 219ff3a b2d7c7f
+Author: Linus Torvalds <torvalds@woody.linux-foundation.org>
+Date:   Fri Feb 29 08:32:15 2008 -0800
+
+    Merge git://git.kernel.org/pub/scm/linux/kernel/git/lethal/sh-2.6
+    
+    * git://git.kernel.org/pub/scm/linux/kernel/git/lethal/sh-2.6:
+      arch/sh/drivers/dma/dma-sh.c: Correct use of ! and &
+      serial: Move asm-sh/sci.h to linux/serial_sci.h.
+      sh: Fix up HAS_SR_RB typo in entry-macros.
+    
+      maple: fix device detection
+      sh: fix rtc_resources setup for sh770x
+      sh: heartbeat: ioremap is expected to succeed
+      sh: Storage class should be before const qualifier
+      maple: remove unused variable
+      sh: SH5-103 needs to select CPU_SH5.
+      sh: Rename SH-3 CCR3 reg to avoid synclink_cs clash.
+
+commit 219ff3ad611ecfe8a2fd29b8c50a5313c9d15383
+
+----------
+Merge git://git.kernel.org/pub/scm/linux/kernel/git/lethal/sh-2.6
+   arch/sh/drivers/dma/dma-sh.c: Correct use of ! and &
+   serial: Move asm-sh/sci.h to linux/serial_sci.h.
+   sh: Fix up HAS_SR_RB typo in entry-macros.
+   sh: revert dreamcast pci change
+   maple: fix device detection
+   sh: fix rtc_resources setup for sh770x
+   sh: heartbeat: ioremap is expected to succeed
+   sh: Storage class should be before const qualifier
+   maple: remove unused variable
+   sh: SH5-103 needs to select CPU_SH5.
+   sh: Rename SH-3 CCR3 reg to avoid synclink_cs clash.
+Total;83afdf2464ac17ad6321a68b2fe7528c9aa88016;11
+
+----------
