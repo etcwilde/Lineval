@@ -459,10 +459,10 @@ The results can be summarized as follows:
   hand). For example in \mycode{42a579a0f...}) one commit summary was missing (the line was empty), in another  \mycode
   {c55d267}) the summaries were reordered.
 \item The heuristic works correctly for all merges except between Jun 7, 2014 and Jun 2, 2014 (92 merges) and before
-  Sept 4, 2007. Before this date merges did not include a summary of the commits they included, hence making it
+  Sept 4, 2007. Before this date, and until Dec 12, 2006, merges did not include a summary of the commits they included, hence making it
   impossible to verify; however, we correctly identified the merges by Linus into master. 
 \item Before Dec. 12, 2006 (1542 merges) our heuristic breaks due to the
-presence of \textit{foxtrot} commits, which confound the true master branch of a
+presence of a \textit{foxtrot} commit (\mycode{c436688...}), which confounded the true master branch of a
 repository
 \footnote{See \url{http://bit-booster.blogspot.ca/2016/02/no-foxtrots-allowed.html} for a description of the issue}, and
 is not capable of identifying most of the merges before this date.

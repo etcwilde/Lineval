@@ -161,8 +161,13 @@ create table integrations(mcidlinus char(40), Mount int);
 |--------------|
 | CREATE TABLE |
 
+* Run
 
-Results
+#+BEGIN_SRC 
+perl compareLinusMergesToLog.pl evan /home/linux/original.repo/linux.git | tee differencesMergesVsLog.txt
+#+END_SRC
+
+* Results
 
 At commit b21010ed6498391c0f359f2a89c907533fe07fec (Sept 4, 2007) merges did not list the commits that they merged.
 so we can't verify how many commits they contained.
