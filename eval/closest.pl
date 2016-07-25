@@ -692,7 +692,7 @@ sub Get_Baseline
     }
     print STDERR "End Reading baseline [$i]\n";
 }
-g
+
 
 sub Simple_Query
 {

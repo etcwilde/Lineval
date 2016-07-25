@@ -451,29 +451,25 @@ also used the summaries of the commits found in the merge (not necessarily all--
 commits were in their corresponding merge tree. For example, for the merge in Figure~\ref{sampleMerge} we would expect
 that the merge tree rooted at \mycode{8cbd84f} contains 24 commits, and the one-line summaries corresponds to commits in
 that merge-tree. We also inspected those with differences to make sure they were true errors.
-
 The results can be summarized as follows:
 
 \begin{itemize}
-\item 5 merges were false-erros because their logs did not contain accurate information (were probably edited by
-  hand). For example in \mycode{42a579a0f...}) one commit summary was missing (the line was empty), in another  \mycode
-  {c55d267}) the summaries were reordered.
-\item The heuristic works correctly for all merges except between Jun 7, 2014 and Jun 2, 2014 (92 merges) and before
-  Sept 4, 2007. Before this date, and until Dec 12, 2006, merges did not include a summary of the commits they included, hence making it
-  impossible to verify; however, we correctly identified the merges by Linus into master. 
+\item Five merges were false-errors because their logs did not contain accurate information (were probably edited by
+  hand). For example in \mycode{42a579a0f...} one commit summary was missing (the line was empty), in \mycode
+  {c55d267} the summaries were reordered.
+\item The heuristic correctly identified that 79 of Linus merges (between Jun 7, 2014 and Jun 2, 2014) were made to a
+  branch (not master). This branch was merged at (\mycode{3f17ea6d..} which contained 6809 commits.
+\item The heuristic worked perfectly until Sept 4, 2007, the earliest date that it could be verified.
+  Before this date, and until Dec 12, 2006, merges did not include a summary of the commits they included, hence making it
+  impossible to verify; during this period, however, we correctly identified the merges by Linus into master. 
 \item Before Dec. 12, 2006 (1542 merges) our heuristic breaks due to the
 presence of a \textit{foxtrot} commit (\mycode{c436688...}), which confounded the true master branch of a
-repository
-\footnote{See \url{http://bit-booster.blogspot.ca/2016/02/no-foxtrots-allowed.html} for a description of the issue}, and
-is not capable of identifying most of the merges before this date.
+repository (see \url{http://bit-booster.blogspot.ca/2016/02/no-foxtrots-allowed.html} for a description of the issue).
 \end{itemize}
 
-Of the merges after Sept 4, 2007, in 99.4\% fo them (16,768 out of 16,860)  our heuristic was correct. Overall, we
-correctly identified the merge trees of 87.15\% of the merges into master in Linux.
+In summary, of the merges after Sept 4, 2007, in 100\% of them (16,860) our heuristic was correct. It failed in 1,542
+commits before Dec. 12, 2006 and in 836 it appears to be correct (Dec 7, 2006 to Sept 4, 2007).
  
-The verification detected no incorrect merges since 2013, two incorrect merges in
-2012, and two in 2011; however, the heuristic breaks in October, 15, 2009 
-
 \section{Visualizing the merge-tree of Linux}
 
 The goal of \tool is to simplify the navigation of the kernel commit information,
