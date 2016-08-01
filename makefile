@@ -18,7 +18,7 @@ proper:
 
 baseline: old.tex
 
-diff.text : old.tex new.tex
+diff.tex : old.tex new.tex
 	latexdiff old.tex new.tex | perl -pe 's/^\\drafttrue//' > diff.tex
 
 new.tex : $(latexfile).tex macros.tex
@@ -27,6 +27,6 @@ new.tex : $(latexfile).tex macros.tex
 diff.pdf: diff.tex
 	pdflatex diff.tex
 
-old.tex: $(latexfile).bbl $(latexfile).tex
+old.tex: 
 	latexpand --expand-bbl $(latexfile).bbl $(latexfile).tex > old.tex
 

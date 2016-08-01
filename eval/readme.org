@@ -1,0 +1,232 @@
+#+STARTUP: showall
+#+STARTUP: lognotestate
+#+TAGS:
+#+SEQ_TODO: TODO STARTED DONE DEFERRED CANCELLED | WAITING DELEGATED APPT
+#+DRAWERS: HIDDEN STATE
+#+TITLE: How to create the database
+#+CATEGORY: 
+#+PROPERTY: header-args: lang           :varname value
+#+PROPERTY: header-args:sqlite          :db /path/to/db  :colnames yes
+#+PROPERTY: header-args:R               :results output  :colnames yes
+#+PROPERTY: header-args:C++             :results output :flags -std=c++14
+
+
+
+* Steps to create the 'next to linux' database
+
+- create a database called evan (postgres)
+
+#+BEGIN_SRC 
+createdb evan
+#+END_SRC
+
+- Run the importer of the commits. -C points to repo where linux git repo is
+
+#+BEGIN_SRC 
+perl insertCommits.pl evan /home/linux/original.repo/linux.git > /tmp/rip.rip
+#+END_SRC
+
+- import the logs
+#+BEGIN_SRC 
+perl insertLogs.pl evan /home/linux/original.repo/linux.git > /tmp/rip.rip
+#+END_SRC
+
+- verify, results should be empty
+
+#+begin_src sql :engine postgresql :cache yes :exports both :cmdline evan
+select cid from logs except select cid from commits;
+select cid from commits except select cid from logs;
+#+end_src
+
+#+RESULTS[d4d60bb9ef72a2083d34c5cd49e5ad981152d75f]:
+| cid |
+|-----|
+| cid |
+
+
+- create primary keys on the table and baseline table
+
+#+begin_src sql :engine postgresql :cache yes :exports both :cmdline evan
+alter table commits add primary key (cid);
+alter table parents add primary key (cid, index);
+create index parentidx on parents(parent);
+
+create table baseline as select cid from commits;
+#+end_src
+
+- create closest
+
+#+begin_src sql :engine postgresql :cache yes :exports both :cmdline evan
+CREATE TABLE closest (
+    cid character(40) NOT NULL,
+    mnext character(40),
+    mdist integer,
+    mnextmerge character(40),
+    mcidlinus character(40),
+    mwhen timestamp with time zone
+);
+alter table closest add primary key (cid);
+CREATE INDEX closestidx1 ON closest USING btree (mcidlinus);
+create index closestidx2 on closest(mnext);
+#+end_src
+
+- check
+
+#+begin_src sql :engine postgresql :cache yes :exports both :cmdline evan
+\d 
+\d closest
+#+end_src
+
+#+RESULTS[808da03940350f02bb2939ff4a47275d73ef66a7]:
+| List of relations                       |                          |           |       |
+|-----------------------------------------+--------------------------+-----------+-------|
+| Schema                                  | Name                     | Type      | Owner |
+| public                                  | baseline                 | table     | dmg   |
+| public                                  | closest                  | table     | dmg   |
+| public                                  | commits                  | table     | dmg   |
+| public                                  | parents                  | table     | dmg   |
+| Table "public.closest"                  |                          |           |       |
+| Column                                  | Type                     | Modifiers |       |
+| cid                                     | character(40)            | not null  |       |
+| mnext                                   | character(40)            |           |       |
+| mdist                                   | integer                  |           |       |
+| mnextmerge                              | character(40)            |           |       |
+| mcidlinus                               | character(40)            |           |       |
+| mwhen                                   | timestamp with time zone |           |       |
+| Indexes:                                |                          |           |       |
+| "closest_pkey" PRIMARY KEY, btree (cid) |                          |           |       |
+| "closestidx1" btree (mcidlinus)         |                          |           |       |
+
+
+- run closest
+
+#+BEGIN_SRC 
+perl closest.pl  evan merges
+#+END_SRC
+
+
+#+begin_src sql :engine postgresql :cache yes :exports both :cmdline evan
+select count(*) from closest;
+#+end_src
+
+#+RESULTS[f9404cd78fa46f181e908bee93722645c8885c73]:
+|  count |
+|--------|
+| 604400 |
+
+* now we can compute merge tree
+
+these should be 68 and 65
+
+#+BEGIN_SRC sh
+perl commitsAtMerge.pl  evan merges 40889e8d9fc6355980cf2bc94ef4356c10dec4ec
+perl commitsAtMerge.pl  evan merges fd62c5450324af7f6cc12897b09b77285cd48a92
+perl commitsAtMerge.pl evan merges c5ce28df0e7c01a1de23c36ebdefcd803f2b6cbb
+#+END_SRC
+
+#+RESULTS:
+| Total;40889e8d9fc6355980cf2bc94ef4356c10dec4ec;68   |
+| Total;fd62c5450324af7f6cc12897b09b77285cd48a92;65   |
+| Total;c5ce28df0e7c01a1de23c36ebdefcd803f2b6cbb;1495 |
+
+THis one should be 8
+
+#+BEGIN_SRC sh :results output
+perl commitsAtMerge.pl  evan merges 18dd0bf22b6f0c1bd5e4e813a42245ed86ec57b6 print
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+18dd0bf22b6f0c1bd5e4e813a42245ed86ec57b6;0;1;2012-12-14 10:03:23-08;Linus Torvalds <torvalds@linux-foundation.org>;2012-12-14 10:03:23-08;Linus Torvalds <torvalds@linux-foundation.org>;Merge branch 'x86-acpi-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+   385ddeac7ed99cf7dc62d76274d55fbd7cae1b5a;1;repo;;2012-10-05 15:59:07-07;H. Peter Anvin <hpa@linux.intel.com>;2012-10-05 15:05:34-07;Luck, Tony <tony.luck@intel.com>
+   3dfd8235002727dbd759bb0f80f8ac862f392071;1;repo;;2012-10-01 20:41:43-07;H. Peter Anvin <hpa@linux.intel.com>;2012-10-01 20:38:47-07;David Rientjes <rientjes@google.com>
+   8347bbecf3518aa1518f6157e661812a35775130;1;repo;;2012-09-30 18:03:41-07;H. Peter Anvin <hpa@linux.intel.com>;2012-09-30 15:23:57-07;Thomas Renninger <trenn@suse.de>
+   325a8d36035f0623950e38e9cf7a47a48e72df11;1;repo;;2012-09-30 18:03:35-07;H. Peter Anvin <hpa@linux.intel.com>;2012-09-30 15:23:56-07;Thomas Renninger <trenn@suse.de>
+   b2a35003dfbcc7b7a5e5c6e524e7d49ba66e0bb5;1;repo;;2012-09-30 18:03:29-07;H. Peter Anvin <hpa@linux.intel.com>;2012-09-30 15:23:55-07;Thomas Renninger <trenn@suse.de>
+   53aac44c904abbad9f474f652f099de13b5c3563;1;repo;;2012-09-30 18:03:23-07;H. Peter Anvin <hpa@linux.intel.com>;2012-09-30 15:23:54-07;Thomas Renninger <trenn@suse.de>
+   8e30524dcc0d0ac1a18a5cee482b9d9cde3cb332;1;repo;;2012-09-30 18:03:13-07;H. Peter Anvin <hpa@linux.intel.com>;2012-09-30 15:23:53-07;Thomas Renninger <trenn@suse.de>
+   e6459606b04e6385ccd3c2060fc10f78a92c7700;1;repo;;2012-09-30 18:02:20-07;H. Peter Anvin <hpa@linux.intel.com>;2012-09-30 15:23:52-07;H. Peter Anvin <hpa@linux.intel.com>
+Total;18dd0bf22b6f0c1bd5e4e813a42245ed86ec57b6;8
+#+end_example
+
+* Verify
+
+#+begin_src sql :engine postgresql  :exports both :cmdline evan
+drop table if exists integrations; 
+create table integrations(mcidlinus char(40), Mount int);
+#+end_src
+
+#+RESULTS[36b2e917b95d1e626006c9c104c315f683b4ce56]:
+| DROP TABLE   |
+|--------------|
+| CREATE TABLE |
+
+* Run
+
+#+BEGIN_SRC 
+perl compareLinusMergesToLog.pl evan /home/linux/original.repo/linux.git | tee differencesMergesVsLog.txt
+#+END_SRC
+
+* Results
+
+At commit b21010ed6498391c0f359f2a89c907533fe07fec (Sept 4, 2007) merges did not list the commits that they merged.
+so we can't verify how many commits they contained.
+
+Our heuristic breaks on Tue Dec 12, 2006, due to a fast-forward commit with a fox trot into the 
+
+Date:   Tue Sep 4 01:04:43 2007 -0700 no commits in the log
+
+In one merge, we detect the commit as happening directly into master, not as part of a branch.
+
+42a579a0f960081cd16fc945036e4780c3ad3202
+missing:
+time: Fix adjustment cleanup bug in timekeeping_adjust()
+
+
+
+
+* raw data
+
+
+
+
+Until this commit everything seems to be ok:
+
+Match [3f17ea6dea8ba5668873afa54628a91aaa3fb1c0][Date:   Sun Jun 8 11:31:16 2014 -0700][6809]
+
+From 2012-12-30
+
+Match [83dc3d43ce06d3466f48046577331d06a40b8344][Date:   Mon Sep 10 14:35:55 2007 -0700][1]
+
+
+This one was edited by hand: 1e05ff020f692de078226fd5480adc76317e37bb
+
+at this commit no commits in the log:
+
+b21010ed6498391c0f359f2a89c907533fe07fec
+Date:   Tue Sep 4 01:04:43 2007 -0700 no commits in the log
+
+
+Incorrect count: 514af9f7904ab65a6763b4b0bf51f1c7081026cb
+missing one log: 83afdf2464ac17ad6321a68b2fe7528c9aa88016
+
+
+
+missing one: b21010ed6498391c0f359f2a89c907533fe07fec
+missing all 8 commits: b1330031b76bf1c9dc23635e016625aa9edc069a
+missing all 7 commits: ea3c4b126ad63bd782c7bb5266bb4fd88e203169
+missing all 1 commit: a5229e6b3fb77ef92ff585e17ba4aa8a3e945727
+missing all 2 commits: bc5a6deba729a4a44d7b8019408350d4f45b7acb
+- problems 
+
+42a579a0f960081cd16fc945036e4780c3ad3202
+missing:
+time: Fix adjustment cleanup bug in timekeeping_adjust()
+
+
+90a9ed9581b896d867645b21f0133795e3942fe6 not a merge into master
+
+Breaks at this point:
+
+No match [741441ab7800f1eb031e74fd720f4f8f361678ed][Date:   Tue Dec 12 10:21:01 2006 -0800][6][0]
+741441ab7800f1eb031e74fd720f4f8f361678ed

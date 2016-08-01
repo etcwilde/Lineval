@@ -121,6 +121,29 @@ graph (DAG) model of the repository, showing all commits and merges in chronolog
 order by when the commit was authored, not by when it arrived in the official Linux
 repository.
 
+\begin{figure*}
+        \centering
+        \includegraphics[width=0.97\textwidth]{figures/gitk.png}
+        \caption{A view of the Gitk interface centered on merge
+          b34870fc9ff15fe46c4066faeeec437a4e63e2d8 by Miller. Commits point toward
+          their ancestors and there is no clear path from the commit to the merge
+          with the master branch. Neither Gitk nor Git are capable of showing the
+          commits in master.}
+        \label{fig:gitk}
+%\vspace{-4mm}
+\end{figure*}
+
+
+\begin{figure}
+        \centering
+        \includegraphics[width=0.45\textwidth]{figures/github_viewer.png}
+        \caption{Github Failure Message showing the DAG of the Linux Project and its
+                relationship to other forks.}
+        \label{fig:gitfail}
+%\vspace{-2mm}
+\end{figure}
+
+
 This representation works in smaller projects; it enables users to see when changes
 are made, when these changes are merged, how each branch is interacting, and the
 point where a branch forks from the master branch. In large modular projects, like
@@ -136,24 +159,6 @@ tomorrow may be different than the snapshot from today, containing new commits
 authored in the past; distinguishing these new commits from the commits in the
 snapshot from today is not trivial.
 
-\begin{figure*}
-        \centering
-        \includegraphics[width=0.97\textwidth]{figures/gitk.png}
-        \caption{A view of the Gitk interface centered on merge
-          b34870fc9ff15fe46c4066faeeec437a4e63e2d8 by Miller. Commits point toward
-          their ancestors and there is no clear path from the commit to the merge
-          with the master branch. Neither Gitk nor Git are capable of showing the
-          commits in master.}
-        \label{fig:gitk}
-\end{figure*}
-
-\begin{figure}
-        \centering
-        \includegraphics[width=0.45\textwidth]{figures/github_viewer.png}
-        \caption{Github Failure Message showing the DAG of the Linux Project and its
-                relationship to other forks.}
-        \label{fig:gitfail}
-\end{figure}
 
 One major challenge with visualizing the arrival of commits to a repository is that
 Git does not store the date that a commit was merged into another branch, including
@@ -186,7 +191,7 @@ just the commits and merges that match the query.
 
 Git uses a directed acyclic graph (DAG) as its main data model. In this model, a
 commit has one or more ordered parents (ancestors), except the root commits of a
-repository which do not have ancestors--Linux git repository has two such commits.
+repository which do not have ancestors--Linux's git repository has two such commits.
 Commits are divided into merge commits, merging two or more branches, and non-merge
 commits. Non-merge commits have only one parent, while merge commits have two or
 more. The order of the parents matter: the first parent is the branch in which the
@@ -196,7 +201,7 @@ merged, the third parent is the second branched merged, etc.
 
 Once a commit is created, it is never changed. Git allows operations to alter
 commits or reorder them, but it changes the commit ID in the process, effectively
-making a new commit. This makes commits unable to record the traversal of merges
+replacing it with a new commit. This makes commits unable to record the traversal of merges
 from the commit to the merge into the master branch.
 
 A short example: assume the commits represented in Figure~\ref{fig:repoEvents} shows
@@ -256,6 +261,7 @@ edge on the path to master for any commit.
     section represents a different branch and/or repository. Each commit
     points to its ancestor.}
   \label{fig:repoEvents}
+%\vspace{-3mm}
 \end{figure}
 
 \begin{figure}[htbp]
@@ -294,6 +300,7 @@ edge on the path to master for any commit.
     has passed on its way to the master branch. The DAG does not even
     distinguish the master branch from other branches.}
   \label{fig:repoDAG}
+%\vspace{-3mm}
 \end{figure}
 
 \begin{figure}[htbp]
@@ -333,6 +340,7 @@ edge on the path to master for any commit.
     represents the path followed by that commit to reach the master
     branch.}
   \label{fig:repoTree}
+\vspace{-3mm}
 \end{figure}
 
 \subsection{Computing the merge-tree of the DAG of Linux}
@@ -353,7 +361,7 @@ branch using the inverted DAG.
                 \Function{ComputeMergeTree}{DAG}: tree
                 \State {\# Compute the tree from the DAG of Linux repository.}
                 \State {\# Returns $Tree$, a graph containing every commit }
-                \State {\# in DAG with the path it followed to master.\\}
+                \State {\# in DAG with the path it followed to master.}
 
                 \State $head \gets \textit{Head of master of git repository}$
                 \State $master \gets \textit{traverse DAG from head using }$
@@ -408,7 +416,7 @@ total number of non-merge commits in the merge.
 
 \begin{figure}[htbp]
         \centering
-        {\tiny
+        {\fontsize{7}{9}
         \begin{verbatim}
 Merge: 8cbd84f fd8aa2c
 Author: Linus Torvalds <torvalds@linux-foundation.org>
@@ -421,28 +429,47 @@ md: clean up do_md_stop
 [... edited for the sake of space]
 md: split out md_rdev_init
 md: be more careful setting MD_CHANGE_CLEAN
-md/raid5: ensure we create a unique name for kmem_cache when mddev has no gendisk
+md/raid5: ensure we create a unique name for kmem_cache...
 ...
-        \end{verbatim}}
+        \end{verbatim}}\vspace{-5mm}
         \caption{Example of how merges record a subset of commits being merged. The
-                commit only shows the first 20 one-line log messages for the 24
+                commit only shows the first 20 one-line summaries messages for the 24
                 non-merge commits it merged. The ending ``...'' is part of the log
                 and represents that other commits were merged.}
         \label{fig:sampleMerge}
 \end{figure}
 
-We use this information to evaluate the accuracy of the merge-tree model extracted
-from the DAG. For commits with no conflicts, we compare: 1) the number of non-merge
-commits, 2) the summaries of the commits available in the log, and 3) the summaries
-of the merges included.
 
 
-The verification detected no incorrect merges since 2013, two incorrect merges in
-2012, and two in 2011; however, the heuristic breaks in October, 15, 2009 due to the
-presence of \textit{foxtrot} commits, which confounds the true master branch of a
-repository
-\footnote{See \url{http://bit-booster.blogspot.ca/2016/02/no-foxtrots-allowed.html} for a description of the issue}, and will not work for older merges.
+We used this information to evaluate the accuracy of the merge-tree model extracted from the DAG. The method we followed
+started with the extraction of the commit history up to July 20, 2016. We computed the merge tree of every commit until
+then. Since Linus Torvalds mostly does merging directly into master, we assumed that every merge by him is the root of a
+merge-tree. As described above, the log of a commit usually contains the number of commits in the merge the first 20
+summaries of commits being merged. We extracted merges by Linus Torvalds using the command \mycode{log --merges --author='Torvalds} and compared
+the number of commits in according to the log with the number of commits in the  merge-tree rooted in this commit. We
+also used the summaries of the commits found in the merge (not necessarily all---see above) to make sure those 
+commits were in their corresponding merge tree. For example, for the merge in Figure~\ref{sampleMerge} we would expect
+that the merge tree rooted at \mycode{8cbd84f} contains 24 commits, and the one-line summaries corresponds to commits in
+that merge-tree. We also inspected those with differences to make sure they were true errors.
+The results can be summarized as follows:
 
+\begin{itemize}
+\item Five merges were false-errors because their logs did not contain accurate information (were probably edited by
+  hand). For example in \mycode{42a579a0f...} one commit summary was missing (the line was empty), in \mycode
+  {c55d267} the summaries were reordered.
+\item The heuristic correctly identified that 79 of Linus merges (between Jun 7, 2014 and Jun 2, 2014) were made to a
+  branch (not master). This branch was merged at (\mycode{3f17ea6d..} which contained 6809 commits.
+\item The heuristic worked perfectly until Sept 4, 2007, the earliest date that it could be verified.
+  Before this date, and until Dec 12, 2006, merges did not include a summary of the commits they included, hence making it
+  impossible to verify; during this period, however, we correctly identified the merges by Linus into master. 
+\item Before Dec. 12, 2006 (1542 merges) our heuristic breaks due to the
+presence of a \textit{foxtrot} commit (\mycode{c436688...}), which confounded the true master branch of a
+repository (see \url{http://bit-booster.blogspot.ca/2016/02/no-foxtrots-allowed.html} for a description of the issue).
+\end{itemize}
+
+In summary, of the merges after Sept 4, 2007, in 100\% of them (16,860) our heuristic was correct. It failed in 1,542
+commits before Dec. 12, 2006 and in 836 it appears to be correct (Dec 7, 2006 to Sept 4, 2007).
+ 
 \section{Visualizing the merge-tree of Linux}
 
 The goal of \tool is to simplify the navigation of the kernel commit information,
@@ -495,7 +522,7 @@ tool called \tool. Creating a web-based tool enables users to use the system wit
 having to install additional software or store a large database, making it more
 accessible, more easily maintainable, and platform independent. \tool uses the
 following mechanisms to reach our goals of better navigation and better explanation
-of the changes.
+of the selected changes.
 
 \begin{itemize}
         \item Filter by searching
@@ -517,21 +544,20 @@ of the changes.
 Searching (depicted in Figure \ref{fig:search}) allows a user to filter commits and
 merges that are irrelevant. The search mechanism breaks down the results by release
 version. A user can further narrow down the search by specifying a range of dates in
-which such commits were merged by Linus into the master branch, not when the commits
-were created. This distinction is important. We have observed commits that have
+which such commits were merged by Linus into the master branch---not when the commits
+were created (author date and/or commit date). This distinction is important. We have observed commits that have
 taken years to arrive into the master repository after they were originally
-committed.
+created.
 
 A user may then provide a search text, filtering by the author name, the commit ID,
 or keyword from the log. Any part of the author name may show up in the results,
 including searching by email address.
 
-If the user is searching by commit ID, ID must be specified from the first character
-to the last character. For example, the commit
-`c267548755a184ef97301071300c1739a564e135' is returned when the user searches for a
-commit ID of `c26' in the 3.10 Linux kernel. This commit is a non-merge commit
-performed in one of the largest merge-trees of the kernel; however, this feature
-will work with any commit ID.
+If the user is searching by commit ID, the ID can be specified by using any of its unique prefixes. For example, the commit
+\mycode{c267548755a184ef97301071300c1739a564e135} is returned when the user searches for a
+commit ID of \mycode{c26} in the 3.10 Linux kernel. % This commit is a non-merge commit
+% performed in one of the largest merge-trees of the kernel; however, this feature
+% will work with any commit ID.
 
 \begin{figure}
         \centering
@@ -541,12 +567,8 @@ will work with any commit ID.
         \label{fig:results}
 \end{figure}
 
-In the search results, the user is presented with the one-line log message preview,
-the author's name and email, the date the commit was authored, and the date the
-commit was last committed. The commit date and author date will usually be the same;
-however, if the commit has been rebased or cherry-picked into a merge that
-eventually is merged into the kernel, the commit date and authored date will be
-different. We can see this in the first entry in Figure~\ref{fig:results}.
+In the search results (seen in Figure~\ref{fig:results}), the user is presented with the one-line log message preview,
+the author's name and email, the date the commit was authored, and the date the commit was last committed.
 
 \begin{figure}
         \centering
@@ -601,10 +623,10 @@ calculating the number of lines removed.
 The modules tab (Figure~\ref{fig:modules}) shows the modules that are contained
 within the commit. Modules are not natively recognized by Git, and are not going to
 be present in all repositories. In the Linux repository, authors put the module they
-are working on in the one-line preview of the log-message; for example: the log
+are working on in the one-line summary of the log-message; for example: the log
 \emph{gcov: add support for FCC 4.9} has updated the \emph{gcov} module (the
 coverage testing tool of the kernel). We heuristically extract the module by taking
-all text in the log preview of commits until the first colon.  Modules are logical
+all text in the log summary of commits until the first colon.  Modules are logical
 partitions of the information in the kernel. Depending on where the author was
 working, modules can be general, such as ``bluetooth'' and ``wireless'', or can be
 quite specific for individual hardware, such as ``ath9k\_hw'' and ``wl1251''. In a
@@ -684,8 +706,8 @@ merged 1722 non-merge commits and 91 merges. \footnote{
         \label{fig:tree}
 \end{figure}
 
-The tree can be further extended to include the collapsing of merge nodes, only
-showing parts of the tree that are of interest to the user. Furthermore, the user can
+The tree can be displayed with some merges nodes collapsed, hence
+showing only parts of the tree that are of interest to the user. Furthermore, the user can
 zoom the tree by scrolling the mouse wheel to see more of the topology of the tree,
 or to see the details of a given part of the tree.
 
@@ -742,7 +764,7 @@ The tree node objects have the following fields:
 \begin{tabular}{ccl}
         Field name      & Data type & Description\\\hline
         \verb|cid|      & string    & Commit ID\\
-        \verb|name|     & string    & One-line log preview\\
+        \verb|name|     & string    & One-line log summary\\
         \verb|mlinus|   & string    & Root merge commit ID\\
         \verb|author|   & string    & Author name and email\\
         \verb|mnext|    & string    & Parent merge commit ID\\
@@ -777,11 +799,11 @@ Git: a) its edges point backwards, i.e. commits point to their ancestor, not to 
 commit that succeeds them on the path to being integrated; and b) the DAG contains
 many more edges that are necessary to understand how integration occurred. We
 addressed these two issues with the creation of the merge-tree model of the DAG of
-Linux. Effectively the merge-tree view recovers the details of each merged branch
+Linux. Effectively the merge-tree view recovers the details of how each branch---and the commits they contain---was merged
 into the master branch.
 
 In our experience, no other Git repository reaches the level of DAG complexity that
-Linux has. In most Git repositories, merges are not nested, all merges merge
+Linux has. In most Git repositories, most merges are not nested---most merges merge
 directly into the master repository, and these merges only merge few commits. Even
 in these simplified cases, the merge-tree can provide a valuable summary of how
 commits are integrated into the master branch, specifically since the time of
@@ -789,11 +811,14 @@ integration may be very different from the time the commits were authored.
 
 \evan{Check accuracy of this paragraph}
 
-The biggest challenge is computing the merge-tree of the Linux kernel repository. It
+The biggest challenge is computing the merge-tree of any given repository. It
 is likely that our heuristic for computing the merge-tree will not work with other
 repositories. The heuristic requires that there are no fast-forward merges into the
 master branch of the repository (a majority of repositories), and that there are no
-foxtrot merges. We are able to use our heuristic with the Linux kernel because of
+foxtrot merges (this is practice that starts be considered desirable by git users\footnote{See
+  \url{http://devblog.nestoria.com/post/98892582763/maintaining-a-consistent-linear-history-for-git} and
+  \url{https://developer.atlassian.com/blog/2016/04/stop-foxtrots-now/}}).
+We are able to use our heuristic with the Linux kernel because of
 the strict integration model imposed by Linus. To validate the results of the
 heuristic, we use the continuous mining technique described in \cite{German2015}.
 The continuous mining of the repository requiring foresight and planning.
@@ -835,9 +860,9 @@ from other components of the kernel, while our tool (Figure~\ref{fig:tree_view})
 only includes the results that are specific to the component of the kernel that we
 are interested in.
 
-This merge is relatively small, containing only four sub-merges, three of which
-only contain a single commit, and the last containing two commits. With our
-tool, we are able to immediately see what section of the kernel these commits and merges pertain to. The DAG view of this provides almost no explanation,
+Even though this merge is relatively small, containing only four sub-merges, three of which
+only contain a single commit, and the last containing two commits, it is already hard to visualize in Gitk. 
+With \tool we are able to immediately see what section of the kernel these commits and merges pertain to. The DAG view of this provides almost no explanation,
 furthermore, users must work to determine where this merge ends and the next one
 begins.
 
@@ -973,7 +998,7 @@ system.
 
 \section{Conclusion}
 
-Our tool shows promising results in working toward our goals, building a tool that
+Our tool, \tool, shows promising results in working toward our goals, building a tool that
 can more easily navigate the repository, and provide clearer explanations of the
 changes made. The filtering by searches and the various tree visualizations enable
 users to easily navigate through the kernel, finding the commits and merges that
