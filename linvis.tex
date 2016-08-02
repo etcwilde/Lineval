@@ -94,9 +94,9 @@ DAG becomes overwhelming very quickly. Furthermore, the DAG contains every
 ancestor of every commit, while maintainers are more interested in how and
 when a commit arrives to the official Linux repository.
 
-In this paper, we propose the merge-tree view, a simplified transformation
+In this paper, we propose the merge-tree, a simplified transformation
 of the DAG of the Linux git repository that shows the way in which commits
-are merged into the master branch of Linux. Using the merge-tree view we
+are merged into the master branch of Linux. Using the merge-tree, we
 build \tool, a tool that is designed to allow users to explore how commits
 are merged into the Linux kernel.
 
@@ -110,7 +110,7 @@ are merged into the Linux kernel.
 \section{Introduction}
 
 Between 50k and 70k commits are added to the Linux kernel per version requiring
-maintainers of older versions of the Linux kernel to sift through thousands of
+maintainers of older versions of the kernel to sift through thousands of
 commits and merges with tools that are unable to filter and effectively visualize
 projects at the scale of the kernel. Older versions of the kernel are used in
 embedded systems and mobile phones; for security purposes, performance needs, and
@@ -179,12 +179,12 @@ using the merge-tree model.
 These methods and visualizations are implemented in a web-based tool called
 \tool\footnote{\tool is currently available at \url{http://li.turingmachine.org}}.
 Our visualizations and tool provide information about the location of any given
-commit in its respective merge-tree, the files edited, the modules edited, and the
-commit message for a given commit or merge. \tool allows users to apply various
-filters, including the release version, along with a keyword or phrase from the log
-preview, the name of the author, or the commit ID. The user can request all merges
-made by Linus that contain a commit or inner merge that matches the search query, or
-just the commits and merges that match the query.
+commit or merge in its respective merge-tree, the files edited, the modules edited,
+and the commit message. \tool allows users to apply various filters, including the
+release version, along with a keyword or phrase from the log preview, the name of
+the author, or the commit ID. The user can request all merges made by Linus that
+contain a commit or inner merge that matches the search query, or just the commits
+and merges that match the query.
 
 \section{Merge-Tree model}
 \label{sec:mergetree}
@@ -204,7 +204,7 @@ commits or reorder them, but it changes the commit ID in the process, effectivel
 replacing it with a new commit. This makes commits unable to record the traversal of merges
 from the commit to the merge into the master branch.
 
-A short example: assume the commits represented in Figure~\ref{fig:repoEvents} shows
+A short example: assume the commits represented in Figure~\ref{fig:repoEvents} show
 the sequence of events in a repository. In this case, commits are performed in
 various repositories and branches. The DAG representation of the commits is shown in
 Figure~\ref{fig:repoDAG}. Notice that the DAG loses information about the master
@@ -444,11 +444,12 @@ md/raid5: ensure we create a unique name for kmem_cache...
 We used this information to evaluate the accuracy of the merge-tree model extracted from the DAG. The method we followed
 started with the extraction of the commit history up to July 20, 2016. We computed the merge tree of every commit until
 then. Since Linus Torvalds mostly does merging directly into master, we assumed that every merge by him is the root of a
-merge-tree. As described above, the log of a commit usually contains the number of commits in the merge the first 20
+merge-tree. As described above, the log of a merge-commit usually contains the number of commits in the merge the first 20
 summaries of commits being merged. We extracted merges by Linus Torvalds using the command \mycode{log --merges --author='Torvalds} and compared
-the number of commits in according to the log with the number of commits in the  merge-tree rooted in this commit. We
-also used the summaries of the commits found in the merge (not necessarily all---see above) to make sure those 
-commits were in their corresponding merge tree. For example, for the merge in Figure~\ref{sampleMerge} we would expect
+the number of commits according to the log with the number of commits in the  merge-tree rooted in this commit. We
+also used the summaries of the commits found in the merge (not necessarily all---see above) to make sure those
+commits were in their corresponding merge tree. For example, for the merge in
+Figure~\ref{fig:sampleMerge} we would expect
 that the merge tree rooted at \mycode{8cbd84f} contains 24 commits, and the one-line summaries corresponds to commits in
 that merge-tree. We also inspected those with differences to make sure they were true errors.
 The results can be summarized as follows:
@@ -461,7 +462,7 @@ The results can be summarized as follows:
   branch (not master). This branch was merged at (\mycode{3f17ea6d..} which contained 6809 commits.
 \item The heuristic worked perfectly until Sept 4, 2007, the earliest date that it could be verified.
   Before this date, and until Dec 12, 2006, merges did not include a summary of the commits they included, hence making it
-  impossible to verify; during this period, however, we correctly identified the merges by Linus into master. 
+  impossible to verify; during this period, however, we correctly identified the merges by Linus into master.
 \item Before Dec. 12, 2006 (1542 merges) our heuristic breaks due to the
 presence of a \textit{foxtrot} commit (\mycode{c436688...}), which confounded the true master branch of a
 repository (see \url{http://bit-booster.blogspot.ca/2016/02/no-foxtrots-allowed.html} for a description of the issue).
@@ -469,11 +470,11 @@ repository (see \url{http://bit-booster.blogspot.ca/2016/02/no-foxtrots-allowed.
 
 In summary, of the merges after Sept 4, 2007, in 100\% of them (16,860) our heuristic was correct. It failed in 1,542
 commits before Dec. 12, 2006 and in 836 it appears to be correct (Dec 7, 2006 to Sept 4, 2007).
- 
+
 \section{Visualizing the merge-tree of Linux}
 
 The goal of \tool is to simplify the navigation of the kernel commit information,
-specifically focusing on merges. This is done by leveraging the merge-tree view to
+specifically focusing on merges. This is done by leveraging the merge-tree to
 inspect how commits are merged on the path to the master repository.
 
 \subsection{Use cases}
@@ -501,7 +502,7 @@ commits that might be related to their original commit.
 
 \subsection{Data Model}
 
-In our visualizations, we leverage the Merge-Tree model described in
+In our visualizations, we leverage the merge-tree model described in
 Section~\ref{sec:mergetree}. In this model each commit is either already in the
 master branch, or is part of a tree which is rooted in the merge that merged it into
 the master branch.  Each commit, whether a merge or non-merge, has only one
@@ -589,7 +590,7 @@ information about the content of the commit and who has signed-off on the commit
 ensure that it is of good quality. The message for merges may contain a summary of
 the commits being merged.  The information within these messages is highly variable,
 and is completely dependent on the author's style. As the user moves toward the
-top-level merge, the quality of these messages generally improves.
+root-level merge, the quality of these messages generally improves.
 
 \begin{figure}
         \centering
@@ -798,13 +799,13 @@ From a developers point of view, the are two major disadvantages of the DAG mode
 Git: a) its edges point backwards, i.e. commits point to their ancestor, not to the
 commit that succeeds them on the path to being integrated; and b) the DAG contains
 many more edges that are necessary to understand how integration occurred. We
-addressed these two issues with the creation of the merge-tree model of the DAG of
-Linux. Effectively the merge-tree view recovers the details of how each branch---and the commits they contain---was merged
+addressed these two issues with the creation of the merge-tree model from the DAG of
+Linux. Effectively, the merge-tree recovers the details of how each branch---and the commits they contain---was merged
 into the master branch.
 
 In our experience, no other Git repository reaches the level of DAG complexity that
 Linux has. In most Git repositories, most merges are not nested---most merges merge
-directly into the master repository, and these merges only merge few commits. Even
+directly into the master repository, and these merges only merge a few commits. Even
 in these simplified cases, the merge-tree can provide a valuable summary of how
 commits are integrated into the master branch, specifically since the time of
 integration may be very different from the time the commits were authored.
@@ -815,17 +816,17 @@ The biggest challenge is computing the merge-tree of any given repository. It
 is likely that our heuristic for computing the merge-tree will not work with other
 repositories. The heuristic requires that there are no fast-forward merges into the
 master branch of the repository (a majority of repositories), and that there are no
-foxtrot merges (this is practice that starts be considered desirable by git users\footnote{See
+foxtrot merges (a practice that is starting to be considered desirable by git users\footnote{See
   \url{http://devblog.nestoria.com/post/98892582763/maintaining-a-consistent-linear-history-for-git} and
   \url{https://developer.atlassian.com/blog/2016/04/stop-foxtrots-now/}}).
 We are able to use our heuristic with the Linux kernel because of
 the strict integration model imposed by Linus. To validate the results of the
 heuristic, we use the continuous mining technique described in \cite{German2015}.
-The continuous mining of the repository requiring foresight and planning.
+Continuous mining of the repository requires foresight and planning.
 
 Because \tool leverages the merge-tree model of the kernel, it provides mechanisms
 and visualizations that other tools are unable to produce. It gives us the ability to
-see how commits are being merged into the kernel, allowing us to better understand
+see how commits are being merged into the master branch, allowing us to better understand
 how code is integrated into the kernel.
 
 \begin{figure}
@@ -861,7 +862,7 @@ only includes the results that are specific to the component of the kernel that 
 are interested in.
 
 Even though this merge is relatively small, containing only four sub-merges, three of which
-only contain a single commit, and the last containing two commits, it is already hard to visualize in Gitk. 
+only contain a single commit, and the last containing two commits, it is already hard to visualize in Gitk.
 With \tool we are able to immediately see what section of the kernel these commits and merges pertain to. The DAG view of this provides almost no explanation,
 furthermore, users must work to determine where this merge ends and the next one
 begins.
@@ -872,23 +873,6 @@ files, ``palamas-regulator.c'' had two lines added and two lines removed,
 ``dbx500-prcmu.c'' had 12 lines added and 12 lines removed, and ``core.c'' had 5
 lines added and 2 lines removed. Finally, we are able to determine that only the
 ``regulator'' module was modified in this merge and was modified by 5 commits.
-
-
-The merge-tree model used in \tool has many advantages to the DAG model, but there
-are two drawbacks. The first drawback is that a server must query the state of the
-master repository since time information is not stored by Git in order to properly
-construct the merge tree. The second drawback is the need to pre-compute the
-merge-tree of the repository.
-
-% Our core model provides advantages to the DAG model used by other tools. We separate
-% the commits and merges into sub-trees and focus on a single sub-tree at a time. This
-% enables us to filter out commits and merges that do not pertain to the component of
-% the kernel that we are interested in, providing a clearer picture of what is
-% happening in a given merge. The tree model also enables us to aggregate metadata
-% easily. With the addition of the continuous polling of the repository, the model
-% provides us with a mechanism of performing date-range queries with meaningful
-% results.
-
 
 \section{Future Work}
 
@@ -1016,16 +1000,14 @@ We use a heuristic method to generate the tree from the repository. The heuristi
 requires that the repository does not have fast-forward merges into the master
 branch or foxtrot merges, which obfuscate the master branch. In either case, the
 heuristic will break and result in a tree that does not accurately represent the
-repository. Validation of the results from the heuristic requires continuous mining
-of the repository.
+repository.
 
-While these are significant drawbacks for small projects, large projects will likely
-have a more centralized work flow with a master repository where contributions will
-eventually land, along with various servers that can watch this master repository
-for changes. Given that the importance of clear visualizations of the repository
-outweighs the cost of having a server monitor the state of the repository, the
-tree-based model appears to provide clean visualizations and explanations of the
-changes in the Linux kernel.
+These may pose as significant drawbacks to smaller projects; however, with a proper
+merge discipline, the heuristic is able to correctly convert the DAG into a
+merge-tree. The importance of clear visualizations in large projects outweighs
+the costs of enforcing a clean merge discipline. The tree-based model appears to
+have the ability to provide a clean visualization and more detailed explanations of
+the changes in the Linux kernel.
 
 % \nocite{*}
 
