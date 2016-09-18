@@ -555,10 +555,8 @@ or keyword from the log. Any part of the author name may show up in the results,
 including searching by email address.
 
 If the user is searching by commit ID, the ID can be specified by using any of its unique prefixes. For example, the commit
-\mycode{c267548755a184ef97301071300c1739a564e135} is returned when the user searches for a
-commit ID of \mycode{c26} in the 3.10 Linux kernel. % This commit is a non-merge commit
-% performed in one of the largest merge-trees of the kernel; however, this feature
-% will work with any commit ID.
+\mycode{3f17ea6dea8ba5668873afa54628a91aaa3fb1c0} is returned when the user searches for a
+commit ID of \mycode{3f17e} in the 3.16 Linux kernel.
 
 \begin{figure}
         \centering
@@ -672,45 +670,41 @@ of the current commit, and the first item is the root merge into the kernel.
 \begin{figure}
         \centering
         \includegraphics[width=0.47\textwidth]{figures/list_tree.png}
-        \caption{List tree view of merge 73287a43cc79ca06629a88d1a199cd283f42456a}
+        \caption{List tree view of merge 3f17ea6}
         \label{fig:list_tree}
 \end{figure}
 
 \subsubsection{Reingold-Tilford Tree}
 
-The Reingold-Tilford tree\cite{Reingold1981} (Figures \ref{fig:zoomed_tree} and
-\ref{fig:tree}) allows the visualization and navigation of the entire merge-tree in
+The Reingold-Tilford tree\cite{Reingold1981} (Figures \ref{fig:reingold_tree} and
+\ref{fig:reingold_tree_zoom}) allows the visualization and navigation of the entire merge-tree in
 an intuitive representation of the tree.  This illustrates a clear notion of root
-and leaves, and how to navigate in either direction. Some of the merge trees are
-very large (Figure~\ref{fig:zoomed_tree}), containing thousands of commits and
-merges. While the tree is capable of producing a visualization, it becomes much more
-difficult to understand. For example the merge
-73287a43cc79ca06629a88d1a199cd283f42456a performed by Linus Torvalds in May 1, 2013,
-merged 1722 non-merge commits and 91 merges. \footnote{
-        This commit can be inspected at
-        \url{http://li.turingmachine.org/commits/73287a43cc79ca06629a88d1a199cd283f42456a}}
+and leaves, and how to navigate in either direction. Some merge trees are very
+large, containing thousands of commits and merged. While the tree is capable of
+producing a visualization, it becomes far more difficult to understand. For example,
+the merge, 3f17ea6 performed by Linus Torvalds June 8 2014, contains 7217 commits
+and merges. \footnote{This commit can be inspected at
+  \url{http://li.turingmachine/org/commits/3f17ea6dea8ba5668873afa54628a91aaa3fb1c0}}
 
-\begin{figure}
+      \begin{figure}
         \centering
-        \includegraphics[width=0.47\textwidth]{figures/tree_zoom.png}
-        \caption{The complete Reingold-Tilford tree of a merge by Linus
-          (73287a43cc79ca06629a88d1a199cd283f42456a) containing 1722 non-merge
-          commits touching 239 modules and 1525 files.}
-        \label{fig:zoomed_tree}
-\end{figure}
+        \includegraphics[width=0.47\textwidth]{figures/4dc4_tree.pdf}
+        \caption{Merge 4dc4226 is a subtree of 3f17ea6, for the power-management
+          module of the kernel}
+        \label{fig:reingold_tree}
+      \end{figure}
 
-
-\begin{figure}
+      \begin{figure*}
         \centering
-        \includegraphics[width=0.47\textwidth]{figures/tree_view.png}
-        \caption{Detail of the Reingold-Tilford Tree in Figure~\ref{fig:zoomed_tree}.}
-        \label{fig:tree}
-\end{figure}
+        \includegraphics[width=0.98\textwidth]{figures/4dc4_zoom_tree.pdf}
+        \caption{Zoomed out view of the Reingold-Tilford tree for merge 4dc4226}
+        \label{fig:reingold_tree_zoom}
+      \end{figure*}
 
-The tree can be displayed with some merges nodes collapsed, hence
-showing only parts of the tree that are of interest to the user. Furthermore, the user can
-zoom the tree by scrolling the mouse wheel to see more of the topology of the tree,
-or to see the details of a given part of the tree.
+      The user is initially greeted with their current node centered on the screen.
+      They are able to zoom the tree by scrolling the mouse, and clicking and
+      dragging to pan the tree. They can see more details about a node by clicking
+      on it, which will provide them a link to the specific page for that commit.
 
 \subsubsection{Bubble Tree}
 
@@ -728,9 +722,8 @@ of blue, while the contained merges are progressively darker; the commits are wh
 \begin{figure}
         \centering
         \includegraphics[width=0.47\textwidth]{figures/bubble_tree.pdf}
-        \caption{Bubble Tree of merge 73287a43cc79ca06629a88d1a199cd283f42456a,
-                showing in red (the tiny dot close to the middle) the location of
-                the commit highlighted in Figure~\ref{fig:zoomed_tree}.}
+        \caption{Bubble Tree of merge 3f17ea6, merge 4dc4226 is the currently
+          selected merge and is highlighted in orange.}
         \label{fig:bubble_tree}
 \end{figure}
 
@@ -836,13 +829,13 @@ how code is integrated into the kernel.
         \label{fig:dag_view}
 \end{figure}
 
-\begin{figure*}
+\begin{figure}
         \centering
-        \includegraphics[width=0.97\textwidth]{figures/042dd_tree.png}
+        \includegraphics[width=0.47\textwidth]{figures/042dd_tree.pdf}
         \caption{Merge tree topology for the same merge as in
                 Figure~\ref{fig:dag_view}.}
         \label{fig:tree_view}
-\end{figure*}
+\end{figure}
 
 Our goal was to build a tool to enable maintainers to effectively navigate and
 browse the changes performed to the kernel over the period of a release. Achieving
