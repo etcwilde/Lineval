@@ -56,7 +56,7 @@ if ($is ne $cid) {
     exit(0);
 }
 
-my @t = Simple_Query("select ismerge,comdatereal,committer,autdatereal,author,'' as rip,log from commits c natural join logs  where c.cid = ?", $cid);
+my @t = Simple_Query("select ismerge,comdate,committer,autdate,author,'' as rip,log from commits c natural join logs  where c.cid = ?", $cid);
 my $c = Print_Commit($cid, 0, 0, @t);
 print "Total;$cid;$c\n";
 
@@ -69,7 +69,7 @@ sub Print_Commit
     
     # find its predecessors
 
-    my $q = $dbh->prepare("select cid,mdist, 'repo',ismerge,comdatereal,committer,autdatereal,author, log from closest natural join commits natural join logs where mnext = ? order by mdist desc;");
+    my $q = $dbh->prepare("select cid,mdist, 'repo',ismerge,comdate,committer,autdate,author, log from closest natural join commits natural join logs where mnext = ? order by mdist desc;");
     
     $q->execute($cid);
 

@@ -25,13 +25,13 @@ die "$repoDir not a git repo"  unless -d "$repoDir/.git" ;
 my $dbh = DBI->connect("dbi:Pg:dbname=$dbName", "$userName", "",
 		       { RaiseError => 1, AutoCommit=>0});
 
-my $create = $dbh->prepare("drop table logs;");
+my $create = $dbh->prepare("drop table if exists logs;");
         
 $create->execute();
 
 my $create = $dbh->prepare("CREATE TABLE logs (
     cid character(40) NOT NULL,
-    log character varying(10000),
+    log VARCHAR,
     primary key (cid)
 );");
 $create->execute();

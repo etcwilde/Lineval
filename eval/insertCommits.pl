@@ -67,8 +67,8 @@ CREATE TABLE commits (
     committer character varying(200),
     ismerge boolean,
     contents character(40),
-    autdatereal timestamp with time zone,
-    comdatereal timestamp with time zone,
+    autdate timestamp with time zone,
+    comdate timestamp with time zone,
     codecontents character(40),
     reporeal character varying(80)
 );
@@ -84,7 +84,7 @@ CREATE TABLE parents (
 ");
 $create->execute();
 
-my $insC = $dbh->prepare("insert into commits(author, autdatereal, committer, comdatereal, ismerge, contents, cid) values (?, ?,?,?,?,?,?);");
+my $insC = $dbh->prepare("insert into commits(author, autdate, committer, comdate, ismerge, contents, cid) values (?, ?,?,?,?,?,?);");
 my $insP = $dbh->prepare("insert into parents(cid, index, parent) values (?, ?, ?);");
 
 #----------------------------------------------------------------------

@@ -120,21 +120,21 @@ print "Options: ", join (';', sort keys %options), "\n";
 
 if (not defined ($options{"nocheck"})) {
     print "Checking if there are any null values in commits JOIN baseline\n";
-    my ($checkMetadata) = Simple_Query("select count(*) from commits natural join baseline where comdatereal is null or committer is null");
+    my ($checkMetadata) = Simple_Query("select count(*) from commits natural join baseline where comdate is null or committer is null");
     
     die "number null [$checkMetadata]"  if $checkMetadata > 0;
     
     print "Checking that there are no commits without parents in baseline except for anything that is recent\n";
     
-    my ($orphans) = Simple_Query("select count(*) from (select cid from baseline natural join commits where comdatereal > '2013-01-01' except select cid from parents) as rip");
+    my ($orphans) = Simple_Query("select count(*) from (select cid from baseline natural join commits where comdate > '2013-01-01' except select cid from parents) as rip");
     
-    die "number of baseline orphans without a record in parents [$orphans]"  if $orphans > 1;
+    die "number of baseline orphans without a record in parents [$orphans]"  if $orphans > 2;
     
-    my ($orphans) = Simple_Query("select count(*) from (select cid from baseline natural join commits where comdatereal > '2013-01-01' except select parent from parents) as rip");
+    my ($orphans) = Simple_Query("select count(*) from (select cid from baseline natural join commits where comdate > '2013-01-01' except select parent from parents) as rip");
     
     die "number of parents that are not a parent in closest [$orphans] only head of torvalds shouldn't"  if $orphans > 1;
     
-    if ($dbName ne "evan") {
+    if ($dbName =~ /evan/) {
 	die "It is not probably to work for other dbs than [evan]";
     }
 }
@@ -156,7 +156,7 @@ my $queryDistance = $dbh->prepare("select $distField,$whenField, mnextmerge, mci
 my $updateDistance  = $dbh->prepare("update $tableClosest set $nextField = ?, $distField = ?, $whenField = ?, mnextmerge = ?, mcidlinus = ? where cid = ?;");
 
 my $merge = $dbh->prepare("select ismerge from commits where cid = ?;");
-my $commitDate = $dbh->prepare("select comdatereal from commits where cid = ?;");
+my $commitDate = $dbh->prepare("select comdate from commits where cid = ?;");
 
 
 # insert what is not in the table yet
@@ -255,7 +255,7 @@ sub Update_Master_Code_Line
 #  my @parents = Find_Parents($cid);
         my $first = Find_First_Parent($cid);
         
-	if ($dbName eq "evan") {
+	if ($dbName =~ /evan/) {
 	    if (defined ($baseline{$first})){
 
 
@@ -677,7 +677,7 @@ sub Get_Baseline
 {
     my $i;
 
-    my $q = $dbh->prepare("select cid,ismerge,comdatereal,$distField,$whenField from commits natural join baseline natural join $tableClosest;");
+    my $q = $dbh->prepare("select cid,ismerge,comdate,$distField,$whenField from commits natural join baseline natural join $tableClosest;");
     print STDERR "Reading baseline\n";
     $q->execute();
     while (my ($cid,$ismerge,$comdate, $d, $whenMerged) =  $q->fetchrow_array()) {
