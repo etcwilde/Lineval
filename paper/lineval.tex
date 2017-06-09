@@ -1,0 +1,76 @@
+% vim:set et fenc=utf-8 ft=tex sw=2 ts=4 tw=84:
+
+\newif\ifdraft
+\drafttrue
+
+\ifdraft
+        \documentclass[conference, draftclsnofoot, draft]{IEEEtran}
+        \def\baselinestretch{1}
+        \setlength{\marginparwidth}{2cm}
+\else
+        \documentclass[conference]{IEEEtran}
+\fi
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage[hyphens]{url} \urlstyle{same}
+
+%% Citations
+\usepackage[nospace]{cite}
+
+%% Table Support
+
+\usepackage{dcolumn}
+\usepackage{longtable}
+\usepackage{multirow}
+
+
+%% Extra support
+\usepackage{xspace}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{balance}
+\usepackage{placeins}
+
+
+%% Graphics
+
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{color}
+
+%% Tikz
+\usetikzlibrary{positioning, arrows}
+
+\input{color.tex}
+\input{macros.tex}
+
+\newcommand{\TheTitle}{An evaluation and generalization of Merge-Tree}
+\newcommand{\TheAuthors}{Evan Wilde, Daniel M. German}
+\newcommand{\TheEmails}{etcwilde@uvic.ca, dmg@uvic.ca}
+\newcommand{\TheSubject}{Testing the comprehension of users in large git repositories}
+\newcommand{\TheKeywords}{Linux, git, data structures}
+
+\synctex=1
+
+\begin{document}
+
+\title{\TheTitle}
+
+\author{
+        \IEEEauthorblockA{\TheAuthors}
+        \IEEEauthorblockN{Department of Computer Science,
+                University of Victoria, Canada.}
+        \IEEEauthorblockA{Email: \TheEmails}
+}
+\maketitle
+
+\begin{abstract}
+
+  \input{abstract.tex}
+
+\end{abstract}
+
+
+\end{document}
