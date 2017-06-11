@@ -1,5 +1,5 @@
 latexfile 	= lineval
-files		= abstract.tex color.tex macros.tex makefile
+files		= abstract.tex introduction.tex color.tex macros.tex references.bib makefile
 figures		=
 
 $(latexfile).pdf : $(latexfile).tex $(files) $(figures)
