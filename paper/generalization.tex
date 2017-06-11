@@ -1,0 +1,10 @@
+The original algorithm uses a stack-like approach, which results in a depth-first
+search of the tree. In the first pass, all of the commits that are in the
+fist-parent position of the previous commit will be analyzed. Then following the
+depth-first tactic, the tree that was earliest in the history of the repository will
+be constructed, followed by the next earliest. This will be repeated until all of
+the trees have been constructed and we reach the head of the master branch.
+
+\evan{Provide a description of the new algorithm, and an DAG, and finally the
+  resulting merge tree.}
+

@@ -1,0 +1,50 @@
+We conducted a user study of \evan{NUMBER} participants to determine if there is a
+statistically significant difference among users in performing certain tasks on
+repositories between \textit{Linvis} and either gitk or the command-line git
+interface. We were looking for improvements in accuracy, time performance, and
+overall enjoyment among users when performing summarization and intra-tree
+navigation, as these are the tasks that merge-trees are design to simplify.
+
+\evan{still need to figure out who our intended user is... ``git user'' is a bit too
+  broad.}
+
+% TODO: Determine who the intended user is. "generic git user" is kind of broad.
+% TODO: Add a note stating that we will refer to the primary branch as being the master branch
+
+\subsubsection{Methodology}
+\label{ssub:methodology}
+
+\subsubsection{Commit Selection}
+\label{ssub:commit_selection}
+
+We selected two commits for the participant to draw and summarize by first
+determining the size of tree in the first and second quartiles. We found that
+between Linux 3.1 and 3.16, the size of the trees in the first quartile only
+contained a single node, and that the size of the trees in the second quartile
+resulted in trees up to seven nodes. The third quartile contained trees up to 51
+nodes, and the fourth quartile contained one tree of 7217 nodes. It is worth
+mentioning that the tree sizes in the fourth quartile increase very quickly, as the
+next largest tree only contains 4708 nodes, and the third largest tree contains 2349
+commits.
+
+% TODO: Finish the paragraph on complexity
+The complexity of the merge trees varies greatly.
+
+The complexity of these trees varies greatly as well, . % TODO: Finish this sentence
+
+
+
+We decided to work with one tree of one node, and one tree of seven nodes.
+
+\subsubsection{Questions}
+\label{ssub:questions}
+
+We chose questions that were designed to test the two primary goals of merge trees,
+compared with the results from gitk or command line git. 
+
+\subsubsection{Results}
+\label{ssub:results}
+
+\subsubsection{Discussion}
+\label{ssub:discussion}
+
