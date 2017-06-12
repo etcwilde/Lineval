@@ -50,10 +50,25 @@ decreases as the size of the tree increases.
 \end{figure}
 
 % TODO: Finish the paragraph on complexity
-The complexity of the merge trees varies greatly.
+The complexity of the merge trees varies greatly as shown in
+figure~\ref{fig:merge_vs_commits}, which shows that as the number of
+commits increases in a merge-tree, the number of merges also increases
+nearly linearly.
 
-The complexity of these trees varies greatly as well, . % TODO: Finish this sentence
-
+\begin{figure}[htpb]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis} [
+      ylabel=Total Merges,
+      xlabel=Total Commits,
+      grid=both
+      ]
+      \addplot[chartblue] table[col sep=comma, x index={1}, y index={2}] {data/merge_counts.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Comparison between the number commits and the number of merge commits}
+  \label{fig:merge_vs_commits}
+\end{figure}
 
 
 We decided to work with one tree of one node, and one tree of seven

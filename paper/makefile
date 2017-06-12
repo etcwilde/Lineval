@@ -1,6 +1,6 @@
 latexfile 	= lineval
 files		= abstract.tex introduction.tex color.tex macros.tex generalization.tex userstudy.tex references.bib makefile
-data		= data/tree_size.csv
+data		= data/tree_size.csv data/merge_counts.csv
 figures		=
 
 $(latexfile).pdf : $(latexfile).tex $(files) $(data) $(figures)
