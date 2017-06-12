@@ -1,8 +1,9 @@
 latexfile 	= lineval
-files		= abstract.tex introduction.tex color.tex macros.tex references.bib makefile
+files		= abstract.tex introduction.tex color.tex macros.tex generalization.tex userstudy.tex references.bib makefile
+data		= data/tree_size.csv
 figures		=
 
-$(latexfile).pdf : $(latexfile).tex $(files) $(figures)
+$(latexfile).pdf : $(latexfile).tex $(files) $(data) $(figures)
 	rubber --pdf $(latexfile)
 
 

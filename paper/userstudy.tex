@@ -25,7 +25,27 @@ resulted in trees up to seven nodes. The third quartile contained trees up to 51
 nodes, and the fourth quartile contained one tree of 7217 nodes. It is worth
 mentioning that the tree sizes in the fourth quartile increase very quickly, as the
 next largest tree only contains 4708 nodes, and the third largest tree contains 2349
-commits.
+commits. We see in figure~\ref{fig:tree_size} how the number of trees decreases as
+the size of the tree increases.
+
+\begin{figure}[htpb]
+\begin{center}
+\caption{Number of merge tree occurrences over size of the merge tree}
+\label{fig:tree_size}
+\begin{tikzpicture}
+  \begin{axis} [
+    ylabel=Occurences,
+    xlabel=Tree Size,
+    grid=both,
+    minor x tick num = 1,
+    minor y tick num = 1,
+    ymode=log
+    ]
+    \addplot[chartred] table[col sep=comma, x index={1}, y index={0}]{data/tree_size.csv};
+  \end{axis}
+\end{tikzpicture}
+\end{center}
+\end{figure}
 
 % TODO: Finish the paragraph on complexity
 The complexity of the merge trees varies greatly.
