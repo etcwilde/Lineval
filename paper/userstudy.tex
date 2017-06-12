@@ -1,4 +1,4 @@
-We conducted a user study of \evan{NUMBER} participants to determine if
+We conducted a user study of \evantodo{NUMBER} participants to determine if
 there is a statistically significant difference among users in
 performing certain tasks on repositories between \textit{Linvis} and
 either gitk or the command-line git interface. We were looking for
@@ -28,48 +28,89 @@ contained one tree of 7217 nodes. It is worth mentioning that the tree
 sizes in the fourth quartile increase very quickly, as the next largest
 tree only contains 4708 nodes, and the third largest tree contains 2349
 commits. We see in figure~\ref{fig:tree_size} how the number of trees
-decreases as the size of the tree increases.
+decreases as the size of the tree increases. The results for the other
+plots become very noisy, since there is only one occurrence for any tree
+with more than 947 commits, and only two occurrences of any trees with
+size greater than 336. Due to the noise,
+figures~\ref{fig:tree_size_filter},~\ref{fig:merge_count_filter},
+and~\ref{fig:percentage_filter} are only on the sizes of trees where
+there were at least three occurrences of trees of that size.
 
-\begin{figure}[htpb]
-\begin{center}
-\caption{Number of merge tree occurrences over size of the merge tree}
-\label{fig:tree_size}
-\begin{tikzpicture}
-  \begin{axis} [
-    ylabel=Occurences,
-    xlabel=Tree Size,
-    grid=both,
-    minor x tick num = 1,
-    minor y tick num = 1,
-    ymode=log
-    ]
-    \addplot[chartred] table[col sep=comma, x index={1}, y index={0}]{data/tree_size.csv};
-  \end{axis}
-\end{tikzpicture}
-\end{center}
+
+\pgfplotstableread[col sep=comma]{data/merge_counts.csv}\mergetable
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      ylabel=Occurences,
+      xlabel=Total Commits,
+      grid=both,
+      minor x tick num = 1,
+      minor y tick num = 1
+      ]
+      \addplot[chartblue] table[col sep=comma, x index=1, y index=0]{data/tree_size.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Frequency of trees of varying sizes}
+  \label{fig:tree_size}
 \end{figure}
 
-% TODO: Finish the paragraph on complexity
-The complexity of the merge trees varies greatly as shown in
-figure~\ref{fig:merge_vs_commits}, which shows that as the number of
-commits increases in a merge-tree, the number of merges also increases
-nearly linearly.
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      ylabel=Occurences,
+      xlabel=Total Commits,
+      grid=both,
+      minor x tick num = 1,
+      minor y tick num = 1
+      ]
+      \addplot[chartblue] table[x index=0, y index=1]\mergetable;
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Frequency of trees of varying sizes}
+  \label{fig:tree_size_filter}
+\end{figure}
 
 \begin{figure}[htpb]
   \centering
   \begin{tikzpicture}
     \begin{axis} [
-      ylabel=Total Merges,
+      ylabel=Merges,
+      xlabel=Total Commits,
+      grid=both,
+      legend pos = north west
+      ]
+      \addplot[chartred] table[x index=0, y index=5]\mergetable;
+      \addlegendentry{Maximum}
+      \addplot[chartyellow] table[x index=0, y index=6]\mergetable;
+      \addlegendentry{Mean}
+      \addplot[chartgreen] table[x index=0, y index=4]\mergetable;
+      \addlegendentry{Median}
+      \addplot[chartblue] table[x index=0, y index=3]\mergetable;
+      \addlegendentry{Minimum}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Number of merges versus the size of the merge tree}
+  \label{fig:merge_count_filter}
+\end{figure}
+
+\begin{figure}[htpb]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis} [
+      ylabel=Merge Percentage,
       xlabel=Total Commits,
       grid=both
       ]
-      \addplot[chartblue] table[col sep=comma, x index={1}, y index={2}] {data/merge_counts.csv};
+      \addplot[chartpurple] table[x index=0, y index=7]\mergetable;
     \end{axis}
   \end{tikzpicture}
-  \caption{Comparison between the number commits and the number of merge commits}
-  \label{fig:merge_vs_commits}
+  \caption{Percentage of commits in a merge-tree that are merge commits}
+  \label{fig:percentage_filter}
 \end{figure}
-
 
 We decided to work with one tree of one node, and one tree of seven
 nodes.
@@ -78,7 +119,7 @@ nodes.
 \label{ssub:questions}
 
 We chose questions that were designed to test the two primary goals of
-merge trees, compared with the results from gitk or command line git. 
+merge trees, compared with the results from gitk or command line git.
 
 \subsubsection{Results}
 \label{ssub:results}
