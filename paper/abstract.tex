@@ -1,32 +1,34 @@
-Natively, git uses a directed acyclic grph mode (DAG) with references pointing from
-the (TODO: most recent commit?, it's not the HEAD because that moves around) toward
-the initial commit in the repository. This model is useful and necessary to the
-internal functionality of the version control system, but does not provide users
-with a clear nderstand of the events occuring in the repository. Due to the
-direction of the link in the DAG, visualziation tools, like gitk, are unable to
-provide summarized aggregation of the commits at a given merge. Furthermore, the
-visual DAG does not provide a clear explanation of the events taking place in the
-repository.
+Natively, git uses a directed acyclic graph model (DAG) with references
+pointing from the most recent commit (TODO: most recent commit?, it's
+not the \emph{HEAD} because that moves around) toward the initial commit
+in the repository. This model is useful and necessary to the internal
+functionality of the version control system, but does not provide users
+with a clear nderstand of the events occuring in the repository. Due to
+the direction of the link in the DAG, visualziation tools, like gitk,
+are unable to provide summarized aggregation of the commits at a given
+merge.  Furthermore, the visual DAG does not provide a clear explanation
+of the events taking place in the repository.
 
-Merge-Trees are a data structure derived from the DAG, that could potentially
-alleiveate the issues with visualization built directly from the DAG. The trees are
-defined such that the root is the merge into the master branch, and the leaves are
-the individual commits. The references point in both directed, from each node to the
-parent, and from the parent to the children. Depending on the complexity of the
-merge, the path from leaf to root may pass through multiple internal nodes.
+Merge-Trees are a data structure derived from the DAG, that could
+potentially alleiveate the issues with visualization built directly from
+the DAG. The trees are defined such that the root is the merge into the
+master branch, and the leaves are the individual commits. The references
+point in both directed, from each node to the parent, and from the
+parent to the children. Depending on the complexity of the merge, the
+path from leaf to root may pass through multiple internal nodes.
 
-In this paper, we verify that the Merge-tree model is able to simplify the
-construction of a conceptual image of the parts of a repository, and simiplify the
-summarization tasks through a user study. We will continue by providing a more
-generalized approach to constructing merge-tress, which will prune components of the
-DAG that are not necessary.
+In this paper, we verify that the Merge-tree model is able to simplify
+the construction of a conceptual image of the parts of a repository, and
+simiplify the summarization tasks through a user study. We will continue
+by providing a more generalized approach to constructing merge-tress,
+which will prune components of the DAG that are not necessary.
 
-% \evan{Change this when we get the actual results, this is from the pilot study} We
-% find that although the DAG view used by Gitk provides more information about the
-% repository, in many cases it povides too much information and overwhelms the user.
+% \evan{Change this when we get the actual results, this is from the
+% pilot study} We find that although the DAG view used by Gitk provides
+% more information about the repository, in many cases it povides too
+% much information and overwhelms the user.
 
-% \evan{Move this}
-% In some cases, where the structure of the merge tree is flat, that is to say that it
-% has no inner merges, users are able to easily determine which commits are merged
-% together, but are unable to determine which merge is the final merge is the root of
-% the tree.
+% \evan{Move this} In some cases, where the structure of the merge tree
+% is flat, that is to say that it has no inner merges, users are able to
+% easily determine which commits are merged together, but are unable to
+% determine which merge is the final merge is the root of the tree.

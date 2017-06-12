@@ -1,8 +1,35 @@
-Merge-trees, as presented by Wilde and German\cite{Wilde2016}, are a data structure
-designed to make the navigation and summarization of git merges simpler than using
-the directed acyclic graph (DAG), as done in gitk among other tools\evan{does this
-  need a citation?}. Git uses the DAG model internally, making it simple to
-construct tools directly on the DAG;\@ however, this model does not provide a clear
-summarization of the events occuring in the repository. Gitk and the git command
-line interface (cli) both provide the user with a visualization of the DAG of the
-repository.
+Merge-trees, as presented by Wilde and German\cite{Wilde2016}, are a
+data structure designed to make the navigation and summarization of git
+merges simpler than using the directed acyclic graph (DAG), as done in
+gitk among other tools\evan{does this need a citation?}. Git uses the
+DAG model internally, making it simple to construct visualization tools
+directly using the DAG of the repository;\@ however, this model does not
+provide a clear summarization of the events occuring in the repository.
+Gitk and the git command line interface (cli) both provide the user with
+a visualization of the DAG of the repository.
+
+Merge-trees have two primary issues; first, the merge-tree model has not
+been evaulated, and cannot therefor claim to simplify the summarization
+and navigation tasks. Second, merge-trees have only been implemented for
+the Linux repository, which follows a strict merge-policy where only
+Linus can merge into the master branch.
+
+The contributions of this paper tackle both of these issues. We perform
+a user-study, to verify that the merge-tree model is able to improve the
+accuracy and speed of summarization tasks. Second, we generalize the
+algorithm, creating an upper bound on the number of commits visisted in
+the construction of the merge-trees.
+
+\subsection{Merge-Trees}
+\label{sub:merge_trees}
+
+Internally, git uses a DAG as the primary data structure for managing
+commits in a repository. An individual commit will have an ordered list
+of parents, where the parent in the first position is on the same branch
+as the commit, and the other parents are in the same order as they were
+merged. In the event that a merge commit contains a list of parents with
+more than two parents, this merge is an octopus merge. The commits may
+be divided into two groups, commits with only a single parent, and
+commits with at least two commits. Commits with with many parents are
+merge commits, combining the effects of potentially many individual
+commits.
