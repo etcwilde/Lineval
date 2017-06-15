@@ -80,6 +80,8 @@ there were at least three occurrences of trees of that size.
     \begin{axis} [
       ylabel=Merges,
       xlabel=Total Commits,
+      minor x tick num = 1,
+      minor y tick num = 1,
       grid=both,
       legend pos = north west
       ]
@@ -112,8 +114,44 @@ there were at least three occurrences of trees of that size.
   \label{fig:percentage_filter}
 \end{figure}
 
-We decided to work with one tree of one node, and one tree of seven
-nodes.
+
+As 25\% of the trees consist of a single commit, we selected one tree
+consisting of a single commit for the study. 50\% of the trees contained
+up to seven nodes, so we selected another tree of size seven.  Of these
+trees, we restricted the selection to trees consisting of at least one
+merge, not including the merge into the master branch.
+
+From the list of trees consisting of a single node, we selected one at
+random using a simple python script and the \verb|random.choice()|
+function from python 3.6.1, which returned the merge tree rooted at
+\emph{11df5864075f763ec0d1fdecd6a3f0af7d09a553}. As we are not testing
+the inter-tree and tree-search capabilities of \emph{Linvis}, we start
+the user at the corresponding commit. In this case, there is only a
+single option, commit \emph{a3c1239eb59c0a907f8be5587d42e950f44543f8},
+shown in Figure~\ref{fig:commit_1}.
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=0.2\linewidth]{figures/commits/1-commit.pdf}
+  \caption{The first merge tree used in the user study, a merge tree
+    containing a single commit}
+  \label{fig:commit_1}
+\end{figure}
+
+Using the same merge selection technique, we selected the tree rooted at
+\emph{8eb88c80d444fd249edaa7d895666cde79e7b3b8}. To select the starting
+commit, we use the python random choice function on the list of commit
+hashes contained in this tree. This resulted in the selection of commit
+\emph{cdbdd1676a5379f1d5cbd4d476f5e349f445befe}, shown in
+Figure~\ref{fig:commit_2}.
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=0.5\linewidth]{figures/commits/7-commits.pdf}
+  \caption{The second merge tree used in the user study, a merge tree
+    containing seven commits}
+  \label{fig:commit_2}
+\end{figure}
 
 \subsubsection{Questions}
 \label{ssub:questions}
