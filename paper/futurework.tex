@@ -1,0 +1,15 @@
+% Inter Navigation
+% TODO: verify this with the study
+While the merge-tree model provides users with a better conceptual image
+of what is occuring within a single merge tree, we have not exprimented
+or tested the potential gains of navigation between trees. At this time,
+the Linvis search provides results grouped by merge-tree root instead of
+as a single block of results. The results are generally similar, with
+each merge tree being merged at a different point in time, or to a
+different version of the kernel. A future extension of this may
+incorporate some information about how a given cluster changes over
+time. To do this, a technique would need to be developed to cluster
+merge-trees into modules, and then ordering the merge-trees based on
+time or release.
+
+% TODO: ensure that linvis has been referenced/defined

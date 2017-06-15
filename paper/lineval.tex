@@ -1,7 +1,7 @@
 % vim:set et fenc=utf-8 ft=tex sw=2 ts=4 tw=84:
 
 \newif\ifdraft
-% \drafttrue
+\drafttrue
 
 \ifdraft
         \documentclass[conference, draftclsnofoot, draft]{IEEEtran}
@@ -38,6 +38,7 @@
 
 \usepackage{tikz}
 \usepackage{pgfplots}
+\usepackage{pgfplotstable}
 \usepackage{xcolor}
 \usepackage{color}
 
@@ -93,6 +94,11 @@
 
 \section{Discussion}
 \label{sec:discussion}
+
+\subsection{Future Work}
+\label{sub:future_work}
+
+\input{futurework.tex}
 
 \section{Conclusion}
 \label{sec:conclusion}
