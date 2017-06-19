@@ -1,0 +1,183 @@
+% vim:set et sw=2 ts=4 tw=72:
+% Jun 18, 2017
+
+In order to determine the effectiveness of the merge-tree model on
+comprehension and summarization of git repositories, we conducted a user
+study on \evantodo{NUMBER} participants. The user study is a
+mixed-methods study, but with more focused on the quantitative aspects.
+We chose to use a mixed-methods approach to determine both if the model
+is able to improve the time performance and accuracy of the
+participants, and if the participants found the merge trees more
+enjoyable for the given tasks.
+
+In this section, we describe the describe the methods used in the user
+study. This includes the participant criteria, the questions asked, the
+method for selecting commits, and a breakdown of the methods used for
+analyzing the results.
+
+\subsection{User Selection}
+\label{sub:user_selection}
+
+Our target audience are git users, particularly users with who are
+working on understanding what changes are being made, where they are
+being made, and who is making the changes. The merge-tree model is also
+intended for users who are trying to learn the structure of a
+repository, how modules of the repository are broken into groups, if the
+
+We have software engineering and computer science students at the
+Masters, Doctorate, and Post-Doc levels available for participation in
+this study. \evan{This feels like the weakest part of the paper, is
+  there any way to make it sound stronger?}
+
+
+\subsection{Commit Selection}
+\label{sub:commit_selection}
+
+We chose two commits for use in the study. The order that the commits
+are presented is randomized between participants, but the order is kept
+consistent through the tasks described in the next subsection.
+
+We use the \tool database, containing commits and merge-tree information
+from April 16th 2005 to October 14th, 2014, which corresponds to being
+between Linux release 2.6.12-rc3 and Linux 3.17-rc1. \evan{Cite the
+  database even more?} We chose the commits based on tree sizes. We
+found that a majority of the trees contain at most seven inner commits,
+while more than 25\% of the trees contain a single commit. 75\% of the
+tree contained up to 51 inner commits and merges, and finally the
+largest tree contained 7217 nodes. We chose to work with the trees in
+the first and second quartile, as merge trees of sizes between one and
+seven, not including the merge into the master branch, make up the
+majority of the trees in the database.
+
+From here, we selected one tree from the trees of a single commit at
+random. Selecting a commit from that tree is trivial, as there is only
+one to choose.
+
+We selected one tree of size seven at random from all trees of size
+seven. We placed a restriction the trees, the selected tree must include
+at least one internal merge to increase the complexity of the trees
+tested. After randomly selecting a tree, we chose in internal commit at
+random, using the \verb|random.choice| function in python 3.6.1.
+
+% TODO: Show this in the introduction maybe
+
+% It is worth noting that in the fourth
+% quartile, the size of the tree drops off quickly from the top tree, with
+% the next tree containing only 4708 nodes, and the third largest tree
+% containing only 2349 commits.
+
+Using this technique, we selected commit
+\emph{8eb88c80d444fd249edaa7d895666cde79e7b3b8} from the tree containing
+a single node (Figure~\ref{fig:commit_1}), and commit
+\emph{cdbdd1676a5379f1d5cbd4d476f5e349f445befe}, from the tree
+containing seven nodes (Figure~\ref{fig:commit_2}).
+
+\begin{figure}[bpt]
+  \centering
+  \includegraphics[width=0.08\linewidth]{figures/commits/1-commit.pdf}
+  \caption{The first merge tree used in the user study, a merge tree
+    containing a single commit}
+  \label{fig:commit_1}
+\end{figure}
+
+\begin{figure}[bpt]
+  \centering
+  \includegraphics[width=0.5\linewidth]{figures/commits/7-commits.pdf}
+  \caption{The second merge tree used in the user study, a merge tree
+    containing seven commits}
+  \label{fig:commit_2}
+\end{figure}
+
+
+\subsection{Questions}
+\label{sub:questions}
+
+The questions and tasks are broken down into three groups. The first two
+groups are purely quantitative in nature, being conceptual tasks, and
+summarization tasks. The third group of questions is to determine the
+demographic of our participant.
+
+\textbf{Conceptual Tasks}
+
+The participants were allowed to use Gitk or the git command line tools
+to perform these tasks. These tasks are asked in this order, allowing
+the user to use their diagram to answer the second two questions. It is
+not necessary to use \tool in this portion of the study, as it provides
+the answers to these questions directly.
+
+\begin{enumerate}
+  \item Draw a diagram of the merge tree, showing how the commit was
+    merged into the master branch of the repository
+  \item How many individual commits are related to this commit?
+  \item How many merges are involved with merging this commit into the
+    master branch?
+\end{enumerate}
+
+We provide the user with 10 minutes per commit to complete the first
+task. The answers to the two other questions in this section are drawn
+from the answer in the first task.
+
+\textbf{Summarization Tasks}
+
+For these questions, we randomize the order of the tools, choosing to
+either start with \tool or Gitk, to ensure that we do not place a bias
+on one tool or another through the experiment. The tasks are broken
+into task sets related to the overall goal of the task. The task sets
+are shuffled, and the tasks within the task sets are shuffled as well.
+Finally, the order of the commits is shuffled. We use the
+\verb|random.shuffle| function from python 3.6.1 to perform the
+shuffling and presentation of the tasks.
+
+\begin{itemize}
+  \item Merge task set
+    \begin{itemize}
+      \item What is the series of merges involved with merging this
+        commit?
+      \item What other commits are merged in the same merge tree?
+    \end{itemize}
+
+  \item Authors task set
+    \begin{itemize}
+      \item How many authors are involved with this merge tree?
+      \item Who contributed the most changes to this merge tree?
+    \end{itemize}
+
+  \item Files task set
+    \begin{itemize}
+      \item How many files were modified in this merge tree?
+      \item Which file had the most changes in this merge tree?
+    \end{itemize}
+
+  \item Modules task set
+    \begin{itemize}
+      \item Which modules doe this merge tree involve?
+    \end{itemize}
+\end{itemize}
+
+As understanding where the merge begins and ends, the merge task set
+will always be the first task set presented; however, the questions will
+still be re-ordered within the task set.
+
+% TODO: provide the script for question selection
+% \lstinputlistings{../selector.py}
+
+\textbf{User Opinion}
+
+Finally, we ask the user for their opinions on the tools and for some
+information about their level of experience with git. This portion of
+the study is qualitative and does not rely on either of the tool,
+instead attempting to determine which model provided the user with a
+better experience.
+
+We ask the following questions in this order;
+
+\begin{enumerate}
+  \item Given these tasks again, which tool would you prefer to use?
+  \item Which aspects of each tool did you like and why?
+  \item How long have you used git?
+  \item If you have used git, for what kind of projects? (personal,
+    school courses, professional?)
+  \item If you have used git, how many commits, files, and contributors
+    were involved with the largest repository you have worked with?
+\end{enumerate}
+

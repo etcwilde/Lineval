@@ -1,7 +1,7 @@
 % vim:set et fenc=utf-8 ft=tex sw=2 ts=4 tw=84:
 
 \newif\ifdraft
-\drafttrue
+% \drafttrue
 
 \ifdraft
         \documentclass[conference, draftclsnofoot, draft]{IEEEtran}
@@ -41,6 +41,7 @@
 \usepackage{pgfplotstable}
 \usepackage{xcolor}
 \usepackage{color}
+\usepackage{listings}
 
 %% Tikz
 \usetikzlibrary{positioning, arrows}
@@ -52,7 +53,26 @@
 \newcommand{\TheAuthors}{Evan Wilde, Daniel M. German}
 \newcommand{\TheEmails}{etcwilde@uvic.ca, dmg@uvic.ca}
 \newcommand{\TheSubject}{Testing the comprehension of users in large git repositories}
-\newcommand{\TheKeywords}{Linux, git, data structures}
+\newcommand{\TheKeywords}{Linux, git, visualizations}
+
+
+\lstset{frame=tb,
+  language=python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{chartblue},
+  commentstyle=\color{chartred},
+  stringstyle=\color{chartgreen},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
 
 \synctex=1
 
@@ -82,15 +102,18 @@
 \section{Related Works}
 \label{sec:related_works}
 
-\section{User Study}
-\label{sec:user_study}
+\section{Methodology}
+\label{sec:methodology}
 
-\input{userstudy.tex}
+\input{methodology.tex}
 
 \section{Generalization}
 \label{sec:generalization}
 
 \input{generalization.tex}
+
+\section{Results}
+\label{sec:results}
 
 \section{Discussion}
 \label{sec:discussion}
