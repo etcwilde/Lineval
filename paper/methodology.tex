@@ -3,7 +3,7 @@
 
 In order to determine the effectiveness of the merge-tree model on
 comprehension and summarization of git repositories, we conducted a user
-study on \evantodo{NUMBER} participants. The user study is a
+study on 12 participants. The user study is a
 mixed-methods study, but with more focused on the quantitative aspects.
 We chose to use a mixed-methods approach to determine both if the model
 is able to improve the time performance and accuracy of the
@@ -60,17 +60,18 @@ tested. After randomly selecting a tree, we chose in internal commit at
 random, using the \verb|random.choice| function in python 3.6.1.
 
 % TODO: Show this in the introduction maybe
-
 % It is worth noting that in the fourth
 % quartile, the size of the tree drops off quickly from the top tree, with
 % the next tree containing only 4708 nodes, and the third largest tree
 % containing only 2349 commits.
 
+% TODO: Fix this, the commit hash is wrong.
 Using this technique, we selected commit
-\emph{8eb88c80d444fd249edaa7d895666cde79e7b3b8} from the tree containing
-a single node (Figure~\ref{fig:commit_1}), and commit
-\emph{cdbdd1676a5379f1d5cbd4d476f5e349f445befe}, from the tree
-containing seven nodes (Figure~\ref{fig:commit_2}).
+\emph{a3c1239eb59c0a907f8be5587d42e950f44543f8} from the tree containing
+a single node (Figure~\ref{fig:commit_1}), which we will refer to as
+\comA, and commit \emph{cdbdd1676a5379f1d5cbd4d476f5e349f445befe}, from
+the tree containing seven nodes (Figure~\ref{fig:commit_2}), which we
+will refer to as \comB.
 
 \begin{figure}[bpt]
   \centering
@@ -181,3 +182,80 @@ We ask the following questions in this order;
     were involved with the largest repository you have worked with?
 \end{enumerate}
 
+
+\subsection{Data Extraction}
+\label{sub:data_extraction}
+
+The study is recorded using screen capture and audio capture software
+for further analysis. From the resulting videos, we are able to extract
+the timing and accuracy of each participant over each task. We record
+the timing, accuracy, task, commit, and tool used for each part. We also
+record some addition information about whether the participant was
+correct, guessing, partially correct, or completely wrong, as this may
+provide some interesting insights.
+
+The answers to each question is relatively straight-forward, as we can
+extract the information directly from gitk and Linvis. Measuring the
+accuracy of the questions is more challenging. In the question regarding
+the merges leading to the merging of a given commit, both the merges and
+the ordering of the merges matter.
+
+The correct answers for \comA are shown in
+Table~\ref{tab:coma_study_answers}, and the correct answers for \comB are
+shown in Table~\ref{tab:comb_study_answers}.
+
+\begin{table}[htpb]
+  \centering
+  \caption{Answers to the question from the conceptual and summarization portions of the user study for \comA}
+  \label{tab:coma_study_answers}
+  \begin{tabular}{l|l}
+    Question                                              & Answer \\\hline\hline
+    Number of commits in the merge tree                   & 1\\
+    Number of merges in the merge tree                    & 1\\\hline
+    Merges merging this commit into the master branch     & 1 (11df586407)\\
+    Other commits that are merged in the same tree        & None\\
+    How many authors are involved with this tree?         & 1\\
+    Who contributed the most changes to this merge tree   & David\\
+    How many files are modified in this merge tree        & 2\\
+    Which file(s) had the most changes in this merge tree & both (pzl.c, asl.c)\\
+    Which modules does this merge tree involve & wusb
+  \end{tabular}
+\end{table}
+
+
+\begin{table}[htpb]
+  \centering
+  \caption{Answers to the question from the conceptual and summarization portions of the user study for \comB}
+  \label{tab:comb_study_answers}
+  \begin{tabular}{l|l}
+    Question & Answer \\\hline\hline
+    Number of commits in the merge tree & 5 \\
+    Number of merges in the merge tree & 3\\\hline
+    Merges merging this commit into the master branch     & (219b22b245
+    \\
+    & $\rightarrow$ \\
+    & 8eb88c80d4)\\
+    Other commits that are merged in the same tree        & ec4e86ba06\\
+    & 9a3f371e99\\
+    & 1c85cc6445\\
+    & 7c2dfee848\\
+    How many authors are involved with this tree?         & 4\\
+    Who contributed the most changes to this merge tree   & Randy Dunlap\\
+    How many files are modified in this merge tree        & 6\\
+    Which file(s) had the most changes in this merge tree & pcm\_lib.c\\
+    Which modules does this merge tree involve            & ALSA\\
+  \end{tabular}
+\end{table}
+
+Extracting the timing information is prone to some issues with where the
+duration of answering should start and stop. We try to eliminate these
+issues by maintaining the following conventions; the answer duration
+begins at the end of the last word of the prompt. The duration ends
+immediately before the first word of the final modification to the
+answer. Many answers are able to be answered in a single word or phrase,
+but some may require multiple sentences that are broken by additional
+processing by the participant. An Example of questions where the answer
+may be interleaved with solving the task is the task asking the user to
+provide the merges on the path from the commit into the master branch.
+The goal of this is to eliminate the duration required to provide the
+prompt, and eliminate the time required to provide the answer.
