@@ -1,0 +1,55 @@
+% vim:set et sw=2 ts=4 tw=72:
+% Jun 24, 2017
+
+In this section, we provide the raw aggregated results from the user
+study and analysis on those results.
+
+\subsection{Conceptual Questions Results}
+
+% TODO: make plots showing distribution of times and responses
+
+% Number of commits in the merge tree - Make a plot of this
+% | text              | hash      | median |    mean | variance | Actual |
+% |-------------------+-----------+--------+---------+----------+--------|
+% | Number of commits | a3c1239eb |      4 | 19.1111 | 735.1111 |      1 |
+% | Number of commits | cdbdd1676 |      4 |     7.8 | 136.8444 |      5 |
+% | Number of merges  | a3c1239eb |      5 |  8.2727 |  53.6182 |      1 |
+% | Number of merges  | cdbdd1676 |    3.5 |     5.4 |  50.2667 |      3 |
+% Time taken to arrive at these results
+% | text              | hash      | median(s) |  mean(s) | variance(s) |
+% |-------------------+-----------+-----------+----------+-------------|
+% | Number of commits | a3c1239eb |      10.0 |  49.9167 |   5952.0833 |
+% | Number of merges  | a3c1239eb |       7.5 |  24.6667 |    884.4242 |
+% | Number of commits | cdbdd1676 |      31.5 | 106.8333 |  54123.4242 |
+% | Number of merges  | cdbdd1676 |      11.0 |     65.5 |  29798.8182 |
+
+In Table~\ref{tab:conceptual_results}, we are able to see an overview of
+the results from the conceptual questions.
+
+\begin{table*}[htpb]
+  \centering
+  \caption{Results from the conceptual questions}
+  \label{tab:conceptual_results}
+  \begin{tabular}{ll|r|lrr|rrr}
+    Question                      & Commit & Answer & Median & Mean  & Variance & Median(s) & Mean(s) & Variance(s)\\\hline\hline
+    Number of commits in the tree & \comA  & 1      & 4      & 19.11 & 753.11   & 10.0      & 49.92   & 5952.08\\
+    Number of merges in the tree  & \comA  & 1      & 5      & 8.27  & 53.62    & 7.5       & 24.67   & 884.42\\\hline
+    Number of commits in the tree & \comB  & 5      & 4      & 7.80  & 136.84   & 31.5      & 106.83  & 54123.42\\
+    Number of merges in the tree  & \comB  & 3      & 3.5    & 5.40  & 50.27    & 11.0      & 65.6    & 29798.82\\
+  \end{tabular}
+\end{table*}
+
+Users were able to more closely estimate the number of commits and
+merges in the larger tree, but generally took longer than the smaller
+tree. The tree with a single node resulted in more variability in the
+estimate of number of commits .
+
+It should be noted that these questions were answered after spending
+roughly ten minutes attesting to draw a picture that held the answers to
+these questions.
+
+\subsection{Summarization Question Results}
+
+
+
+
