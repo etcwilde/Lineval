@@ -59,13 +59,12 @@ at least one internal merge to increase the complexity of the trees
 tested. After randomly selecting a tree, we chose in internal commit at
 random, using the \verb|random.choice| function in python 3.6.1.
 
-% TODO: Show this in the introduction maybe
+% TODO: Show this paragraph in the introduction
 % It is worth noting that in the fourth
 % quartile, the size of the tree drops off quickly from the top tree, with
 % the next tree containing only 4708 nodes, and the third largest tree
 % containing only 2349 commits.
 
-% TODO: Fix this, the commit hash is wrong.
 Using this technique, we selected commit
 \emph{a3c1239eb59c0a907f8be5587d42e950f44543f8} from the tree containing
 a single node (Figure~\ref{fig:commit_1}), which we will refer to as
@@ -198,7 +197,12 @@ The answers to each question is relatively straight-forward, as we can
 extract the information directly from gitk and Linvis. Measuring the
 accuracy of the questions is more challenging. In the question regarding
 the merges leading to the merging of a given commit, both the merges and
-the ordering of the merges matter.
+the ordering of the merges matter. In the cases where the answer is not
+a numerical value, we use the edit distance to determine the accuracy of
+an answer. An edit distance of zero indicates a correct answer, while
+any number other than zero indicates an incorrect answer. Adding,
+reordering (where important), and removing commits or merges all incur a
+penalty of 1 added to the edit distance.
 
 The correct answers for \comA are shown in
 Table~\ref{tab:coma_study_answers}, and the correct answers for \comB are
@@ -259,3 +263,48 @@ may be interleaved with solving the task is the task asking the user to
 provide the merges on the path from the commit into the master branch.
 The goal of this is to eliminate the duration required to provide the
 prompt, and eliminate the time required to provide the answer.
+
+The information is then inserted into a sql database for further
+analysis.
+
+\subsection{Analysis}
+
+As the goals of each section are different, the techniques for analyzing
+the results are different. The conceptual questions are to demonstrate
+the difficulty in comprehending the DAG model, so we simply provide the
+metrics, showing how well the participants did in answering the
+questions asked. The summarization tasks are meant for comparing the
+ability of the participants to summarize two commits from the Linux
+repository. As this is a comparison, further analysis is necessary to
+determine the significance of our results. The final portion of the
+study is designed to help us understand the group of users that we are
+working with.
+
+As the goals of the conceptual questions are to demonstrate the
+difficulty in comprehending the DAG model, and determine how closely
+users are able to make the mapping from the DAG to showing how a commit
+was merged into the master branch, no further statistical analysis will
+be performed on this data. We will provide the metrics response,
+accuracy, and time metrics for these questions. No comparisons are made
+between the models in these tasks, so no further analysis is necessary.
+
+The summarization tasks are designed to compare the two models when the
+participant is summarizing various aspects of the repository, including
+the files modified and authorship information. We will use three terms
+to describe the performance of a user; correctness, which indicates
+simply whether the participant was correct or not, making no indication
+toward how far from the correct answer they were; accuracy, indicating
+how far from the correct answer the participant was; timing, which
+indicates how long a participant took to answer the question. We begin
+the analysis of these questions using the McNemar test, with $\alpha =
+0.005$, measuring the correctness of the results provided by the
+participant when using \tool versus gitk.
+% TODO: cite the McNemar test maybe?
+If the McNemar test indicates that we do not reject the null hypothesis,
+we continue analyzing the difference in accuracy and timing metrics for
+the merge-tree model versus the DAG.
+
+For each test, we use a confidence level $\alpha = 0.005$, resulting in
+a $\chi^2$ test statistic of 7.879.
+
+% TODO: Add the null hypothesis and type of metrics analyzed for each summarization question
