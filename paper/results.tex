@@ -1,8 +1,10 @@
 % vim:set et sw=2 ts=4 tw=72:
 % Jun 24, 2017
 
-In this section, we provide the raw aggregated results from the user
-study and analysis on those results.
+In this section, we look at the aggreated results from the user study,
+and perform some analysis on those results. In the discussion section,
+we will further investigate potential reasons behind why various tests
+passed or failed.
 
 \subsection{Conceptual Questions Results}
 
@@ -50,6 +52,194 @@ these questions.
 
 \subsection{Summarization Question Results}
 
+We will look at the results from each question, and then look at the
+combined results to determine the correctness of the answers provided by
+the participants.
+
+\subsubsection{What is the series of merges involved with merging this commit}
+\label{ssub:what_is_the_series_of_merges_involved_with_merging_this_commit}
+
+	% McNemar's Chi-squared test
+
+% data:  mat
+% McNemar's chi-squared = 8, df = 1, p-value = 0.004678
+
+   %         Linvis
+% Gitk        Correct Incorrect
+  % Correct         2         0
+  % Incorrect       8         2
 
 
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figures/userstudy/correct_question-3.pdf}
+  \caption{Correctness of participants using \tool versus gitk
+    when determining the series of merges involved with merging a given
+  commit}
+  \label{fig:figures/userstudy/correct_question-3}
+\end{figure}
 
+\subsubsection{What other commits are merged in this same merge tree}
+\label{ssub:what_other_commits_are_merged_in_this_same_merge_tree}
+
+% McNemar's Chi-squared test
+
+% data:  mat
+% McNemar's chi-squared = 7, df = 1, p-value = 0.008151
+
+   %         Linvis
+% Gitk        Correct Incorrect
+  % Correct         1         0
+  % Incorrect       7         4
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figures/userstudy/correct_question-4.pdf}
+  \caption{Correctness of participants using \tool versus gitk when
+    determining which other commits are merged into the master branch
+    with this commit}
+  \label{fig:figures/userstudy/correct_question-4}
+\end{figure}
+
+\subsubsection{How many authors are involved with this merge tree}
+\label{ssub:how_many_authors_are_involved_with_this_merge_tree}
+
+% McNemar's Chi-squared test
+
+% data:  mat
+% McNemar's chi-squared = 9, df = 1, p-value = 0.0027
+
+   %         Linvis
+% Gitk        Correct Incorrect
+  % Correct         1         0
+  % Incorrect       9         2
+
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figures/userstudy/correct_question-5.pdf}
+  \caption{Correctness of participants using \tool versus gitk when
+    determining the number of authors involved in the cluster of commits}
+  \label{fig:figures/userstudy/correct_question-5}
+\end{figure}
+
+\subsubsection{Who contributed the most changes to this merge tree}
+\label{ssub:who_contributed_the_most_changes_to_this_merge_tree}
+
+% McNemar's Chi-squared test
+
+% data:  mat
+% McNemar's chi-squared = 8, df = 1, p-value = 0.004678
+
+   %         Linvis
+% Gitk        Correct Incorrect
+  % Correct         2         0
+  % Incorrect       8         2
+
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figures/userstudy/correct_question-6.pdf}
+  \caption{Correctness of participants using \tool versus gitk when
+    determining who contributed the most changes to a merge tree}
+  \label{fig:figures/userstudy/correct_question-6}
+\end{figure}
+
+
+\subsubsection{How many files were modified in this merge tree}
+\label{ssub:how_many_files_were_modified_in_this_merge_tree}
+
+% McNemar's Chi-squared test
+
+% data:  mat
+% McNemar's chi-squared = 9, df = 1, p-value = 0.0027
+
+   %         Linvis
+% Gitk        Correct Incorrect
+  % Correct         1         0
+  % Incorrect       9         2
+
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figures/userstudy/correct_question-7.pdf}
+  \caption{Correctness of participants using \tool versus gitk when
+    determining how many files were modified in a merge tree}
+  \label{fig:figures/userstudy/correct_question-7}
+\end{figure}
+
+\subsubsection{Which file had the most changes in this merge tree}
+\label{ssub:which_file_had_the_most_changes_in_this_merge_tree}
+
+% McNemar's Chi-squared test
+
+% data:  mat
+% McNemar's chi-squared = 8, df = 1, p-value = 0.004678
+
+   %         Linvis
+% Gitk        Correct Incorrect
+  % Correct         1         0
+  % Incorrect       8         3
+
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figures/userstudy/correct_question-8.pdf}
+  \caption{Correctness of participants using \tool versus gitk when
+    determining which file(s) had the most changes a merge tree}
+  \label{fig:figures/userstudy/correct_question-8}
+\end{figure}
+
+\subsubsection{Which modules were involved with this merge tree}
+\label{ssub:which_modules_were_involved_with_this_merge_tree}
+
+% McNemar's Chi-squared test
+
+% data:  mat
+% McNemar's chi-squared = 1, df = 1, p-value = 0.3173
+
+%             Linvis
+% Gitk        Correct Incorrect
+  % Correct         8         1
+  % Incorrect       3         0
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figures/userstudy/correct_question-9.pdf}
+  \caption{Correctness of participants using \tool versus gitk when
+    determining which modules were involved with a merge tree}
+  \label{fig:figures/userstudy/correct_question-9}
+\end{figure}
+
+\subsubsection{Combined Results}
+\label{ssub:combined_results}
+
+% McNemar's Chi-squared test
+
+% data:  mat
+% McNemar's chi-squared = 49.075, df = 1, p-value = 2.463e-12
+
+
+%             Linvis
+% Gitk        Correct Incorrect
+% Correct     16      1
+% Incorrect   52      15
+%
+
+For each of the studies, we also tracked the number of people who gave
+up on the question, stated that they made a random guess, or replied
+with infinity. In other plots, all of these responses are either placed
+in the correct or incorrect categories depending on the correctness of
+the answer. In Figure~\ref{fig:summarization_correctness}, we show the
+combined metrics across all questions, also showing the other
+categories.
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figures/userstudy/summarize_tool_outcomes.pdf}
+  \caption{Correctness of participants across all summarization
+    questions of participants using \tool versus gitk, including the
+    number of instances of giving up on a task, making a random guess,
+    or replying with infinity.}
+  \label{fig:summarization_correctness}
+\end{figure}
