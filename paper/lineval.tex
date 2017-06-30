@@ -20,11 +20,9 @@
 \usepackage[nospace]{cite}
 
 %% Table Support
-
 \usepackage{dcolumn}
 \usepackage{longtable}
 \usepackage{multirow}
-
 
 %% Extra support
 \usepackage{xspace}
@@ -49,11 +47,17 @@
 \input{color.tex}
 \input{macros.tex}
 
-\newcommand{\TheTitle}{An Evaluation and Generalization of Merge-Tree}
+\newcommand{\TheTitle}{An Evaluation and Generalization of the Merge-Tree Model}
 \newcommand{\TheAuthors}{Evan Wilde, Daniel M. German}
 \newcommand{\TheEmails}{etcwilde@uvic.ca, dmg@uvic.ca}
 \newcommand{\TheSubject}{Testing the comprehension of users in large git repositories}
 \newcommand{\TheKeywords}{Linux, git, visualizations}
+
+%% Referencing
+\usepackage[unicode=true,
+          pdftitle={\TheTitle},
+          pdfauthor={\TheAuthors},
+          colorlinks=false]{hyperref}
 
 \lstset{frame=tb,
   language=python,
