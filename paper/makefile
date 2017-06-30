@@ -1,5 +1,5 @@
 latexfile 	= lineval
-sections	= abstract.tex introduction.tex methodology.tex results.tex
+sections	= abstract.tex introduction.tex methodology.tex results.tex discussion.tex
 files		= color.tex macros.tex
 data		= data/tree_size.csv data/merge_counts.csv
 figures		=
