@@ -1,5 +1,32 @@
+% vim:set et sw=2 ts=4 tw=72:
+% Jun 24, 2017
+\subsection{Threats to Validity}
+\label{sub:threats_to_validity}
+
+While git comes bundled with gitk and the \verb|git log --graph|
+command, many of the users in our study were unfamiliar with the DAG
+shown by these tools. A potential reason for this may be that unless a
+repository reaches sufficient complexity, both in branching and number
+of commits, these tools are not necessary for the normal functionality
+of git. However, while they were unfamiliar with either merge trees or
+the DAG, these users were still able to better understand and summarize
+the structure of the repository using merge trees.
+
+Each question was evaluated independently of the results from the
+previous question in the summarization tasks. Had the correct answers
+been adjusted to match the participants' understanding of which commits
+were involved in a merge tree, the results of the summarization would
+have likely been very different. Another approach would to have provided
+the participants with the correct tree once they had completed the
+conceptual tasks, and the merge task set in the summarization task set.
+
+
+\subsection{Future Work}
+\label{sub:future_work}
+
 % Inter Navigation
 % TODO: verify this with the study
+
 While the merge-tree model provides users with a better conceptual image
 of what is occuring within a single merge tree, we have not exprimented
 or tested the potential gains of navigation between trees. At this time,
@@ -13,3 +40,9 @@ merge-trees into modules, and then ordering the merge-trees based on
 time or release.
 
 % TODO: ensure that linvis has been referenced/defined
+
+Perform a user study over multiple repositories using different merge
+structures to see how quickly new members of a team can understand the
+merge procedure. % Yeah, this is a big one, actually.
+
+
