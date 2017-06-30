@@ -1,0 +1,14 @@
+# Gitignore
+# Jun 29, 2017
+
+# LaTeX Files
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.synctex
+*.synctex.gz
+
+# R files
+.Rhistory
