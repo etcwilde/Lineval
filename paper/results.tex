@@ -197,6 +197,20 @@ difference in the correctness, with $99.5\%$ confidence.
   \label{fig:q3_accuracy}
 \end{figure}
 
+There is almost no variation in accuracy between participants using
+\tool, while there is more variance in Gitk. There were two outliers
+among the instances using \tool, which lie within the second and third
+quartiles for the accuracy measure of Gitk. The furthest outlier for
+\tool lies at a distance that is slightly greater than the median for
+Gitk. We see these results in Figure~\ref{fig:q3_accuracy}.
+
+We similar results for the timing metric in Figure~\ref{fig:q3_timing}.
+All significant data occurs within less time than the second, third, and
+fourth quartile of the Gitk results. Nearly all outlier instances in
+\tool are within the third quartile group of the instances of Gitk with
+the exception of the most extreme, which lies in the fourth quartile
+group.
+
 \begin{figure}[htpb]
   \centering
   \includegraphics[width=0.8\linewidth]{figures/userstudy/timing/q3.pdf}
@@ -204,6 +218,11 @@ difference in the correctness, with $99.5\%$ confidence.
     the series of merges into the master branch of the repository.}
   \label{fig:q3_timing}
 \end{figure}
+
+Overall, we see that \tool enables users to correctly identify the
+series of merges required to merge a given commit more quickly than with
+Gitk. Furthermore, the accuracy of incorrect results are closer to being
+correct than the incorrect answers for Gitk.
 
 \subsubsection{What other commits are merged in this same merge tree}
 \label{ssub:what_other_commits_are_merged_in_this_same_merge_tree}
@@ -250,6 +269,15 @@ with $99.5\%$ confidence.
   \label{fig:q4_accuracy}
 \end{figure}
 
+In Figure~\ref{fig:q4_accuracy}, we can see that there is again, very
+little variance in the accuracy of results for \tool compared to the
+accuracy of the results in Gitk.
+
+In Figure~\ref{fig:q4_timing} there is less variance in the time taken
+to come to an answer with \tool than with Gitk. Furthermore, we see that
+a majority of the participants were able to complete the task in \tool
+in much less time than 50\% of the participants using Gitk.
+
 \begin{figure}[htpb]
   \centering
   \includegraphics[width=0.8\linewidth]{figures/userstudy/timing/q4.pdf}
@@ -257,6 +285,10 @@ with $99.5\%$ confidence.
     other commits in the same merge tree.}
   \label{fig:q4_timing}
 \end{figure}
+
+Overall, participants are able to determine other commits that are
+related to a given commit more quickly and more accurately with \tool
+than with Gitk.
 
 \subsubsection{How many authors are involved with this merge tree}
 \label{ssub:how_many_authors_are_involved_with_this_merge_tree}
@@ -298,7 +330,7 @@ authors in a merge tree.
   \centering
   \includegraphics[width=0.8\linewidth]{figures/userstudy/accuracy/q5.pdf}
   \caption{Accuracy comparison between Gitk and \tool, for answering how
-  many authors were involved with a merge tree.}
+  many authors are involved with a merge tree.}
   \label{fig:q5_accuracy}
 \end{figure}
 
@@ -306,10 +338,16 @@ authors in a merge tree.
   \centering
   \includegraphics[width=0.8\linewidth]{figures/userstudy/timing/q5.pdf}
   \caption{Time comparison between Gitk and \tool, for answering how
-  many authors were involved with a merge tree.}
+  many authors are involved with a merge tree.}
   \label{fig:q5_timing}
 \end{figure}
 
+Again, we see very similar results in Figure~\ref{fig:q5_accuracy} and
+Figure~\ref{fig:q5_timing}, to the results found in the previous two
+tasks. The variance in accuracy and time taken is much greater with
+Gitk than with \tool. This suggests that the participants were able to
+determine the number of authors more quickly and with better accuracy
+with \tool than Gitk.
 
 \subsubsection{Who contributed the most changes to this merge tree}
 \label{ssub:who_contributed_the_most_changes_to_this_merge_tree}
@@ -356,7 +394,12 @@ correct or incorrect.
   \label{fig:q6_timing}
 \end{figure}
 
-\subsubsection{How many files were modified in this merge tree}
+We similar results in Figure~\ref{fig:q6_timing} as with the previous
+questions. There is greater variance in the time taken for participants
+to determine who contributed the most changes to a group of commits
+using Gitk than with \tool.
+
+\subsubsection{How many files are modified in this merge tree}
 \label{ssub:how_many_files_were_modified_in_this_merge_tree}
 
 \begin{figure}[htpb]
@@ -395,6 +438,10 @@ in determining the number of files modified in a merge tree.
   \label{fig:q7_accuracy}
 \end{figure}
 
+Figure~\ref{fig:q7_accuracy} and Figure~\ref{fig:q7_timing} show similar
+results, showing that the accuracy and time for the participants to
+produce a response was more variable with Gitk than with \tool.
+
 \begin{figure}[htpb]
   \centering
   \includegraphics[width=0.8\linewidth]{figures/userstudy/timing/q7.pdf}
@@ -402,6 +449,7 @@ in determining the number of files modified in a merge tree.
     many files were involved with the merge tree.}
   \label{fig:q7_timing}
 \end{figure}
+
 
 \subsubsection{Which file had the most changes in this merge tree}
 \label{ssub:which_file_had_the_most_changes_in_this_merge_tree}
@@ -436,17 +484,33 @@ tree.
   \centering
   \includegraphics[width=0.8\linewidth]{figures/userstudy/accuracy/q8.pdf}
   \caption{Accuracy comparison between Gitk and \tool, for answering
-    which file had the most changes.}
+    which file(s) had the most changes.}
   \label{fig:q8_accuracy}
 \end{figure}
+
+It was possible for this question to have multiple answers. If there
+were multiple files with the same number of modifications, in lines of
+code changed, then the correct response would be a list of all files
+with those changes. Ultimately, we see a fairly clean distribution of
+accuracies using Gitk in Figure~\ref{fig:q8_accuracy}, with the median
+being one file away from the correct answer. Aside from two outliers,
+all responses from the participants using \tool were correct.
+
+We see the same behaviour in Figure~\ref{fig:q8_timing}, showing that
+there is more variance in the time taken to respond to the question when
+the participant is using Gitk versus when they are using \tool.
 
 \begin{figure}[htpb]
   \centering
   \includegraphics[width=0.8\linewidth]{figures/userstudy/timing/q8.pdf}
   \caption{Time comparison between Gitk and \tool, for answering which
-    file had the most changes.}
+    file(s) had the most changes.}
   \label{fig:q8_timing}
 \end{figure}
+
+Overall, we see an improvement in correctness, accuracy, and time taken
+to determine which file or files had the most changes in the group of
+commits when the participants use \tool over Gitk.
 
 \subsubsection{Which modules were involved with this merge tree}
 \label{ssub:which_modules_were_involved_with_this_merge_tree}
@@ -487,6 +551,7 @@ tree.
   \label{fig:q9_accuracy}
 \end{figure}
 
+
 \begin{figure}[htpb]
   \centering
   \includegraphics[width=0.8\linewidth]{figures/userstudy/timing/q9.pdf}
@@ -495,7 +560,12 @@ tree.
   \label{fig:q9_timing}
 \end{figure}
 
-% Figure~\ref{fig:q9_accuracy}
+We don't see a tremendous difference in the accuracy performance of the
+participants between Gitk and \tool in Figure~\ref{fig:q9_accuracy}.
+This is consistent with the results for the correctness metric. Unlike
+accuracy and correctness, we see a noticeable difference in the time
+performance of the participants between \tool and Gitk
+(Figure~\ref{fig:q9_timing}).
 
 \subsubsection{Combined Results}
 \label{ssub:combined_results}
