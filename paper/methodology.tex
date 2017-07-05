@@ -29,14 +29,18 @@ better understanding of whether participants preferred working with the
 they preferred from each tool. The final group of questions is simply to
 gain a better understanding of the demographic of our participants.
 
-%TODO: Look at how to form research questions in LaTeX
-
 We have two primary research questions;
-\begin{enumerate}
-  \item Is the DAG capable of providing the participants with an
-    understanding of the repository events that are related to a commit?
-  \item Does the \mt model make a difference in summarization tasks?
-\end{enumerate}
+\begin{RQ}
+  \item
+
+    Is the DAG capable of providing the users with an understanding of
+    the repository events that are related to a commit?
+
+  \item
+
+    Does the \mt model make a difference in summarization tasks?
+
+\end{RQ}
 
 \textbf{Conceptual Tasks}
 
@@ -193,131 +197,3 @@ We have software engineering and computer science students at the
 Masters, Doctorate, and Post-Doc levels available for participation in
 this study. \evan{This feels like the weakest part of the paper, is
   there any way to make it sound stronger?}
-
-
-\subsection{Data Extraction}
-\label{sub:data_extraction}
-
-The study is recorded using screen capture and audio capture software
-for further analysis. From the resulting videos, we are able to extract
-the timing and accuracy of each participant over each task. We record
-the timing, accuracy, task, commit, and tool used for each part. We also
-record some addition information about whether the participant was
-correct, guessing, partially correct, or completely wrong, as this may
-provide some interesting insights.
-
-The answers to each question is relatively straight-forward, as we can
-extract the information directly from gitk and Linvis. Measuring the
-accuracy of the questions is more challenging. In the question regarding
-the merges leading to the merging of a given commit, both the merges and
-the ordering of the merges matter. In the cases where the answer is not
-a numerical value, we use the edit distance to determine the accuracy of
-an answer. An edit distance of zero indicates a correct answer, while
-any number other than zero indicates an incorrect answer. Adding,
-reordering (where important), and removing commits or merges all incur a
-penalty of 1 added to the edit distance.
-
-The correct answers for \comA are shown in
-Table~\ref{tab:coma_study_answers}, and the correct answers for \comB are
-shown in Table~\ref{tab:comb_study_answers}.
-
-\begin{table}[htpb]
-  \centering
-  \caption{Answers to the question from the conceptual and summarization portions of the user study for \comA}
-  \label{tab:coma_study_answers}
-  \begin{tabular}{l|l}
-    Question                                              & Answer \\\hline\hline
-    Number of commits in the merge tree                   & 1\\
-    Number of merges in the merge tree                    & 1\\\hline
-    Merges merging this commit into the master branch     & 1 (11df586407)\\
-    Other commits that are merged in the same tree        & None\\
-    How many authors are involved with this tree?         & 1\\
-    Who contributed the most changes to this merge tree   & David\\
-    How many files are modified in this merge tree        & 2\\
-    Which file(s) had the most changes in this merge tree & both (pzl.c, asl.c)\\
-    Which modules does this merge tree involve & wusb
-  \end{tabular}
-\end{table}
-
-
-\begin{table}[htpb]
-  \centering
-  \caption{Answers to the question from the conceptual and summarization portions of the user study for \comB}
-  \label{tab:comb_study_answers}
-  \begin{tabular}{l|l}
-    Question & Answer \\\hline\hline
-    Number of commits in the merge tree & 5 \\
-    Number of merges in the merge tree & 3\\\hline
-    Merges merging this commit into the master branch     & (219b22b245
-    \\
-    & $\rightarrow$ \\
-    & 8eb88c80d4)\\
-    Other commits that are merged in the same tree        & ec4e86ba06\\
-    & 9a3f371e99\\
-    & 1c85cc6445\\
-    & 7c2dfee848\\
-    How many authors are involved with this tree?         & 4\\
-    Who contributed the most changes to this merge tree   & Randy Dunlap\\
-    How many files are modified in this merge tree        & 6\\
-    Which file(s) had the most changes in this merge tree & pcm\_lib.c\\
-    Which modules does this merge tree involve            & ALSA\\
-  \end{tabular}
-\end{table}
-
-Extracting the timing information is prone to some issues with where the
-duration of answering should start and stop. We try to eliminate these
-issues by maintaining the following conventions; the answer duration
-begins at the end of the last word of the prompt. The duration ends
-immediately before the first word of the final modification to the
-answer. Many answers are able to be answered in a single word or phrase,
-but some may require multiple sentences that are broken by additional
-processing by the participant. An Example of questions where the answer
-may be interleaved with solving the task is the task asking the user to
-provide the merges on the path from the commit into the master branch.
-The goal of this is to eliminate the duration required to provide the
-prompt, and eliminate the time required to provide the answer.
-
-The information is then inserted into a sql database for further
-analysis.
-
-\subsection{Analysis}
-
-As the goals of each section are different, the techniques for analyzing
-the results are different. The conceptual questions are to demonstrate
-the difficulty in comprehending the DAG model, so we simply provide the
-metrics, showing how well the participants did in answering the
-questions asked. The summarization tasks are meant for comparing the
-ability of the participants to summarize two commits from the Linux
-repository. As this is a comparison, further analysis is necessary to
-determine the significance of our results. The final portion of the
-study is designed to help us understand the group of users that we are
-working with.
-
-As the goals of the conceptual questions are to demonstrate the
-difficulty in comprehending the DAG model, and determine how closely
-users are able to make the mapping from the DAG to showing how a commit
-was merged into the master branch, no further statistical analysis will
-be performed on this data. We will provide the metrics response,
-accuracy, and time metrics for these questions. No comparisons are made
-between the models in these tasks, so no further analysis is necessary.
-
-The summarization tasks are designed to compare the two models when the
-participant is summarizing various aspects of the repository, including
-the files modified and authorship information. We will use three terms
-to describe the performance of a user; correctness, which indicates
-simply whether the participant was correct or not, making no indication
-toward how far from the correct answer they were; accuracy, indicating
-how far from the correct answer the participant was; timing, which
-indicates how long a participant took to answer the question. We begin
-the analysis of these questions using the McNemar test, with $\alpha =
-0.005$, measuring the correctness of the results provided by the
-participant when using \tool versus gitk.
-% TODO: cite the McNemar test maybe?
-If the McNemar test indicates that we do not reject the null hypothesis,
-we continue analyzing the difference in accuracy and timing metrics for
-the merge-tree model versus the DAG.
-
-For each test, we use a confidence level $\alpha = 0.005$, resulting in
-a $\chi^2$ test statistic of 7.879.
-
-% TODO: Add the null hypothesis and type of metrics analyzed for each summarization question
