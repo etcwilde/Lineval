@@ -1,0 +1,93 @@
+% vim:set et sw=2 ts=4 tw=72:
+% Jul 04, 2017
+% Evan Wilde
+
+version control systems monitor the development lifetime of software
+projects. This makes the version control system vital in providing
+information about how a software project is being developed. To do this,
+the user must be able to gain a clear understanding of how commits are
+being integrated into the project, along with understanding what changes
+these commits are bringing with them. These are the tasks that we set
+out to solve with the \mt model. Ideally, we could compare our model
+against another that is designed with these goals. To our knowledge, we
+know of no git repository visualzation tool that has these specific
+goals. This may be due to issues with finding the master branch of the
+repository which is a non-trivial task, or due to other factors.
+
+While we have found no tool with the express goal of showing how a
+commit is integrated, and providing a summarization of a merge, there
+has been a lot of work done in providing visualizations of various
+aspects of a repository.
+
+Many tools work to address the issues in communication between
+developers in inter-team collaboration work. Codebook\cite{Begel2010}
+uses a data mining technique to determine the developer of a piece of
+code, the program manager who wrote the specification for the code, and
+the program managers and developers on the team who were working
+together. Hipikat\cite{Cubranic2005} is another tool with a focus on
+communication. Where Codebook focuses on developers working on a
+project, Hipikat is focused on enabling easier integration of new
+developers to a project by providing them with easily-searchable
+artifacts of the changes made. Codebook is useful for pairing a
+contributor with the original developer; however, the developer may not
+have worked with the piece of code in years. A Hipikat program may
+provide more information to the maintainer as it records the artifacts
+of why certain design decisions were made when they were made using
+other tools like Bugzilla and CVS.\@ Neither tool is sufficient in
+meeting our goals to provide a summary of the topology of the kernel
+repository through a visual tree.
+
+Most visualizers provide a visual presentation of a certain aspect of a
+repository. Fractal Figures\cite{Ambros2005} uses a unit square to
+represent a portion of a project, then partitions the square based on
+the proportion of an author's contributions to that portion of the
+project. EPOSee\cite{Burch2005} and Evolution Radar\cite{Ambros2009}
+perform further analysis, determine which files are made together, and
+what changes are made over a sequence of commits, though the goals
+behind these projects is different.
+
+Codebook, Hipikat, Fractal Figures, EPOSee, and Evolution Radar all work
+with data from CVS repositories. Our goal is to provide information
+about Git repositories, specifically the Linux master repository. Fewer
+tools are available for generating visualizations and summaries of Git
+repositories, potentially due to the DAG model used by Git.
+
+Gource is a tool for providing an interactive timelapse of the state of
+a repository\cite{Caudwell2010}. In the timelapse, it shows who
+contributes and what type of contribution a developer is making. These
+contribution types are one of, adding a file, removing a file, and
+changing a file. While the timelapse is interesting to watch, it does
+not provide any additional explanation of the changes actually being
+made, only the frequency that they are being made and who is making
+them.
+
+% TODO: add code_swamp or something like that
+
+
+% TODO: Check this -- Look into source tree
+Not included in an academic project are both the git commandline with
+the \verb|git log| command, and Gitk, which is a graphical tool shipped
+with git. Many other tools are designed with a similar visual metaphore
+as what is presented in Gitk, including Git kraken, Github Desktop and
+web interfaces, the Git Lab web intereface, the Bitbucket web interface,
+and many others. The Gitk interface is built around the central DAG
+viewer. The DAG displays the repository events on their respective
+branches, the author, and the date that the event was authored. A user
+can select an event to view addition information about it, including the
+full commit log, the parents and children of the event, and the diff
+generated if modifications were made. In the case of the Linux kernel,
+merges are not resolved as merge conflicts in the master repository, but
+by the developers prior to merging. With this development model, no
+merges will have modified any files, and will not show a diff. While the
+merge does not make changes directly, the effects of merging the
+commits persist, but Gitk is unable to provide an aggregated view of the
+files modified, the patches for those files, and the authors who
+contributed commits to that merge.
+
+Our tool is primarily aimed at presenting the hierarchical structure of
+the Linux git repository. We use tables for presenting the summarized
+information of the commits and merges, but this information could also
+be presented in a graphical form. Various graphical forms for displaying
+file and authorship data exist, the principal forms being matrix views,
+city scapes, bar and pie charts, and networks \cite{Eick2002}. Any of
+these data visualization metaphors are applicable to our system.

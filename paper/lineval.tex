@@ -31,9 +31,11 @@
 \usepackage{balance}
 \usepackage{placeins}
 
+%% Algorithms
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 
 %% Graphics
-
 \usepackage{tikz}
 \usepackage{pgfplots}
 \usepackage{pgfplotstable}
@@ -47,10 +49,10 @@
 \input{color.tex}
 \input{macros.tex}
 
-\newcommand{\TheTitle}{An Evaluation and Generalization of the Merge-Tree Model}
+\newcommand{\TheTitle}{Merge-Tree: Visualizing the Integration of Commits into Linux}
 \newcommand{\TheAuthors}{Evan Wilde, Daniel M. German}
 \newcommand{\TheEmails}{etcwilde@uvic.ca, dmg@uvic.ca}
-\newcommand{\TheSubject}{Testing the comprehension of users in large git repositories}
+\newcommand{\TheSubject}{Understanding a large number of commits and merges}
 \newcommand{\TheKeywords}{Linux, git, visualizations}
 
 %% Referencing
@@ -91,10 +93,12 @@
 \maketitle
 
 \begin{abstract}
-
   \input{abstract.tex}
-
 \end{abstract}
+
+\begin{IEEEkeywords}
+  \TheKeywords
+\end{IEEEkeywords}
 
 \section{Introduction}
 \label{sec:introduction}
@@ -103,6 +107,8 @@
 
 \section{Related Works}
 \label{sec:related_works}
+
+\input{relatedwork.tex}
 
 \section{Methodology}
 \label{sec:methodology}
