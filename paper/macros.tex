@@ -1,9 +1,15 @@
+% vim:set et sw=2 ts=4 tw=72:
 \newcommand{\tool}{{\emph Linvis}\xspace}
 \newcommand{\comA}{\textit{Commit 1}\xspace}
 \newcommand{\comB}{\textit{Commit 2}\xspace}
 \newcommand{\mt}{Merge-Tree\xspace}
 
 \newcommand{\notice}[1]{{\color{red}{#1}}\xspace}
+
+\usepackage{enumitem}
+
+\newlist{RQ}{enumerate}{1}
+\setlist[RQ]{label=\textit{RQ.\arabic*})}
 
 \ifdraft
     \usepackage[colorinlistoftodos]{todonotes}
