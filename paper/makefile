@@ -3,7 +3,7 @@ sections	= abstract.tex introduction.tex methodology.tex results.tex discussion.
 files		= color.tex macros.tex
 data		= data/tree_size.csv data/merge_counts.csv
 figures		=
-misc 		= makefile
+misc 		= makefile references.bib
 output		= output/
 
 # Phony Targets
