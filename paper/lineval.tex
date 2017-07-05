@@ -23,6 +23,8 @@
 \usepackage{dcolumn}
 \usepackage{longtable}
 \usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{tabulary}
 
 %% Extra support
 \usepackage{xspace}
@@ -613,7 +615,194 @@ Figure~\ref{fig:commit_2}.
 \input{relatedwork.tex}
 
 \section{Controlled User Study}
-\label{sec:methodology}
+\label{sec:study}
+
+We use a controlled mixed-methods users study in order to evaluate the
+ability for the DAG to provide users with a conceptual image of how a
+commit is integrated into a project, to compare the DAG and \mt models,
+and determine which model the users preferred.
+
+In this section, we describe the methods used to for designing and
+implementing the user study.
+
+\subsection{Questions and Tasks}
+\label{sub:questions}
+
+\begin{table*}[htpb]
+  \centering
+  \caption{Conceptual Tasks }
+  \label{tab:conceptual_tasks}
+  \begin{tabulary}{0.9\textwidth}{LL}
+    \toprule
+    Task & Description\\
+    \midrule
+    T1 & Draw a diagram showing how this commit was merged into the master branch, along with any other related commits\\
+    T2 & How many individual commits are related to this commit?\\
+    T3 & How many merges are involved with merging this commit into the master branch?\\
+    \bottomrule
+  \end{tabulary}
+\end{table*}
+
+\begin{table}[htpb]
+  \centering
+  \caption{Summarization Tasks}
+  \label{tab:summarization_tasks}
+  \begin{tabulary}{\linewidth}{LLL}
+    \toprule
+    Task Set   & Task & Description\\\midrule
+    Merge      & T4   & What is the series of merges involved with merging this
+    commit?\\
+               & T5   & What other commits are merged?\\
+    Authorship & T6   & How many authors are involved?\\
+               & T7   & Who contributed the most changes?\\
+    Files      & T8   & How many files were modified?\\
+               & T9   & Which file had the most changes?\\
+    Modules    & T10  & Which modules does this merge tree involve?\\
+    \bottomrule
+  \end{tabulary}
+\end{table}
+
+The questions and tasks are broken down into four groups. The first two
+groups are purely quantitative in nature; we begin with conceptual tasks
+to understand whether the DAG is capable of providing users with an
+understanding of how a commit is merged into the master branch, and
+other commits that it is merged with. We continue with summarization
+tasks, to quantitatively understand if the \mt model makes a difference
+in summarization tasks.
+
+The third task set is purely qualitative, to gain better understanding
+of whether participants preferred working with the \mt model in \tool,
+or working with the DAG in Gitk, and what aspects they preferred from
+each tool. The final group of questions is simply to gain a better
+understanding of the demographic of our participants.
+
+
+\textbf{Conceptual Tasks}
+
+
+
+
+The participants were allowed to use Gitk or the git command line tools
+to perform these tasks. These tasks are asked in the specified order,
+allowing tabularr to first, create a conceptual understanding of the
+commits and merges that will be involved with the rest of the tasks that
+follow.tabularmay then use their diagrams to answer T2 and T3. We do not
+collect metrics from \tool for the conceptual tasks, opting instead to
+determine if the DAG is sufficient for understanding how a commit is
+integrated. \tool uses the \mt model show a tree visualization of how
+commits are merged, until the commit reaches the master branch.
+Table~\ref{tab:conceptual_tasks} shows the conceptual tasks.
+
+We provide the participant with 10 minutes per commit to complete the
+first task. The answers to the two other questions in this section are
+drawn from the answer in the first task.
+
+\textbf{Summarization Tasks}
+
+
+
+The summarization tasks (Table~\ref{tab:summarization_tasks}) are
+grouped into task sets by theme. The tasks within the task set are
+shuffled, and the task sets are shuffled, to ensure that similar
+questions are together, but not in the same order, and to ensure that
+the themes are in randomized order between participants. The order of
+the commits is shuffled, as well. The order of the tool is randomized,
+choosing to start with either \tool or Gitk, to ensure that we do not
+place a bias on one tool through the experiment.
+
+As understanding where the merge begins and ends is vital to answering
+the other question, the merge task set will always be the first task set
+presented; however, the questions will still be re-ordered within the
+task set.
+
+\textbf{User Opinion and Profile}
+
+Finally, we ask the user for their opinions on the tools and for some
+information about their level of experience with git. This portion of
+the study is qualitative and does not rely on either of the tool,
+instead attempting to determine which model provided the user with a
+better experience.
+
+We do not shuffle the questions in this set of questions, as this should
+not have an impact on the opinions of the participant at this point.
+These questions are designed to provide us with a better understanding
+of preference, and insight on why, the participant had that preference.
+
+We ask the following questions in this order;
+
+\begin{enumerate}
+  \item Given these tasks again, which tool would you prefer to use?
+  \item Which aspects of each tool did you like and why?
+  \item How long have you used git?
+  \item If you have used git, for what kind of projects? (personal,
+    school courses, professional?)
+  \item If you have used git, how many commits, files, and contributors
+    were involved with the largest repository you have worked with?
+\end{enumerate}
+
+The last three questions in this section are aimed at getting a better
+understanding of the demographic of our participants.
+
+\textbf{Procedure}
+
+For each participant, we run a simple python script to generate the
+script for the study, eliminating the possibility of bias from us. The
+script randomizes the order of the tools, the order of the commits, the
+order of the task sets, and the order of the tasks within each task set,
+where appropriate.
+
+
+\subsection{Commit Selection}
+\label{sub:commit_selection}
+
+We chose two commits for use in the study. The order that the commits
+are presented is randomized between participants, but the order is kept
+consistent through the tasks described in the next subsection.
+
+We use the \tool database, containing commits and merge-tree information
+from April 16th 2005 to October 14th, 2014, which corresponds to being
+between Linux release 2.6.12-rc3 and Linux 3.17-rc1. \evan{Cite the
+  database even more?} We chose the commits based on tree sizes. We
+found that a majority of the trees contain at most seven inner commits,
+while more than 25\% of the trees contain a single commit. 75\% of the
+tree contained up to 51 inner commits and merges, and finally the
+largest tree contained 7217 nodes. We chose to work with the trees in
+the first and second quartile, as merge trees of sizes between one and
+seven, not including the merge into the master branch, make up the
+majority of the trees in the database.
+
+From here, we selected one tree from the trees of a single commit at
+random. Selecting a commit from that tree is trivial, as there is only
+one to choose.
+
+We selected one tree of size seven at random from all trees of size
+seven. We placed a restriction the trees, the selected tree must include
+at least one internal merge to increase the complexity of the trees
+tested. After randomly selecting a tree, we chose in internal commit at
+random, using the \verb|random.choice| function in python 3.6.1.
+
+Using this technique, we selected commit
+\emph{a3c1239eb59c0a907f8be5587d42e950f44543f8} from the tree containing
+a single node (Figure~\ref{fig:commit_1}), which we will refer to as
+\comA, and commit \emph{cdbdd1676a5379f1d5cbd4d476f5e349f445befe}, from
+the tree containing seven nodes (Figure~\ref{fig:commit_2}), which we
+will refer to as \comB.
+
+\begin{figure}[bpt]
+  \centering
+  \includegraphics[width=0.08\linewidth]{figures/commits/1-commit.pdf}
+  \caption{The first merge tree used in the user study, a merge tree
+    containing a single commit}
+  \label{fig:commit_1}
+\end{figure}
+
+\begin{figure}[bpt]
+  \centering
+  \includegraphics[width=0.5\linewidth]{figures/commits/7-commits.pdf}
+  \caption{The second merge tree used in the user study, a merge tree
+    containing seven commits}
+  \label{fig:commit_2}
+\end{figure}
 
 \section{Results}
 \label{sec:results}
