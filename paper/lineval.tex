@@ -804,8 +804,289 @@ will refer to as \comB.
   \label{fig:commit_2}
 \end{figure}
 
+
+
 \section{Results}
 \label{sec:results}
+
+We recorded the audio and screen capture video for each participant in
+the study for further analysis. After capturing the information, we
+extracted various metrics from the videos. From the conceptual tasks, we
+recorded the time in seconds, and the answer for the question. We
+extracted three metrics for the summarization tasks, the time in
+seconds, the correctness, and the accuracy. Correctness is a binary
+value, it is true if the response was correct and false if the response
+was incorrect. The accuracy is measures in distance from the correct
+value. An accuracy of zero indicates a correct answer. All tasks in the
+summarization tasks include an accuracy metric except T7, which will
+only be right or wrong, and therefore cannot meaningfully be measured by
+a distance.
+
+\subsection{Conceptual Tasks}
+\label{sub:conceptual_tasks}
+
+In Table~\ref{tab:conceptual_results}, we are able to see an overview of
+the results from the conceptual questions.
+
+
+\begin{table*}[htpb]
+  \centering
+  \caption{Results from the conceptual questions}
+  \label{tab:conceptual_results}
+  \begin{tabular}{ll|r|lrr|rrr}
+    Question                      & Commit & Answer & Median & Mean  & Variance & Median(s) & Mean(s) & Variance(s)\\\hline\hline
+    Number of commits in the tree & \comA  & 1      & 4      & 19.11 & 753.11   & 10.0      & 49.92   & 5952.08\\
+    Number of merges in the tree  & \comA  & 1      & 5      & 8.27  & 53.62    & 7.5       & 24.67   & 884.42\\\hline
+    Number of commits in the tree & \comB  & 5      & 4      & 7.80  & 136.84   & 31.5      & 106.83  & 54123.42\\
+    Number of merges in the tree  & \comB  & 3      & 3.5    & 5.40  & 50.27    & 11.0      & 65.6    & 29798.82\\
+  \end{tabular}
+\end{table*}
+
+Users were able to more closely estimate the number of commits and
+merges in the larger tree, but generally took longer than the smaller
+tree. The tree with a single node resulted in more variability in the
+estimate of number of commits.
+
+It should be noted that these questions were answered after spending
+roughly ten minutes attesting to draw a picture that held the answers to
+these questions.
+
+\subsection{Summarization Tasks}
+\label{sub:summarization_tasks}
+
+In Figure~\ref{fig:summarization_results}, we see all of the
+correctness, accuracy, and timing results. The first row of plots are
+the correctness results. We see in all cases except for T10, that the
+number of instances of a correct result with \tool is roughly the same
+as the number of incorrect instances with Gitk. We test each task with
+the McNemar Chi-square test~\cite{McNemar1947}.
+
+\begin{figure*}[htpb]
+  \centering
+  \includegraphics[width=\textwidth]{figures/userstudy/results.pdf}
+  \caption{Results from the summarization tasks. The first row plots the
+    correctness metric for each task. The second row plots the
+    accuracy metric for each task. The third row plots the time metric
+    for each task.}
+  \label{fig:summarization_results}
+\end{figure*}
+
+With the McNemar's tests, we analyze the participants that change from
+being correct with one tool to being incorrect with the other. This does
+not take into account the number of people who were able to provide the
+correct answer for both tools, nor the people who were incorrect for both
+tools. The results show whether providing the participants with \tool
+over the current standard, gitk, improves the correctness of the
+summarization tasks among the participants. We show the results for the
+number of people who were, with both tools, correct, incorrect, and
+changed in Table~\ref{tab:correctness_table}.
+
+In all cases, except for task T10, we saw statistically significant
+results suggesting that we reject the null hypothesis. We tested each
+correctness with an $\alpha = 0.005$. The $\chi^2$ test value with one
+degree of freedom is $7.879$.
+
+\begin{table*}[htpb]
+  \centering
+  \caption{Correctness tables showing how many people stayed correct,
+    incorrect, and how many people changed between tool}
+  \label{tab:correctness_table}
+  \begin{tabular}{c|c|c}
+
+    T4 & T5 & T6\\
+  \begin{tabular}{cc|rr}
+                           &           & \multicolumn{2}{c}{Linvis}\\
+                           &           & Correct                      & Incorrect\\\hline
+    \multirow{2}{*}{Gitk}  & Correct   & 6                            & 0\\
+                           & Incorrect & 15                           & 2\\
+  \end{tabular} &
+
+  \begin{tabular}{cc|rr}
+                           &           & \multicolumn{2}{c}{Linvis}\\
+                           &           & Correct                      & Incorrect\\\hline
+    \multirow{2}{*}{Gitk}  & Correct   & 5                            & 0\\
+                           & Incorrect & 14                           & 4\\
+  \end{tabular}
+
+  &
+
+  \begin{tabular}{cc|rr}
+                           &           & \multicolumn{2}{c}{Linvis}\\
+                           &           & Correct                      & Incorrect\\\hline
+    \multirow{2}{*}{Gitk}  & Correct   & 5                            & 0\\
+                           & Incorrect & 16                           & 2\\
+  \end{tabular}
+
+
+  \\\hline
+  T7 & T8 & T9\\
+
+  \begin{tabular}{cc|rr}
+                           &           & \multicolumn{2}{c}{Linvis}\\
+                           &           & Correct                      & Incorrect\\\hline
+    \multirow{2}{*}{Gitk}  & Correct   & 8                            & 0\\
+                           & Incorrect & 13                           & 2\\
+  \end{tabular}  &
+  \begin{tabular}{cc|rr}
+                           &           & \multicolumn{2}{c}{Linvis}\\
+                           &           & Correct                      & Incorrect\\\hline
+    \multirow{2}{*}{Gitk}  & Correct   & 6                            & 0\\
+                           & Incorrect & 15                           & 2\\
+  \end{tabular} &
+  \begin{tabular}{cc|rr}
+                           &           & \multicolumn{2}{c}{Linvis}\\
+                           &           & Correct                      & Incorrect\\\hline
+    \multirow{2}{*}{Gitk}  & Correct   & 6                            & 0\\
+                           & Incorrect & 14                           & 3\\
+  \end{tabular}\\\hline
+
+  & T10 & \\
+  & \begin{tabular}{cc|rr}
+                            &           & \multicolumn{2}{c}{Linvis}\\
+                            &           & Correct                      & Incorrect\\\hline
+    \multirow{2}{*}{Gitk}   & Correct   & 14                           & 1\\
+                            & Incorrect & 8                            & 0\\
+  \end{tabular} & \\
+
+  \end{tabular}
+\end{table*}
+
+The correctness test statistics and conclusion for each summarization
+task;
+
+The correctness test statistics, conclusions, and a description of the
+accuracy and timing results for each summarization task follow:
+
+\begin{itemize}
+
+  \item
+
+    T4; the resulting $\chi^2$ value is $15$. $15 > 7.879$, therefore we
+    reject the null hypothesis that \tool does not make a difference in
+    the correctness when determining the series of merges that a commit
+    takes, with $99.5\%$ confidence.
+
+    There is almost no variation in accuracy between participants using
+    \tool, while there is more variance in Gitk. There were two outliers
+    among the instances using \tool, which lie within the second and
+    third quartiles for the accuracy measure of Gitk. The furthest
+    outlier for \tool lies at a distance that is slightly greater than
+    the median for Gitk.
+
+    We see similar results in the timing metric; all significant data
+    occurs within less time than the second, third, and fourth quartile
+    of the Gitk results. Nearly all outlier instances in \tool are
+    within the third quartile group of the instances of Gitk with the
+    exception of the most extreme, which lies in the fourth quartile
+    group.
+
+    The results indicate that \tool is able to assist users with
+    determining how a commit is merged more accurately, and more
+    quickly.
+
+  \item
+
+    T5; the resulting $\chi^2$ value is $14$. $14 > 7.879$, therefore we
+    reject the null hypothesis that \tool does not make a difference in
+    the correctness when determining the other related commits, with
+    $99.5\%$ confidence.
+
+    There is very little variance in the accuracy of results for \tool
+    compared to the accuracy of the results in Gitk. The median distance
+    is smaller, indicating that the participants performed more
+    accurately using \tool.
+
+    There is less variance in the time taken to come to an answer with
+    \tool than with Gitk. Furthermore, we see that a majority of the
+    participants were able to complete the task in \tool in much less
+    time than 50\% of the participants using Gitk.
+
+    The results indicate that \tool is able to assist users in
+    understanding which commits are related to a given commit.
+
+  \item
+
+    T6; the resulting $\chi^2$ value is $16$. $16 > 7.879$, therefore we
+    reject the null hypothesis that \tool does not make a difference in
+    the correctness when determining the number of authors involved with
+    the merge tree, with $99.5\%$ confidence.
+
+    We see the same results from this task as with the previous tasks,
+    suggesting that \tool assists users determine the number of authors
+    more quickly and more accurately.
+
+  \item
+
+    T7; the resulting $\chi^2$ value is $13$. $13 > 7.879$, therefore we
+    reject the null hypothesis that \tool does not make a difference in
+    the correctness when determining who contributed the most changes,
+    with $99.5\%$ confidence.
+
+    This question does not include an accuracy metric, as there are only
+    two possible outcomes. We see the same result in the timing metric
+    as we did from the previous questions.
+
+    The results suggest that \tool is able to help users correctly
+    identify the person who contributed the most lines of code to a
+    merge tree in less time.
+
+  \item
+
+    T8; the resulting $\chi^2$ value is $15$. $15 > 7.879$, therefore we
+    reject the null hypothesis that \tool does not make a difference in
+    the correctness when determining how many files were contributed,
+    with $99.5\%$ confidence.
+
+    The results of this task are the same as in the previous tasks.
+    This suggest that \tool is able to assist users determine how many
+    files were modified, more quickly and more accurately.
+
+  \item
+
+    T9; the resulting $\chi^2$ value is $14$. $14 > 7.879$, therefore we
+    reject the null hypothesis that \tool does not make a difference in
+    the correctness when determining which file had the most changes,
+    with $99.5\%$ confidence.
+
+    While this question appears to have a similar answer to the correct
+    answer for T7, the answer \comA had two files with the same number
+    of midifications, thus the participant must correctly identify both
+    of these files to be correct. For this reason, we include an
+    accuracy metric.
+
+    The results of this task are the same as the previous tasks.
+    This suggests that \tool is able to assist users to determine which
+    file had the most changes.
+
+  \item
+
+    T10; the resulting $\chi^2$ value is $5.44$. $5.44 < 7.879$,
+    therefore we do not reject the null hypothesis, suggesting that
+    \tool does not make a difference in determining which modules are
+    involved with a merge tree.
+
+    The accuracy and timing results for this task are the same as the
+    others, showing that there is less variability in both accuracy and
+    the time taken to have an answer between participants using \tool
+    than using Gitk. Looking Table~\ref{tab:correctness_table}, we can
+    see that, unlike the other questions, a majority of the participants
+    were correct using both tools.
+
+\end{itemize}
+
+\subsection{User Opinions}
+\label{sub:user_opinions}
+
+Among the 12 pariticipants, there was nearly unanimous agreement that
+for conceptual understanding and summarization tasks, \tool was easier
+to work with than Gitk. The participants cited the ability to abstract
+information about the merge from the clean summarization tables and
+simple visualizations. Three participants suggested that someone with a
+professional understanding of Gitk and the git commandline may be to
+extract the a good conceptual understanding from the DAG, and perform
+the summarization tasks from the commandline. One of these three
+participants said that they would prefer to have both tools available,
+as they are able to complement eachother.
 
 \section{Discussion}
 \label{sec:discussion}
