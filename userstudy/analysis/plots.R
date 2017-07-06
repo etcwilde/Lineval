@@ -5,7 +5,8 @@ library(RSQLite)
 library(fitdistrplus)
 
 pdf("figures/results.pdf", width=17, height=12)
-par(mfrow=c(3, 7))
+par(mfrow=c(3, 7), mai=c(0.4, 0.3, 0.3, 0.2))
+print(par('mai'))
 
 colorScheme <- c("#3366CC", "#DC3912", "#FF9900", "#109618", "#990099", "#3B3EAC")
 colorSchemeTrans <- c("#3366CC99", "#DC391299", "#FF990099", "#10961899", "#99009999", "#3B3EAC99")
