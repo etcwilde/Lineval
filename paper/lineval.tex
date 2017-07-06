@@ -4,9 +4,9 @@
 % \drafttrue
 
 \ifdraft
-        \documentclass[conference, draftclsnofoot, draft]{IEEEtran}
+        \documentclass[draft]{IEEEtran}
         \def\baselinestretch{1}
-        \setlength{\marginparwidth}{2cm}
+        % \setlength{\marginparwidth}{1.5cm}
 \else
         \documentclass[conference]{IEEEtran}
 \fi
@@ -14,7 +14,8 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 
-\usepackage[hyphens]{url} \urlstyle{same}
+\usepackage[hyphens]{url}
+\urlstyle{same}
 
 %% Citations
 \usepackage[nospace]{cite}
@@ -106,17 +107,6 @@
 \section{Introduction}
 \label{sec:introduction}
 
-Git is a distributed version control system that is used in many
-open-source and closed-source projects. Git enables many developers to
-write code simultaneously, working on various components known as
-branches. Git uses a directed acyclic graph model (DAG) for storing the
-necessary information regarding the state of the code at any point in
-time. Git refers to nodes of the DAG as commits, not distinguishing
-between the code-carrying commits and the structural commits that bring
-two branches together. In this paper, we will refer to the individual
-commits as being commits, the structural merge commits as merges, and
-refereeing to all as repository events.
-
 Between 50k and 70k commits are added to the Linux kernel per version
 requiring maintainers of older versions of the kernel to sift through
 thousands of commits and merges with tools that are unable to filter and
@@ -146,7 +136,16 @@ Linux repository.
   %\vspace{-4mm}
 \end{figure}
 
-% DAG model
+Git is a distributed version control system that is used in many
+open-source and closed-source projects. Git enables many developers to
+write code simultaneously, working on various components known as
+branches. Git uses a directed acyclic graph model (DAG) for storing the
+necessary information regarding the state of the code at any point in
+time. Git refers to nodes of the DAG as commits, not distinguishing
+between the code-carrying commits and the structural commits that bring
+two branches together. In this paper, we will refer to the individual
+commits as being commits, the structural merge commits as merges, and
+refereeing to all as repository events.
 
 The DAG representation works in smaller projects; it enables users to
 see when changes are made, when these changes are merged, how each
@@ -176,7 +175,37 @@ commits from the commits in the snapshot from today is not trivial.
   %\vspace{-2mm}
 \end{figure}
 
-% Merge tree model
+
+
+One major challenge with visualizing the arrival of commits to a repository is that
+Git does not store the date that a commit was merged into another branch, including
+the master branch. To complicate the problem, the DAG only has references to the
+ancestors of a commit (a model necessary for the operation of Git), but maintainers
+would prefer knowing the path a commit followed to reach the master repository.
+Tracing a path that any commit followed to the master repository would imply that
+for any given merge, it would be possible to know which commits were merged. A user
+could inspect the commits that arrived into the master branch within a given
+time-frame by checking which commits were merged during that time-frame.
+
+This paper makes two contributions; first, we describe a method of converting the
+DAG of the Linux repository into a tree, or \emph{merge-tree} of the repository,
+that represents the path used by a commit to reach the master branch; second, we
+present a method to inspect and visualize the history of merges in the Linux project
+using the merge-tree model.
+
+These methods and visualizations are implemented in a web-based tool called
+\tool\footnote{\tool is currently available at \url{http://li.turingmachine.org}}.
+Our visualizations and tool provide information about the location of any given
+commit or merge in its respective merge-tree, the files edited, the modules edited,
+and the commit message. \tool allows users to apply various filters, including the
+release version, along with a keyword or phrase from the log preview, the name of
+the author, or the commit ID. The user can request all merges made by Linus that
+contain a commit or inner merge that matches the search query, or just the commits
+and merges that match the query.
+
+
+\section{\mt Model}
+\label{sec:mt_model}
 
 We propose a new model, built from the DAG, with the purpose of
 providing a clearer conceptual image of how a commit is merged, other
@@ -485,40 +514,10 @@ in 100\% of the 16,680 commits. It failed in 1,542 commits before Dec.
 12, 2006 and in 836 it appears to be correct (Dec 7, 2006 to Sept 4,
 2007).
 
-% Evaluation
 
-In order to determine the effectiveness of the merge-tree model on
-comprehension and summarization of git repositories, we conducted a
-controlled user study on 12 participants. The user study is a
-mixed-methods study, with focus on the quantitative aspects in order to
-capture how effective the \mt model, if it is, at improving the
-correctness, accuracy, and time performance metrics of users when
-performing summarization tasks. We use the qualitative questions as a
-means of determine the preference of the participants, and what aspects
-they preferred from each tool.
 
-We formulate three research questions that this study is attempting to
-answer;
-
-\begin{RQ}
-  \item
-
-    Is the DAG able to provide users with an understanding of the events
-    in a repository?
-
-  \item
-
-    Do \mt make a difference in the ability to summarize basic
-    aggregated information?
-
-  \item
-
-    Do users prefer the \mt model to the DAG for summarization and
-    comprehension tasks?
-
-\end{RQ}
-
-% Implementation
+\section{Design and Implementation}
+\label{sec:design_and_implementation}
 
 We implement a tool, \tool, to test and verify the capabilities of the
 \mt model. \tool provides search, summarization, and
@@ -809,7 +808,7 @@ will refer to as \comB.
 
 
 
-\section{Results}
+\subsection{Results}
 \label{sec:results}
 
 We recorded the audio and screen capture video for each participant in
@@ -1294,7 +1293,7 @@ If this algorithm is to be generalized into a dynamic, web-based, tool,
 it may not be feasible to download every commit in the repository in a
 reasonable period of time. We instead look toward a breadth-first
 approach at limiting the number of repository events that must be
-downloaded. 
+downloaded.
 
 Focusing on the generalized algorithm~\ref{alg:generalized}, the
 algorithm is broken into two phases. The first phase is where the
