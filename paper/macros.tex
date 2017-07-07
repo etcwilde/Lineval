@@ -11,7 +11,11 @@
 \newlist{RQ}{enumerate}{1}
 \setlist[RQ]{label=\textit{RQ.\arabic*})}
 
-\ifdraft
+\newif\ifccc
+\ccctrue
+
+
+\ifccc
     \usepackage[colorinlistoftodos]{todonotes}
     \newcommand{\evan}[1]{{\color{blue}\emph{Evan Says: #1}}\xspace}
     \newcommand{\evantodo}[1]{{\color{blue}\emph{Evan Todo: #1}}\xspace}

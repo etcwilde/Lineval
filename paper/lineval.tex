@@ -1,7 +1,7 @@
 % vim:set et fenc=utf-8 ft=tex sw=2 ts=2 tw=72:
 
 \newif\ifdraft
-% \drafttrue
+%\drafttrue
 
 \ifdraft
         \documentclass[draft]{IEEEtran}
@@ -13,7 +13,6 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-
 \usepackage[hyphens]{url}
 \urlstyle{same}
 
@@ -21,6 +20,7 @@
 \usepackage[nospace]{cite}
 
 %% Table Support
+\usepackage{array}
 \usepackage{dcolumn}
 \usepackage{longtable}
 \usepackage{multirow}
@@ -45,7 +45,7 @@
 \usepackage{color}
 \usepackage{listings}
 
-%% Tikz
+
 \usetikzlibrary{positioning, arrows}
 
 \input{color.tex}
@@ -619,6 +619,11 @@ Figure~\ref{fig:commit_2}.
 \section{Controlled User Study}
 \label{sec:study}
 
+\dmg{start by describing what you mean by user study... to evaluate linvis we performed a user study...}
+
+\dmg{and you are evaluating the visualizations, NOT the DAG}
+
+
 We use a controlled mixed-methods users study in order to evaluate the
 ability for the DAG to provide users with a conceptual image of how a
 commit is integrated into a project, to compare the DAG and \mt models,
@@ -626,9 +631,17 @@ and determine which model the users preferred.
 
 In this section, we describe the methods used to for designing and
 implementing the user study.
+\dmg{no, you describe the study, which includes the methods}
+
+\dmg{Start by giving an overall overview of the study: the study consists of a set of tasks that users are expected to
+  perform... do a top down description of what users will do
+}
 
 \subsection{Questions and Tasks}
 \label{sub:questions}
+
+\dmg{use tasks, not questions. you are asking them to do something that requires an answer, that is different than a question}
+
 
 \begin{table*}[htpb]
   \centering
@@ -664,6 +677,10 @@ implementing the user study.
   \end{tabulary}
 \end{table}
 
+\dmg{avoid editorializing your text: remove purely}
+
+\dmg{watch for tense... we don't beging... the tasks begin... or better, the first tasks...}
+
 The questions and tasks are broken down into four groups. The first two
 groups are purely quantitative in nature; we begin with conceptual tasks
 to understand whether the DAG is capable of providing users with an
@@ -672,7 +689,8 @@ other commits that it is merged with. We continue with summarization
 tasks, to quantitatively understand if the \mt model makes a difference
 in summarization tasks.
 
-The third task set is purely qualitative, to gain better understanding
+The third task set is purely qualitative, \dmg{and are their goal is ... don't imply content in your sentences... be
+  precise; this applies to the paragraph before} to gain better understanding
 of whether participants preferred working with the \mt model in \tool,
 or working with the DAG in Gitk, and what aspects they preferred from
 each tool. The final group of questions is simply to gain a better
@@ -682,7 +700,15 @@ understanding of the demographic of our participants.
 \textbf{Conceptual Tasks}
 
 
-
+\dmg{given the choice, not allowed. 
+  I don't understand this section.
+  You need to be more top-down in your description. you need to provide context on what the
+  users are expected to do, and why. So what are the tasks? You never explain.
+what is the goal of the tasks? how many? 
+what were the tasks? what is expected from each? you need to answer these questions, not necessarily in the same order.
+also, remember this is a comparative study, so I presume the users were asked to do both with linvis and without it
+(choice of gitk/git command line)
+}
 
 The participants were allowed to use Gitk or the git command line tools
 to perform these tasks. These tasks are asked in the specified order,
@@ -695,6 +721,8 @@ integrated. \tool uses the \mt model show a tree visualization of how
 commits are merged, until the commit reaches the master branch.
 Table~\ref{tab:conceptual_tasks} shows the conceptual tasks.
 
+\dmg{I don't like the present tense, but that is your option}
+
 We provide the participant with 10 minutes per commit to complete the
 first task. The answers to the two other questions in this section are
 drawn from the answer in the first task.
@@ -702,9 +730,13 @@ drawn from the answer in the first task.
 \textbf{Summarization Tasks}
 
 
+\dmg{again, you are going into details first. First the tasks --see above--
+  including their grouping.
+  then at the end, describe the randomization and why it is done (which you did)
+}
 
 The summarization tasks (Table~\ref{tab:summarization_tasks}) are
-grouped into task sets by theme. The tasks within the task set are
+grouped into \dmg{how many?} set of tasks according to their theme. The tasks within a given task set are
 shuffled, and the task sets are shuffled, to ensure that similar
 questions are together, but not in the same order, and to ensure that
 the themes are in randomized order between participants. The order of
@@ -720,17 +752,13 @@ task set.
 \textbf{User Opinion and Profile}
 
 Finally, we ask the user for their opinions on the tools and for some
-information about their level of experience with git. This portion of
-the study is qualitative and does not rely on either of the tool,
-instead attempting to determine which model provided the user with a
-better experience.
-
-We do not shuffle the questions in this set of questions, as this should
-not have an impact on the opinions of the participant at this point.
-These questions are designed to provide us with a better understanding
-of preference, and insight on why, the participant had that preference.
-
-We ask the following questions in this order;
+information about their level of experience with git.
+\dmg{be more precise: understanding or preference is too broad. What you want to know 
+answers to specific questions regarding how the tools compare and which ones they would prefer}
+The first three questions are intended to provide us with a better understanding
+of preference, and insight on why, the participant had that preference.  
+The last three questions in this section are aimed at getting a better
+understanding of the demographic of our participants.
 
 \begin{enumerate}
   \item Given these tasks again, which tool would you prefer to use?
@@ -742,10 +770,18 @@ We ask the following questions in this order;
     were involved with the largest repository you have worked with?
 \end{enumerate}
 
-The last three questions in this section are aimed at getting a better
-understanding of the demographic of our participants.
 
 \textbf{Procedure}
+
+\dmg{tell me first why you need to create a script, so I know what you do something:
+we did random assignment of tasks (explain what you did) and randomized the order in which the tasks were performed.
+ Then explain why you need a script}
+
+\dmg{it does not randomize the order the tools. It randomizes which tool is going to be used on each tasks.
+be precise with your language}
+
+\dmg{what you explained how commits relate to tasks and how they get assigned? think as if you are explaining this to
+  somebody who has to do this: you are the designer, explaining the why and the how }
 
 For each participant, we run a simple python script to generate the
 script for the study, eliminating the possibility of bias from us. The
@@ -757,31 +793,47 @@ where appropriate.
 \subsection{Commit Selection}
 \label{sub:commit_selection}
 
+\dmg{see my comments in previous section. it is ok to explain them here, but you need to explain what they are briefly
+  in the previous section}
+
 We chose two commits for use in the study. The order that the commits
 are presented is randomized between participants, but the order is kept
 consistent through the tasks described in the next subsection.
 
+\dmg{this place does not require a description of the database. This requires just to say
+the commits/merge set (dates and numbers are ok) only}
 We use the \tool database, containing commits and merge-tree information
 from April 16th 2005 to October 14th, 2014, which corresponds to being
 between Linux release 2.6.12-rc3 and Linux 3.17-rc1. \evan{Cite the
-  database even more?} We chose the commits based on tree sizes. We
+  database even more?}
+\dmg{again, i have problems with your writing: ``we wanted to use in the study commits of different size, to determine
+  if the size had an impact in the completion of the tasks. We chose commits of three different sizes...}
+We chose the commits based on tree sizes. We
+\dmg{we didn't find: this is a fact, not a discovery; what is a majority? 50\%+1? be precise}
+\dmg{drop the word inner, and do it in order: 25\% of trees have only one commit, 50\%.., 75\%...}
 found that a majority of the trees contain at most seven inner commits,
 while more than 25\% of the trees contain a single commit. 75\% of the
 tree contained up to 51 inner commits and merges, and finally the
 largest tree contained 7217 nodes. We chose to work with the trees in
+\dmg{if you are going to use the words quartile, just use them before in your description eg: the distribution of the
+  sizes of the trees is x, y merges, whose size corresponded to the 25 ,50 quartiles, simple and precisee}
 the first and second quartile, as merge trees of sizes between one and
 seven, not including the merge into the master branch, make up the
 majority of the trees in the database.
 
+\dmg{remove from here, what is here? this is not a road trip :)}
 From here, we selected one tree from the trees of a single commit at
 random. Selecting a commit from that tree is trivial, as there is only
-one to choose.
+one to choose.\dmg{remove the obvious, instead concentrate on why the others are not trivial}
 
 We selected one tree of size seven at random from all trees of size
-seven. We placed a restriction the trees, the selected tree must include
+seven\dmg{how many where there?}. We placed a restriction the trees, the selected tree must include
 at least one internal merge to increase the complexity of the trees
-tested. After randomly selecting a tree, we chose in internal commit at
-random, using the \verb|random.choice| function in python 3.6.1.
+tested. For each randomly selecting a tree, we chose one of its internal commits at
+random (using the \verb|random.choice| function in python 3.6.1).
+
+\dmg{question: so you chose only one commit of each size, and the randomization was which tool to use
+for each question? or did they have to do the same task for two commits?}
 
 Using this technique, we selected commit
 \emph{a3c1239eb59c0a907f8be5587d42e950f44543f8} from the tree containing
@@ -792,33 +844,38 @@ will refer to as \comB.
 
 \begin{figure}[bpt]
   \centering
-  \includegraphics[width=0.08\linewidth]{figures/commits/1-commit.pdf}
-  \caption{The first merge tree used in the user study, a merge tree
-    containing a single commit}
+\begin{tabular}{ m{1.5cm} m{3cm} }
+  \includegraphics[height=0.5in]{figures/commits/1-commit.pdf} &
+  \includegraphics[height=1in]{figures/commits/7-commits.pdf}\\
+\end{tabular}
+  \caption{The merge trees used in the user study, 
+    containing one and seven commits, respectively.}
   \label{fig:commit_1}
 \end{figure}
-
-\begin{figure}[bpt]
-  \centering
-  \includegraphics[width=0.5\linewidth]{figures/commits/7-commits.pdf}
-  \caption{The second merge tree used in the user study, a merge tree
-    containing seven commits}
-  \label{fig:commit_2}
-\end{figure}
-
 
 
 \subsection{Results}
 \label{sec:results}
 
+\dmg{this is still methodology.}
+
 We recorded the audio and screen capture video for each participant in
-the study for further analysis. After capturing the information, we
-extracted various metrics from the videos. From the conceptual tasks, we
+the study for further analysis.
+\dmg{you don't need this sentence, it is redundant}
+After capturing the information, we
+extracted various metrics from the videos.
+\dmg{ you don't record, you measure}
+From the conceptual tasks, we
 recorded the time in seconds, and the answer for the question. We
 extracted three metrics for the summarization tasks, the time in
-seconds, the correctness, and the accuracy. Correctness is a binary
+seconds, the correctness, and the accuracy.
+\dmg{and then somethings you are over precise :): correctness is simply whether their answer to the task was correct or not}
+Correctness is a binary
 value, it is true if the response was correct and false if the response
-was incorrect. The accuracy is measures in distance from the correct
+was incorrect.
+\dmg{if you are going to use this metric, you need to define precisely. remember, you are giving this to somebody else
+  to implement}
+The accuracy is measures in distance from the correct
 value. An accuracy of zero indicates a correct answer. All tasks in the
 summarization tasks include an accuracy metric except T7, which will
 only be right or wrong, and therefore cannot meaningfully be measured by
@@ -827,13 +884,15 @@ a distance.
 \subsection{Conceptual Tasks}
 \label{sub:conceptual_tasks}
 
+\dmg{i don't like the expression: we are able to see... too long.. be to the point: Table X shows/depicts/ etc ... they
+  are not overviews, they are a summary}
 In Table~\ref{tab:conceptual_results}, we are able to see an overview of
 the results from the conceptual questions.
 
 
 \begin{table*}[htpb]
   \centering
-  \caption{Results from the conceptual questions}
+  \caption{Results from the conceptual questions\dmg{what are the columns? they need captions}}
   \label{tab:conceptual_results}
   \begin{tabular}{ll|r|lrr|rrr}
     Question                      & Commit & Answer & Median & Mean  & Variance & Median(s) & Mean(s) & Variance(s)\\\hline\hline
@@ -1435,3 +1494,8 @@ online, unlike in the implementation of \tool.
 \bibliography{references}
 
 \end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
