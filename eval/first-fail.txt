@@ -1,0 +1,3816 @@
+No match [1a5700bc2d10cd379a795fd2bb377a190af5acd4][Date:   Sat Jun 7 20:27:30 2014 -0700][75][-1]
+cid [1a5700bc2d10cd379a795fd2bb377a190af5acd4][Date:   Sat Jun 7 20:27:30 2014 -0700] count log [75] dbcount [-1].... NO Match :(
+   values of regions [75]
+Merge: a68a750 3cbcb160
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sat Jun 7 20:27:30 2014 -0700
+
+    Merge tag 'clk-for-linus-3.16' of git://git.linaro.org/people/mike.turquette/linux into next
+    
+    Pull clock framework updates from Mike Turquette:
+     "The clock framework changes for 3.16 are pretty typical: mostly clock
+      driver additions and fixes.  There are additions to the clock core
+      code for some of the basic types (e.g. the common divider type has
+      some fixes and featured added to it).
+    
+      One minor annoyance is a last-minute dependency that wasn't handled
+      quite right.  Commit ba0fae3b06a6 ("clk: berlin: add core clock driver
+      for BG2/BG2CD") in this pull request depends on
+      include/dt-bindings/clock/berlin2.h, which is already in your tree via
+      the arm-soc pull request.  Building for the berlin platform will break
+      when the clk tree is built on it's own, but merged into your master
+      branch everything should be fine"
+    
+    * tag 'clk-for-linus-3.16' of git://git.linaro.org/people/mike.turquette/linux: (75 commits)
+      mmc: sunxi: Add driver for SD/MMC hosts found on Allwinner sunxi SoCs
+      clk: export __clk_round_rate for providers
+      clk: versatile: free icst on error return
+      clk: qcom: Return error pointers for unimplemented clocks
+      clk: qcom: Support msm8974pro global clock control hardware
+      clk: qcom: Properly support display clocks on msm8974
+      clk: qcom: Support display RCG clocks
+      clk: qcom: Return highest rate when round_rate() exceeds plan
+      clk: qcom: Fix mmcc-8974's PLL configurations
+      clk: qcom: Fix clk_rcg2_is_enabled() check
+      clk: berlin: add core clock driver for BG2Q
+      clk: berlin: add core clock driver for BG2/BG2CD
+      clk: berlin: add driver for BG2x complex divider cells
+      clk: berlin: add driver for BG2x simple PLLs
+      clk: berlin: add driver for BG2x audio/video PLL
+      clk: st: Terminate of match table
+      clk/exynos4: Fix compilation warning
+      ARM: shmobile: r8a7779: Add clock index macros for DT sources
+      clk: divider: Fix overflow in clk_divider_bestdiv
+      clk: u300: Terminate of match table
+      ...
+
+commit a68a7509d3af8ee458d32b2416b0c2aaf2a4a7e3
+
+----------
+Total;1a5700bc2d10cd379a795fd2bb377a190af5acd4;-1
+
+----------
+No match [a68a7509d3af8ee458d32b2416b0c2aaf2a4a7e3][Date:   Sat Jun 7 20:12:15 2014 -0700][5][-1]
+cid [a68a7509d3af8ee458d32b2416b0c2aaf2a4a7e3][Date:   Sat Jun 7 20:12:15 2014 -0700] count log [5] dbcount [-1].... NO Match :(
+   values of regions [5]
+Merge: 639b4ac fd49c81
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sat Jun 7 20:12:15 2014 -0700
+
+    Merge tag 'vfio-v3.16-rc1' of git://github.com/awilliam/linux-vfio into next
+    
+    Pull VFIO updates from Alex Williamson:
+     "A handful of VFIO bug fixes for v3.16"
+    
+    * tag 'vfio-v3.16-rc1' of git://github.com/awilliam/linux-vfio:
+      drivers/vfio/pci: Fix wrong MSI interrupt count
+      drivers/vfio: Rework offsetofend()
+      vfio/iommu_type1: Avoid overflow
+      vfio/pci: Fix unchecked return value
+      vfio/pci: Fix sizing of DPA and THP express capabilities
+
+commit 639b4ac691c6f6e48921dc576379c176f82f3250
+
+----------
+Total;a68a7509d3af8ee458d32b2416b0c2aaf2a4a7e3;-1
+
+----------
+No match [639b4ac691c6f6e48921dc576379c176f82f3250][Date:   Sat Jun 7 19:44:40 2014 -0700][60][-1]
+cid [639b4ac691c6f6e48921dc576379c176f82f3250][Date:   Sat Jun 7 19:44:40 2014 -0700] count log [60] dbcount [-1].... NO Match :(
+   values of regions [60]
+Merge: 9d2cd01 5208ed2
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sat Jun 7 19:44:40 2014 -0700
+
+    Merge git://git.kernel.org/pub/scm/linux/kernel/git/herbert/cryptodev-2.6 into next
+    
+    Pull crypto updates from Herbert Xu:
+     "Here is the crypto update for 3.16:
+    
+       - Added test vectors for SHA/AES-CCM/DES-CBC/3DES-CBC.
+       - Fixed a number of error-path memory leaks in tcrypt.
+       - Fixed error-path memory leak in caam.
+       - Removed unnecessary global mutex from mxs-dcp.
+       - Added ahash walk interface that can actually be asynchronous.
+       - Cleaned up caam error reporting.
+       - Allow crypto_user get operation to be used by non-root users.
+       - Add support for SSS module on Exynos.
+       - Misc fixes"
+    
+    * git://git.kernel.org/pub/scm/linux/kernel/git/herbert/cryptodev-2.6: (60 commits)
+      crypto: testmgr - add aead cbc des, des3_ede tests
+      crypto: testmgr - Fix DMA-API warning
+      crypto: cesa - tfm->__crt_alg->cra_type directly
+      crypto: sahara - tfm->__crt_alg->cra_name directly
+      crypto: padlock - tfm->__crt_alg->cra_name directly
+      crypto: n2 - tfm->__crt_alg->cra_name directly
+      crypto: dcp - tfm->__crt_alg->cra_name directly
+      crypto: cesa - tfm->__crt_alg->cra_name directly
+      crypto: ccp - tfm->__crt_alg->cra_name directly
+      crypto: geode - Don't use tfm->__crt_alg->cra_name directly
+      crypto: geode - Weed out printk() from probe()
+      crypto: geode - Consistently use AES_KEYSIZE_128
+      crypto: geode - Kill AES_IV_LENGTH
+      crypto: geode - Kill AES_MIN_BLOCK_SIZE
+      crypto: mxs-dcp - Remove global mutex
+      crypto: hash - Add real ahash walk interface
+      hwrng: n2-drv - Introduce the use of the managed version of kzalloc
+      crypto: caam - reinitialize keys_fit_inline for decrypt and givencrypt
+      crypto: s5p-sss - fix multiplatform build
+      hwrng: timeriomem - remove unnecessary OOM messages
+      ...
+
+commit 9d2cd01b15d0782adb81e40094b67904d77b03df
+
+----------
+Total;639b4ac691c6f6e48921dc576379c176f82f3250;-1
+
+----------
+No match [9d2cd01b15d0782adb81e40094b67904d77b03df][Date:   Sat Jun 7 17:07:20 2014 -0700][3][-1]
+cid [9d2cd01b15d0782adb81e40094b67904d77b03df][Date:   Sat Jun 7 17:07:20 2014 -0700] count log [3] dbcount [-1].... NO Match :(
+   values of regions [3]
+Merge: 57d3261 ce5d36a
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sat Jun 7 17:07:20 2014 -0700
+
+    Merge branch 'for-linus' of git://git.open-osd.org/linux-open-osd into next
+    
+    Pull exofs raid6 support from Boaz Harrosh:
+     "These simple patches will enable raid6 using the kernel's raid6_pq
+      engine for support under exofs and pnfs-objects.
+    
+      There is nothing needed to do at exofs and pnfs-obj.  Just fire your
+      mkfs.exofs with --raid=6 (that was already supported before) and off
+      you go as usual.  The ORE will pick up the new map and will start
+      writing two devices of redundancy bits.  The patches are so simple
+      because most of the ORE was already for the general raid case, only a
+      few bug fixes were needed and the actual wiring into the raid6_pq
+      engine"
+    
+    * 'for-linus' of git://git.open-osd.org/linux-open-osd:
+      ore: Support for raid 6
+      ore: Remove redundant dev_order(), more cleanups
+      ore: (trivial) reformat some code
+
+commit c593e8978722f7f4a12932733cfeed6c0c74fbaa
+
+----------
+Total;9d2cd01b15d0782adb81e40094b67904d77b03df;-1
+
+----------
+Match [c593e8978722f7f4a12932733cfeed6c0c74fbaa][Date:   Sat Jun 7 15:12:18 2014 -0700][1]
+Match [052e5c7e28cc22017f9ad3f67026f911fdfc2edc][Date:   Sat Jun 7 15:01:39 2014 -0700][5]
+Match [813895f8dcb31bc6b0e9f5fc35e8c687a467f3dd][Date:   Sat Jun 7 14:50:38 2014 -0700][7]
+No match [57d326169e878a1a37b2bccd1cf81f6809ee67b9][Date:   Fri Jun 6 16:35:10 2014 -0700][171][-1]
+cid [57d326169e878a1a37b2bccd1cf81f6809ee67b9][Date:   Fri Jun 6 16:35:10 2014 -0700] count log [171] dbcount [-1].... NO Match :(
+   values of regions [171]
+Merge: 7b215de 0244756
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Fri Jun 6 16:35:10 2014 -0700
+
+    Merge branch 'akpm' (patches from Andrew Morton) into next
+    
+    Merge more updates from Andrew Morton:
+    
+     - Most of the rest of MM.
+    
+       This includes "mark remap_file_pages syscall as deprecated" but the
+       actual "replace remap_file_pages syscall with emulation" is held
+       back.  I guess we'll need to work out when to pull the trigger on
+       that one.
+    
+     - various minor cleanups to obscure filesystems
+    
+     - the drivers/rtc queue
+    
+     - hfsplus updates
+    
+     - ufs, hpfs, fatfs, affs, reiserfs
+    
+     - Documentation/
+    
+     - signals
+    
+     - procfs
+    
+     - cpu hotplug
+    
+     - lib/idr.c
+    
+     - rapidio
+    
+     - sysctl
+    
+     - ipc updates
+    
+    * emailed patches from Andrew Morton <akpm@linux-foundation.org>: (171 commits)
+      ufs: sb mutex merge + mutex_destroy
+      powerpc: update comments for generic idle conversion
+      cris: update comments for generic idle conversion
+      idle: remove cpu_idle() forward declarations
+      nbd: zero from and len fields in NBD_CMD_DISCONNECT.
+      mm: convert some level-less printks to pr_*
+      MAINTAINERS: adi-buildroot-devel is moderated
+      MAINTAINERS: add linux-api for review of API/ABI changes
+      mm/kmemleak-test.c: use pr_fmt for logging
+      fs/dlm/debug_fs.c: replace seq_printf by seq_puts
+      fs/dlm/lockspace.c: convert simple_str to kstr
+      fs/dlm/config.c: convert simple_str to kstr
+      mm: mark remap_file_pages() syscall as deprecated
+      mm: memcontrol: remove unnecessary memcg argument from soft limit functions
+      mm: memcontrol: clean up memcg zoneinfo lookup
+      mm/memblock.c: call kmemleak directly from memblock_(alloc|free)
+      mm/mempool.c: update the kmemleak stack trace for mempool allocations
+      lib/radix-tree.c: update the kmemleak stack trace for radix tree allocations
+      mm: introduce kmemleak_update_trace()
+      mm/kmemleak.c: use %u to print ->checksum
+      ...
+
+commit 7b215de3d0abbc4f6daf2efd19e8809af0564490
+
+----------
+Total;57d326169e878a1a37b2bccd1cf81f6809ee67b9;-1
+
+----------
+No match [7b215de3d0abbc4f6daf2efd19e8809af0564490][Date:   Fri Jun 6 12:26:57 2014 -0700][44][-1]
+cid [7b215de3d0abbc4f6daf2efd19e8809af0564490][Date:   Fri Jun 6 12:26:57 2014 -0700] count log [44] dbcount [-1].... NO Match :(
+   values of regions [44]
+Merge: 1fe9eb1 642653d
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Fri Jun 6 12:26:57 2014 -0700
+
+    Merge branch 'i2c/for-next' of git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux into next
+    
+    Pull i2c updates from Wolfram Sang:
+     "I2C has the following updates for 3.16:
+    
+       - major cleanups to the rcar and sh_mobile drivers
+       - removal of nuc900 driver which had a compile error for years
+       - usual bunch of driver updates, bugfixes and cleanups"
+    
+    * 'i2c/for-next' of git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux: (44 commits)
+      i2c: pca954x: Fix compilation without CONFIG_GPIOLIB
+      i2c: mux: pca954x: Use the descriptor-based GPIO API
+      i2c: mpc: insert DR read in i2c_fixup()
+      i2c: bfin: turn to Resource-managed API in probe function
+      i2c: Make of_device_id array const
+      i2c: remove unnecessary OOM messages
+      i2c: designware-pci: Add Haswell PCI IDs
+      i2c: designware: Add runtime PM hooks
+      i2c: designware: Disable device on system suspend
+      i2c: nuc900: remove driver
+      i2c: imx: update i2c clock divider for each transaction
+      i2c: imx: fix the i2c bus hang issue when do repeat restart
+      i2c: rcar: update copyright and license information
+      i2c: rcar: janitorial cleanup after refactoring
+      i2c: rcar: reuse status bits as enable bits
+      i2c: rcar: remove spinlock
+      i2c: rcar: refactor status bit handling
+      i2c: rcar: refactor setting up msg
+      i2c: rcar: check bus free before first message
+      i2c: rcar: refactor irq state machine
+      ...
+
+commit 1fe9eb184721132c7254d76d9ef31c96edad8870
+
+----------
+Total;7b215de3d0abbc4f6daf2efd19e8809af0564490;-1
+
+----------
+No match [1fe9eb184721132c7254d76d9ef31c96edad8870][Date:   Fri Jun 6 12:08:39 2014 -0700][77][-1]
+cid [1fe9eb184721132c7254d76d9ef31c96edad8870][Date:   Fri Jun 6 12:08:39 2014 -0700] count log [77] dbcount [-1].... NO Match :(
+   values of regions [77]
+Merge: 0bb4646 89abd4d
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Fri Jun 6 12:08:39 2014 -0700
+
+    Merge tag 'mfd-for-linus-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd into next
+    
+    Pull MFD updates from Lee Jones:
+     "Changes to existing drivers:
+       - increase DT coverage: arizona, mc13xxx, stmpe-i2c, syscon,
+         sun6i-prcm
+       - regmap use of and/or clean-up: tps65090, twl6040
+       - basic renaming: max14577
+       - use new cpufreq helpers: db8500-prcmu
+       - increase regulator support: stmpe, arizona, wm5102
+       - reduce legacy GPIO overhead: stmpe
+       - provide necessary remove path: bcm590xx
+       - expand sysfs presence: kempld
+       - move driver specific code out to drivers: rtc-s5m, arizona
+       - clk handling: twl6040
+       - use managed (devm_*) resources: ipaq-micro
+       - clean-up/remove unused/duplicated code: tps65218, sec, pm8921,
+         abx500-core, db8500-prcmu, menelaus
+       - build/boot/sematic bug fixes: rtsx_usb, stmpe, bcm590xx, abx500,
+         mc13xxx, rdc321x-southbridge, mfd-core, sec, max14577, syscon,
+         cros_ec_spi
+       - constify stuff: sm501, tps65910, tps6507x, tps6586x, max77686,
+         max8997, kempld, max77693, max8907, rtsx_usb, db8500-prcmu,
+         max8998, wm8400, sec, lp3943, max14577, as3711, omap-usb-host,
+         ipaq-micro
+    
+      Support for new devices:
+       - add support for max77836 into max14577
+       - add support for tps658640 into tps6586x
+       - add support for cros-ec-i2c-tunnel into cros_ec
+       - add new driver for rtsx_usb_sdmmc and rtsx_usb_ms
+       - add new driver for axp20x
+       - add new driver for sun6i-prcm
+       - add new driver for ipaq-micro"
+    
+    * tag 'mfd-for-linus-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd: (77 commits)
+      mfd: wm5102: Correct default for LDO Control 2 register
+      mfd: menelaus: Use module_i2c_driver
+      mfd: tps65218: Terminate of match table
+      mfd: db8500-prcmu: Remove check for CONFIG_DBX500_PRCMU_DEBUG
+      mfd: ti-keystone-devctrl: Add bindings for device state control
+      mfd: palmas: Format the header file
+      mfd: abx500-core: Remove unused function abx500_dump_all_banks()
+      mfd: arizona: Correct addresses of always-on trigger registers
+      mfd: max14577: Cast to architecture agnostic data type
+      i2c: ChromeOS EC tunnel driver
+      mfd: cros_ec: Sync to the latest cros_ec_commands.h from EC sources
+      mfd: cros_ec: spi: Increase cros_ec_spi deadline from 5ms to 100ms
+      mfd: cros_ec: spi: Make the cros_ec_spi timeout more reliable
+      mfd: cros_ec: spi: Add mutex to cros_ec_spi
+      mfd: cros_ec: spi: Calculate delay between transfers correctly
+      mfd: arizona: Correct error message for addition of main IRQ chip
+      mfd: wm8997: Add registers for high power mode
+      mfd: arizona: Add MICVDD to mapped regulators
+      mfd: ipaq-micro: Make mfd_cell array const
+      mfd: ipaq-micro: Use devm_ioremap_resource()
+      ...
+
+commit 0bb464624140bfdd8389d4c5464ba134b2856049
+
+----------
+Total;1fe9eb184721132c7254d76d9ef31c96edad8870;-1
+
+----------
+No match [0bb464624140bfdd8389d4c5464ba134b2856049][Date:   Fri Jun 6 11:58:47 2014 -0700][27][-1]
+cid [0bb464624140bfdd8389d4c5464ba134b2856049][Date:   Fri Jun 6 11:58:47 2014 -0700] count log [27] dbcount [-1].... NO Match :(
+   values of regions [6]
+   values of regions [21]
+Merge: 2732ea9 0b82fb9 1b5ab87
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Fri Jun 6 11:58:47 2014 -0700
+
+    Merge branches 'topic/vsp1' and 'topic/adv76xx' of git://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux-media into next
+    
+    Pull updates and DT support for media engines from Mauro Carvalho Chehab.
+    
+    For Analog Devices ADV7604 and the Renesas VSP1 video processing engines.
+    
+    * 'topic/vsp1' of git://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux-media:
+      [media] v4l: vsp1: Add DT support
+      [media] v4l: vsp1: Add DT bindings documentation
+      [media] v4l: vsp1: Add BRU support
+      [media] v4l: vsp1: Support multi-input entities
+      [media] v4l: vsp1: uds: Enable scaling of alpha layer
+      [media] v4l: vsp1: Remove unexisting rt clocks
+    
+    * 'topic/adv76xx' of git://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux-media: (21 commits)
+      [media] adv7604: Add LLC polarity configuration
+      [media] adv7604: Set HPD GPIO direction to output
+      [media] adv7604: Add endpoint properties to DT bindings
+      [media] adv7604: Add DT support
+      [media] adv7604: Specify the default input through platform data
+      [media] adv7604: Support hot-plug detect control through a GPIO
+      [media] adv7604: Sort headers alphabetically
+      [media] adv7604: Replace *_and_or() functions with *_clr_set()
+      [media] adv7604: Store I2C addresses and clients in arrays
+      [media] adv7604: Inline the to_sd function
+      [media] v4l: subdev: Remove deprecated video-level DV timings operations
+      [media] adv7604: Remove deprecated video-level DV timings operations
+      [media] adv7604: Add pad-level DV timings support
+      [media] adv7604: Make output format configurable through pad format operations
+      [media] adv7604: Add sink pads
+      [media] adv7604: Remove subdev control handlers
+      [media] adv7604: Add adv7611 support
+      [media] adv7604: Cache register contents when reading multiple bits
+      [media] adv7604: Add 16-bit read functions for CP and HDMI
+      [media] adv7604: Don't put info string arrays on the stack
+      ...
+
+commit 2732ea9e8528ec3d065e04ecd357f61eec4869a8
+
+----------
+Total;0bb464624140bfdd8389d4c5464ba134b2856049;-1
+
+----------
+No match [2732ea9e8528ec3d065e04ecd357f61eec4869a8][Date:   Fri Jun 6 11:48:46 2014 -0700][54][-1]
+cid [2732ea9e8528ec3d065e04ecd357f61eec4869a8][Date:   Fri Jun 6 11:48:46 2014 -0700] count log [54] dbcount [-1].... NO Match :(
+   values of regions [54]
+Merge: 75bcc84 c0981b8
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Fri Jun 6 11:48:46 2014 -0700
+
+    Merge tag 'iommu-updates-v3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/joro/iommu into next
+    
+    Pull IOMMU updates from Joerg Roedel:
+     "The changes include:
+    
+       - a new IOMMU driver for ARM Renesas SOCs
+    
+       - updates and fixes for the ARM Exynos driver to bring it closer to a
+         usable state again
+    
+       - convert the AMD IOMMUv2 driver to use the mmu_notifier->release
+         call-back instead of the task_exit notifier
+    
+       - random other fixes and minor improvements to a number of other
+         IOMMU drivers"
+    
+    * tag 'iommu-updates-v3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/joro/iommu: (54 commits)
+      iommu/msm: Use devm_ioremap_resource to simplify code
+      iommu/amd: Fix recently introduced compile warnings
+      arm/ipmmu-vmsa: Fix compile error
+      iommu/exynos: Fix checkpatch warning
+      iommu/exynos: Fix trivial typo
+      iommu/exynos: Remove invalid symbol dependency
+      iommu: fsl_pamu.c: Fix for possible null pointer dereference
+      iommu/amd: Remove duplicate checking code
+      iommu/amd: Handle parallel invalidate_range_start/end calls correctly
+      iommu/amd: Remove IOMMUv2 pasid_state_list
+      iommu/amd: Implement mmu_notifier_release call-back
+      iommu/amd: Convert IOMMUv2 state_table into state_list
+      iommu/amd: Don't access IOMMUv2 state_table directly
+      iommu/ipmmu-vmsa: Support clearing mappings
+      iommu/ipmmu-vmsa: Remove stage 2 PTE bits definitions
+      iommu/ipmmu-vmsa: Support 2MB mappings
+      iommu/ipmmu-vmsa: Rewrite page table management
+      iommu/ipmmu-vmsa: PMD is never folded, PUD always is
+      iommu/ipmmu-vmsa: Set the PTE contiguous hint bit when possible
+      iommu/ipmmu-vmsa: Define driver-specific page directory sizes
+      ...
+
+commit 75bcc84445bccf40a6215ff6fc6dd91978b1490e
+
+----------
+Total;2732ea9e8528ec3d065e04ecd357f61eec4869a8;-1
+
+----------
+No match [75bcc84445bccf40a6215ff6fc6dd91978b1490e][Date:   Fri Jun 6 11:44:09 2014 -0700][4][-1]
+cid [75bcc84445bccf40a6215ff6fc6dd91978b1490e][Date:   Fri Jun 6 11:44:09 2014 -0700] count log [4] dbcount [-1].... NO Match :(
+   values of regions [4]
+Merge: cc07aab 2f35fb3
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Fri Jun 6 11:44:09 2014 -0700
+
+    Merge tag 'renesas-sh-drivers-for-v3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/horms/renesas into next
+    
+    Pull SH driver update from Simon Horman:
+    
+     - PM Runtime enhancements targeted for use with ARM-based Renesas R-Car
+       Gen2 SoCs
+    
+     - Restrict INTC_USERIMASK to SH4A as it is only used there
+    
+    * tag 'renesas-sh-drivers-for-v3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/horms/renesas:
+      drivers: sh: Enable PM runtime for new R-Car Gen2 SoCs
+      drivers: sh: pm_runtime implementation needs to suspend and resume devices
+      drivers: sh: Restrict INTC_USERIMASK to SH4A
+      drivers: sh: pm_runtime does not need idle callback
+
+commit cc07aabc53978ae09a1d539237189f7c9841060a
+
+----------
+Total;75bcc84445bccf40a6215ff6fc6dd91978b1490e;-1
+
+----------
+No match [cc07aabc53978ae09a1d539237189f7c9841060a][Date:   Fri Jun 6 10:43:28 2014 -0700][57][-1]
+cid [cc07aabc53978ae09a1d539237189f7c9841060a][Date:   Fri Jun 6 10:43:28 2014 -0700] count log [57] dbcount [-1].... NO Match :(
+   values of regions [57]
+Merge: 9e47aae 9358d75
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Fri Jun 6 10:43:28 2014 -0700
+
+    Merge tag 'arm64-upstream' of git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux into next
+    
+    Pull arm64 updates from Catalin Marinas:
+     - Optimised assembly string/memory routines (based on the AArch64
+       Cortex Strings library contributed to glibc but re-licensed under
+       GPLv2)
+     - Optimised crypto algorithms making use of the ARMv8 crypto extensions
+       (together with kernel API for using FPSIMD instructions in interrupt
+       context)
+     - Ftrace support
+     - CPU topology parsing from DT
+     - ESR_EL1 (Exception Syndrome Register) exposed to user space signal
+       handlers for SIGSEGV/SIGBUS (useful to emulation tools like Qemu)
+     - 1GB section linear mapping if applicable
+     - Barriers usage clean-up
+     - Default pgprot clean-up
+    
+    Conflicts as per Catalin.
+    
+    * tag 'arm64-upstream' of git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux: (57 commits)
+      arm64: kernel: initialize broadcast hrtimer based clock event device
+      arm64: ftrace: Add system call tracepoint
+      arm64: ftrace: Add CALLER_ADDRx macros
+      arm64: ftrace: Add dynamic ftrace support
+      arm64: Add ftrace support
+      ftrace: Add arm64 support to recordmcount
+      arm64: Add 'notrace' attribute to unwind_frame() for ftrace
+      arm64: add __ASSEMBLY__ in asm/insn.h
+      arm64: Fix linker script entry point
+      arm64: lib: Implement optimized string length routines
+      arm64: lib: Implement optimized string compare routines
+      arm64: lib: Implement optimized memcmp routine
+      arm64: lib: Implement optimized memset routine
+      arm64: lib: Implement optimized memmove routine
+      arm64: lib: Implement optimized memcpy routine
+      arm64: defconfig: enable a few more common/useful options in defconfig
+      ftrace: Make CALLER_ADDRx macros more generic
+      arm64: Fix deadlock scenario with smp_send_stop()
+      arm64: Fix machine_shutdown() definition
+      arm64: Support arch_irq_work_raise() via self IPIs
+      ...
+
+commit d54d14bfb49f0b61aed9f20cb84cb692566cf83b
+
+----------
+Total;cc07aabc53978ae09a1d539237189f7c9841060a;-1
+
+----------
+Match [d54d14bfb49f0b61aed9f20cb84cb692566cf83b][Date:   Fri Jun 6 09:53:32 2014 -0700][4]
+No match [2b03adc1911d1c84cb7fad8b424234f589547cb3][Date:   Thu Jun 5 16:15:33 2014 -0700][10][-1]
+cid [2b03adc1911d1c84cb7fad8b424234f589547cb3][Date:   Thu Jun 5 16:15:33 2014 -0700] count log [10] dbcount [-1].... NO Match :(
+   values of regions [10]
+Merge: eb3d3ec 225fba2
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu Jun 5 16:15:33 2014 -0700
+
+    Merge tag 'microblaze-3.16-rc1' of git://git.monstr.eu/linux-2.6-microblaze into next
+    
+    Pull Microblaze updates from Michal Simek:
+     - cleanup PCI and DMA handling
+     - use generic device.h
+     - some cleanups
+    
+    * tag 'microblaze-3.16-rc1' of git://git.monstr.eu/linux-2.6-microblaze:
+      microblaze: Fix typo in head.S s/substract/subtract/
+      microblaze: remove check for CONFIG_XILINX_CONSOLE
+      microblaze: Use generic device.h
+      microblaze: Do not setup empty unmap_sg function
+      microblaze: Remove device_to_mask
+      microblaze: Clean device dma_ops structure
+      microblaze: Cleanup PCI_DRAM_OFFSET handling
+      microblaze: Do not setup pci_dma_ops
+      microblaze: Return default dma operations
+      microblaze: Enable SERIAL_OF_PLATFORM
+
+commit eb3d3ec567e868c8a3bfbfdfc9465ffd52983d11
+
+----------
+Total;2b03adc1911d1c84cb7fad8b424234f589547cb3;-1
+
+----------
+No match [eb3d3ec567e868c8a3bfbfdfc9465ffd52983d11][Date:   Thu Jun 5 15:57:04 2014 -0700][142][-1]
+cid [eb3d3ec567e868c8a3bfbfdfc9465ffd52983d11][Date:   Thu Jun 5 15:57:04 2014 -0700] count log [142] dbcount [-1].... NO Match :(
+   values of regions [142]
+Merge: c3c55a0 bd63ce2
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu Jun 5 15:57:04 2014 -0700
+
+    Merge branch 'for-linus' of git://ftp.arm.linux.org.uk/~rmk/linux-arm into next
+    
+    Pull ARM updates from Russell King:
+    
+     - Major clean-up of the L2 cache support code.  The existing mess was
+       becoming rather unmaintainable through all the additions that others
+       have done over time.  This turns it into a much nicer structure, and
+       implements a few performance improvements as well.
+    
+     - Clean up some of the CP15 control register tweaks for alignment
+       support, moving some code and data into alignment.c
+    
+     - DMA properties for ARM, from Santosh and reviewed by DT people.  This
+       adds DT properties to specify bus translations we can't discover
+       automatically, and to indicate whether devices are coherent.
+    
+     - Hibernation support for ARM
+    
+     - Make ftrace work with read-only text in modules
+    
+     - add suspend support for PJ4B CPUs
+    
+     - rework interrupt masking for undefined instruction handling, which
+       allows us to enable interrupts earlier in the handling of these
+       exceptions.
+    
+     - support for big endian page tables
+    
+     - fix stacktrace support to exclude stacktrace functions from the
+       trace, and add save_stack_trace_regs() implementation so that kprobes
+       can record stack traces.
+    
+     - Add support for the Cortex-A17 CPU.
+    
+     - Remove last vestiges of ARM710 support.
+    
+     - Removal of ARM "meminfo" structure, finally converting us solely to
+       memblock to handle the early memory initialisation.
+    
+    * 'for-linus' of git://ftp.arm.linux.org.uk/~rmk/linux-arm: (142 commits)
+      ARM: ensure C page table setup code follows assembly code (part II)
+      ARM: ensure C page table setup code follows assembly code
+      ARM: consolidate last remaining open-coded alignment trap enable
+      ARM: remove global cr_no_alignment
+      ARM: remove CPU_CP15 conditional from alignment.c
+      ARM: remove unused adjust_cr() function
+      ARM: move "noalign" command line option to alignment.c
+      ARM: provide common method to clear bits in CPU control register
+      ARM: 8025/1: Get rid of meminfo
+      ARM: 8060/1: mm: allow sub-architectures to override PCI I/O memory type
+      ARM: 8066/1: correction for ARM patch 8031/2
+      ARM: 8049/1: ftrace/add save_stack_trace_regs() implementation
+      ARM: 8065/1: remove last use of CONFIG_CPU_ARM710
+      ARM: 8062/1: Modify ldrt fixup handler to re-execute the userspace instruction
+      ARM: 8047/1: rwsem: use asm-generic rwsem implementation
+      ARM: l2c: trial at enabling some Cortex-A9 optimisations
+      ARM: l2c: add warnings for stuff modifying aux_ctrl register values
+      ARM: l2c: print a warning with L2C-310 caches if the cache size is modified
+      ARM: l2c: remove old .set_debug method
+      ARM: l2c: kill L2X0_AUX_CTRL_MASK before anyone else makes use of this
+      ...
+
+commit c3c55a07203947f72afa50a3218460b27307c47d
+
+----------
+Total;eb3d3ec567e868c8a3bfbfdfc9465ffd52983d11;-1
+
+----------
+No match [c3c55a07203947f72afa50a3218460b27307c47d][Date:   Thu Jun 5 13:15:32 2014 -0700][11][-1]
+cid [c3c55a07203947f72afa50a3218460b27307c47d][Date:   Thu Jun 5 13:15:32 2014 -0700] count log [11] dbcount [-1].... NO Match :(
+   values of regions [11]
+Merge: 046f153 74bcc24
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu Jun 5 13:15:32 2014 -0700
+
+    Merge branch 'arm64-efi-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip into next
+    
+    Pull ARM64 EFI update from Peter Anvin:
+     "By agreement with the ARM64 EFI maintainers, we have agreed to make
+      -tip the upstream for all EFI patches.  That is why this patchset
+      comes from me :)
+    
+      This patchset enables EFI stub support for ARM64, like we already have
+      on x86"
+    
+    * 'arm64-efi-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip:
+      arm64: efi: only attempt efi map setup if booting via EFI
+      efi/arm64: ignore dtb= when UEFI SecureBoot is enabled
+      doc: arm64: add description of EFI stub support
+      arm64: efi: add EFI stub
+      doc: arm: add UEFI support documentation
+      arm64: add EFI runtime services
+      efi: Add shared FDT related functions for ARM/ARM64
+      arm64: Add function to create identity mappings
+      efi: add helper function to get UEFI params from FDT
+      doc: efi-stub.txt updates for ARM
+      lib: add fdt_empty_tree.c
+
+commit 951e273060d15b233a7f7ccaf76ba682b5b05a03
+
+----------
+Total;c3c55a07203947f72afa50a3218460b27307c47d;-1
+
+----------
+Match [951e273060d15b233a7f7ccaf76ba682b5b05a03][Date:   Thu Jun 5 12:51:05 2014 -0700][2]
+Match [1c5aefb5b12a90e29866c960a57c1f8f75def617][Date:   Thu Jun 5 12:31:32 2014 -0700][4]
+No match [046f153343e33dcad1be7f6249ea6ff1c6fd9b58][Date:   Thu Jun 5 08:16:29 2014 -0700][15][-1]
+cid [046f153343e33dcad1be7f6249ea6ff1c6fd9b58][Date:   Thu Jun 5 08:16:29 2014 -0700] count log [15] dbcount [-1].... NO Match :(
+   values of regions [15]
+Merge: a0abcf2 e33655a
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu Jun 5 08:16:29 2014 -0700
+
+    Merge branch 'x86-efi-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip into next
+    
+    Pull x86 EFI updates from Peter Anvin:
+     "A collection of EFI changes.  The perhaps most important one is to
+      fully save and restore the FPU state around each invocation of EFI
+      runtime, and to not choke on non-ASCII characters in the boot stub"
+    
+    * 'x86-efi-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip:
+      efivars: Add compatibility code for compat tasks
+      efivars: Refactor sanity checking code into separate function
+      efivars: Stop passing a struct argument to efivar_validate()
+      efivars: Check size of user object
+      efivars: Use local variables instead of a pointer dereference
+      x86/efi: Save and restore FPU context around efi_calls (i386)
+      x86/efi: Save and restore FPU context around efi_calls (x86_64)
+      x86/efi: Implement a __efi_call_virt macro
+      x86, fpu: Extend the use of static_cpu_has_safe
+      x86/efi: Delete most of the efi_call* macros
+      efi: x86: Handle arbitrary Unicode characters
+      efi: Add get_dram_base() helper function
+      efi: Add shared printk wrapper for consistent prefixing
+      efi: create memory map iteration helper
+      efi: efi-stub-helper cleanup
+
+commit a0abcf2e8f8017051830f738ac1bf5ef42703243
+
+----------
+Total;046f153343e33dcad1be7f6249ea6ff1c6fd9b58;-1
+
+----------
+No match [a0abcf2e8f8017051830f738ac1bf5ef42703243][Date:   Thu Jun 5 08:05:29 2014 -0700][15][-1]
+cid [a0abcf2e8f8017051830f738ac1bf5ef42703243][Date:   Thu Jun 5 08:05:29 2014 -0700] count log [15] dbcount [-1].... NO Match :(
+   values of regions [15]
+Merge: 2071b3e c191920
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu Jun 5 08:05:29 2014 -0700
+
+    Merge branch 'x86/vdso' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip into next
+    
+    Pull x86 cdso updates from Peter Anvin:
+     "Vdso cleanups and improvements largely from Andy Lutomirski.  This
+      makes the vdso a lot less ''special''"
+    
+    * 'x86/vdso' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip:
+      x86/vdso, build: Make LE access macros clearer, host-safe
+      x86/vdso, build: Fix cross-compilation from big-endian architectures
+      x86/vdso, build: When vdso2c fails, unlink the output
+      x86, vdso: Fix an OOPS accessing the HPET mapping w/o an HPET
+      x86, mm: Replace arch_vma_name with vm_ops->name for vsyscalls
+      x86, mm: Improve _install_special_mapping and fix x86 vdso naming
+      mm, fs: Add vm_ops->name as an alternative to arch_vma_name
+      x86, vdso: Fix an OOPS accessing the HPET mapping w/o an HPET
+      x86, vdso: Remove vestiges of VDSO_PRELINK and some outdated comments
+      x86, vdso: Move the vvar and hpet mappings next to the 64-bit vDSO
+      x86, vdso: Move the 32-bit vdso special pages after the text
+      x86, vdso: Reimplement vdso.so preparation in build-time C
+      x86, vdso: Move syscall and sysenter setup into kernel/cpu/common.c
+      x86, vdso: Clean up 32-bit vs 64-bit vdso params
+      x86, mm: Ensure correct alignment of the fixmap
+
+commit 2071b3e34fd33e496ebd7b90331ac5b3b0ac3b81
+
+----------
+Total;a0abcf2e8f8017051830f738ac1bf5ef42703243;-1
+
+----------
+No match [2071b3e34fd33e496ebd7b90331ac5b3b0ac3b81][Date:   Thu Jun 5 07:46:15 2014 -0700][7][-1]
+cid [2071b3e34fd33e496ebd7b90331ac5b3b0ac3b81][Date:   Thu Jun 5 07:46:15 2014 -0700] count log [7] dbcount [-1].... NO Match :(
+   values of regions [7]
+Merge: 9df0fe6 e6ab9a2
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu Jun 5 07:46:15 2014 -0700
+
+    Merge branch 'x86/espfix' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip into next
+    
+    Pull x86-64 espfix changes from Peter Anvin:
+     "This is the espfix64 code, which fixes the IRET information leak as
+      well as the associated functionality problem.  With this code applied,
+      16-bit stack segments finally work as intended even on a 64-bit
+      kernel.
+    
+      Consequently, this patchset also removes the runtime option that we
+      added as an interim measure.
+    
+      To help the people working on Linux kernels for very small systems,
+      this patchset also makes these compile-time configurable features"
+    
+    * 'x86/espfix' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip:
+      Revert "x86-64, modify_ldt: Make support for 16-bit segments a runtime option"
+      x86, espfix: Make it possible to disable 16-bit support
+      x86, espfix: Make espfix64 a Kconfig option, fix UML
+      x86, espfix: Fix broken header guard
+      x86, espfix: Move espfix definitions into a separate header file
+      x86-32, espfix: Remove filter for espfix32 due to race
+      x86-64, espfix: Don't leak bits 31:16 of %esp returning to 16-bit stack
+
+commit 9df0fe64ebbdd85dd871cb8d52c16efe5ec45319
+
+----------
+Total;2071b3e34fd33e496ebd7b90331ac5b3b0ac3b81;-1
+
+----------
+No match [9df0fe64ebbdd85dd871cb8d52c16efe5ec45319][Date:   Thu Jun 5 07:38:07 2014 -0700][1][-1]
+cid [9df0fe64ebbdd85dd871cb8d52c16efe5ec45319][Date:   Thu Jun 5 07:38:07 2014 -0700] count log [1] dbcount [-1].... NO Match :(
+   values of regions [1]
+Merge: 00170fd 7fd44da
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu Jun 5 07:38:07 2014 -0700
+
+    Merge branch 'x86-x32-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip into next
+    
+    Pull x86 x32 ABI fix from Peter Anvin:
+     "A single fix for the x32 ABI: the io_setup() and io_submit() system
+      call need to use the compat stubs"
+    
+    * 'x86-x32-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip:
+      x86, x32: Use compat shims for io_{setup,submit}
+
+commit 00170fdd0846df7cdb5ad421d3a340440f930b8f
+
+----------
+Total;9df0fe64ebbdd85dd871cb8d52c16efe5ec45319;-1
+
+----------
+No match [00170fdd0846df7cdb5ad421d3a340440f930b8f][Date:   Wed Jun 4 16:55:13 2014 -0700][276][-1]
+cid [00170fdd0846df7cdb5ad421d3a340440f930b8f][Date:   Wed Jun 4 16:55:13 2014 -0700] count log [276] dbcount [-1].... NO Match :(
+   values of regions [276]
+Merge: d09cc36 3ff6db3
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Jun 4 16:55:13 2014 -0700
+
+    Merge branch 'akpm' (patchbomb from Andrew) into next
+    
+    Merge misc updates from Andrew Morton:
+    
+     - a few fixes for 3.16.  Cc'ed to stable so they'll get there somehow.
+    
+     - various misc fixes and cleanups
+    
+     - most of the ocfs2 queue.  Review is slow...
+    
+     - most of MM.  The MM queue is pretty huge this time, but not much in
+       the way of feature work.
+    
+     - some tweaks under kernel/
+    
+     - printk maintenance work
+    
+     - updates to lib/
+    
+     - checkpatch updates
+    
+     - tweaks to init/
+    
+    * emailed patches from Andrew Morton <akpm@linux-foundation.org>: (276 commits)
+      fs/autofs4/dev-ioctl.c: add __init to autofs_dev_ioctl_init
+      fs/ncpfs/getopt.c: replace simple_strtoul by kstrtoul
+      init/main.c: remove an ifdef
+      kthreads: kill CLONE_KERNEL, change kernel_thread(kernel_init) to avoid CLONE_SIGHAND
+      init/main.c: add initcall_blacklist kernel parameter
+      init/main.c: don't use pr_debug()
+      fs/binfmt_flat.c: make old_reloc() static
+      fs/binfmt_elf.c: fix bool assignements
+      fs/efs: convert printk(KERN_DEBUG to pr_debug
+      fs/efs: add pr_fmt / use __func__
+      fs/efs: convert printk to pr_foo()
+      scripts/checkpatch.pl: device_initcall is not the only __initcall substitute
+      checkpatch: check stable email address
+      checkpatch: warn on unnecessary void function return statements
+      checkpatch: prefer kstrto<foo> to sscanf(buf, "%<lhuidx>", &bar);
+      checkpatch: add warning for kmalloc/kzalloc with multiply
+      checkpatch: warn on #defines ending in semicolon
+      checkpatch: make --strict a default for files in drivers/net and net/
+      checkpatch: always warn on missing blank line after variable declaration block
+      checkpatch: fix wildcard DT compatible string checking
+      ...
+
+commit d09cc3659db494aca4b3bb2393c533fb4946b794
+
+----------
+Total;00170fdd0846df7cdb5ad421d3a340440f930b8f;-1
+
+----------
+No match [d09cc3659db494aca4b3bb2393c533fb4946b794][Date:   Wed Jun 4 15:59:13 2014 -0700][40][-1]
+cid [d09cc3659db494aca4b3bb2393c533fb4946b794][Date:   Wed Jun 4 15:59:13 2014 -0700] count log [40] dbcount [-1].... NO Match :(
+   values of regions [40]
+Merge: 82e627e c0ffa79
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Jun 4 15:59:13 2014 -0700
+
+    Merge branch 'irq-core-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip into next
+    
+    Pull core irq updates from Thomas Gleixner:
+     "The irq department delivers:
+    
+       - Another tree wide update to get rid of the horrible create_irq
+         interface along with its even more horrible variants.  That also
+         gets rid of the last leftovers of the initial sparse irq hackery.
+         arch/driver specific changes have been either acked or ignored.
+    
+       - A fix for the spurious interrupt detection logic with threaded
+         interrupts.
+    
+       - A new ARM SoC interrupt controller
+    
+       - The usual pile of fixes and improvements all over the place"
+    
+    * 'irq-core-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip: (40 commits)
+      Documentation: brcmstb-l2: Add Broadcom STB Level-2 interrupt controller binding
+      irqchip: brcmstb-l2: Add Broadcom Set Top Box Level-2 interrupt controller
+      genirq: Improve documentation to match current implementation
+      ARM: iop13xx: fix msi support with sparse IRQ
+      genirq: Provide !SMP stub for irq_set_affinity_notifier()
+      irqchip: armada-370-xp: Move the devicetree binding documentation
+      irqchip: gic: Use mask field in GICC_IAR
+      genirq: Remove dynamic_irq mess
+      ia64: Use irq_init_desc
+      genirq: Replace dynamic_irq_init/cleanup
+      genirq: Remove irq_reserve_irq[s]
+      genirq: Replace reserve_irqs in core code
+      s390: Avoid call to irq_reserve_irqs()
+      s390: Remove pointless arch_show_interrupts()
+      s390: pci: Check return value of alloc_irq_desc() proper
+      sh: intc: Remove pointless irq_reserve_irqs() invocation
+      x86, irq: Remove pointless irq_reserve_irqs() call
+      genirq: Make create/destroy_irq() ia64 private
+      tile: Use SPARSE_IRQ
+      tile: pci: Use irq_alloc/free_hwirq()
+      ...
+
+commit 82e627eb5e07d7993216c9e63fb5550cf6ed25d7
+
+----------
+Total;d09cc3659db494aca4b3bb2393c533fb4946b794;-1
+
+----------
+No match [82e627eb5e07d7993216c9e63fb5550cf6ed25d7][Date:   Wed Jun 4 15:57:20 2014 -0700][23][-1]
+cid [82e627eb5e07d7993216c9e63fb5550cf6ed25d7][Date:   Wed Jun 4 15:57:20 2014 -0700] count log [23] dbcount [-1].... NO Match :(
+   values of regions [23]
+Merge: f1a7cd0 331b483
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Jun 4 15:57:20 2014 -0700
+
+    Merge branch 'timers-core-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip into next
+    
+    Pull timer core updates from Thomas Gleixner:
+     "This time you get nothing really exciting:
+       - A huge update to the sh* clocksource drivers
+       - Support for two more ARM SoCs
+       - Removal of the deprecated setup_sched_clock() API
+       - The usual pile of fixlets all over the place"
+    
+    * 'timers-core-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip: (23 commits)
+      clocksource: Add Freescale FlexTimer Module (FTM) timer support
+      ARM: dts: vf610: Add Freescale FlexTimer Module timer node.
+      clocksource: ftm: Add FlexTimer Module (FTM) Timer devicetree Documentation
+      clocksource: sh_tmu: Remove unnecessary OOM messages
+      clocksource: sh_mtu2: Remove unnecessary OOM messages
+      clocksource: sh_cmt: Remove unnecessary OOM messages
+      clocksource: em_sti: Remove unnecessary OOM messages
+      clocksource: dw_apb_timer_of: Do not trace read_sched_clock
+      clocksource: Fix clocksource_mmio_readX_down
+      clocksource: Fix type confusion for clocksource_mmio_readX_Y
+      clocksource: sh_tmu: Fix channel IRQ retrieval in legacy case
+      clocksource: qcom: Implement read_current_timer for udelay
+      ntp: Make is_error_status() use its argument
+      ntp: Convert simple_strtol to kstrtol
+      timer_stats/doc: Fix /proc/timer_stats documentation
+      sched_clock: Remove deprecated setup_sched_clock() API
+      ARM: sun6i: a31: Add support for the High Speed Timers
+      clocksource: sun5i: Add support for reset controller
+      clocksource: efm32: use $vendor,$device scheme for compatible string
+      KConfig: Vexpress: build the ARM_GLOBAL_TIMER with vexpress platform
+      ...
+
+commit f1a7cd0ffe8c4ecd57a55aab7cfd4c813e0f5f3d
+
+----------
+Total;82e627eb5e07d7993216c9e63fb5550cf6ed25d7;-1
+
+----------
+No match [f1a7cd0ffe8c4ecd57a55aab7cfd4c813e0f5f3d][Date:   Wed Jun 4 14:26:35 2014 -0700][7][-1]
+cid [f1a7cd0ffe8c4ecd57a55aab7cfd4c813e0f5f3d][Date:   Wed Jun 4 14:26:35 2014 -0700] count log [7] dbcount [-1].... NO Match :(
+   values of regions [7]
+Merge: aaeb255 14b83e1
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Jun 4 14:26:35 2014 -0700
+
+    Merge branch 'for-linus' of git://git.kernel.dk/linux-block into next
+    
+    Pull block follow-up bits from Jens Axboe:
+     "A few minor (but important) fixes for blk-mq for the -rc1 window.
+    
+       - Hot removal potential oops fix for single queue devices.  From me.
+    
+       - Two merged patches in late May meant that we accidentally lost a
+         fix for freeing an active queue.  Fix that up.  From me.
+    
+       - A change of the blk_mq_tag_to_rq() API, passing in blk_mq_tags, to
+         make life considerably easier for scsi-mq.  From me.
+    
+       - A schedule-while-atomic fix from Ming Lei, which would hit if the
+         tag space was exhausted.
+    
+       - Missing __percpu annotation in one place in blk-mq.  Found by the
+         magic Wu compile bot due to code being moved around by the previous
+         patch, but it's actually an older issue.  From Ming Lei.
+    
+       - Clearing of tag of a flush request at end_io time.  From Ming Lei"
+    
+    * 'for-linus' of git://git.kernel.dk/linux-block:
+      block: mq flush: clear flush_rq's tag in flush_end_io()
+      blk-mq: let blk_mq_tag_to_rq() take blk_mq_tags as the main parameter
+      blk-mq: fix regression from commit 624dbe475416
+      blk-mq: handle NULL req return from blk_map_request in single queue mode
+      blk-mq: fix sparse warning on missed __percpu annotation
+      blk-mq: fix schedule from atomic context
+      blk-mq: move blk_mq_get_ctx/blk_mq_put_ctx to mq private header
+
+commit aaeb2554337217dfa4eac2fcc90da7be540b9a73
+
+----------
+Total;f1a7cd0ffe8c4ecd57a55aab7cfd4c813e0f5f3d;-1
+
+----------
+No match [aaeb2554337217dfa4eac2fcc90da7be540b9a73][Date:   Wed Jun 4 14:24:30 2014 -0700][286][-1]
+cid [aaeb2554337217dfa4eac2fcc90da7be540b9a73][Date:   Wed Jun 4 14:24:30 2014 -0700] count log [286] dbcount [-1].... NO Match :(
+   values of regions [286]
+Merge: d270506 a2668e1
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Jun 4 14:24:30 2014 -0700
+
+    Merge branch 'v4l_for_linus' of git://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux-media into next
+    
+    Pull media updates from Mauro Carvalho Chehab:
+     "This contains:
+       - a new frontend/tuner driver set for si2168 and sa2157
+       - Videobuf 2 core now supports DVB too
+       - A new gspca sub-driver (dtcs033)
+       - saa7134 is now converted to use videobuf2
+       - add support for 4K timings
+       - several other driver fixes and improvements
+    
+      PS.  This pull request is shorter than usual, partly because I have
+      some other patches on topic branches that I'll be sending you later
+      this week"
+    
+    * 'v4l_for_linus' of git://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux-media: (286 commits)
+      [media] au0828-dvb: restore its permission to 644
+      [media] xc5000: delay tuner sleep to 5 seconds
+      [media] xc5000: Don't use whitespace before tabs
+      [media] xc5000: fix CamelCase
+      [media] xc5000: Don't wrap msleep()
+      [media] xc5000: get rid of positive error codes
+      [media] au0828: reset streaming when a new frequency is set
+      [media] au0828: Improve debug messages for urb_completion
+      [media] au0828: Cancel stream-restart operation if frontend is disconnected
+      [media] dib0700: fix RC support on Hauppauge Nova-TD
+      [media] USB: as102_usb_drv.c: Remove useless return variables
+      [media] v4l: Fix documentation of V4L2_PIX_FMT_H264_MVC and VP8 pixel formats
+      [media] m5mols: Replace missing header
+      [media] staging: lirc: Fix sparse warnings
+      [media] fix mceusb endpoint type identification/handling
+      [media] az6027: Added the PID for a new revision of the Elgato EyeTV Sat DVB-S Tuner
+      [media] DocBook media: fix typo
+      [media] adv7604: Add missing include to linux/types.h
+      [media] v4l: Validate fields in the core code for subdev EDID ioctls
+      [media] v4l: Add support for DV timings ioctls on subdev nodes
+      ...
+
+commit d27050641e9bc056446deb0814e7ba1aa7911f5a
+
+----------
+Total;aaeb2554337217dfa4eac2fcc90da7be540b9a73;-1
+
+----------
+No match [d27050641e9bc056446deb0814e7ba1aa7911f5a][Date:   Wed Jun 4 10:02:38 2014 -0700][58][-1]
+cid [d27050641e9bc056446deb0814e7ba1aa7911f5a][Date:   Wed Jun 4 10:02:38 2014 -0700] count log [58] dbcount [-1].... NO Match :(
+   values of regions [58]
+Merge: b77279b 43cb436
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Jun 4 10:02:38 2014 -0700
+
+    Merge tag 'devicetree-for-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux into next
+    
+    Pull DeviceTree updates from Rob Herring:
+     - Another round of clean-up of FDT related code in architecture code.
+       This removes knowledge of internal FDT details from most
+       architectures except powerpc.
+     - Conversion of kernel's custom FDT parsing code to use libfdt.
+     - DT based initialization for generic serial earlycon.  The
+       introduction of generic serial earlycon support went in through the
+       tty tree.
+     - Improve the platform device naming for DT probed devices to ensure
+       unique naming and use parent names instead of a global index.
+     - Fix a race condition in of_update_property.
+     - Unify the various linker section OF match tables and fix several
+       function prototype errors.
+     - Update platform_get_irq_byname to work in deferred probe cases.
+     - 2 binding doc updates
+    
+    * tag 'devicetree-for-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux: (58 commits)
+      of: handle NULL node in next_child iterators
+      of/irq: provide more wrappers for !CONFIG_OF
+      devicetree: bindings: Document micrel vendor prefix
+      dt: bindings: dwc2: fix required value for the phy-names property
+      of_pci_irq: kill useless variable in of_irq_parse_pci()
+      of/irq: do irq resolution in platform_get_irq_byname()
+      of: Add a testcase for of_find_node_by_path()
+      of: Make of_find_node_by_path() handle /aliases
+      of: Create unlocked version of for_each_child_of_node()
+      lib: add glibc style strchrnul() variant
+      of: Handle memory@0 node on PPC32 only
+      pci/of: Remove dead code
+      of: fix race between search and remove in of_update_property()
+      of: Use NULL for pointers
+      of: Stop naming platform_device using dcr address
+      of: Ensure unique names without sacrificing determinism
+      tty/serial: pl011: add DT based earlycon support
+      of/fdt: add FDT serial scanning for earlycon
+      of/fdt: add FDT address translation support
+      serial: earlycon: add DT support
+      ...
+
+commit 54539cd217d687d9acf385eab22ec02b3f7a86a0
+
+----------
+Total;d27050641e9bc056446deb0814e7ba1aa7911f5a;-1
+
+----------
+Match [54539cd217d687d9acf385eab22ec02b3f7a86a0][Date:   Wed Jun 4 09:56:03 2014 -0700][1]
+No match [b77279bc2e81545b20824da701b349272a78e4e7][Date:   Wed Jun 4 09:08:25 2014 -0700][480][-1]
+cid [b77279bc2e81545b20824da701b349272a78e4e7][Date:   Wed Jun 4 09:08:25 2014 -0700] count log [480] dbcount [-1].... NO Match :(
+   values of regions [480]
+Merge: 15b5883 16088cb
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Jun 4 09:08:25 2014 -0700
+
+    Merge tag 'sound-3.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound into next
+    
+    Pull sound updates from Takashi Iwai:
+     "At this time, majority of changes come from ASoC world while we got a
+      few new drivers in other places for FireWire and USB.  There have been
+      lots of ASoC core cleanups / refactoring, but very little visible to
+      external users.
+    
+      ASoC:
+       - Support for specifying aux CODECs in DT
+       - Removal of the deprecated mux and enum macros
+       - More moves towards full componentisation
+       - Removal of some unused I/O code
+       - Lots of cleanups, fixes and enhancements to the davinci, Freescale,
+         Haswell and Realtek drivers
+       - Several drivers exposed directly in Kconfig for use with
+         simple-card
+       - GPIO descriptor support for jacks
+       - More updates and fixes to the Freescale SSI, Intel and rsnd drivers
+       - New drivers for Cirrus CS42L56, Realtek RT5639, RT5642 and RT5651
+         and ST STA350, Analog Devices ADAU1361, ADAU1381, ADAU1761 and
+         ADAU1781, and Realtek RT5677
+    
+      HD-audio:
+       - Clean up Dell headset quirks
+       - Noise fixes for Dell and Sony laptops
+       - Thinkpad T440 dock fix
+       - Realtek codec updates (ALC293,ALC233,ALC3235)
+       - Tegra HD-audio HDMI support
+    
+      FireWire-audio:
+       - FireWire audio stack enhancement (AMDTP, MIDI), support for
+         incoming isochronous stream and duplex streams with timestamp
+         synchronization
+       - BeBoB-based devices support
+       - Fireworks-based device support
+    
+      USB-audio:
+       - Behringer BCD2000 USB device support
+    
+      Misc:
+       - Clean up of a few old drivers, atmel, fm801, etc"
+    
+    * tag 'sound-3.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound: (480 commits)
+      ASoC: Fix wrong argument for card remove callbacks
+      ASoC: free jack GPIOs before the sound card is freed
+      ALSA: firewire-lib: Remove a comment about restriction of asynchronous operation
+      ASoC: cache: Fix error code when not using ASoC level cache
+      ALSA: hda/realtek - Fix COEF widget NID for ALC260 replacer fixup
+      ALSA: hda/realtek - Correction of fixup codes for PB V7900 laptop
+      ALSA: firewire-lib: Use IEC 61883-6 compliant labels for Raw Audio data
+      ASoC: add RT5677 CODEC driver
+      ASoC: intel: The Baytrail/MAX98090 driver depends on I2C
+      ASoC: rt5640: Add the function "get_clk_info" to RL6231 shared support
+      ASoC: rt5640: Add the function of the PLL clock calculation to RL6231 shared support
+      ASoC: rt5640: Add RL6231 class device shared support for RT5640, RT5645 and RT5651
+      ASoC: cache: Fix possible ZERO_SIZE_PTR pointer dereferencing error.
+      ASoC: Add helper functions to cast from DAPM context to CODEC/platform
+      ALSA: bebob: sizeof() vs ARRAY_SIZE() typo
+      ASoC: wm9713: correct mono out PGA sources
+      ALSA: synth: emux: soundfont.c: Cleaning up memory leak
+      ASoC: fsl: Remove dependencies of boards for SND_SOC_EUKREA_TLV320
+      ASoC: fsl-ssi: Use regmap
+      ASoC: fsl-ssi: reorder and document fsl_ssi_private
+      ...
+
+commit 15b588303155b22edd559672905db8e59a44ef9a
+
+----------
+Total;b77279bc2e81545b20824da701b349272a78e4e7;-1
+
+----------
+No match [15b588303155b22edd559672905db8e59a44ef9a][Date:   Wed Jun 4 09:07:08 2014 -0700][46][-1]
+cid [15b588303155b22edd559672905db8e59a44ef9a][Date:   Wed Jun 4 09:07:08 2014 -0700] count log [46] dbcount [-1].... NO Match :(
+   values of regions [46]
+Merge: d55696a f2dd36a
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Jun 4 09:07:08 2014 -0700
+
+    Merge tag 'fbdev-omap-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/tomba/linux into next
+    
+    Pull omap fbdev changes from Tomi Valkeinen:
+     - DT support for the panel drivers that were still missing it
+     - TI AM43xx support
+     - TI OMAP5 support
+    
+    * tag 'fbdev-omap-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/tomba/linux: (46 commits)
+      OMAPDSS: move 'compatible' converter to omapdss driver
+      OMAPDSS: HDMI: fix devm_ioremap_resource error checks
+      OMAPDSS: HDMI: remove unused defines
+      OMAPDSS: HDMI: cleanup WP ioremaps
+      OMAPDSS: panel NEC-NL8048HL11 DT support
+      Doc/DT: Add DT binding documentation for TPO td043mtea1 panel
+      OMAPDSS: Panel TPO-TD043MTEA1 DT support
+      Doc/DT: Add DT binding documentation for SHARP LS037V7DW01
+      OMAPDSS: panel sharp-ls037v7dw01 DT support
+      OMAPDSS: panel-sharp-ls037v7dw01: update to use gpiod
+      Doc/DT: Add binding doc for lgphilips,lb035q02.txt
+      OMAPDSS: panel-lgphilips-lb035q02: Add DT support
+      OMAPDSS: panel-lgphilips-lb035q02: use gpiod for enable gpio
+      OMAPDSS: hdmi5_core: Fix compilation with OMAP5_DSS_HDMI_AUDIO
+      OMAPDSS: panel-dpi: enable-gpio
+      OMAPDSS: Fix writes to DISPC_POL_FREQ
+      Doc/DT: Add OMAP5 DSS DT bindings
+      OMAPDSS: HDMI: cleanup ioremaps
+      OMAPDSS: HDMI: Add OMAP5 HDMI support
+      OMAPDSS: HDMI: PLL changes for OMAP5
+      ...
+
+commit d55696af8d91e8f21dacd74a236e6dcc4f6d78c4
+
+----------
+Total;15b588303155b22edd559672905db8e59a44ef9a;-1
+
+----------
+No match [d55696af8d91e8f21dacd74a236e6dcc4f6d78c4][Date:   Wed Jun 4 09:05:12 2014 -0700][31][-1]
+cid [d55696af8d91e8f21dacd74a236e6dcc4f6d78c4][Date:   Wed Jun 4 09:05:12 2014 -0700] count log [31] dbcount [-1].... NO Match :(
+   values of regions [31]
+Merge: 4dc4226 fbc6c4a
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Jun 4 09:05:12 2014 -0700
+
+    Merge tag 'fbdev-main-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/tomba/linux into next
+    
+    Pull main fbdev changes from Tomi Valkeinen:
+     "Mainly fixes and small improvements.  The biggest change seems to be
+      backlight control support for mx3fb"
+    
+    * tag 'fbdev-main-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/tomba/linux: (31 commits)
+      drivers/video/fbdev/fb-puv3.c: Add header files for function unifb_mmap
+      video: fbdev: s3fb.c: Fix for possible null pointer dereference
+      video: fbdev: grvga.c: Fix for possible null pointer dereference
+      matroxfb: perform a dummy read of M_STATUS
+      video: of: display_timing: fix default native-mode setting
+      video: delete unneeded call to platform_get_drvdata
+      video: mx3fb: Add backlight control support
+      video: omap: delete support for early fbmem allocation
+      video: of: display_timing: remove two unsafe error messages
+      fbdev: fbmem: remove positive test on unsigned values
+      fbcon: Fix memory leak in con2fb_release_oldinfo()
+      video: Kconfig: Add a dependency to the Goldfish framebuffer driver
+      video: exynos: Add a dependency to the menu
+      video: mx3fb: Use devm_kzalloc
+      video/nuc900: allow modular build
+      video: atmel needs FB_BACKLIGHT
+      video: export fb_prepare_logo
+      video/mbx: fix building debugfs support
+      video/omap: fix modular build
+      video: clarify I2C dependencies
+      ...
+
+commit 4dc4226f994db264c844a5fcf556935c66f963a5
+
+----------
+Total;d55696af8d91e8f21dacd74a236e6dcc4f6d78c4;-1
+
+----------
+No match [4dc4226f994db264c844a5fcf556935c66f963a5][Date:   Wed Jun 4 08:57:16 2014 -0700][187][-1]
+cid [4dc4226f994db264c844a5fcf556935c66f963a5][Date:   Wed Jun 4 08:57:16 2014 -0700] count log [187] dbcount [-1].... NO Match :(
+   values of regions [187]
+Merge: d6b92c2 2e30baa
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Jun 4 08:57:16 2014 -0700
+
+    Merge tag 'pm+acpi-3.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm into next
+    
+    Pull ACPI and power management updates from Rafael Wysocki:
+     "ACPICA is the leader this time (63 commits), followed by cpufreq (28
+      commits), devfreq (15 commits), system suspend/hibernation (12
+      commits), ACPI video and ACPI device enumeration (10 commits each).
+    
+      We have no major new features this time, but there are a few
+      significant changes of how things work.  The most visible one will
+      probably be that we are now going to create platform devices rather
+      than PNP devices by default for ACPI device objects with _HID.  That
+      was long overdue and will be really necessary to be able to use the
+      same drivers for the same hardware blocks on ACPI and DT-based systems
+      going forward.  We're not expecting fallout from this one (as usual),
+      but it's something to watch nevertheless.
+    
+      The second change having a chance to be visible is that ACPI video
+      will now default to using native backlight rather than the ACPI
+      backlight interface which should generally help systems with broken
+      Win8 BIOSes.  We're hoping that all problems with the native backlight
+      handling that we had previously have been addressed and we are in a
+      good enough shape to flip the default, but this change should be easy
+      enough to revert if need be.
+    
+      In addition to that, the system suspend core has a new mechanism to
+      allow runtime-suspended devices to stay suspended throughout system
+      suspend/resume transitions if some extra conditions are met
+      (generally, they are related to coordination within device hierarchy).
+      However, enabling this feature requires cooperation from the bus type
+      layer and for now it has only been implemented for the ACPI PM domain
+      (used by ACPI-enumerated platform devices mostly today).
+    
+      Also, the acpidump utility that was previously shipped as a separate
+      tool will now be provided by the upstream ACPICA along with the rest
+      of ACPICA code, which will allow it to be more up to date and better
+      supported, and we have one new cpuidle driver (ARM clps711x).
+    
+      The rest is improvements related to certain specific use cases,
+      cleanups and fixes all over the place.
+    
+      Specifics:
+    
+       - ACPICA update to upstream version 20140424.  That includes a number
+         of fixes and improvements related to things like GPE handling,
+         table loading, headers, memory mapping and unmapping, DSDT/SSDT
+         overriding, and the Unload() operator.  The acpidump utility from
+         upstream ACPICA is included too.  From Bob Moore, Lv Zheng, David
+         Box, David Binderman, and Colin Ian King.
+    
+       - Fixes and cleanups related to ACPI video and backlight interfaces
+         from Hans de Goede.  That includes blacklist entries for some new
+         machines and using native backlight by default.
+    
+       - ACPI device enumeration changes to create platform devices rather
+         than PNP devices for ACPI device objects with _HID by default.  PNP
+         devices will still be created for the ACPI device object with
+         device IDs corresponding to real PNP devices, so that change should
+         not break things left and right, and we're expecting to see more
+         and more ACPI-enumerated platform devices in the future.  From
+         Zhang Rui and Rafael J Wysocki.
+    
+       - Updates for the ACPI LPSS (Low-Power Subsystem) driver allowing it
+         to handle system suspend/resume on Asus T100 correctly.  From
+         Heikki Krogerus and Rafael J Wysocki.
+    
+       - PM core update introducing a mechanism to allow runtime-suspended
+         devices to stay suspended over system suspend/resume transitions if
+         certain additional conditions related to coordination within device
+         hierarchy are met.  Related PM documentation update and ACPI PM
+         domain support for the new feature.  From Rafael J Wysocki.
+    
+       - Fixes and improvements related to the "freeze" sleep state.  They
+         affect several places including cpuidle, PM core, ACPI core, and
+         the ACPI battery driver.  From Rafael J Wysocki and Zhang Rui.
+    
+       - Miscellaneous fixes and updates of the ACPI core from Aaron Lu,
+         Bjørn Mork, Hanjun Guo, Lan Tianyu, and Rafael J Wysocki.
+    
+       - Fixes and cleanups for the ACPI processor and ACPI PAD (Processor
+         Aggregator Device) drivers from Baoquan He, Manuel Schölling, Tony
+         Camuso, and Toshi Kani.
+    
+       - System suspend/resume optimization in the ACPI battery driver from
+         Lan Tianyu.
+    
+       - OPP (Operating Performance Points) subsystem updates from Chander
+         Kashyap, Mark Brown, and Nishanth Menon.
+    
+       - cpufreq core fixes, updates and cleanups from Srivatsa S Bhat,
+         Stratos Karafotis, and Viresh Kumar.
+    
+       - Updates, fixes and cleanups for the Tegra, powernow-k8, imx6q,
+         s5pv210, nforce2, and powernv cpufreq drivers from Brian Norris,
+         Jingoo Han, Paul Bolle, Philipp Zabel, Stratos Karafotis, and
+         Viresh Kumar.
+    
+       - intel_pstate driver fixes and cleanups from Dirk Brandewie, Doug
+         Smythies, and Stratos Karafotis.
+    
+       - Enabling the big.LITTLE cpufreq driver on arm64 from Mark Brown.
+    
+       - Fix for the cpuidle menu governor from Chander Kashyap.
+    
+       - New ARM clps711x cpuidle driver from Alexander Shiyan.
+    
+       - Hibernate core fixes and cleanups from Chen Gang, Dan Carpenter,
+         Fabian Frederick, Pali Rohár, and Sebastian Capella.
+    
+       - Intel RAPL (Running Average Power Limit) driver updates from Jacob
+         Pan.
+    
+       - PNP subsystem updates from Bjorn Helgaas and Fabian Frederick.
+    
+       - devfreq core updates from Chanwoo Choi and Paul Bolle.
+    
+       - devfreq updates for exynos4 and exynos5 from Chanwoo Choi and
+         Bartlomiej Zolnierkiewicz.
+    
+       - turbostat tool fix from Jean Delvare.
+    
+       - cpupower tool updates from Prarit Bhargava, Ramkumar Ramachandra
+         and Thomas Renninger.
+    
+       - New ACPI ec_access.c tool for poking at the EC in a safe way from
+         Thomas Renninger"
+    
+    * tag 'pm+acpi-3.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm: (187 commits)
+      ACPICA: Namespace: Remove _PRP method support.
+      intel_pstate: Improve initial busy calculation
+      intel_pstate: add sample time scaling
+      intel_pstate: Correct rounding in busy calculation
+      intel_pstate: Remove C0 tracking
+      PM / hibernate: fixed typo in comment
+      ACPI: Fix x86 regression related to early mapping size limitation
+      ACPICA: Tables: Add mechanism to control early table checksum verification.
+      ACPI / scan: use platform bus type by default for _HID enumeration
+      ACPI / scan: always register ACPI LPSS scan handler
+      ACPI / scan: always register memory hotplug scan handler
+      ACPI / scan: always register container scan handler
+      ACPI / scan: Change the meaning of missing .attach() in scan handlers
+      ACPI / scan: introduce platform_id device PNP type flag
+      ACPI / scan: drop unsupported serial IDs from PNP ACPI scan handler ID list
+      ACPI / scan: drop IDs that do not comply with the ACPI PNP ID rule
+      ACPI / PNP: use device ID list for PNPACPI device enumeration
+      ACPI / scan: .match() callback for ACPI scan handlers
+      ACPI / battery: wakeup the system only when necessary
+      power_supply: allow power supply devices registered w/o wakeup source
+      ...
+
+commit d6b92c2c373e0beefa8048c1448992cd5cda6e07
+
+----------
+Total;4dc4226f994db264c844a5fcf556935c66f963a5;-1
+
+----------
+No match [d6b92c2c373e0beefa8048c1448992cd5cda6e07][Date:   Wed Jun 4 08:52:36 2014 -0700][29][-1]
+cid [d6b92c2c373e0beefa8048c1448992cd5cda6e07][Date:   Wed Jun 4 08:52:36 2014 -0700] count log [29] dbcount [-1].... NO Match :(
+   values of regions [29]
+Merge: 1aacb90 beea3f4
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Jun 4 08:52:36 2014 -0700
+
+    Merge branch 'for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/jikos/hid into next
+    
+    Pull HID patches from Jiri Kosina:
+     - RMI driver for Synaptics touchpads, by Benjamin Tissoires, Andrew
+       Duggan and Jiri Kosina
+     - cleanup of hid-sony driver and improved support for Sixaxis and
+       Dualshock 4, by Frank Praznik
+     - other usual small fixes and support for new device IDs
+    
+    * 'for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/jikos/hid: (29 commits)
+      HID: thingm: thingm_fwinfo[] doesn't need to be global
+      HID: core: add two new usages for digitizer
+      HID: hid-sensor-hub: new device id and quirk for STM Sensor hub
+      HID: usbhid: enable NO_INIT_REPORTS quirk for Semico USB Keykoard
+      HID: hid-sensor-hub: Set report quirk for Microsoft Surface
+      HID: debug: add labels for HID Sensor Usages
+      HID: uhid: Use kmemdup instead of kmalloc + memcpy
+      HID: rmi: do not handle touchscreens through hid-rmi
+      HID: quirk for Saitek RAT7 and MMO7 mices' mode button
+      HID: core: fix validation of report id 0
+      HID: rmi: fix masks for x and w_x data
+      HID: rmi: fix wrong struct field name
+      HID: rmi: do not fetch more than 16 bytes in a query
+      HID: rmi: check for the existence of some optional queries before reading query 12
+      HID: i2c-hid: hid report descriptor retrieval changes
+      HID: add missing hid usages
+      HID: hid-sony - allow 3rd party INTEC controller to turn off all leds
+      HID: sony: Add blink support to the Sixaxis and DualShock 4 LEDs
+      HID: sony: Initialize the controller LEDs with a device ID value
+      HID: sony: Use the controller Bluetooth MAC address as the unique value in the battery name string
+      ...
+
+commit 1aacb90eaaac057c10fd746e189553e04cfeb291
+
+----------
+Total;d6b92c2c373e0beefa8048c1448992cd5cda6e07;-1
+
+----------
+No match [1aacb90eaaac057c10fd746e189553e04cfeb291][Date:   Wed Jun 4 08:50:34 2014 -0700][23][-1]
+cid [1aacb90eaaac057c10fd746e189553e04cfeb291][Date:   Wed Jun 4 08:50:34 2014 -0700] count log [23] dbcount [-1].... NO Match :(
+   values of regions [23]
+Merge: b05d59d 3178953
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Jun 4 08:50:34 2014 -0700
+
+    Merge branch 'for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/jikos/trivial into next
+    
+    Pull trivial tree changes from Jiri Kosina:
+     "Usual pile of patches from trivial tree that make the world go round"
+    
+    * 'for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/jikos/trivial: (23 commits)
+      staging: go7007: remove reference to CONFIG_KMOD
+      aic7xxx: Remove obsolete preprocessor define
+      of: dma: doc fixes
+      doc: fix incorrect formula to calculate CommitLimit value
+      doc: Note need of bc in the kernel build from 3.10 onwards
+      mm: Fix printk typo in dmapool.c
+      modpost: Fix comment typo "Modules.symvers"
+      Kconfig.debug: Grammar s/addition/additional/
+      wimax: Spelling s/than/that/, wording s/destinatary/recipient/
+      aic7xxx: Spelling s/termnation/termination/
+      arm64: mm: Remove superfluous "the" in comment
+      of: Spelling s/anonymouns/anonymous/
+      dma: imx-sdma: Spelling s/determnine/determine/
+      ath10k: Improve grammar in comments
+      ath6kl: Spelling s/determnine/determine/
+      of: Improve grammar for of_alias_get_id() documentation
+      drm/exynos: Spelling s/contro/control/
+      radio-bcm2048.c: fix wrong overflow check
+      doc: printk-formats: do not mention casts for u64/s64
+      doc: spelling error changes
+      ...
+
+commit b05d59dfceaea72565b1648af929b037b0f96d7f
+
+----------
+Total;1aacb90eaaac057c10fd746e189553e04cfeb291;-1
+
+----------
+No match [b05d59dfceaea72565b1648af929b037b0f96d7f][Date:   Wed Jun 4 08:47:12 2014 -0700][203][-1]
+cid [b05d59dfceaea72565b1648af929b037b0f96d7f][Date:   Wed Jun 4 08:47:12 2014 -0700] count log [203] dbcount [-1].... NO Match :(
+   values of regions [203]
+Merge: daf342a 820b3fc
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Jun 4 08:47:12 2014 -0700
+
+    Merge tag 'for-linus' of git://git.kernel.org/pub/scm/virt/kvm/kvm into next
+    
+    Pull KVM updates from Paolo Bonzini:
+     "At over 200 commits, covering almost all supported architectures, this
+      was a pretty active cycle for KVM.  Changes include:
+    
+       - a lot of s390 changes: optimizations, support for migration, GDB
+         support and more
+    
+       - ARM changes are pretty small: support for the PSCI 0.2 hypercall
+         interface on both the guest and the host (the latter acked by
+         Catalin)
+    
+       - initial POWER8 and little-endian host support
+    
+       - support for running u-boot on embedded POWER targets
+    
+       - pretty large changes to MIPS too, completing the userspace
+         interface and improving the handling of virtualized timer hardware
+    
+       - for x86, a larger set of changes is scheduled for 3.17.  Still, we
+         have a few emulator bugfixes and support for running nested
+         fully-virtualized Xen guests (para-virtualized Xen guests have
+         always worked).  And some optimizations too.
+    
+      The only missing architecture here is ia64.  It's not a coincidence
+      that support for KVM on ia64 is scheduled for removal in 3.17"
+    
+    * tag 'for-linus' of git://git.kernel.org/pub/scm/virt/kvm/kvm: (203 commits)
+      KVM: add missing cleanup_srcu_struct
+      KVM: PPC: Book3S PR: Rework SLB switching code
+      KVM: PPC: Book3S PR: Use SLB entry 0
+      KVM: PPC: Book3S HV: Fix machine check delivery to guest
+      KVM: PPC: Book3S HV: Work around POWER8 performance monitor bugs
+      KVM: PPC: Book3S HV: Make sure we don't miss dirty pages
+      KVM: PPC: Book3S HV: Fix dirty map for hugepages
+      KVM: PPC: Book3S HV: Put huge-page HPTEs in rmap chain for base address
+      KVM: PPC: Book3S HV: Fix check for running inside guest in global_invalidates()
+      KVM: PPC: Book3S: Move KVM_REG_PPC_WORT to an unused register number
+      KVM: PPC: Book3S: Add ONE_REG register names that were missed
+      KVM: PPC: Add CAP to indicate hcall fixes
+      KVM: PPC: MPIC: Reset IRQ source private members
+      KVM: PPC: Graciously fail broken LE hypercalls
+      PPC: ePAPR: Fix hypercall on LE guest
+      KVM: PPC: BOOK3S: Remove open coded make_dsisr in alignment handler
+      KVM: PPC: BOOK3S: Always use the saved DAR value
+      PPC: KVM: Make NX bit available with magic page
+      KVM: PPC: Disable NX for old magic page using guests
+      KVM: PPC: BOOK3S: HV: Add mixed page-size support for guest
+      ...
+
+commit daf342af2f7856fd2f5c66b9fb39a8f24986ca53
+
+----------
+Total;b05d59dfceaea72565b1648af929b037b0f96d7f;-1
+
+----------
+No match [daf342af2f7856fd2f5c66b9fb39a8f24986ca53][Date:   Wed Jun 4 08:39:03 2014 -0700][6][-1]
+cid [daf342af2f7856fd2f5c66b9fb39a8f24986ca53][Date:   Wed Jun 4 08:39:03 2014 -0700] count log [6] dbcount [-1].... NO Match :(
+   values of regions [6]
+Merge: ba1bdef bb5e50a
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Jun 4 08:39:03 2014 -0700
+
+    Merge tag 'jfs-3.16' of git://github.com/kleikamp/linux-shaggy into next
+    
+    Pull jfs changes from Dave Kleikamp.
+    
+    * tag 'jfs-3.16' of git://github.com/kleikamp/linux-shaggy:
+      fs/jfs/super.c: convert simple_str to kstr
+      fs/jfs/jfs_dmap.c: replace min/casting by min_t
+      fs/jfs/super.c: remove 0 assignment to static + code clean-up
+      fs/jfs/jfs_logmgr.c: remove NULL assignment on static
+      JFS: Check for NULL before calling posix_acl_equiv_mode()
+      fs/jfs/jfs_inode.c: atomically set inode->i_flags
+
+commit ba1bdefec36c45eef1f8aa44bd845c9ea3190506
+
+----------
+Total;daf342af2f7856fd2f5c66b9fb39a8f24986ca53;-1
+
+----------
+No match [ba1bdefec36c45eef1f8aa44bd845c9ea3190506][Date:   Wed Jun 4 08:30:10 2014 -0700][6][-1]
+cid [ba1bdefec36c45eef1f8aa44bd845c9ea3190506][Date:   Wed Jun 4 08:30:10 2014 -0700] count log [6] dbcount [-1].... NO Match :(
+   values of regions [6]
+Merge: 74efa04 0e48e055
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Jun 4 08:30:10 2014 -0700
+
+    Merge tag 'gfs2-merge-window' of git://git.kernel.org/pub/scm/linux/kernel/git/steve/gfs2-3.0-nmw into next
+    
+    Pull gfs2 updates from Steven Whitehouse:
+     "This must be about the smallest merge window patch set ever for GFS2.
+      It is probably also the first one without a single patch from me.
+      That is down to a combination of factors, and I have some things in
+      the works that are not quite ready yet, that I hope to put in next
+      time around.
+    
+      Returning to what is here this time...  we have 3 patches which fix
+      various warnings.  Two are bug fixes (for quotas and also a rare
+      recovery race condition).  The final patch, from Ben Marzinski, is an
+      important change in the freeze code which has been in progress for
+      some time.  This removes the need to take and drop the transaction
+      lock for every single transaction, when the only time it was used, was
+      at file system freeze time.  Ben's patch integrates the freeze
+      operation into the journal flush code as an alternative with lower
+      overheads and also lands up resolving some difficult to fix races at
+      the same time"
+    
+    * tag 'gfs2-merge-window' of git://git.kernel.org/pub/scm/linux/kernel/git/steve/gfs2-3.0-nmw:
+      GFS2: Prevent recovery before the local journal is set
+      GFS2: fs/gfs2/file.c: kernel-doc warning fixes
+      GFS2: fs/gfs2/bmap.c: kernel-doc warning fixes
+      GFS2: remove transaction glock
+      GFS2: lops.c: replace 0 by NULL for pointers
+      GFS2: quotas not being refreshed in gfs2_adjust_quota
+
+commit 74efa045f4e2fdcc9d6384004c5b1bba0cc1fd3c
+
+----------
+Total;ba1bdefec36c45eef1f8aa44bd845c9ea3190506;-1
+
+----------
+No match [74efa045f4e2fdcc9d6384004c5b1bba0cc1fd3c][Date:   Wed Jun 4 08:12:50 2014 -0700][3][-1]
+cid [74efa045f4e2fdcc9d6384004c5b1bba0cc1fd3c][Date:   Wed Jun 4 08:12:50 2014 -0700] count log [3] dbcount [-1].... NO Match :(
+   values of regions [3]
+Merge: 1b36360 62af4f1
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Jun 4 08:12:50 2014 -0700
+
+    Merge tag 'locks-v3.16' of git://git.samba.org/jlayton/linux into next
+    
+    Pull file locking changes from Jeff Layton:
+     "Pretty quiet on the file-locking related front this cycle.  Just some
+      small cleanups and the addition of some tracepoints in the lease
+      handling code"
+    
+    * tag 'locks-v3.16' of git://git.samba.org/jlayton/linux:
+      locks: add some tracepoints in the lease handling code
+      fs/locks.c: replace seq_printf by seq_puts
+      locks: ensure that fl_owner is always initialized properly in flock and lease codepaths
+
+commit c717d1561493c58d030405c7e30e35459db31912
+
+----------
+Total;74efa045f4e2fdcc9d6384004c5b1bba0cc1fd3c;-1
+
+----------
+Match [c717d1561493c58d030405c7e30e35459db31912][Date:   Wed Jun 4 07:48:54 2014 -0700][4]
+Match [9e9a928eed8796a0a1aaed7e0b676db86ba84594][Date:   Wed Jun 4 07:48:01 2014 -0700][5]
+No match [1b3636093d4e07f5fc8a8eb2f9a5e14a5a2674bf][Date:   Wed Jun 4 07:47:03 2014 -0700][3][-1]
+cid [1b3636093d4e07f5fc8a8eb2f9a5e14a5a2674bf][Date:   Wed Jun 4 07:47:03 2014 -0700] count log [3] dbcount [-1].... NO Match :(
+   values of regions [3]
+Merge: 1605abf d151f98
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Jun 4 07:47:03 2014 -0700
+
+    Merge tag 'firewire-updates' of git://git.kernel.org/pub/scm/linux/kernel/git/ieee1394/linux1394 into next
+    
+    Pull firewire updates from Stefan Richter:
+     "IEEE 1394 (FireWire) subsystem changes: One optimization for some VIA
+      controllers, one fix, one kconfig brushup"
+    
+    * tag 'firewire-updates' of git://git.kernel.org/pub/scm/linux/kernel/git/ieee1394/linux1394:
+      firewire: ohci: enable MSI for VIA VT6315 rev 1, drop cycle timer quirk
+      firewire: Use COMPILE_TEST for build testing
+      firewire: net: fix NULL derefencing in fwnet_probe()
+
+commit 3de0ef8d0d3350964720cad2a0a72984f1bb81ba
+
+----------
+Total;1b3636093d4e07f5fc8a8eb2f9a5e14a5a2674bf;-1
+
+----------
+No match [3de0ef8d0d3350964720cad2a0a72984f1bb81ba][Date:   Tue Jun 3 15:48:23 2014 -0700][2][-1]
+cid [3de0ef8d0d3350964720cad2a0a72984f1bb81ba][Date:   Tue Jun 3 15:48:23 2014 -0700] count log [2] dbcount [-1].... NO Match :(
+   values of regions [2]
+Merge: 06b77b9 fe455b1
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 15:48:23 2014 -0700
+
+    Merge branch 'x86-uv-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip into next
+    
+    Pull x86/UV changes from Ingo Molnar:
+     "Continued updates for SGI UV 3 hardware support"
+    
+    * 'x86-uv-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip:
+      x86/UV: Fix conditional in gru_exit()
+      x86/UV: Set n_lshift based on GAM_GR_CONFIG MMR for UV3
+
+commit 06b77b97338e906e8af73a9b5f97b9162aac239d
+
+----------
+Total;3de0ef8d0d3350964720cad2a0a72984f1bb81ba;-1
+
+----------
+No match [06b77b97338e906e8af73a9b5f97b9162aac239d][Date:   Tue Jun 3 15:47:40 2014 -0700][2][-1]
+cid [06b77b97338e906e8af73a9b5f97b9162aac239d][Date:   Tue Jun 3 15:47:40 2014 -0700] count log [2] dbcount [-1].... NO Match :(
+   values of regions [2]
+Merge: 4aef77b 716079f
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 15:47:40 2014 -0700
+
+    Merge branch 'x86-ras-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip into next
+    
+    Pull x86 RAS changes from Ingo Molnar:
+     "Improve mcheck device initialization and bootstrap robustness"
+    
+    * 'x86-ras-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip:
+      mce: Panic when a core has reached a timeout
+      x86/mce: Improve mcheck_init_device() error handling
+
+commit 4aef77b2fe373cdba461925589b9d1d4468ee016
+
+----------
+Total;06b77b97338e906e8af73a9b5f97b9162aac239d;-1
+
+----------
+No match [4aef77b2fe373cdba461925589b9d1d4468ee016][Date:   Tue Jun 3 15:46:38 2014 -0700][4][-1]
+cid [4aef77b2fe373cdba461925589b9d1d4468ee016][Date:   Tue Jun 3 15:46:38 2014 -0700] count log [4] dbcount [-1].... NO Match :(
+   values of regions [4]
+Merge: e0d23cd 04725ad
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 15:46:38 2014 -0700
+
+    Merge branch 'x86-platform-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip into next
+    
+    Pull x86 IOSF platform updates from Ingo Molnar:
+     "IOSF (Intel OnChip System Fabric) updates:
+    
+       - generalize the IOSF interface to allow mixed mode drivers: non-IOSF
+         drivers to utilize of IOSF features on IOSF platforms.
+    
+       - add 'Quark X1000' IOSF/MBI support
+    
+       - clean up BayTrail and Quark PCI ID enumeration"
+    
+    * 'x86-platform-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip:
+      x86, iosf: Add PCI ID macros for better readability
+      x86, iosf: Add Quark X1000 PCI ID
+      x86, iosf: Added Quark MBI identifiers
+      x86, iosf: Make IOSF driver modular and usable by more drivers
+
+commit e0d23cdc626faef36900965c48dd8806df651f77
+
+----------
+Total;4aef77b2fe373cdba461925589b9d1d4468ee016;-1
+
+----------
+No match [e0d23cdc626faef36900965c48dd8806df651f77][Date:   Tue Jun 3 15:45:50 2014 -0700][2][-1]
+cid [e0d23cdc626faef36900965c48dd8806df651f77][Date:   Tue Jun 3 15:45:50 2014 -0700] count log [2] dbcount [-1].... NO Match :(
+   values of regions [2]
+Merge: c33c405 c81c8a1
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 15:45:50 2014 -0700
+
+    Merge branch 'x86-mm-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip into next
+    
+    Pull x86 mm update from Ingo Molnar:
+    
+     - speed up 256 GB PCI BAR ioremap()s
+    
+     - speed up PTE swapout page reclaim case
+    
+    * 'x86-mm-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip:
+      x86, ioremap: Speed up check for RAM pages
+      x86/mm: In the PTE swapout page reclaim case clear the accessed bit instead of flushing the TLB
+
+commit c33c40549ef8f080d8aa0545d043d9f01bf804a9
+
+----------
+Total;e0d23cdc626faef36900965c48dd8806df651f77;-1
+
+----------
+No match [c33c40549ef8f080d8aa0545d043d9f01bf804a9][Date:   Tue Jun 3 15:44:50 2014 -0700][2][-1]
+cid [c33c40549ef8f080d8aa0545d043d9f01bf804a9][Date:   Tue Jun 3 15:44:50 2014 -0700] count log [2] dbcount [-1].... NO Match :(
+   values of regions [2]
+Merge: e30c631 65cef13
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 15:44:50 2014 -0700
+
+    Merge branch 'x86-microcode-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip into next
+    
+    Pull x86 microcode changes from Ingo Molnar:
+     "A microcode-debugging boot flag plus related refactoring"
+    
+    * 'x86-microcode-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip:
+      x86, microcode: Add a disable chicken bit
+      x86, boot: Carve out early cmdline parsing function
+
+commit e30c631be68b3885aee1b813c427354c950f4146
+
+----------
+Total;c33c40549ef8f080d8aa0545d043d9f01bf804a9;-1
+
+----------
+No match [e30c631be68b3885aee1b813c427354c950f4146][Date:   Tue Jun 3 15:43:38 2014 -0700][1][-1]
+cid [e30c631be68b3885aee1b813c427354c950f4146][Date:   Tue Jun 3 15:43:38 2014 -0700] count log [1] dbcount [-1].... NO Match :(
+   values of regions [1]
+Merge: 33ef765e 79a51b2
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 15:43:38 2014 -0700
+
+    Merge branch 'x86-cleanups-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip into next
+    
+    Pull x86 irq cleanup from Ingo Molnar:
+     "A single, trivial cleanup"
+    
+    * 'x86-cleanups-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip:
+      x86/irq: Clean up VECTOR_UNDEFINED and VECTOR_RETRIGGERED definition
+
+commit 33ef765ea66f8464d6b65798b5aed3713420cced
+
+----------
+Total;e30c631be68b3885aee1b813c427354c950f4146;-1
+
+----------
+No match [33ef765ea66f8464d6b65798b5aed3713420cced][Date:   Tue Jun 3 15:43:00 2014 -0700][2][-1]
+cid [33ef765ea66f8464d6b65798b5aed3713420cced][Date:   Tue Jun 3 15:43:00 2014 -0700] count log [2] dbcount [-1].... NO Match :(
+   values of regions [2]
+Merge: e7a3876 a9358bc
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 15:43:00 2014 -0700
+
+    Merge branch 'x86-build-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip into next
+    
+    Pull x86 build cleanups from Ingo Molnar:
+     "Two small build related cleanups"
+    
+    * 'x86-build-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip:
+      x86/build: Supress realmode.bin is up to date message
+      compiler-intel.h: Remove duplicate definition
+
+commit e7a38766d2e691e8030b77c9b46b19c9359e0d6c
+
+----------
+Total;33ef765ea66f8464d6b65798b5aed3713420cced;-1
+
+----------
+No match [e7a38766d2e691e8030b77c9b46b19c9359e0d6c][Date:   Tue Jun 3 15:41:57 2014 -0700][2][-1]
+cid [e7a38766d2e691e8030b77c9b46b19c9359e0d6c][Date:   Tue Jun 3 15:41:57 2014 -0700] count log [2] dbcount [-1].... NO Match :(
+   values of regions [2]
+Merge: 3d1a3bd a9a1710
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 15:41:57 2014 -0700
+
+    Merge branch 'x86-boot-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip into next
+    
+    Pull x86 boot changes from Ingo Molnar:
+     "Two small cleanups"
+    
+    * 'x86-boot-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip:
+      x86, boot: Remove misc.h inclusion from compressed/string.c
+      x86, boot: Do not include boot.h in string.c
+
+commit 3d1a3bda65d2f48fead6f0727f2f392c15206852
+
+----------
+Total;e7a38766d2e691e8030b77c9b46b19c9359e0d6c;-1
+
+----------
+No match [3d1a3bda65d2f48fead6f0727f2f392c15206852][Date:   Tue Jun 3 15:41:07 2014 -0700][3][-1]
+cid [3d1a3bda65d2f48fead6f0727f2f392c15206852][Date:   Tue Jun 3 15:41:07 2014 -0700] count log [3] dbcount [-1].... NO Match :(
+   values of regions [3]
+Merge: c84a1e3 577ed45
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 15:41:07 2014 -0700
+
+    Merge branch 'x86-asm-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip into next
+    
+    Pull x86 asm cleanups from Ingo Molnar:
+     "A handful of entry_64.S cleanups"
+    
+    * 'x86-asm-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip:
+      x86_64, entry: Merge paranoidzeroentry_ist into idtentry
+      x86_64, entry: Merge most 64-bit asm entry macros
+      x86_64, entry: Add missing 'DEFAULT_FRAME 0' entry annotations
+
+commit c84a1e32ee58fc1cc9d3fd42619b917cce67e30a
+
+----------
+Total;3d1a3bda65d2f48fead6f0727f2f392c15206852;-1
+
+----------
+No match [c84a1e32ee58fc1cc9d3fd42619b917cce67e30a][Date:   Tue Jun 3 14:00:15 2014 -0700][49][-1]
+cid [c84a1e32ee58fc1cc9d3fd42619b917cce67e30a][Date:   Tue Jun 3 14:00:15 2014 -0700] count log [49] dbcount [-1].... NO Match :(
+   values of regions [49]
+Merge: 3d521f9 096aa33
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 14:00:15 2014 -0700
+
+    Merge branch 'sched-core-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip into next
+    
+    Pull scheduler updates from Ingo Molnar:
+     "The main scheduling related changes in this cycle were:
+    
+       - various sched/numa updates, for better performance
+    
+       - tree wide cleanup of open coded nice levels
+    
+       - nohz fix related to rq->nr_running use
+    
+       - cpuidle changes and continued consolidation to improve the
+         kernel/sched/idle.c high level idle scheduling logic.  As part of
+         this effort I pulled cpuidle driver changes from Rafael as well.
+    
+       - standardized idle polling amongst architectures
+    
+       - continued work on preparing better power/energy aware scheduling
+    
+       - sched/rt updates
+    
+       - misc fixlets and cleanups"
+    
+    * 'sched-core-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip: (49 commits)
+      sched/numa: Decay ->wakee_flips instead of zeroing
+      sched/numa: Update migrate_improves/degrades_locality()
+      sched/numa: Allow task switch if load imbalance improves
+      sched/rt: Fix 'struct sched_dl_entity' and dl_task_time() comments, to match the current upstream code
+      sched: Consolidate open coded implementations of nice level frobbing into nice_to_rlimit() and rlimit_to_nice()
+      sched: Initialize rq->age_stamp on processor start
+      sched, nohz: Change rq->nr_running to always use wrappers
+      sched: Fix the rq->next_balance logic in rebalance_domains() and idle_balance()
+      sched: Use clamp() and clamp_val() to make sys_nice() more readable
+      sched: Do not zero sg->cpumask and sg->sgp->power in build_sched_groups()
+      sched/numa: Fix initialization of sched_domain_topology for NUMA
+      sched: Call select_idle_sibling() when not affine_sd
+      sched: Simplify return logic in sched_read_attr()
+      sched: Simplify return logic in sched_copy_attr()
+      sched: Fix exec_start/task_hot on migrated tasks
+      arm64: Remove TIF_POLLING_NRFLAG
+      metag: Remove TIF_POLLING_NRFLAG
+      sched/idle: Make cpuidle_idle_call() void
+      sched/idle: Reflow cpuidle_idle_call()
+      sched/idle: Delay clearing the polling bit
+      ...
+
+commit 3d521f9151dacab566904d1f57dcb3e7080cdd8f
+
+----------
+Total;c84a1e32ee58fc1cc9d3fd42619b917cce67e30a;-1
+
+----------
+No match [3d521f9151dacab566904d1f57dcb3e7080cdd8f][Date:   Tue Jun 3 13:18:00 2014 -0700][114][-1]
+cid [3d521f9151dacab566904d1f57dcb3e7080cdd8f][Date:   Tue Jun 3 13:18:00 2014 -0700] count log [114] dbcount [-1].... NO Match :(
+   values of regions [114]
+Merge: 776edb5 e450f90
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 13:18:00 2014 -0700
+
+    Merge branch 'perf-core-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip into next
+    
+    Pull perf updates from Ingo Molnar:
+     "The tooling changes maintained by Jiri Olsa until Arnaldo is on
+      vacation:
+    
+      User visible changes:
+       - Add -F option for specifying output fields (Namhyung Kim)
+       - Propagate exit status of a command line workload for record command
+         (Namhyung Kim)
+       - Use tid for finding thread (Namhyung Kim)
+       - Clarify the output of perf sched map plus small sched command
+         fixes (Dongsheng Yang)
+       - Wire up perf_regs and unwind support for ARM64 (Jean Pihet)
+       - Factor hists statistics counts processing which in turn also fixes
+         several bugs in TUI report command (Namhyung Kim)
+       - Add --percentage option to control absolute/relative percentage
+         output (Namhyung Kim)
+       - Add --list-cmds to 'kmem', 'mem', 'lock' and 'sched', for use by
+         completion scripts (Ramkumar Ramachandra)
+    
+      Development/infrastructure changes and fixes:
+       - Android related fixes for pager and map dso resolving (Michael
+         Lentine)
+       - Add libdw DWARF post unwind support for ARM (Jean Pihet)
+       - Consolidate types.h for ARM and ARM64 (Jean Pihet)
+       - Fix possible null pointer dereference in session.c (Masanari Iida)
+       - Cleanup, remove unused variables in map_switch_event() (Dongsheng
+         Yang)
+       - Remove nr_state_machine_bugs in perf latency (Dongsheng Yang)
+       - Remove usage of trace_sched_wakeup(.success) (Peter Zijlstra)
+       - Cleanups for perf.h header (Jiri Olsa)
+       - Consolidate types.h and export.h within tools (Borislav Petkov)
+       - Move u64_swap union to its single user's header, evsel.h (Borislav
+         Petkov)
+       - Fix for s390 to properly parse tracepoints plus test code
+         (Alexander Yarygin)
+       - Handle EINTR error for readn/writen (Namhyung Kim)
+       - Add a test case for hists filtering (Namhyung Kim)
+       - Share map_groups among threads of the same group (Arnaldo Carvalho
+         de Melo, Jiri Olsa)
+       - Making some code (cpu node map and report parse callchain callback)
+         global to be usable by upcomming changes (Don Zickus)
+       - Fix pmu object compilation error (Jiri Olsa)
+    
+      Kernel side changes:
+       - intrusive uprobes fixes from Oleg Nesterov.  Since the interface is
+         admin-only, and the bug only affects user-space ("any probed
+         jmp/call can kill the application"), we queued these fixes via the
+         development tree, as a special exception.
+       - more fuzzer motivated race fixes and related refactoring and
+         robustization.
+       - allow PMU drivers to be built as modules.  (No actual module yet,
+         because the x86 Intel uncore module wasn't ready in time for this)"
+    
+    * 'perf-core-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip: (114 commits)
+      perf tools: Add automatic remapping of Android libraries
+      perf tools: Add cat as fallback pager
+      perf tests: Add a testcase for histogram output sorting
+      perf tests: Factor out print_hists_*()
+      perf tools: Introduce reset_output_field()
+      perf tools: Get rid of obsolete hist_entry__sort_list
+      perf hists: Reset width of output fields with header length
+      perf tools: Skip elided sort entries
+      perf top: Add --fields option to specify output fields
+      perf report/tui: Fix a bug when --fields/sort is given
+      perf tools: Add ->sort() member to struct sort_entry
+      perf report: Add -F option to specify output fields
+      perf tools: Call perf_hpp__init() before setting up GUI browsers
+      perf tools: Consolidate management of default sort orders
+      perf tools: Allow hpp fields to be sort keys
+      perf ui: Get rid of callback from __hpp__fmt()
+      perf tools: Consolidate output field handling to hpp format routines
+      perf tools: Use hpp formats to sort final output
+      perf tools: Support event grouping in hpp ->sort()
+      perf tools: Use hpp formats to sort hist entries
+      ...
+
+commit 776edb59317ada867dfcddde40b55648beeb0078
+
+----------
+Total;3d521f9151dacab566904d1f57dcb3e7080cdd8f;-1
+
+----------
+No match [776edb59317ada867dfcddde40b55648beeb0078][Date:   Tue Jun 3 12:57:53 2014 -0700][33][-1]
+cid [776edb59317ada867dfcddde40b55648beeb0078][Date:   Tue Jun 3 12:57:53 2014 -0700] count log [33] dbcount [-1].... NO Match :(
+   values of regions [33]
+Merge: 59a3d4c 3cf2f34
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 12:57:53 2014 -0700
+
+    Merge branch 'locking-core-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip into next
+    
+    Pull core locking updates from Ingo Molnar:
+     "The main changes in this cycle were:
+    
+       - reduced/streamlined smp_mb__*() interface that allows more usecases
+         and makes the existing ones less buggy, especially in rarer
+         architectures
+    
+       - add rwsem implementation comments
+    
+       - bump up lockdep limits"
+    
+    * 'locking-core-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip: (33 commits)
+      rwsem: Add comments to explain the meaning of the rwsem's count field
+      lockdep: Increase static allocations
+      arch: Mass conversion of smp_mb__*()
+      arch,doc: Convert smp_mb__*()
+      arch,xtensa: Convert smp_mb__*()
+      arch,x86: Convert smp_mb__*()
+      arch,tile: Convert smp_mb__*()
+      arch,sparc: Convert smp_mb__*()
+      arch,sh: Convert smp_mb__*()
+      arch,score: Convert smp_mb__*()
+      arch,s390: Convert smp_mb__*()
+      arch,powerpc: Convert smp_mb__*()
+      arch,parisc: Convert smp_mb__*()
+      arch,openrisc: Convert smp_mb__*()
+      arch,mn10300: Convert smp_mb__*()
+      arch,mips: Convert smp_mb__*()
+      arch,metag: Convert smp_mb__*()
+      arch,m68k: Convert smp_mb__*()
+      arch,m32r: Convert smp_mb__*()
+      arch,ia64: Convert smp_mb__*()
+      ...
+
+commit 59a3d4c3631e553357b7305dc09db1990aa6757c
+
+----------
+Total;776edb59317ada867dfcddde40b55648beeb0078;-1
+
+----------
+No match [59a3d4c3631e553357b7305dc09db1990aa6757c][Date:   Tue Jun 3 12:35:05 2014 -0700][68][-1]
+cid [59a3d4c3631e553357b7305dc09db1990aa6757c][Date:   Tue Jun 3 12:35:05 2014 -0700] count log [68] dbcount [-1].... NO Match :(
+   values of regions [68]
+Merge: ff806d0 e14505a
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 12:35:05 2014 -0700
+
+    Merge branch 'core-rcu-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip into next
+    
+    Pull RCU changes from Ingo Molnar:
+     "The main RCU changes in this cycle were:
+    
+       - RCU torture-test changes.
+    
+       - variable-name renaming cleanup.
+    
+       - update RCU documentation.
+    
+       - miscellaneous fixes.
+    
+       - patch to suppress RCU stall warnings while sysrq requests are being
+         processed"
+    
+    * 'core-rcu-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip: (68 commits)
+      rcu: Provide API to suppress stall warnings while sysrc runs
+      rcu: Variable name changed in tree_plugin.h and used in tree.c
+      torture: Remove unused definition
+      torture: Remove __init from torture_init_begin/end
+      torture: Check for multiple concurrent torture tests
+      locktorture: Remove reference to nonexistent Kconfig parameter
+      rcutorture: Run rcu_torture_writer at normal priority
+      rcutorture: Note diffs from git commits
+      rcutorture: Add missing destroy_timer_on_stack()
+      rcutorture: Explicitly test synchronous grace-period primitives
+      rcutorture:  Add tests for get_state_synchronize_rcu()
+      rcutorture: Test RCU-sched primitives in TREE_PREEMPT_RCU kernels
+      torture: Use elapsed time to detect hangs
+      rcutorture: Check for rcu_torture_fqs creation errors
+      torture: Better summary diagnostics for build failures
+      torture: Notice if an all-zero cpumask is passed inside a critical section
+      rcutorture: Make rcu_torture_reader() use cond_resched()
+      sched,rcu: Make cond_resched() report RCU quiescent states
+      percpu: Fix raw_cpu_inc_return()
+      rcutorture: Export RCU grace-period kthread wait state to rcutorture
+      ...
+
+commit d2cfd3105094f593bc1fbd0b042a7752ddf08691
+
+----------
+Total;59a3d4c3631e553357b7305dc09db1990aa6757c;-1
+
+----------
+Match [d2cfd3105094f593bc1fbd0b042a7752ddf08691][Date:   Tue Jun 3 12:07:30 2014 -0700][3]
+No match [ff806d034ef8e9a95ff0b0532104dd65332e446b][Date:   Tue Jun 3 11:51:51 2014 -0700][5][-1]
+cid [ff806d034ef8e9a95ff0b0532104dd65332e446b][Date:   Tue Jun 3 11:51:51 2014 -0700] count log [5] dbcount [-1].... NO Match :(
+   values of regions [5]
+Merge: 312c76f f70e3c4
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 11:51:51 2014 -0700
+
+    Merge branch 'for-v3.16' of git://git.linaro.org/people/mszyprowski/linux-dma-mapping into next
+    
+    Pull CMA and DMA-mapping fixes from Marek Szyprowski:
+     "A few fixes for dma-mapping and CMA subsystems"
+    
+    * 'for-v3.16' of git://git.linaro.org/people/mszyprowski/linux-dma-mapping:
+      CMA: correct unlock target
+      drivers/base/dma-contiguous.c: erratum of dev_get_cma_area
+      arm: dma-mapping: add checking cma area initialized
+      arm: dma-iommu: Clean up redundant variable
+      cma: Remove potential deadlock situation
+
+commit 312c76f1a3989b8d0c0c13fee765bb2c41f2d114
+
+----------
+Total;ff806d034ef8e9a95ff0b0532104dd65332e446b;-1
+
+----------
+No match [312c76f1a3989b8d0c0c13fee765bb2c41f2d114][Date:   Tue Jun 3 11:44:48 2014 -0700][64][-1]
+cid [312c76f1a3989b8d0c0c13fee765bb2c41f2d114][Date:   Tue Jun 3 11:44:48 2014 -0700] count log [64] dbcount [-1].... NO Match :(
+   values of regions [64]
+Merge: e13cccf 978371c
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 11:44:48 2014 -0700
+
+    Merge tag 'regulator-v3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator into next
+    
+    Pull regulator updates from Mark Brown:
+     "The bulk of the changes for this release are a few new drivers however
+      there are a couple of noticable core changes and the usual stream of
+      cleanups and fixes:
+    
+       - move disable of unused regulators later in init so it comes after
+         deferred probe has iterated making startup smoother.
+       - fixes to reference counting of the DT nodes for constraints from
+         Charles Keepax.  This has little practical impact since all real
+         users of the regulator bindings use FDT which doesn't need the
+         reference counting.
+       - lots of cleanups, especially to the Samsung drivers.
+       - support for Linear Technologies LTC3589, Texas Instruments
+         TPS658640 and X-Powers AXP20x"
+    
+    * tag 'regulator-v3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator: (64 commits)
+      regulator: pbias: remove unnecessary OOM messages
+      regulator: max8649: remove unnecessary OOM messages
+      regulator: core: Fix the init of DT defined fixed regulators
+      regulator: core: Disable unused regulators after deferred probing is done
+      regulator: Don't disable unused regulators we don't have permission for
+      regulator: axp20x: Use regulator_map_voltage_ascend for LDO4
+      regulator: use of_property_read_{bool|u32}()
+      regulator: Fix regulator_get_{optional,exclusive}() documentation
+      regulators: Add definition of regulator_set_voltage_time() for !CONFIG_REGULATOR
+      regulator: arizona-ldo1: add missing #include
+      regulator: pfuze100: Support enable/disable for fixed regulator
+      regulator: ltc3589: Remove ltc3589_list_voltage_fixed function
+      regulator: ltc3589: Fix module dependency
+      regulator: tps6586x: Remove unused to_tps6586x_dev() function
+      regulator: tps65218: Convert to use regulator_set_voltage_time_sel
+      regulator: tps6586x: Add support for the TPS658640
+      regulator: tps6586x: Prepare supporting fixed regulators
+      regulator: pfuze100: Don't allocate an invalid gpio
+      regulator: pfuze100: Support SWB enable/disable
+      regulator: fixed: use of_property_read_{bool|u32}()
+      ...
+
+commit e13cccfd86481bd4c0499577f44c570d334da79b
+
+----------
+Total;312c76f1a3989b8d0c0c13fee765bb2c41f2d114;-1
+
+----------
+No match [e13cccfd86481bd4c0499577f44c570d334da79b][Date:   Tue Jun 3 11:34:43 2014 -0700][59][-1]
+cid [e13cccfd86481bd4c0499577f44c570d334da79b][Date:   Tue Jun 3 11:34:43 2014 -0700] count log [59] dbcount [-1].... NO Match :(
+   values of regions [59]
+Merge: de6b25d 69e25c7
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 11:34:43 2014 -0700
+
+    Merge tag 'spi-v3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi into next
+    
+    Pull spi updates from Mark Brown:
+     "For this release SPI has been exceptionally quiet, all the work has
+      been on improving drivers (including taking advantage of some of the
+      recent framework updates):
+    
+       - DMA support for the rspi driver providing a nice performance boost
+       - performance improvement for the SIRF controller in PIO mode
+       - new support for the Cadence SPI IP and for pxa2xx on BayTrail"
+    
+    * tag 'spi-v3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi: (59 commits)
+      spi: rspi: Extract rspi_common_transfer()
+      spi: rspi: Add DMA support for RSPI on RZ/A1H
+      spi: rspi: Add DMA support for QSPI on R-Car Gen2
+      spi: rspi: Absorb rspi_rz_transfer_out_in() into rspi_rz_transfer_one()
+      spi: rspi: Merge rspi_*_dma() into rspi_dma_transfer()
+      spi: rspi: Pass sg_tables instead of spi_tranfer to rspi_*_dma()
+      spi: rspi: Move RSPI-specific setup out of DMA routines
+      spi: rspi: Use SPI core DMA mapping framework
+      spi: rspi: SPI DMA core needs both RX and TX DMA to function
+      spi: rspi: Remove unneeded resource test in DMA setup
+      spi: rspi: Extract rspi_request_dma_chan()
+      spi: rspi: Don't consider DMA configuration failures fatal
+      spi: rspi: Extract rspi_pio_transfer()
+      spi: rspi: Use core SPI_MASTER_MUST_[RT]X handling
+      spi: rspi: Remove unused 16-bit DMA support
+      spi: rspi: Do not call rspi_receive_init() for TX-only
+      spi: rspi: Extract rspi_wait_for_{tx_empty,rx_full}()
+      spi/pxa2xx: fix runtime PM enabling order
+      spi/fsl-espi: fix rx_buf in fsl_espi_cmd_trans()/fsl_espi_rw_trans()
+      spi: core: Ignore unsupported spi-[tr]x-bus-width property values
+      ...
+
+commit de6b25de4584febbe1808bc782734ae163b22c26
+
+----------
+Total;e13cccfd86481bd4c0499577f44c570d334da79b;-1
+
+----------
+No match [de6b25de4584febbe1808bc782734ae163b22c26][Date:   Tue Jun 3 11:31:04 2014 -0700][9][-1]
+cid [de6b25de4584febbe1808bc782734ae163b22c26][Date:   Tue Jun 3 11:31:04 2014 -0700] count log [9] dbcount [-1].... NO Match :(
+   values of regions [9]
+Merge: bd698cf ef98ae4
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 11:31:04 2014 -0700
+
+    Merge tag 'regmap-v3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/broonie/regmap into next
+    
+    Pull regmap updates from Mark Brown:
+     "Another fairly quiet release, a few bug fixes and a couple of new
+      features:
+    
+       - support for I2C devices connected to SMBus rather than full I2C
+         controllers contributed by Boris Brezillon.  If the controller is
+         only capable of SMBus operation the framework will transparently
+         fall back to that
+    
+       - suport for little endian values, contributed by Xiubo Li"
+    
+    * tag 'regmap-v3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/broonie/regmap:
+      regmap: mmio: Fix regmap_mmio_write for uneven counts
+      regmap: irq: Fix possible ZERO_SIZE_PTR pointer dereferencing error.
+      regmap: Add missing initialization of this_page
+      regmap: Fix possible ZERO_SIZE_PTR pointer dereferencing error.
+      regmap: i2c: fallback to SMBus if the adapter does not support standard I2C
+      regmap: add reg_read/reg_write callbacks to regmap_bus struct
+      regmap: rbtree: improve 64bits memory alignment
+      regmap: mmio: Fix the bug of 'offset' value parsing.
+      regmap: implement LE formatting/parsing for 16/32-bit values.
+
+commit bd698cf6595b079ce36423e8c7eb4a69a31b1733
+
+----------
+Total;de6b25de4584febbe1808bc782734ae163b22c26;-1
+
+----------
+No match [bd698cf6595b079ce36423e8c7eb4a69a31b1733][Date:   Tue Jun 3 11:20:32 2014 -0700][93][-1]
+cid [bd698cf6595b079ce36423e8c7eb4a69a31b1733][Date:   Tue Jun 3 11:20:32 2014 -0700] count log [93] dbcount [-1].... NO Match :(
+   values of regions [93]
+Merge: f456205 29c7f1f
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 11:20:32 2014 -0700
+
+    Merge tag 'pinctrl-v3.16-1' of git://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl into next
+    
+    Pull pin control changes from Linus Walleij:
+     "This is the bulk of pin control changes for the v3.16 development
+      cycle:
+    
+       - Antoine Tenart made the get_group_pins() vtable entry optional.
+    
+       - Antoine also provides an entirely new driver for the Marvell Berlin
+         SoC.  This is unrelated to the existing MVEBU hardware driver and
+         warrants its own separate driver.
+    
+       - reflected from the GPIO subsystem there is a number of refactorings
+         to make pin control drivers with gpiochips use the new gpiolib
+         irqchip helpers.  The following drivers were converted to use the
+         new infrastructure:
+           * ST Microelectronics STiH416 and friends
+           * The Atmel AT91
+           * The CSR SiRF (Prima2)
+           * The Qualcomm MSM series
+    
+       - massive improvements in the Qualcomm MSM driver from Bjorn
+         Andersson, Andy Gross and Kumar Gala.  Among those new support for
+         the IPQ8064 and MSM8x74 SoC variants.
+    
+       - support for the Freescale i.MX6 SoloX SoC variant.
+    
+       - massive improvements in the Allwinner sunxi driver from Boris
+         Brezillon, Maxime Ripard and Chen-Yu Tsai.
+    
+       - Renesas PFC updates from Laurent Pinchart, Kuninori Morimoto,
+         Wolfram Sang and Magnus Damm.
+    
+       - Cleanups and refactorings of the nVidia Tegra driver from Stepgen
+         Warren.
+    
+       - the Exynos driver now supports the Exynos3250 SoC.
+    
+       - Intel BayTrail updates from Jin Yao, Mika Westerberg.
+    
+       - the MVEBU driver now supports the Orion5x SoC variants, which is
+         part of the effort of getting rid of the old Marvell kludges in
+         arch/arm/mach-orion5x
+    
+       - Rockchip driver updates from Heiko Stuebner.
+    
+       - a ton of cleanups and janitorial patches from Axel Lin.
+    
+       - some minor fixes and improvements here and there"
+    
+    * tag 'pinctrl-v3.16-1' of git://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl: (93 commits)
+      pinctrl: sirf: fix a bad conflict resolution
+      pinctrl: msm: Add more MSM8X74 pin definitions
+      pinctrl: qcom: ipq8064: Fix naming convention
+      pinctrl: msm: Add missing sdc1 and sdc3 groups
+      pinctrl: sirf: switch to using allocated state container
+      pinctrl: Enable "power-source" to be extracted from DT files
+      pinctrl: sunxi: create irq/pin mapping during init
+      pinctrl: pinconf-generic: Use kmemdup instead of kmalloc + memcpy
+      pinctrl: berlin: Use devm_ioremap_resource()
+      pinctrl: sirf: fix typo for GPIO bank number
+      pinctrl: sunxi: depend on RESET_CONTROLLER
+      pinctrl: sunxi: fix pin numbers passed to register offset helpers
+      pinctrl: add pinctrl driver for imx6sx
+      pinctrl/at91: Fix lockup when IRQ on PIOC and PIOD occurs
+      pinctrl: msm: switch to using generic GPIO irqchip helpers
+      pinctrl: sunxi: Fix multiple registration issue
+      pinctrl: sunxi: Fix recursive dependency
+      pinctrl: berlin: add the BG2CD pinctrl driver
+      pinctrl: berlin: add the BG2 pinctrl driver
+      pinctrl: berlin: add the BG2Q pinctrl driver
+      ...
+
+commit f456205265a61f1d649f8378eceaa163850cba4e
+
+----------
+Total;bd698cf6595b079ce36423e8c7eb4a69a31b1733;-1
+
+----------
+No match [f456205265a61f1d649f8378eceaa163850cba4e][Date:   Tue Jun 3 11:09:43 2014 -0700][60][-1]
+cid [f456205265a61f1d649f8378eceaa163850cba4e][Date:   Tue Jun 3 11:09:43 2014 -0700] count log [60] dbcount [-1].... NO Match :(
+   values of regions [60]
+Merge: 8f5759a 9d311ed
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 11:09:43 2014 -0700
+
+    Merge tag 'hwmon-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging into next
+    
+    Pull hwmon updates from Guenter Roeck:
+     "New driver for NCT6683D
+    
+      New chip support to existing drivers:
+       - add support for STTS2004 and AT30TSE004 to jc42 driver
+       - add support for EMC1402/EMC1412/EMC1422 to emc1403 driver
+    
+      Other notable changes:
+       - document hwmon kernel API
+       - convert jc42, lm70, lm75, lm77, lm83, lm92, max1619, tmp421, and
+         tmp102 drivers to use new hwmon API functions
+       - replace function macros in lm80, lm92, and jc42 drivers with real
+         code
+       - convert emc1403 driver to use regmap, add support for additional
+         attributes, and add device IDs for EMC1412, EMC1413, and EMC1414
+       - various additional cleanup and minor bug fixes in several drivers"
+    
+    * tag 'hwmon-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging: (60 commits)
+      hwmon: (nct6775) Fix probe unwind paths to properly unregister platform devices
+      hwmon: (nct6683) Fix probe unwind paths to properly unregister platform devices
+      hwmon: (ultra45_env) Introduce managed version of kzalloc
+      hwmon: Driver for NCT6683D
+      hwmon: (lm80) Rearrange code to avoid forward declarations
+      hwmon: (lm80) Convert fan display function macros into functions
+      hwmon: (lm80) Convert voltage display function macros into functions
+      hwmon: (lm80) Convert temperature display function macros into functions
+      hwmon: (lm80) Normalize all temperature values to 16 bit
+      hwmon: (lm80) Simplify TEMP_FROM_REG
+      hwmon: (lm83) Convert to use devm_hwmon_device_register_with_groups
+      hwmon: (lm83) Rearange code to avoid forward declarations
+      hwmon: (lm83) Drop FSF address
+      hwmon: (max1619) Convert to use devm_hwmon_device_register_with_groups
+      hwmon: (max1619) Drop function macros
+      hwmon: (max1619) Rearrange code to avoid forward declarations
+      hwmon: (max1619) Drop FSF address
+      hwmon: (max1619) Fix critical alarm display
+      hwmon: (jc42) Add support for STTS2004 and AT30TSE004
+      hwmon: (jc42) Convert function macros into functions
+      ...
+
+commit 8f5759aeb88a47448cd92ab55a016d013b154a98
+
+----------
+Total;f456205265a61f1d649f8378eceaa163850cba4e;-1
+
+----------
+No match [8f5759aeb88a47448cd92ab55a016d013b154a98][Date:   Tue Jun 3 10:26:41 2014 -0700][31][-1]
+cid [8f5759aeb88a47448cd92ab55a016d013b154a98][Date:   Tue Jun 3 10:26:41 2014 -0700] count log [31] dbcount [-1].... NO Match :(
+   values of regions [31]
+Merge: e5c4ecd 63aef00
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 10:26:41 2014 -0700
+
+    Merge branch 'for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/s390/linux into next
+    
+    Pull first set of s390 updates from Martin Schwidefsky:
+     "The biggest change in this patchset is conversion from the bootmem
+      bitmaps to the memblock code.  This conversion requires two common
+      code patches to introduce the 'physmem' memblock list.
+    
+      We experimented with ticket spinlocks but in the end decided against
+      them as they perform poorly on virtualized systems.  But the spinlock
+      cleanup and some small improvements are included.
+    
+      The uaccess code got another optimization, the get_user/put_user calls
+      are now inline again for kernel compiles targeted at z10 or newer
+      machines.  This makes the text segment shorter and the code gets a
+      little bit faster.
+    
+      And as always some bug fixes"
+    
+    * 'for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/s390/linux: (31 commits)
+      s390/lowcore: replace lowcore irb array with a per-cpu variable
+      s390/lowcore: reserve 96 bytes for IRB in lowcore
+      s390/facilities: remove extract-cpu-time facility check
+      s390: require mvcos facility for z10 and newer machines
+      s390/boot: fix boot of compressed kernel built with gcc 4.9
+      s390/cio: remove weird assignment during argument evaluation
+      s390/time: cast tv_nsec to u64 prior to shift in update_vsyscall
+      s390/oprofile: make return of 0 explicit
+      s390/spinlock: refactor arch_spin_lock_wait[_flags]
+      s390/rwlock: add missing local_irq_restore calls
+      s390/spinlock,rwlock: always to a load-and-test first
+      s390/cio: fix multiple structure definitions
+      s390/spinlock: fix system hang with spin_retry <= 0
+      s390/appldata: add slab.h for kzalloc/kfree
+      s390/uaccess: provide inline variants of get_user/put_user
+      s390/pci: add some new arch specific pci attributes
+      s390/pci: use pdev->dev.groups for attribute creation
+      s390/pci: use macro for attribute creation
+      s390/pci: improve state check when processing hotplug events
+      s390: split TIF bits into CIF, PIF and TIF bits
+      ...
+
+commit e5c4ecdc55b6d824365ba7964bcd3185223f9688
+
+----------
+Total;8f5759aeb88a47448cd92ab55a016d013b154a98;-1
+
+----------
+No match [e5c4ecdc55b6d824365ba7964bcd3185223f9688][Date:   Tue Jun 3 09:11:20 2014 -0700][314][-1]
+cid [e5c4ecdc55b6d824365ba7964bcd3185223f9688][Date:   Tue Jun 3 09:11:20 2014 -0700] count log [314] dbcount [-1].... NO Match :(
+   values of regions [314]
+Merge: 49eb7b0 4a95b1f
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 09:11:20 2014 -0700
+
+    Merge tag 'usb-3.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb into next
+    
+    Pull USB driver updates from Greg KH:
+     "Here is the big USB driver pull request for 3.16-rc1.
+    
+      Nothing huge here, but lots of little things in the USB core, and in
+      lots of drivers.  Hopefully the USB power management will be work
+      better now that it has been reworked to do per-port power control
+      dynamically.  There's also a raft of gadget driver updates and fixes,
+      CONFIG_USB_DEBUG is finally gone now that everything has been
+      converted over to the dynamic debug inteface, the last hold-out
+      drivers were cleaned up and the config option removed.  There were
+      also other minor things all through the drivers/usb/ tree, the
+      shortlog shows this pretty well.
+    
+      All have been in linux-next, including the very last patch, which came
+      from linux-next to fix a build issue on some platforms"
+    
+    * tag 'usb-3.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb: (314 commits)
+      usb: hub_handle_remote_wakeup() only exists for CONFIG_PM=y
+      USB: orinoco_usb: remove CONFIG_USB_DEBUG support
+      USB: media: lirc: igorplugusb: remove CONFIG_USB_DEBUG support
+      USB: media: streamzap: remove CONFIG_USB_DEBUG
+      USB: media: redrat3: remove CONFIG_USB_DEBUG usage
+      USB: media: redrat3: remove unneeded tracing macro
+      usb: qcserial: add additional Sierra Wireless QMI devices
+      usb: host: max3421-hcd: Use module_spi_driver
+      usb: host: max3421-hcd: Allow platform-data to specify Vbus polarity
+      usb: host: max3421-hcd: fix "spi_rd8" uses dynamic stack allocation warning
+      usb: host: max3421-hcd: Fix missing unlock in max3421_urb_enqueue()
+      usb: qcserial: add Netgear AirCard 341U
+      Documentation: dt-bindings: update xhci-platform DT binding for R-Car H2 and M2
+      usb: host: xhci-plat: add xhci_plat_start()
+      usb: host: max3421-hcd: Fix potential NULL urb dereference
+      Revert "usb: gadget: net2280: Add support for PLX USB338X"
+      USB: usbip: remove CONFIG_USB_DEBUG reference
+      USB: remove CONFIG_USB_DEBUG from defconfig files
+      usb: resume child device when port is powered on
+      usb: hub_handle_remote_wakeup() depends on CONFIG_PM_RUNTIME=y
+      ...
+
+commit 49eb7b0750d9483c74e9c14ae6ea1e9d62481c3c
+
+----------
+Total;e5c4ecdc55b6d824365ba7964bcd3185223f9688;-1
+
+----------
+No match [49eb7b0750d9483c74e9c14ae6ea1e9d62481c3c][Date:   Tue Jun 3 09:01:02 2014 -0700][84][-1]
+cid [49eb7b0750d9483c74e9c14ae6ea1e9d62481c3c][Date:   Tue Jun 3 09:01:02 2014 -0700] count log [84] dbcount [-1].... NO Match :(
+   values of regions [84]
+Merge: 5142c33 9ce4f8f
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 09:01:02 2014 -0700
+
+    Merge tag 'tty-3.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty into next
+    
+    Pull tty/serial driver updates from Greg KH:
+     "Here is the big tty / serial driver pull request for 3.16-rc1.
+    
+      A variety of different serial driver fixes and updates and additions,
+      nothing huge, and no real major core tty changes at all.
+    
+      All have been in linux-next for a while"
+    
+    * tag 'tty-3.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty: (84 commits)
+      Revert "serial: imx: remove the DMA wait queue"
+      serial: kgdb_nmi: Improve console integration with KDB I/O
+      serial: kgdb_nmi: Switch from tasklets to real timers
+      serial: kgdb_nmi: Use container_of() to locate private data
+      serial: cpm_uart: No LF conversion in put_poll_char()
+      serial: sirf: Fix compilation failure
+      console: Remove superfluous readonly check
+      console: Use explicit pointer type for vc_uni_pagedir* fields
+      vgacon: Fix & cleanup refcounting
+      ARM: tty: Move HVC DCC assembly to arch/arm
+      tty/hvc/hvc_console: Fix wakeup of HVC thread on hvc_kick()
+      drivers/tty/n_hdlc.c: replace kmalloc/memset by kzalloc
+      vt: emulate 8- and 24-bit colour codes.
+      printk/of_serial: fix serial console cessation part way through boot.
+      serial: 8250_dma: check the result of TX buffer mapping
+      serial: uart: add hw flow control support configuration
+      tty/serial: at91: add interrupts for modem control lines
+      tty/serial: at91: use mctrl_gpio helpers
+      tty/serial: Add GPIOLIB helpers for controlling modem lines
+      ARM: at91: gpio: implement get_direction
+      ...
+
+commit 5142c33ed86acbcef5c63a63d2b7384b9210d39f
+
+----------
+Total;49eb7b0750d9483c74e9c14ae6ea1e9d62481c3c;-1
+
+----------
+No match [5142c33ed86acbcef5c63a63d2b7384b9210d39f][Date:   Tue Jun 3 08:34:00 2014 -0700][1703][-1]
+cid [5142c33ed86acbcef5c63a63d2b7384b9210d39f][Date:   Tue Jun 3 08:34:00 2014 -0700] count log [1703] dbcount [-1].... NO Match :(
+   values of regions [1703]
+Merge: 5da7776 7eb843a
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 08:34:00 2014 -0700
+
+    Merge tag 'staging-3.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging into next
+    
+    Pull staging driver updates from Greg KH:
+     "Here is the big staging driver pull request for 3.16-rc1.
+    
+      Lots of stuff here, tons of cleanup patches, a few new drivers, and
+      some removed as well, but I think we are still adding a few thousand
+      more lines than we remove, due to the new drivers being bigger than
+      the ones deleted.
+    
+      One notible bit of work did stand out, Jes Sorensen has gone on a
+      tear, fixing up a wireless driver to be "more sane" than it originally
+      was from the vendor, with over 500 patches merged here.  Good stuff,
+      and a number of users laptops are better off for it.
+    
+      All of this has been in linux-next for a while"
+    
+    * tag 'staging-3.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging: (1703 commits)
+      staging: skein: fix sparse warning for static declarations
+      staging/mt29f_spinand: coding style fixes
+      staging: silicom: fix sparse warning for static variable
+      staging: lustre: Fix coding style
+      staging: android: binder.c: Use more appropriate functions for euid retrieval
+      staging: lustre: fix integer as NULL pointer warnings
+      Revert "staging: dgap: remove unneeded kfree() in dgap_tty_register_ports()"
+      Staging: rtl8192u: r8192U_wx.c Fixed a misplaced brace
+      staging: ion: shrink highmem pages on kswapd
+      staging: ion: use compound pages on high order pages for system heap
+      staging: ion: remove struct ion_page_pool_item
+      staging: ion: simplify ion_page_pool_total()
+      staging: ion: tidy up a bit
+      staging: rtl8723au: Remove redundant casting in usb_ops_linux.c
+      staging: rtl8723au: Remove redundant casting in rtl8723a_hal_init.c
+      staging: rtl8723au: Remove redundant casting in rtw_xmit.c
+      staging: rtl8723au: Remove redundant casting in rtw_wlan_util.c
+      staging: rtl8723au: Remove redundant casting in rtw_sta_mgt.c
+      staging: rtl8723au: Remove redundant casting in rtw_recv.c
+      staging: rtl8723au: Remove redundant casting in rtw_mlme.c
+      ...
+
+commit 5da77761e6fd51f633b4f31051c4f839e01c29c0
+
+----------
+Total;5142c33ed86acbcef5c63a63d2b7384b9210d39f;-1
+
+----------
+No match [5da77761e6fd51f633b4f31051c4f839e01c29c0][Date:   Tue Jun 3 08:07:41 2014 -0700][15][-1]
+cid [5da77761e6fd51f633b4f31051c4f839e01c29c0][Date:   Tue Jun 3 08:07:41 2014 -0700] count log [15] dbcount [-1].... NO Match :(
+   values of regions [15]
+Merge: 4046136 cda4357
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 08:07:41 2014 -0700
+
+    Merge tag 'driver-core-3.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core into next
+    
+    Pull driver core / kernfs changes from Greg KH:
+     "Here is the "big" pull request for 3.16-rc1.
+    
+      Not a lot of changes here, some kernfs work, a revert of a very old
+      driver core change that ended up cauing some memory leaks on driver
+      probe error paths, and other minor things.
+    
+      As was pointed out earlier today, one commit here, 26fc9cd200ec
+      ("kernfs: move the last knowledge of sysfs out from kernfs") is also
+      needed in your 3.15-final branch as well.  If you could cherry-pick it
+      there, it would be most appreciated by Andy Lutomirski to prevent a
+      regression there.
+    
+      All of these have been in linux-next for a while"
+    
+    * tag 'driver-core-3.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core:
+      crypto/nx/nx-842: dev_set_drvdata can no longer fail
+      kernfs: move the last knowledge of sysfs out from kernfs
+      sysfs: fix attribute_group bin file path on removal
+      sysfs.h: don't return a void-valued expression in sysfs_remove_file
+      init.h: Update initcall_sync variants to fix build errors
+      driver core: Inline dev_set/get_drvdata
+      driver core: dev_get_drvdata: Don't check for NULL dev
+      driver core: dev_set_drvdata returns void
+      driver core: dev_set_drvdata can no longer fail
+      driver core: Move driver_data back to struct device
+      lib/devres.c: fix checkpatch warnings
+      lib/devres.c: use dev in devm_request_and_ioremap
+      kobject: Make support for uevent_helper optional.
+      kernfs: make kernfs_notify() trigger inotify events too
+      kernfs: implement kernfs_root->supers list
+
+commit 4046136afbd1038d776bad9c59e1e4cca78186fb
+
+----------
+Total;5da77761e6fd51f633b4f31051c4f839e01c29c0;-1
+
+----------
+No match [4046136afbd1038d776bad9c59e1e4cca78186fb][Date:   Tue Jun 3 08:06:56 2014 -0700][79][-1]
+cid [4046136afbd1038d776bad9c59e1e4cca78186fb][Date:   Tue Jun 3 08:06:56 2014 -0700] count log [79] dbcount [-1].... NO Match :(
+   values of regions [79]
+Merge: b55a0ff a100d88d
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue Jun 3 08:06:56 2014 -0700
+
+    Merge tag 'char-misc-3.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc into next
+    
+    Pull char/misc driver patches from Greg KH:
+     "Here is the big char / misc driver update for 3.16-rc1.
+    
+      Lots of different driver updates for a variety of different drivers
+      and minor driver subsystems.
+    
+      All have been in linux-next with no reported issues"
+    
+    * tag 'char-misc-3.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc: (79 commits)
+      hv: use correct order when freeing monitor_pages
+      spmi: of: fixup generic SPMI devicetree binding example
+      applicom: dereferencing NULL on error path
+      misc: genwqe: fix uninitialized return value in genwqe_free_sync_sgl()
+      miscdevice.h: Simple syntax fix to make pointers consistent.
+      MAINTAINERS: Add miscdevice.h to file list for char/misc drivers.
+      mcb: Add support for shared PCI IRQs
+      drivers: Remove duplicate conditionally included subdirs
+      misc: atmel_pwm: only build for supported platforms
+      mei: me: move probe quirk to cfg structure
+      mei: add per device configuration
+      mei: me: read H_CSR after asserting reset
+      mei: me: drop harmful wait optimization
+      mei: me: fix hw ready reset flow
+      mei: fix memory leak of mei_clients array
+      uio: fix vma io range check in mmap
+      drivers: uio_dmem_genirq: Fix memory leak in uio_dmem_genirq_probe()
+      w1: do not unlock unheld list_mutex in __w1_remove_master_device()
+      w1: optional bundling of netlink kernel replies
+      connector: allow multiple messages to be sent in one packet
+      ...
+
+commit b55a0ff8df92646696c858a8fea4dbf38509f202
+
+----------
+Total;4046136afbd1038d776bad9c59e1e4cca78186fb;-1
+
+----------
+No match [b55a0ff8df92646696c858a8fea4dbf38509f202][Date:   Mon Jun 2 20:00:54 2014 -0700][9][-1]
+cid [b55a0ff8df92646696c858a8fea4dbf38509f202][Date:   Mon Jun 2 20:00:54 2014 -0700] count log [9] dbcount [-1].... NO Match :(
+   values of regions [9]
+Merge: a727eaf 83c6bdb
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon Jun 2 20:00:54 2014 -0700
+
+    Merge branch 'for-next' of git://git.kernel.org/pub/scm/linux/kernel/git/gerg/m68knommu into next
+    
+    Pull m68knommu updates from Greg Ungerer:
+     "Nothing too big, just a handfull of small changes.
+    
+      A couple of dragonball fixes, coldfire qspi cleanup and fixes, and
+      some coldfire gpio cleanup, fixes and extensions"
+    
+    * 'for-next' of git://git.kernel.org/pub/scm/linux/kernel/git/gerg/m68knommu:
+      m68knommu: Implement gpio support for m54xx.
+      m68knommu: Make everything thats not exported, static.
+      m68knommu: setting the gpio data direction register to output doesn't dependent upon the value to output!
+      m68knommu: add to_irq function so we can map gpios to external interrupts.
+      m68knommu: qspi declutter.
+      m68knommu: Fix the 5249/525x qspi base address.
+      m68knommu: Add qspi clk for Coldfire SoCs without real clks.
+      m68k: fix a compiler warning when building for DragonBall
+      m68knommu: Fix mach_sched_init for EZ and VZ DragonBall chips
+
+commit cae61ba37b4c2672704cbd8a626fbd85be7e67d9
+
+----------
+Total;b55a0ff8df92646696c858a8fea4dbf38509f202;-1
+
+----------
+Match [cae61ba37b4c2672704cbd8a626fbd85be7e67d9][Date:   Mon Jun 2 18:16:41 2014 -0700][24]
+Match [ca755175f245b91f72cfa474aaa8acd9c26996f4][Date:   Mon Jun 2 17:04:37 2014 -0700][2]
+Match [92b4e113155f9c8de9ef71ecdf55d796b68e7318][Date:   Mon Jun 2 16:57:23 2014 -0700][1]
+Match [8ee7a330fbb78344802cc6c3cc8be023b6d05aa0][Date:   Mon Jun 2 16:56:42 2014 -0700][8]
+Match [da579dd6a180693368ade74b3ac38701d35f686e][Date:   Mon Jun 2 16:55:18 2014 -0700][5]
+No match [a727eaf64ff084a50b983fc506810c7a576b7ce3][Date:   Mon Jun 2 16:35:49 2014 -0700][101][-1]
+cid [a727eaf64ff084a50b983fc506810c7a576b7ce3][Date:   Mon Jun 2 16:35:49 2014 -0700] count log [101] dbcount [-1].... NO Match :(
+   values of regions [101]
+Merge: 755a9ba 45e70b7
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon Jun 2 16:35:49 2014 -0700
+
+    Merge tag 'drivers-for-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/arm/arm-soc into next
+    
+    Pull ARM SoC driver changes from Olof Johansson:
+     "SoC-near driver changes that we're merging through our tree.  Mostly
+      because they depend on other changes we have staged, but in some cases
+      because the driver maintainers preferred that we did it this way.
+    
+      This contains a largeish cleanup series of the omap_l3_noc bus driver,
+      cpuidle rework for Exynos, some reset driver conversions and a long
+      branch of TI EDMA fixes and cleanups, with more to come next release.
+    
+      The TI EDMA cleanups is a shared branch with the dmaengine tree, with
+      a handful of Davinci-specific fixes on top.
+    
+      After discussion at last year's KS (and some more on the mailing
+      lists), we are here adding a drivers/soc directory.  The purpose of
+      this is to keep per-vendor shared code that's needed by different
+      drivers but that doesn't fit into the MFD (nor drivers/platform)
+      model.  We expect to keep merging contents for this hierarchy through
+      arm-soc so we can keep an eye on what the vendors keep adding here and
+      not making it a free-for-all to shove in crazy stuff"
+    
+    * tag 'drivers-for-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/arm/arm-soc: (101 commits)
+      cpufreq: exynos: Fix driver compilation with ARCH_MULTIPLATFORM
+      tty: serial: msm: Remove direct access to GSBI
+      power: reset: keystone-reset: introduce keystone reset driver
+      Documentation: dt: add bindings for keystone pll control controller
+      Documentation: dt: add bindings for keystone reset driver
+      soc: qcom: fix of_device_id table
+      ARM: EXYNOS: Fix kernel panic when unplugging CPU1 on exynos
+      ARM: EXYNOS: Move the driver to drivers/cpuidle directory
+      ARM: EXYNOS: Cleanup all unneeded headers from cpuidle.c
+      ARM: EXYNOS: Pass the AFTR callback to the platform_data
+      ARM: EXYNOS: Move S5P_CHECK_SLEEP into pm.c
+      ARM: EXYNOS: Move the power sequence call in the cpu_pm notifier
+      ARM: EXYNOS: Move the AFTR state function into pm.c
+      ARM: EXYNOS: Encapsulate the AFTR code into a function
+      ARM: EXYNOS: Disable cpuidle for exynos5440
+      ARM: EXYNOS: Encapsulate boot vector code into a function for cpuidle
+      ARM: EXYNOS: Pass wakeup mask parameter to function for cpuidle
+      ARM: EXYNOS: Remove ifdef for scu_enable in pm
+      ARM: EXYNOS: Move scu_enable in the cpu_pm notifier
+      ARM: EXYNOS: Use the cpu_pm notifier for pm
+      ...
+
+commit 755a9ba7bf24a45b6dbf8bb15a5a56c8ed12461a
+
+----------
+Total;a727eaf64ff084a50b983fc506810c7a576b7ce3;-1
+
+----------
+No match [755a9ba7bf24a45b6dbf8bb15a5a56c8ed12461a][Date:   Mon Jun 2 16:34:00 2014 -0700][500][-1]
+cid [755a9ba7bf24a45b6dbf8bb15a5a56c8ed12461a][Date:   Mon Jun 2 16:34:00 2014 -0700] count log [500] dbcount [-1].... NO Match :(
+   values of regions [500]
+Merge: 7477838 0f16aa3
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon Jun 2 16:34:00 2014 -0700
+
+    Merge tag 'dt-for-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/arm/arm-soc into next
+    
+    Pull ARM SoC devicetree updates from Olof Johansson:
+     "As with previous release, this continues to be among the largest
+      branches we merge, with lots of new contents.
+    
+      New things for this release are among other things:
+    
+       - DTSI contents for the new SoCs supported in 3.16 (see SoC pull request)
+       - Qualcomm APQ8064 and APQ8084 SoCs and eval boards
+       - Nvidia Jetson TK1 development board (Tegra T124-based)
+    
+      Two new SoCs that didn't need enough new platform code to stand out
+      enough for me to notice when writing the SoC tag, but that adds new DT
+      contents are:
+    
+       - TI DRA72
+       - Marvell Berlin 2Q"
+    
+    * tag 'dt-for-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/arm/arm-soc: (500 commits)
+      ARM: dts: add secure firmware support for exynos5420-arndale-octa
+      ARM: dts: add pmu sysreg node to exynos3250
+      ARM: dts: correct the usb phy node in exynos5800-peach-pi
+      ARM: dts: correct the usb phy node in exynos5420-peach-pit
+      ARM: dts: add dts files for exynos5410 and exynos5410-smdk5410
+      ARM: dts: add dts files for exynos3250 SoC
+      ARM: dts: add mfc node for exynos5800
+      ARM: dts: add Vbus regulator for USB 3.0 on exynos5800-peach-pi
+      ARM: dts: enable fimd for exynos5800-peach-pi
+      ARM: dts: enable display controller for exynos5800-peach-pi
+      ARM: dts: enable hdmi for exynos5800-peach-pi
+      ARM: dts: add dts file for exynos5800-peach-pi board
+      ARM: dts: add dts file for exynos5800 SoC
+      ARM: dts: add dts file for exynos5260-xyref5260 board
+      ARM: dts: add dts files for exynos5260 SoC
+      ARM: dts: update watchdog node name in exynos5440
+      ARM: dts: use key code macros on Origen and Arndale boards
+      ARM: dts: enable RTC and WDT nodes on Origen boards
+      ARM: dts: qcom: Add APQ8084-MTP board support
+      ARM: dts: qcom: Add APQ8084 SoC support
+      ...
+
+commit 7477838f2e481256a40e0c44b92f9bccb065bc51
+
+----------
+Total;755a9ba7bf24a45b6dbf8bb15a5a56c8ed12461a;-1
+
+----------
+No match [7477838f2e481256a40e0c44b92f9bccb065bc51][Date:   Mon Jun 2 16:23:28 2014 -0700][14][-1]
+cid [7477838f2e481256a40e0c44b92f9bccb065bc51][Date:   Mon Jun 2 16:23:28 2014 -0700] count log [14] dbcount [-1].... NO Match :(
+   values of regions [14]
+Merge: c67d9ce c6ac448
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon Jun 2 16:23:28 2014 -0700
+
+    Merge tag 'defconfig-for-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/arm/arm-soc into next
+    
+    Pull ARM SoC defconfig updates from Olof Johansson:
+     "A number of defconfig updates for 3.16.  We have quite a few of these
+      as new SoCs and drivers get supported, and we've started collecting
+      them in one shared branch.
+    
+      We started halfway through the merge window so there'll be some small
+      conflicts with other branches on nearby changes, but nothing major.
+      Next cycle should be smoother"
+    
+    * tag 'defconfig-for-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/arm/arm-soc:
+      ARM: multi_v7_defconfig: Enable Exynos platform
+      ARM: configs: update Allwinner options
+      ARM: qcom: Enable GSBI driver in defconfig
+      ARM: multi_v7_defconfig: Enable Zynq peripheral drivers
+      ARM: at91/defconfig: sama5_defconfig: updated
+      ARM: add drivers for Colibri T30 to multi_v7_defconfig
+      ARM: configs: add CONFIG_MMC_SDHCI_PXAV3 to the multi_v7_defconfig
+      ARM: configs: enable XHCI mvebu support in multi_v7_defconfig
+      ARM: multi_v7: Add Allwinner reset drivers to multi_v7_defconfig
+      ARM: sunxi: Add A31 reset driver to sunxi_defconfig
+      ARM: config: Update msm_defconfig
+      ARM: mvebu: enable MSI support in mvebu_v7_defconfig
+      ARM: config: Add qcom_defconfig
+      ARM: configs: enable XHCI mvebu support in mvebu_v7_defconfig
+
+commit c67d9ce1668735a22762251e96b3fd31bb289867
+
+----------
+Total;7477838f2e481256a40e0c44b92f9bccb065bc51;-1
+
+----------
+No match [c67d9ce1668735a22762251e96b3fd31bb289867][Date:   Mon Jun 2 16:21:41 2014 -0700][130][-1]
+cid [c67d9ce1668735a22762251e96b3fd31bb289867][Date:   Mon Jun 2 16:21:41 2014 -0700] count log [130] dbcount [-1].... NO Match :(
+   values of regions [130]
+Merge: 825f4e0 03a2ec6
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon Jun 2 16:21:41 2014 -0700
+
+    Merge tag 'boards-for-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/arm/arm-soc into next
+    
+    Pull ARM SoC board support updates from Olof Johansson:
+     "The bulk of this branch is updates for Renesas Shmobile.  They are
+      still doing some enablement for classic boards first, and then come up
+      with DT bindings when they've had a chance to learn more about the
+      hardware.  Not necessarily a bad way to go about it, and they're
+      looking at moving some of the temporary board code resulting from it
+      to drivers/staging instead to avoid the churn here.
+    
+      As a result of the shmobile clock cleanups, we end up merging quite a
+      bit of SH code here as well.  We ended up merging it here instead of
+      in the cleanup branch due to the other board changes depending on it"
+    
+    * tag 'boards-for-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/arm/arm-soc: (130 commits)
+      ARM: davinci: remove checks for CONFIG_USB_MUSB_PERIPHERAL
+      ARM: add drivers for Colibri T30 to multi_v7_defconfig
+      ARM: shmobile: Remove Genmai reference DTS
+      ARM: shmobile: Let Genmai multiplatform boot with Genmai DTB
+      ARM: shmobile: Sync Genmai DTS with Genmai reference DTS
+      ARM: shmobile: genmai-reference: Remove legacy clock support
+      ARM: shmobile: Remove non-multiplatform Genmai reference support
+      ARM: configs: enable XHCI mvebu support in multi_v7_defconfig
+      ARM: OMAP: replace checks for CONFIG_USB_GADGET_OMAP
+      ARM: OMAP: AM3517EVM: remove check for CONFIG_PANEL_SHARP_LQ043T1DG01
+      ARM: OMAP: SX1: remove check for CONFIG_SX1_OLD_FLASH
+      ARM: OMAP: remove some dead code
+      ARM: OMAP: omap3stalker: remove two Kconfig macros
+      ARM: tegra: tegra_defconfig updates
+      ARM: shmobile: r7s72100: use workaround for non DT-clocks
+      ARM: shmobile: Add forward declaration of struct clk to silence warning
+      ARM: shmobile: r7s72100: remove SPI DT clocks from legacy clock support
+      ARM: shmobile: r7s72100: add spi clocks to dtsi
+      ARM: shmobile: r7s72100: remove I2C DT clocks from legacy clock support
+      ARM: shmobile: r7s72100: add i2c clocks to dtsi
+      ...
+
+commit 825f4e0271b0de3f7f31d963dcdaa0056fe9b73a
+
+----------
+Total;c67d9ce1668735a22762251e96b3fd31bb289867;-1
+
+----------
+No match [825f4e0271b0de3f7f31d963dcdaa0056fe9b73a][Date:   Mon Jun 2 16:15:12 2014 -0700][281][-1]
+cid [825f4e0271b0de3f7f31d963dcdaa0056fe9b73a][Date:   Mon Jun 2 16:15:12 2014 -0700] count log [281] dbcount [-1].... NO Match :(
+   values of regions [281]
+Merge: 0a58471 b5b9324
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon Jun 2 16:15:12 2014 -0700
+
+    Merge tag 'soc-for-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/arm/arm-soc into next
+    
+    Pull part one of ARM SoC updates from Olof Johansson:
+     "A quite large set of SoC updates this cycle.  In no particular order:
+    
+       - Multi-cluster power management for Samsung Exynos, adding support
+         for big.LITTLE CPU switching on EXYNOS5
+    
+       - SMP support for Marvell Armada 375 and 38x
+    
+       - SMP rework on Allwinner A31
+    
+       - Xilinx Zynq support for SOC_BUS, big endian
+    
+       - Marvell orion5x platform cleanup, modernizing the implementation
+         and moving to DT.
+    
+       - _Finally_ moving Samsung Exynos over to support MULTIPLATFORM, so
+         that their platform can be enabled in the same kernel binary as
+         most of the other v7 platforms in the tree.  \o/
+    
+         The work isn't quite complete, there's some driver fixes still
+         needed, but the basics now work.
+    
+      New SoC support added:
+    
+       - Freescale i.MX6SX
+    
+       - LSI Axxia AXM55xx SoCs
+    
+       - Samsung EXYNOS 3250, 5260, 5410, 5420 and 5800
+    
+       - STi STIH407
+    
+      plus a large set of various smaller updates for different platforms.
+      I'm probably missing some important one here"
+    
+    * tag 'soc-for-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/arm/arm-soc: (281 commits)
+      ARM: exynos: don't run exynos4 l2x0 setup on other platforms
+      ARM: exynos: Fix "allmodconfig" build errors in mcpm and hotplug
+      ARM: EXYNOS: mcpm rename the power_down_finish
+      ARM: EXYNOS: Enable mcpm for dual-cluster exynos5800 SoC
+      ARM: EXYNOS: Enable multi-platform build support
+      ARM: EXYNOS: Consolidate Kconfig entries
+      ARM: EXYNOS: Add support for EXYNOS5410 SoC
+      ARM: EXYNOS: Support secondary CPU boot of Exynos3250
+      ARM: EXYNOS: Add Exynos3250 SoC ID
+      ARM: EXYNOS: Add 5800 SoC support
+      ARM: EXYNOS: initial board support for exynos5260 SoC
+      clk: exynos5410: register clocks using common clock framework
+      ARM: debug: qcom: add UART addresses to Kconfig help for APQ8084
+      ARM: sunxi: allow building without reset controller
+      Documentation: devicetree: arm: sort enable-method entries
+      ARM: rockchip: convert smp bringup to CPU_METHOD_OF_DECLARE
+      clk: exynos5250: Add missing sysmmu clocks for DISP and ISP blocks
+      ARM: dts: axxia: Add reset controller
+      power: reset: Add Axxia system reset driver
+      ARM: axxia: Adding defconfig for AXM55xx
+      ...
+
+commit 0a58471541cc823ef8056d23945c39fec154481c
+
+----------
+Total;825f4e0271b0de3f7f31d963dcdaa0056fe9b73a;-1
+
+----------
+No match [0a58471541cc823ef8056d23945c39fec154481c][Date:   Mon Jun 2 16:14:07 2014 -0700][87][-1]
+cid [0a58471541cc823ef8056d23945c39fec154481c][Date:   Mon Jun 2 16:14:07 2014 -0700] count log [87] dbcount [-1].... NO Match :(
+   values of regions [87]
+Merge: ff933a0 08d38be
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon Jun 2 16:14:07 2014 -0700
+
+    Merge tag 'cleanup-for-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/arm/arm-soc into next
+    
+    Pull ARM SoC cleanups from Olof Johansson:
+     "Cleanups for 3.16.  Among these are:
+    
+       - a bunch of misc cleanups for Broadcom platforms, mostly
+         housekeeping
+       - enabling Common Clock Framework on the older s3c24xx Samsung
+         chipsets
+       - cleanup of the Versatile Express system controller code, moving it
+         to syscon
+       - power management cleanups for OMAP platforms
+    
+      plus a handful of other cleanups across the place"
+    
+    * tag 'cleanup-for-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/arm/arm-soc: (87 commits)
+      ARM: kconfig: allow PCI support to be selected with ARCH_MULTIPLATFORM
+      clk: samsung: fix build error
+      ARM: vexpress: refine dependencies for new code
+      clk: samsung: clk-s3c2410-dlck: do not use PNAME macro as it declares __initdata
+      cpufreq: exynos: Fix the compile error
+      ARM: S3C24XX: move debug-macro.S into the common space
+      ARM: S3C24XX: use generic DEBUG_UART_PHY/_VIRT in debug macro
+      ARM: S3C24XX: trim down debug uart handling
+      ARM: compressed/head.S: remove s3c24xx special case
+      ARM: EXYNOS: Remove unnecessary inclusion of cpu.h
+      ARM: EXYNOS: Migrate Exynos specific macros from plat to mach
+      ARM: EXYNOS: Remove exynos_subsys registration
+      ARM: EXYNOS: Remove duplicate lines in Makefile
+      ARM: EXYNOS: use v7_exit_coherency_flush macro for cache disabling
+      ARM: OMAP4: PRCM: remove references to cm-regbits-44xx.h from PRCM core files
+      ARM: OMAP3/4: PRM: add support of late_init call to prm_ll_ops
+      ARM: OMAP3/OMAP4: PRM: add prm_features flags and add IO wakeup under it
+      ARM: OMAP3/4: PRM: provide io chain reconfig function through irq setup
+      ARM: OMAP2+: PRM: remove unnecessary cpu_is_XXX calls from prm_init / exit
+      ARM: OMAP2+: PRCM: cleanup some header includes
+      ...
+
+commit ff933a0817f95efbeb97bec5ca609a13f8aed686
+
+----------
+Total;0a58471541cc823ef8056d23945c39fec154481c;-1
+
+----------
+No match [ff933a0817f95efbeb97bec5ca609a13f8aed686][Date:   Mon Jun 2 16:13:34 2014 -0700][9][-1]
+cid [ff933a0817f95efbeb97bec5ca609a13f8aed686][Date:   Mon Jun 2 16:13:34 2014 -0700] count log [9] dbcount [-1].... NO Match :(
+   values of regions [9]
+Merge: 80081ec da98f44
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon Jun 2 16:13:34 2014 -0700
+
+    Merge tag 'fixes-for-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/arm/arm-soc into next
+    
+    Pull ARM SoC low-priority fixes from Olof Johansson:
+     "A small selection of fixes coming in late during the release cycle and
+      not being critical enough for 3.15 inclusion"
+    
+    * tag 'fixes-for-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/arm/arm-soc:
+      ARM: shmobile: armadillo800eva: fixup HDMI sound flags setting
+      ARM: msm: Silence readb/writeb warnings due to missing IOMEM()
+      ARM: dts: am43xx: fix starting offset of NAND.filesystem MTD partition
+      ARM: dts: am335x-boneblack: remove use of ti,vcc-aux-disable-is-sleep
+      ARM: OMAP2+: free use_gptimer_clksrc variable after boot
+      ARM: OMAP5: Redo THUMB mode switch on secondary CPU
+      ARM: dts: AM4372: add l3-noc information
+      ARM: dts: DRA7: Use dra7-l3-noc instead of omap4-l3-noc
+      reset: Add of_reset_control_get to reset.h
+
+commit 80081ec309c83352f6f4a1040a4496061eec7535
+
+----------
+Total;ff933a0817f95efbeb97bec5ca609a13f8aed686;-1
+
+----------
+No match [80081ec309c83352f6f4a1040a4496061eec7535][Date:   Mon Jun 2 13:57:01 2014 -0700][54][-1]
+cid [80081ec309c83352f6f4a1040a4496061eec7535][Date:   Mon Jun 2 13:57:01 2014 -0700] count log [54] dbcount [-1].... NO Match :(
+   values of regions [54]
+Merge: 4255532 e8edca6
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon Jun 2 13:57:01 2014 -0700
+
+    Merge branch 'for-3.16/drivers' of git://git.kernel.dk/linux-block into next
+    
+    Pull block driver changes from Jens Axboe:
+     "Now that the core bits are in, here's the pull request for the driver
+      related changes for 3.16.  Nothing out of the ordinary here, mostly
+      business as usual.  There are a few pulls of for-3.16/core into this
+      branch, which were done when the blk-mq was modified after the
+      mtip32xx conversion was put in.
+    
+      The pull request contains:
+    
+       - skd and cciss converted to use pci_enable_msix_exact().  From
+         Alexander Gordeev.
+    
+       - A few mtip32xx fixes from Asai @ Micron.
+    
+       - The conversion of mtip32xx from make_request_fn to blk-mq, and a
+         later small fix for that conversion on quiescing for non-queued IO.
+         From me.
+    
+       - A fix for bsg to use an exported function to check whether this
+         driver is request based or not.  Needed updating for blk-mq, which
+         is request based, but does not have a request_fn hook.  From me.
+    
+       - Small floppy bug fix from Jiri.
+    
+       - A series of cleanups for the cdrom uniform layer from Joe Perches.
+         Gets rid of various old ugly macros, making the code conform more
+         to the modern coding style.
+    
+       - A series of patches for drbd from the drbd crew (Lars Ellenberg and
+         Philipp Reisner).
+    
+       - A use-after-free fix for null_blk from Ming Lei.
+    
+       - Also from Ming Lei is a performance patch for virtio-blk, which can
+         net us a 3x win on kvm platforms where world notification is
+         expensive.
+    
+       - Ming Lei also fixed a stall issue in virtio-blk, due to a race
+         between queue start/stop and resource limits.
+    
+       - A small batch of fixes for xen-blk{back,front} from Olaf Hering and
+         Valentin Priescu"
+    
+    * 'for-3.16/drivers' of git://git.kernel.dk/linux-block: (54 commits)
+      block: virtio_blk: don't hold spin lock during world switch
+      xen-blkback: defer freeing blkif to avoid blocking xenwatch
+      xen blkif.h: fix comment typo in discard-alignment
+      xen/blkback: disable discard feature if requested by toolstack
+      xen-blkfront: remove type check from blkfront_setup_discard
+      floppy: do not corrupt bio.bi_flags when reading block 0
+      mtip32xx: move error handling to service thread
+      virtio_blk: fix race between start and stop queue
+      mtip32xx: stop block hardware queues before quiescing IO
+      mtip32xx: blk_mq_init_queue() returns an ERR_PTR
+      mtip32xx: convert to use blk-mq
+      cdrom: Remove unnecessary prototype for cdrom_get_disc_info
+      cdrom: Remove unnecessary prototype for cdrom_mrw_exit
+      cdrom: Remove cdrom_count_tracks prototype
+      cdrom: Remove cdrom_get_next_writeable prototype
+      cdrom: Remove cdrom_get_last_written prototype
+      cdrom: Move mmc_ioctls above cdrom_ioctl to remove unnecessary prototype
+      cdrom: Remove unnecessary sanitize_format prototype
+      cdrom: Remove unnecessary check_for_audio_disc prototype
+      cdrom: Remove prototype for open_for_data
+      ...
+
+commit 425553209b387fa2125df09d01a2d1c1724bd205
+
+----------
+Total;80081ec309c83352f6f4a1040a4496061eec7535;-1
+
+----------
+No match [425553209b387fa2125df09d01a2d1c1724bd205][Date:   Mon Jun 2 12:15:19 2014 -0700][92][-1]
+cid [425553209b387fa2125df09d01a2d1c1724bd205][Date:   Mon Jun 2 12:15:19 2014 -0700] count log [92] dbcount [-1].... NO Match :(
+   values of regions [92]
+Merge: 681a289 617b415
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon Jun 2 12:15:19 2014 -0700
+
+    Merge tag 'pci-v3.16-changes' of git://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci into next
+    
+    Pull PCI changes from Bjorn Helgaas:
+     "Enumeration
+        - Notify driver before and after device reset (Keith Busch)
+        - Use reset notification in NVMe (Keith Busch)
+    
+      NUMA
+        - Warn if we have to guess host bridge node information (Myron Stowe)
+        - Work around AMD Fam15h BIOSes that fail to provide _PXM (Suravee
+          Suthikulpanit)
+        - Clean up and mark early_root_info_init() as deprecated (Suravee
+          Suthikulpanit)
+    
+      Driver binding
+        - Add "driver_override" for force specific binding (Alex Williamson)
+        - Fail "new_id" addition for devices we already know about (Bandan
+          Das)
+    
+      Resource management
+        - Support BAR sizes up to 8GB (Nikhil Rao, Alan Cox)
+        - Don't move IORESOURCE_PCI_FIXED resources (Bjorn Helgaas)
+        - Mark SBx00 HPET BAR as IORESOURCE_PCI_FIXED (Bjorn Helgaas)
+        - Fail safely if we can't handle BARs larger than 4GB (Bjorn Helgaas)
+        - Reject BAR above 4GB if dma_addr_t is too small (Bjorn Helgaas)
+        - Don't convert BAR address to resource if dma_addr_t is too small
+          (Bjorn Helgaas)
+        - Don't set BAR to zero if dma_addr_t is too small (Bjorn Helgaas)
+        - Don't print anything while decoding is disabled (Bjorn Helgaas)
+        - Don't add disabled subtractive decode bus resources (Bjorn Helgaas)
+        - Add resource allocation comments (Bjorn Helgaas)
+        - Restrict 64-bit prefetchable bridge windows to 64-bit resources
+          (Yinghai Lu)
+        - Assign i82875p_edac PCI resources before adding device (Yinghai Lu)
+    
+      PCI device hotplug
+        - Remove unnecessary "dev->bus" test (Bjorn Helgaas)
+        - Use PCI_EXP_SLTCAP_PSN define (Bjorn Helgaas)
+        - Fix rphahp endianess issues (Laurent Dufour)
+        - Acknowledge spurious "cmd completed" event (Rajat Jain)
+        - Allow hotplug service drivers to operate in polling mode (Rajat Jain)
+        - Fix cpqphp possible NULL dereference (Rickard Strandqvist)
+    
+      MSI
+        - Replace pci_enable_msi_block() by pci_enable_msi_exact()
+          (Alexander Gordeev)
+        - Replace pci_enable_msix() by pci_enable_msix_exact() (Alexander Gordeev)
+        - Simplify populate_msi_sysfs() (Jan Beulich)
+    
+      Virtualization
+        - Add Intel Patsburg (X79) root port ACS quirk (Alex Williamson)
+        - Mark RTL8110SC INTx masking as broken (Alex Williamson)
+    
+      Generic host bridge driver
+        - Add generic PCI host controller driver (Will Deacon)
+    
+      Freescale i.MX6
+        - Use new clock names (Lucas Stach)
+        - Drop old IRQ mapping (Lucas Stach)
+        - Remove optional (and unused) IRQs (Lucas Stach)
+        - Add support for MSI (Lucas Stach)
+        - Fix imx6_add_pcie_port() section mismatch warning (Sachin Kamat)
+    
+      Renesas R-Car
+        - Add gen2 device tree support (Ben Dooks)
+        - Use new OF interrupt mapping when possible (Lucas Stach)
+        - Add PCIe driver (Phil Edworthy)
+        - Add PCIe MSI support (Phil Edworthy)
+        - Add PCIe device tree bindings (Phil Edworthy)
+    
+      Samsung Exynos
+        - Remove unnecessary OOM messages (Jingoo Han)
+        - Fix add_pcie_port() section mismatch warning (Sachin Kamat)
+    
+      Synopsys DesignWare
+        - Make MSI ISR shared IRQ aware (Lucas Stach)
+    
+      Miscellaneous
+        - Check for broken config space aliasing (Alex Williamson)
+        - Update email address (Ben Hutchings)
+        - Fix Broadcom CNB20LE unintended sign extension (Bjorn Helgaas)
+        - Fix incorrect vgaarb conditional in WARN_ON() (Bjorn Helgaas)
+        - Remove unnecessary __ref annotations (Bjorn Helgaas)
+        - Add arch/x86/kernel/quirks.c to MAINTAINERS PCI file patterns
+          (Bjorn Helgaas)
+        - Fix use of uninitialized MPS value (Bjorn Helgaas)
+        - Tidy x86/gart messages (Bjorn Helgaas)
+        - Fix return value from pci_user_{read,write}_config_*() (Gavin Shan)
+        - Turn pcibios_penalize_isa_irq() into a weak function (Hanjun Guo)
+        - Remove unused serial device IDs (Jean Delvare)
+        - Use designated initialization in PCI_VDEVICE (Mark Rustad)
+        - Fix powerpc NULL dereference in pci_root_buses traversal (Mike Qiu)
+        - Configure MPS on ARM (Murali Karicheri)
+        - Remove unnecessary includes of <linux/init.h> (Paul Gortmaker)
+        - Move Open Firmware devspec attribute to PCI common code (Sebastian Ott)
+        - Use pdev->dev.groups for attribute creation on s390 (Sebastian Ott)
+        - Remove pcibios_add_platform_entries() (Sebastian Ott)
+        - Add new ID for Intel GPU "spurious interrupt" quirk (Thomas Jarosch)
+        - Rename pci_is_bridge() to pci_has_subordinate() (Yijing Wang)
+        - Add and use new pci_is_bridge() interface (Yijing Wang)
+        - Make pci_bus_add_device() void (Yijing Wang)
+    
+      DMA API
+        - Clarify physical/bus address distinction in docs (Bjorn Helgaas)
+        - Fix typos in docs (Emilio López)
+        - Update dma_pool_create ()and dma_pool_alloc() descriptions (Gioh Kim)
+        - Change dma_declare_coherent_memory() CPU address to phys_addr_t
+          (Bjorn Helgaas)
+        - Pass GAPSPCI_DMA_BASE CPU & bus address to dma_declare_coherent_memory()
+          (Bjorn Helgaas)"
+    
+    * tag 'pci-v3.16-changes' of git://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci: (92 commits)
+      MAINTAINERS: Add generic PCI host controller driver
+      PCI: generic: Add generic PCI host controller driver
+      PCI: imx6: Add support for MSI
+      PCI: designware: Make MSI ISR shared IRQ aware
+      PCI: imx6: Remove optional (and unused) IRQs
+      PCI: imx6: Drop old IRQ mapping
+      PCI: imx6: Use new clock names
+      i82875p_edac: Assign PCI resources before adding device
+      ARM/PCI: Call pcie_bus_configure_settings() to set MPS
+      PCI: imx6: Fix imx6_add_pcie_port() section mismatch warning
+      PCI: Make pci_bus_add_device() void
+      PCI: exynos: Fix add_pcie_port() section mismatch warning
+      PCI: Introduce new device binding path using pci_dev.driver_override
+      PCI: rcar: Add gen2 device tree support
+      PCI: cpqphp: Fix possible null pointer dereference
+      PCI: rcar: Add R-Car PCIe device tree bindings
+      PCI: rcar: Add MSI support for PCIe
+      PCI: rcar: Add Renesas R-Car PCIe driver
+      PCI: Fix return value from pci_user_{read,write}_config_*()
+      PCI: exynos: Remove unnecessary OOM messages
+      ...
+
+commit 681a2895486243a82547d8c9f53043eb54b53da0
+
+----------
+Total;425553209b387fa2125df09d01a2d1c1724bd205;-1
+
+----------
+No match [681a2895486243a82547d8c9f53043eb54b53da0][Date:   Mon Jun 2 09:29:34 2014 -0700][100][-1]
+cid [681a2895486243a82547d8c9f53043eb54b53da0][Date:   Mon Jun 2 09:29:34 2014 -0700] count log [100] dbcount [-1].... NO Match :(
+   values of regions [100]
+Merge: 6c52486 ed85186
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon Jun 2 09:29:34 2014 -0700
+
+    Merge branch 'for-3.16/core' of git://git.kernel.dk/linux-block into next
+    
+    Pull block core updates from Jens Axboe:
+     "It's a big(ish) round this time, lots of development effort has gone
+      into blk-mq in the last 3 months.  Generally we're heading to where
+      3.16 will be a feature complete and performant blk-mq.  scsi-mq is
+      progressing nicely and will hopefully be in 3.17.  A nvme port is in
+      progress, and the Micron pci-e flash driver, mtip32xx, is converted
+      and will be sent in with the driver pull request for 3.16.
+    
+      This pull request contains:
+    
+       - Lots of prep and support patches for scsi-mq have been integrated.
+         All from Christoph.
+    
+       - API and code cleanups for blk-mq from Christoph.
+    
+       - Lots of good corner case and error handling cleanup fixes for
+         blk-mq from Ming Lei.
+    
+       - A flew of blk-mq updates from me:
+    
+         * Provide strict mappings so that the driver can rely on the CPU
+           to queue mapping.  This enables optimizations in the driver.
+    
+         * Provided a bitmap tagging instead of percpu_ida, which never
+           really worked well for blk-mq.  percpu_ida relies on the fact
+           that we have a lot more tags available than we really need, it
+           fails miserably for cases where we exhaust (or are close to
+           exhausting) the tag space.
+    
+         * Provide sane support for shared tag maps, as utilized by scsi-mq
+    
+         * Various fixes for IO timeouts.
+    
+         * API cleanups, and lots of perf tweaks and optimizations.
+    
+       - Remove 'buffer' from struct request.  This is ancient code, from
+         when requests were always virtually mapped.  Kill it, to reclaim
+         some space in struct request.  From me.
+    
+       - Remove 'magic' from blk_plug.  Since we store these on the stack
+         and since we've never caught any actual bugs with this, lets just
+         get rid of it.  From me.
+    
+       - Only call part_in_flight() once for IO completion, as includes two
+         atomic reads.  Hopefully we'll get a better implementation soon, as
+         the part IO stats are now one of the more expensive parts of doing
+         IO on blk-mq.  From me.
+    
+       - File migration of block code from {mm,fs}/ to block/.  This
+         includes bio.c, bio-integrity.c, bounce.c, and ioprio.c.  From me,
+         from a discussion on lkml.
+    
+      That should describe the meat of the pull request.  Also has various
+      little fixes and cleanups from Dave Jones, Shaohua Li, Duan Jiong,
+      Fengguang Wu, Fabian Frederick, Randy Dunlap, Robert Elliott, and Sam
+      Bradshaw"
+    
+    * 'for-3.16/core' of git://git.kernel.dk/linux-block: (100 commits)
+      blk-mq: push IPI or local end_io decision to __blk_mq_complete_request()
+      blk-mq: remember to start timeout handler for direct queue
+      block: ensure that the timer is always added
+      blk-mq: blk_mq_unregister_hctx() can be static
+      blk-mq: make the sysfs mq/ layout reflect current mappings
+      blk-mq: blk_mq_tag_to_rq should handle flush request
+      block: remove dead code in scsi_ioctl:blk_verify_command
+      blk-mq: request initialization optimizations
+      block: add queue flag for disabling SG merging
+      block: remove 'magic' from struct blk_plug
+      blk-mq: remove alloc_hctx and free_hctx methods
+      blk-mq: add file comments and update copyright notices
+      blk-mq: remove blk_mq_alloc_request_pinned
+      blk-mq: do not use blk_mq_alloc_request_pinned in blk_mq_map_request
+      blk-mq: remove blk_mq_wait_for_tags
+      blk-mq: initialize request in __blk_mq_alloc_request
+      blk-mq: merge blk_mq_alloc_reserved_request into blk_mq_alloc_request
+      blk-mq: add helper to insert requests from irq context
+      blk-mq: remove stale comment for blk_mq_complete_request()
+      blk-mq: allow non-softirq completions
+      ...
+
+commit 6c52486dedbb30a1313da64945dcd686b4579c51
+
+----------
+Total;681a2895486243a82547d8c9f53043eb54b53da0;-1
+
+----------
+No match [6c52486dedbb30a1313da64945dcd686b4579c51][Date:   Mon Jun 2 09:22:24 2014 -0700][22][-1]
+cid [6c52486dedbb30a1313da64945dcd686b4579c51][Date:   Mon Jun 2 09:22:24 2014 -0700] count log [22] dbcount [-1].... NO Match :(
+   values of regions [22]
+Merge: c9733c7 8c3a05b
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon Jun 2 09:22:24 2014 -0700
+
+    Merge tag 'mmc-v3.16-1' of git://git.linaro.org/people/ulf.hansson/mmc into next
+    
+    Pull MMC update from Ulf Hansson:
+     "These patches are mainly updates for the mmci driver and have been
+      tested in linux-next.
+    
+      Some ARM SoC related patches are also included and those have been
+      acked from the corresponding maintainers to go through my mmc tree.
+    
+      Updates for mmci driver:
+       - Put the device into low power state at system suspend.
+       - Convert to the common mmc DT parser.
+       - Add missing DT bindings needed for ux500.
+    
+      Updates for ARM ux500|u300:
+       - Convert to the common mmc DT bindings.
+       - Remove redundant board file for mmci platform data"
+    
+    * tag 'mmc-v3.16-1' of git://git.linaro.org/people/ulf.hansson/mmc: (22 commits)
+      mmc: mmci: Enforce DMA configuration through DT
+      mmc: mmci: Enforce max frequency configuration through DT
+      mmc: mmci: Enforce mmc capabilities through DT
+      mmc: mmci: Enforce DT for signal direction and feedback clock
+      ARM: ux500: Remove redundant board file for mmci platform data
+      ARM: ux500: Add a vmmc regulator through DT for the poped eMMC for href
+      ARM: ux500: Add the mmc capabilities flags to DT
+      mmc: mmci: Enable MMC_CAP_CMD23
+      mmc: mmci: Mark the DT bindings for highspeed mode as deprecated
+      ARM: u300: Convert to the common mmc DT bindings for highspeed mode
+      ARM: nomadik: Convert to the common mmc DT bindings for highspeed mode
+      ARM: ux500: Convert to the common mmc DT bindings for highspeed mode
+      ARM: ux500: Add mmci signal directions and feeback clock in DT for href
+      mmc: mmci: Use the common mmc DT parser
+      mmc: mmci: Add DT bindings for feedback clock pin
+      mmc: mmci: Add DT bindings for signal direction
+      mmc: mmci: Update DT documentation
+      mmc: mmci: Convert to devm functions
+      mmc: mmci: Convert to the mmc gpio API
+      mmc: mmci: Put the device into low power state at system suspend
+      ...
+
+commit c9733c79f411b5df63f3dfd494fc37636a4d8fba
+
+----------
+Total;6c52486dedbb30a1313da64945dcd686b4579c51;-1
+
+----------
+No match [c9733c79f411b5df63f3dfd494fc37636a4d8fba][Date:   Mon Jun 2 09:13:58 2014 -0700][11][-1]
+cid [c9733c79f411b5df63f3dfd494fc37636a4d8fba][Date:   Mon Jun 2 09:13:58 2014 -0700] count log [11] dbcount [-1].... NO Match :(
+   values of regions [11]
+Merge: 6885a7f eafaebd
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon Jun 2 09:13:58 2014 -0700
+
+    Merge tag 'hsi-for-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/sre/linux-hsi into next
+    
+    Pull HSI (High Speed Syncronous Interface) changes from Sebastian Reichel:
+     "Please pull the following changes for the HSI subsystem, which I have
+      taken over from Carlos Chinea <carlos.chinea@nokia.com>.
+    
+      The below patches have been worked on in the linux-omap mailinglist
+      for 10 months and are well tested in linux-next (have been in there
+      for more than two weeks) without any problems arising.  Apart from
+      that potential regressions are very limited, because the subsystem is
+      not yet used by any platform in the mainline kernel.
+    
+       - Add some documentation for the HSI subsystem
+    
+       - Add Device Tree support for the HSI subsystem
+    
+       - Add OMAP3 SSI driver (SSI is a legacy variant of HSI)
+    
+       - Add Nokia N900 Modem driver (without speech support for now)"
+    
+    * tag 'hsi-for-3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/sre/linux-hsi:
+      HSI: Introduce Nokia N900 modem driver
+      HSI: Introduce driver for SSI Protocol
+      Documentation: DT: omap-ssi binding documentation
+      HSI: Introduce OMAP SSI driver
+      HSI: Add common DT binding for HSI client devices
+      HSI: export method to (un)register clients
+      HSI: Add channel resource support to HSI clients
+      HSI: method to unregister clients from an hsi port
+      HSI: hsi-char: fix driver for multiport scenarios
+      MAINTAINERS: update HSI entry
+      Documentation: HSI: Add some general description for the HSI subsystem
+
+commit 6885a7f1ed88607cc9945bb106474ecfecb8e59b
+
+----------
+Total;c9733c79f411b5df63f3dfd494fc37636a4d8fba;-1
+
+----------
+No match [6885a7f1ed88607cc9945bb106474ecfecb8e59b][Date:   Mon Jun 2 08:59:46 2014 -0700][2][-1]
+cid [6885a7f1ed88607cc9945bb106474ecfecb8e59b][Date:   Mon Jun 2 08:59:46 2014 -0700] count log [2] dbcount [-1].... NO Match :(
+   values of regions [2]
+Merge: 80fb974 aa2064d
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon Jun 2 08:59:46 2014 -0700
+
+    Merge tag 'edac_for_3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/bp/bp into next
+    
+    Pull EDAC changes from Borislav Petkov:
+     "Just two small fixlets.
+    
+      We have more in the pipe but we didn't get ready in time so more stuff
+      next time"
+    
+    * tag 'edac_for_3.16' of git://git.kernel.org/pub/scm/linux/kernel/git/bp/bp:
+      EDAC: Fix MC scrub mode comparsion bug for correctable errors
+      EDAC, MCE, AMD: Remove leftover unused mask
+
+commit 80fb97479878f2c7c4f300de7758304fc0401006
+
+----------
+Total;6885a7f1ed88607cc9945bb106474ecfecb8e59b;-1
+
+----------
+No match [80fb97479878f2c7c4f300de7758304fc0401006][Date:   Mon Jun 2 08:46:03 2014 -0700][85][-1]
+cid [80fb97479878f2c7c4f300de7758304fc0401006][Date:   Mon Jun 2 08:46:03 2014 -0700] count log [85] dbcount [-1].... NO Match :(
+   values of regions [85]
+Merge: 9f888b3 fc34627
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon Jun 2 08:46:03 2014 -0700
+
+    Merge tag 'gpio-v3.16-1' of git://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-gpio into next
+    
+    Pull GPIO updates from Linus Walleij:
+     "This is the bulk of GPIO changes for the v3.16 series.
+    
+      There is a lot of action in the GPIO subsystem doing refactorings and
+      cleanups, almost as many deletions as insertions and minor feature
+      growth and no new drivers this time.  Which is actually pretty nice.
+      Some GPIO-related stuff will come in through the pin control tree as
+      well.
+    
+      Details:
+    
+       - We are finalizing and fixing up the gpiochip irqchip helpers
+         bringing a helpful irqchip implementation into the gpiolib core and
+         avoiding duplicate code and, more importantly, duplicate bug fixes:
+    
+         * Support for using the helpers with threaded interrupt handlers as
+           used on sleeping GPIO-irqchips
+    
+         * Do not set up hardware triggers for edges or levels if the
+           default IRQ type is IRQ_TYPE_NONE - some drivers would exploit
+           the fact that you could get default initialization of the IRQ
+           type from the core at probe() but if no default type is set up
+           from the helper, we should not call the driver to configure
+           anything.  Wait until a consumer requests the interrupt instead.
+    
+         * Make the irqchip helpers put the GPIO irqs into their own lock
+           class.  The GPIO irqchips can often emit (harmless, but annoying)
+           lockdep warnings about recursions when they are in fact just
+           cascaded IRQs.  By putting them into their own lock class we help
+           the lockdep core to keep track of things.
+    
+         * Switch the tc3589x GPIO expanders to use the irqchip helpers
+    
+         * Switch the OMAP GPIO driver to use the irqchip helpers
+    
+         * Add some documentation for the irqchip helpers
+    
+         * select IRQ_DOMAIN when using the helpers since some platforms may
+           not be using this by default and it's a strict dependency.
+    
+       - Continued GPIO descriptor refactoring:
+    
+         * Remove the one instance of gpio_to_desc() from the device tree
+           code, making the OF GPIO code use GPIO descriptors only.
+    
+         * Introduce gpiod_get_optional() and gpiod_get_optional_index()
+           akin to the similar regulator functions for cases where the use
+           of GPIO is optional and not strictly required.
+    
+         * Make of_get_named_gpiod_flags() private - we do not want to
+           unnecessarily expose APIs to drivers that make the gpiolib harder
+           than necessary to maintain and refactor.  Privatize this
+           function.
+    
+       - Support "-gpio" suffix for the OF GPIO retrieveal path.  We used to
+         look for "foo-gpios" or just "gpios" in device tree nodes, but it
+         turns out that some drivers with a single GPIO line will just state
+         "foo-gpio" (singularis).  Sigh.  Support this with a fallback
+         looking for it, as this simplifies driver code and handles it in
+         core code.
+    
+       - Switch the ACPI GPIO core to fetch GPIOs with the *_cansleep
+         function variants as the GPIO operation region handler can sleep,
+         and shall be able to handle gpiochips that sleep.
+    
+       - Tons of cleanups and janitorial work from Jingoo Han, Axel Lin,
+         Javier Martinez Canillas and Abdoulaye Berthe.  Notably Jingoo cut
+         off a ton of pointless OOM messages.
+    
+       - Incremental development and fixes for various drivers, nothing
+         really special here"
+    
+    * tag 'gpio-v3.16-1' of git://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-gpio: (85 commits)
+      gpio: select IRQ_DOMAIN for gpiolib irqchip helpers
+      gpio: pca953x: use gpiolib irqchip helpers
+      gpio: pcf857x: Add IRQF_SHARED when request irq
+      gpio: pcf857x: Avoid calling irq_domain_cleanup twice
+      gpio: mcp23s08: switch chip count to int
+      gpio: dwapb: use a second irq chip
+      gpio: ep93xx: Use devm_ioremap_resource()
+      gpio: mcp23s08: fixed count variable for devicetree probing
+      gpio: Add run-time dependencies to R-Car driver
+      gpio: pch: add slab include
+      Documentation / ACPI: Fix location of GPIO documentation
+      gpio / ACPI: use *_cansleep version of gpiod_get/set APIs
+      gpio: generic: add request function pointer
+      gpio-pch: Fix Kconfig dependencies
+      gpio: make of_get_named_gpiod_flags() private
+      gpio: gpioep93xx: use devm functions
+      gpio: janzttl: use devm function
+      gpio: timberdale: use devm functions
+      gpio: bt8xx: use devm function for memory allocation
+      gpio: include linux/bug.h in interface header
+      ...
+
+commit 9f888b3a10782de27864659d4ab48eb6ef2c0bf3
+
+----------
+Total;80fb97479878f2c7c4f300de7758304fc0401006;-1
+
+----------
+No match [9f888b3a10782de27864659d4ab48eb6ef2c0bf3][Date:   Mon Jun 2 08:24:12 2014 -0700][20][-1]
+cid [9f888b3a10782de27864659d4ab48eb6ef2c0bf3][Date:   Mon Jun 2 08:24:12 2014 -0700] count log [20] dbcount [-1].... NO Match :(
+   values of regions [20]
+Merge: 5d70dac 77945ca
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon Jun 2 08:24:12 2014 -0700
+
+    Merge tag 'stable/for-linus-3.16-rc0-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/xen/tip into next
+    
+    Pull Xen updates from David Vrabel:
+     "xen: features and fixes for 3.16-rc0
+       - support foreign mappings in PVH domains (needed when dom0 is PVH)
+    
+       - fix mapping high MMIO regions in x86 PV guests (this is also the
+         first half of removing the PAGE_IOMAP PTE flag).
+    
+       - ARM suspend/resume support.
+    
+       - ARM multicall support"
+    
+    * tag 'stable/for-linus-3.16-rc0-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/xen/tip:
+      x86/xen: map foreign pfns for autotranslated guests
+      xen-acpi-processor: Don't display errors when we get -ENOSYS
+      xen/pciback: Document the entry points for 'pcistub_put_pci_dev'
+      xen/pciback: Document when the 'unbind' and 'bind' functions are called.
+      xen-pciback: Document when we FLR an PCI device.
+      xen-pciback: First reset, then free.
+      xen-pciback: Cleanup up pcistub_put_pci_dev
+      x86/xen: do not use _PAGE_IOMAP in xen_remap_domain_mfn_range()
+      x86/xen: set regions above the end of RAM as 1:1
+      x86/xen: only warn once if bad MFNs are found during setup
+      x86/xen: compactly store large identity ranges in the p2m
+      x86/xen: fix set_phys_range_identity() if pfn_e > MAX_P2M_PFN
+      x86/xen: rename early_p2m_alloc() and early_p2m_alloc_middle()
+      xen/x86: set panic notifier priority to minimum
+      arm,arm64/xen: introduce HYPERVISOR_suspend()
+      xen: refactor suspend pre/post hooks
+      arm: xen: export HYPERVISOR_multicall to modules.
+      arm64: introduce virt_to_pfn
+      arm/xen: Remove definiition of virt_to_pfn in asm/xen/page.h
+      arm: xen: implement multicall hypercall support.
+
+commit 5d70dacd4e7c3ef596ae03a933481a3f6805c7a6
+
+----------
+Total;9f888b3a10782de27864659d4ab48eb6ef2c0bf3;-1
+
+----------
+No match [5d70dacd4e7c3ef596ae03a933481a3f6805c7a6][Date:   Mon Jun 2 08:03:34 2014 -0700][13][-1]
+cid [5d70dacd4e7c3ef596ae03a933481a3f6805c7a6][Date:   Mon Jun 2 08:03:34 2014 -0700] count log [13] dbcount [-1].... NO Match :(
+   values of regions [13]
+Merge: fad01e8 e8d6dc5
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon Jun 2 08:03:34 2014 -0700
+
+    Merge branch 'for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/geert/linux-m68k into next
+    
+    Pull m68k updates from Geert Uytterhoeven:
+     "Highlights:
+       - support for running kernels in fast TT-RAM instead of slow ST-RAM
+         on Atari
+       - multi-platform EARLY_PRINTK
+       - better support for machines with lots of RAM (think ARAnyM), and
+         for running kernels larger than 4 MiB (think multi-platform)"
+    
+    * 'for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/geert/linux-m68k:
+      m68k/hp300: Convert printk to pr_foo()
+      m68k/apollo: Convert printk to pr_foo()
+      m68k/amiga: Convert printk(foo to pr_foo()
+      m68k: Increase initial mapping to 8 or 16 MiB if possible
+      m68k: Update defconfigs for v3.15-rc2
+      m68k/atari: fix SCC initialization for debug console
+      m68k/mvme16x: Adopt common boot console
+      m68k: Multi-platform EARLY_PRINTK
+      m68k: Toward platform agnostic framebuffer debug logging
+      m68k/atari - atari_scsi: use correct virt/phys translation for DMA buffer
+      m68k/atari - ataflop: use correct virt/phys translation for DMA buffer
+      m68k/atari - atafb: convert allocation of fb ram to new interface
+      m68k/atari - stram: alloc ST-RAM pool even if kernel not in ST-RAM
+
+commit 204fe0380b14557a3179cf18f1101d4ed6532172
+
+----------
+Total;5d70dacd4e7c3ef596ae03a933481a3f6805c7a6;-1
+
+----------

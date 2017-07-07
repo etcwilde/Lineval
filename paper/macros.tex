@@ -11,11 +11,7 @@
 \newlist{RQ}{enumerate}{1}
 \setlist[RQ]{label=\textit{RQ.\arabic*})}
 
-\newif\ifccc
-\ccctrue
-
-
-\ifccc
+\ifdraft
     \usepackage[colorinlistoftodos]{todonotes}
     \newcommand{\evan}[1]{{\color{blue}\emph{Evan Says: #1}}\xspace}
     \newcommand{\evantodo}[1]{{\color{blue}\emph{Evan Todo: #1}}\xspace}
@@ -30,7 +26,6 @@
 \fi
 
 \newcommand{\mycode}[1]{\texttt{\small #1\xspace}}
-
 
 %%% Local Variables:
 %%% mode: plain-tex

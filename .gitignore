@@ -10,5 +10,15 @@
 *.synctex
 *.synctex.gz
 
+# Vim files
+*.swp
+
+# Emacs files
+\#*\#
+.elc
+*_flymae.*
+*_archive
+/auto/
+
 # R files
 .Rhistory
