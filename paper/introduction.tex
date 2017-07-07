@@ -1,5 +1,6 @@
 % vim:set et sts=2 sw=2 ts=2 tw=72:
-Between 50k and 70k commits are added to the Linux kernel per version
+
+Between 50k and 70k commits are added to the Linux kernel per version,
 requiring maintainers of older versions of the kernel to sift through
 thousands of commits and merges with tools that are unable to filter and
 effectively visualize projects at the scale of the kernel. Older
@@ -12,28 +13,29 @@ use a directed acyclic graph (DAG) model of the repository, showing all
 commits and merges in chronological order by when the commit was
 authored, not by when it arrived in the official Linux repository.
 
-\begin{figure*}
+\begin{figure}
         \centering
-        \includegraphics[width=0.97\textwidth]{figures/gitk.png}
-        \caption{A view of the Gitk interface centered on merge
-          b34870fc9ff15fe46c4066faeeec437a4e63e2d8 by Miller. Commits point toward
-          their ancestors and there is no clear path from the commit to the merge
-          with the master branch. Neither Gitk nor Git are capable of showing the
-          commits in master.}
+        \includegraphics[width=0.97\linewidth]{figures/gitk.png}
+        \caption{The Gitk interface centered on commit
+          cdbdd1676a5379f1d5cbd4d476f5e349f445befe, \comB from the user
+          study. The top-left pane shows the DAG and commit log preview,
+          the top center pane shows the authors, and the top-right
+          pane shows the commit dates. The bottom-left pane shows the
+          full commit message, the parents and children of the commit,
+          and the changes made to files in this commit. The bottom-right
+          pane shows the list of the files modified by this commit.}
         \label{fig:gitk}
 %\vspace{-4mm}
-\end{figure*}
-
+\end{figure}
 
 \begin{figure}
         \centering
-        \includegraphics[width=0.45\textwidth]{figures/github_viewer.png}
+        \includegraphics[width=0.8\linewidth]{figures/github_viewer.png}
         \caption{Github Failure Message showing the DAG of the Linux Project and its
                 relationship to other forks.}
         \label{fig:gitfail}
 %\vspace{-2mm}
 \end{figure}
-
 
 This representation works in smaller projects; it enables users to see
 when changes are made, when these changes are merged, how each branch is
@@ -45,13 +47,11 @@ generate a visualization; Github provides a DAG view for many projects,
 but is unable to display the visualization for projects at the scale of
 the Linux of the kernel (Figure~\ref{fig:gitfail}).  Between 60k and 70k
 new commits are created for the Linux project every year; according to
-our previous work\cite{German2015}, a commit takes a median of 30 days
-from the time it is authored until it arrives in the official
-repository. The snapshot of the kernel tomorrow may be different than
-the snapshot from today, containing new commits authored in the past;
-distinguishing these new commits from the commits in the snapshot from
-today is not trivial.
-
+previous work\cite{German2015}, a commit takes a median of 30 days from
+the time it is authored until it arrives in the official repository. The
+snapshot of the kernel tomorrow may be different than the snapshot from
+today, containing new commits authored in the past; distinguishing these
+new commits from the commits in the snapshot from today is not trivial.
 
 One major challenge with visualizing the arrival of commits to a
 repository is that Git does not store the date that a commit was merged
@@ -65,12 +65,16 @@ commits were merged. A user could inspect the commits that arrived into
 the master branch within a given time-frame by checking which commits
 were merged during that time-frame.
 
-This paper makes two contributions; first, we describe a method of
-converting the DAG of the Linux repository into a tree, or
-\emph{merge-tree} of the repository, that represents the path used by a
-commit to reach the master branch; second, we present a method to
-inspect and visualize the history of merges in the Linux project using
-the merge-tree model.
+This paper makes three contributions; first, we describe a method of
+converting the DAG of the Linux repository into the \mt of the
+repository, that represents the path used by a commit to reach the
+master branch; second, we present an implementation enabling the
+inspection and visualization of merges in the Linux project using the
+\mt modle; finally, we validate the \mt model and the implementation of
+the visulization through a controlled user study. We further discuss the
+issues of generalizing the model to other repositories, but present an
+updated version that improves the performance of the algorithm by
+pruning the DAG.\@
 
 These methods and visualizations are implemented in a web-based tool
 called \tool\footnote{\tool is currently available at
@@ -79,8 +83,7 @@ provide information about the location of any given commit or merge in
 its respective merge-tree, the files edited, the modules edited, and the
 commit message. \tool allows users to apply various filters, including
 the release version, along with a keyword or phrase from the log
-preview, the name of the author, or the commit ID. The user can request
-all merges made by Linus that contain a commit or inner merge that
-matches the search query, or just the commits and merges that match the
-query.
-
+preview, the name of the author, or the commit hash. The user can
+request all merges made by Linus that contain a commit or inner merge
+that matches the search query, or just the commits and merges that match
+the query.
