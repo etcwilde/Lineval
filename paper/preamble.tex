@@ -1,0 +1,75 @@
+% vim:set et sw=2 ts=4 tw=72:
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[hyphens]{url}
+\urlstyle{same}
+
+%% Citations
+\usepackage[nospace]{cite}
+
+%% Table Support
+\usepackage{array}
+\usepackage{dcolumn}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{tabulary}
+
+%% Extra support
+\usepackage{xspace}
+\usepackage{amsmath}
+\usepackage{balance}
+\usepackage{placeins}
+
+%% Algorithms
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+%% Graphics
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{xcolor}
+\usepackage{color}
+\usepackage{listings}
+
+
+\usetikzlibrary{positioning, arrows}
+
+\input{color.tex}
+\input{macros.tex}
+
+\newcommand{\TheTitle}{Merge-Tree: Visualizing the Integration of Commits into Linux}
+\newcommand{\TheAuthors}{Evan Wilde, Daniel M. German}
+\newcommand{\TheEmails}{etcwilde@uvic.ca, dmg@uvic.ca}
+\newcommand{\TheSubject}{Understanding a large number of commits and merges}
+\newcommand{\TheKeywords}{Linux, git, visualizations}
+
+%% Referencing
+\usepackage[unicode=true,
+          pdftitle={\TheTitle},
+          pdfauthor={\TheAuthors},
+          colorlinks=false]{hyperref}
+
+
+\algdef{SE}[DOWHILE]{Do}{doWhile}{\algorithmicdo}[1]{\algorithmicwhile\ #1}%
+
+\lstset{frame=tb,
+  language=python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{chartblue},
+  commentstyle=\color{chartred},
+  stringstyle=\color{chartgreen},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\synctex=1
+

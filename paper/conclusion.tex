@@ -1,0 +1,40 @@
+In this paper, we develop a tree-based model designed to provide git
+users with a better explanation of the events occurring in a git
+repository. The \mt model is rooted at the merge into the master branch
+of a repository, where the leaves are the individual commits.
+
+We implement a tool, \tool, which allows a user to filter the commits
+with a simple search interface. Once the user finds the commit that they
+are interested in, they are provided simple aggregated tables showing
+the files that were modified, the authors that made the modifications,
+among other information. They are also provided with three
+visualizations, a list tree, a pack tree, and a Reingold-Tilford tree
+view. The list tree enables easy searching for textual features, while
+the pack tree is good for visualizing the structure of large merge
+trees, and the Reingold-Tilford tree is better at visualizing the
+structure of small merge trees.
+
+To ensure that our model is necessary, we evaluate the ability of users
+to perform simple conceptual tasks, finding how a commit was merged into
+the master branch of the Linux repository, and determining other commits
+that were merged with the given merge. Finding that the participants in
+our study were unable to perform this task, we compared the ability of
+the participants to summarize key pieces of information aggregated in
+these groups of commits. We asked for information about what files were
+modified, the authors making the changes, among other tasks. Finally, we
+asked the participants about their preference in tools, and which
+aspects of each they preferred. We found that the participants in our
+study were able to correctly identify the correct answer more quickly
+using the \mt model than they were able to with the DAG.
+
+Given that the model provides users with a better understanding of
+events in the repository, we describe some issues with identifying the
+master branch of the repository and a more generalized approach to
+constructing merge trees. We implement the generalized approach as a
+bitbucket plugin to verify that it is able to quickly produce results
+online, unlike in the implementation of \tool.
+
+
+
+% TODO: You can tell that I am tired. This conclusion will need to be re-worked.
+

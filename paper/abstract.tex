@@ -1,35 +1,23 @@
-Internally, git uses a directed acyclic graph model (DAG) with references
-pointing from the most recent commit \notice{(TODO: most
-    recent commit?, it's not the \emph{HEAD} because that moves
-    around)} toward the initial commit in the repository. This model is
-useful and necessary to the internal functionality of the version
-control system, but does not provide users with a clear nderstand of the
-events occuring in the repository. Due to the direction of the link in
-the DAG, visualziation tools, like gitk, are unable to provide
-summarized aggregation of the commits at a given merge.  Furthermore,
-the visual DAG does not provide a clear explanation of the events taking
-place in the repository.
+% vim:set et sw=2 ts=4 tw=72:
+With an average of more than 900 top-level merges into the Linux kernel
+per release, many containing hundreds of commits and some containing
+thousands, maintenance of older versions of the kernel becomes nearly
+impossible.  Various commercial products, such as the Android platform,
+run older versions of the kernel. Due to security, performance, and
+changing hardware needs, maintainers must understand what changes
+(commits) are added to the current version of the kernel since the last
+time they inspected it in order to make the necessary patches.
 
-Merge-Trees are a data structure derived from the DAG, that could
-potentially alleviate the issues with visualization built directly from
-the DAG. The trees are defined such that the root is the merge into the
-master branch, and the leaves are the individual commits. The references
-point in both directed, from each node to the parent, and from the
-parent to the children. Depending on the complexity of the merge, the
-path from leaf to root may pass through multiple internal nodes.
+Current tools provide information about repositories through the
+directed acyclic graph (DAG) of the repository, which is helpful for
+smaller projects. However, with the scale and number of branches in the
+kernel the DAG becomes overwhelming very quickly. Furthermore, the DAG
+contains every ancestor of every commit, while maintainers are more
+interested in how and when a commit arrives to the official Linux
+repository.
 
-In this paper, we verify that the Merge-tree model is able to simplify
-the construction of a conceptual image of the parts of a repository, and
-simiplify the summarization tasks through a user study. We will continue
-by providing a more generalized approach to constructing merge-tress,
-which will prune components of the DAG that are not necessary.
-
-% \evan{Change this when we get the actual results, this is from the
-% pilot study} We find that although the DAG view used by Gitk provides
-% more information about the repository, in many cases it povides too
-% much information and overwhelms the user.
-
-% \evan{Move this} In some cases, where the structure of the merge tree
-% is flat, that is to say that it has no inner merges, users are able to
-% easily determine which commits are merged together, but are unable to
-% determine which merge is the final merge is the root of the tree.
+In this paper, we propose the merge-tree, a simplified transformation of
+the DAG of the Linux git repository that shows the way in which commits
+are merged into the master branch of Linux. Using the merge-tree, we
+build \tool, a tool that is designed to allow users to explore how
+commits are merged into the Linux kernel.
