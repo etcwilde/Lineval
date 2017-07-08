@@ -31,22 +31,25 @@ authored, not by when it arrived in the official Linux repository.
 \begin{figure}
         \centering
         \includegraphics[width=0.8\linewidth]{figures/github_viewer.png}
-        \caption{Github Failure Message showing the DAG of the Linux Project and its
-                relationship to other forks.}
+        \caption{Github normally shows a visualization of the DAG,
+          showing the commits, branches, and forks, but is unable to
+          generate a visualization for projects at the size of the Linux
+          repository.}
         \label{fig:gitfail}
 %\vspace{-2mm}
 \end{figure}
 
-This representation works in smaller projects; it enables users to see
-when changes are made, when these changes are merged, how each branch is
-interacting, and the point where a branch forks from the master branch.
-In large modular projects, like the Linux kernel, the DAG becomes a mess
-of merges and commits (Figure~\ref{fig:gitk}) losing its visual meaning.
-In some cases, the Linux kernel is simply too large for the system to
-generate a visualization; Github provides a DAG view for many projects,
-but is unable to display the visualization for projects at the scale of
-the Linux of the kernel (Figure~\ref{fig:gitfail}).  Between 60k and 70k
-new commits are created for the Linux project every year; according to
+The DAG is able to provide a meaningful visualization in smaller
+projects; it enables users to see when changes are made, when these
+changes are merged, how each branch is interacting, and the point where
+a branch forks from the master branch. In large modular projects, like
+the Linux kernel, the DAG becomes a mess of merges and commits
+(Figure~\ref{fig:gitk}) losing its visual meaning. In some cases, the
+Linux kernel is simply too large for the system to generate a
+visualization; Github provides a DAG view for many projects, but is
+unable to display the visualization for projects at the scale of the
+Linux of the kernel (Figure~\ref{fig:gitfail}). Between 60k and 70k new
+commits are created for the Linux project every year; according to
 previous work\cite{German2015}, a commit takes a median of 30 days from
 the time it is authored until it arrives in the official repository. The
 snapshot of the kernel tomorrow may be different than the snapshot from
@@ -78,7 +81,7 @@ pruning the DAG.\@
 
 These methods and visualizations are implemented in a web-based tool
 called \tool\footnote{\tool is currently available at
-  \url{http://li.turingmachine.org}}.  Our visualizations and tool
+  \url{http://li.turingmachine.org}}. Our visualizations and tool
 provide information about the location of any given commit or merge in
 its respective merge-tree, the files edited, the modules edited, and the
 commit message. \tool allows users to apply various filters, including
