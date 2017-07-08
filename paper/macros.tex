@@ -1,10 +1,10 @@
 % vim:set et sw=2 ts=4 tw=72:
-\newcommand{\tool}{{\emph Linvis}\xspace}
-\newcommand{\comA}{\textit{Commit 1}\xspace}
-\newcommand{\comB}{\textit{Commit 2}\xspace}
-\newcommand{\mt}{Merge-Tree\xspace}
-
-\newcommand{\notice}[1]{{\color{red}{#1}}\xspace}
+\newcommand{\tool}{{\emph Linvis}\@\xspace}
+\newcommand{\comA}{\textit{Commit 1}\@\xspace}
+\newcommand{\comB}{\textit{Commit 2}\@\xspace}
+\newcommand{\mt}{Merge-Tree\@\xspace}
+\newcommand{\mycode}[1]{\texttt{\small #1}\@\xspace}
+\newcommand{\notice}[1]{{\color{red}{#1}}\@\xspace}
 
 \usepackage{enumitem}
 
@@ -13,10 +13,10 @@
 
 \ifdraft
     \usepackage[colorinlistoftodos]{todonotes}
-    \newcommand{\evan}[1]{{\color{blue}\emph{Evan Says: #1}}\xspace}
-    \newcommand{\evantodo}[1]{{\color{blue}\emph{Evan Todo: #1}}\xspace}
-    \newcommand{\dmg}[1]{{\color{blue}\emph{dmg Says: #1}}\xspace}
-    \newcommand{\dmgtodo}[1]{{\color{blue}\emph{dmg Todo: #1}}\xspace}
+    \newcommand{\evan}[1]{{\color{blue}\emph{Evan Says: #1}}\@\xspace}
+    \newcommand{\evantodo}[1]{{\color{blue}\emph{Evan Todo: #1}}\@\xspace}
+    \newcommand{\dmg}[1]{{\color{blue}\emph{dmg Says: #1}}\@\xspace}
+    \newcommand{\dmgtodo}[1]{{\color{blue}\emph{dmg Todo: #1}}\@\xspace}
 \else
     \usepackage[disable]{todonotes}
     \newcommand{\evan}[1]{}
@@ -25,7 +25,6 @@
     \newcommand{\dmgtodo}[1]{}
 \fi
 
-\newcommand{\mycode}[1]{\texttt{\small #1\xspace}}
 
 %%% Local Variables:
 %%% mode: plain-tex
