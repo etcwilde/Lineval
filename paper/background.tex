@@ -1,0 +1,49 @@
+% vim:set et sw=2 ts=4 tw=72:
+% Jul 08, 2017
+
+Git is a distributed version control system that is used in many
+open-source and closed-source projects. It enables many developers to
+write code simultaneously, working on separate branches of the same
+project. Git uses a directed acyclic graph model (DAG) for storing the
+necessary information regarding the state of the code at any point in
+time. Git refers to nodes of the DAG as commits, not distinguishing
+between the code-carrying commits and the structural commits that bring
+two branches together. In this paper, we will refer to the individual
+commits code-carrying as commits, the structural merge commits as
+merges, and refer to both types without discrimination as repository
+events.
+
+Each repository event contains an ordered list of one or more parents,
+except the initial commit which has no parents. The parent relationship
+points from the current event toward the initial commit.  Commits have a
+single parent, while merges will have at least two parents, the parent
+on the current branch followed by the branches being merged into the
+current branch. Git allows for the merging of multiple branches
+simultaneously in octopus merges, where the order of the parents
+represents the order that the branches were specified for being merged.
+A \foxtrot\footnote{See
+  \url{http://bit-booster.blogspot.ca/2016/02/no-foxtrots-allowed.html}
+  for a full description of the issue.} merge occurs when the parent on
+the current branch is replaced by a parent from a branch being merged
+into the current branch, thus confounding the branch relationships.
+
+The repository events in the DAG are immutable; once a repository event
+is created, it can't be changed. Git allows operations to alter commits
+and re-order them, but this will create a new commit with a new commit
+hash.  This property makes a repository event unable to record the
+traversal of merges into the master branch of the repository. A commit
+cannot have references in the direction of the merge that merges the
+commit, as this reference will change, requiring the commit to be
+changed. While this provides some challenge, git eliminates this issue
+of the DAG with the \verb|git log --children| command, which traverses
+the DAG and inverts the edges to provide the reference from parent to
+child.
+
+Under perfect conditions, visualizations of the DAG show how a
+repository changes over time; where logical branches are being made,
+where merges are happening, and who is making the changes. Most
+repositories do not portray the perfect conditions, where there are
+relatively few branches and the merges are well-behaved, leaving a
+well-defined master branch. Most repositories do not mantain the perfect
+structure; either introducing \foxtrot merges, containing many commits,
+or many branches, making the DAG difficult to interpret.
