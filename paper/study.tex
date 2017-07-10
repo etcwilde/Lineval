@@ -1,4 +1,7 @@
+
+
 \dmg{start by describing what you mean by user study... to evaluate linvis we performed a user study...}
+
 
 \dmg{and you are evaluating the visualizations, NOT the DAG}
 
@@ -16,8 +19,8 @@ implementing the user study.
   perform... do a top down description of what users will do
 }
 
-\subsection{Questions and Tasks}
-\label{sub:questions}
+\subsection{Tasks}
+\label{sub:tasks}
 
 \dmg{use tasks, not questions. you are asking them to do something that requires an answer, that is different than a question}
 
@@ -87,6 +90,10 @@ understanding of the demographic of our participants.
   these questions, not necessarily in the same order.  also, remember
   this is a comparative study, so I presume the users were asked to do
   both with linvis and without it (choice of gitk/git command line) }
+
+% TODO: Move to methodology
+The participants were given the choice of Gitk or the git command line
+tools to perform the tasks .
 
 The participants were allowed to use Gitk or the git command line tools
 to perform these tasks. These tasks are asked in the specified order,
@@ -245,7 +252,7 @@ will refer to as \comB.
 \label{sec:results}
 
 \dmg{this is still methodology.}
-
+% TODO: Move to methodology
 We recorded the audio and screen capture video for each participant in
 the study for further analysis.
 \dmg{you don't need this sentence, it is redundant}
@@ -256,17 +263,39 @@ From the conceptual tasks, we
 recorded the time in seconds, and the answer for the question. We
 extracted three metrics for the summarization tasks, the time in
 seconds, the correctness, and the accuracy.
-\dmg{and then somethings you are over precise :): correctness is simply whether their answer to the task was correct or not}
-Correctness is a binary
-value, it is true if the response was correct and false if the response
-was incorrect.
-\dmg{if you are going to use this metric, you need to define precisely. remember, you are giving this to somebody else
-  to implement}
-The accuracy is measures in distance from the correct
-value. An accuracy of zero indicates a correct answer. All tasks in the
-summarization tasks include an accuracy metric except T7, which will
-only be right or wrong, and therefore cannot meaningfully be measured by
-a distance.
+
+The correctness metric measures whether the answer was correct or
+incorrect.
+
+The accuracy metric measures the distance from the correct
+answer. In task T4, the merges are important, and the order of those
+merges is important to the answer. For this task, we use the edit
+distance, which will increment if adding merges, removing merges, and
+changing the order of the merges is necessary. T5 only asks for the set
+of commits, so the order is not important, but the distance will
+increase if adding or removing commits is necessary for getting the
+correct answer. In T6 and T8 the answer is a single number, so the
+distance is simply the difference between the answer provided and the
+correct answer. In T7, there is only a single answer that is correct, so
+the correctness metric and accuracy are the same, for this reason we do
+not measure the accuracy of this task. The answer for T9 is similar in
+requirements to T5, only asking for the set of files that had the most
+changes. We use the same distance function in T9 and T10 as we did in
+T5, measuring the number of items that must be added and removed from
+the answer in order to change the response into the correct answer. % TODO: reword
+T9 appears to be similar to T7 in that there is only a single file name
+that must be provided, but in \comA, two files are modified the same
+amount and are both the correct answer. In order to provide the correct
+answer, the participant must be able to identify both files. In all
+means of accuracy measurement, a correct answer will have a distance of
+zero, while a non-zero distance indicates an incorrect answer.
+
+The timing metric is measured from the video. We begin timing the task
+at the end of the question, and stop timing before the last modification
+to the answer. For this reason, it is possible for times to overlap
+between tasks if the participant changes their answer after answering
+another question. This will also modify the answer used for measuring
+the accuracy.
 
 \subsection{Conceptual Tasks}
 \label{sub:conceptual_tasks}
