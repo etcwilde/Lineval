@@ -1,23 +1,33 @@
+The purpose of the study is to quantitatively and qualitatively evaluate
+the effectiveness of \tool compared to the DAG-based visualizations
+found in Gitk or the git command line. The study is broken into three
+task-based sections; conceptual tasks, summarization tasks, and
+participant opinions. The study was performed in June of 2017 in
+Kingston ON, in a controlled environment running Ubuntu 14.04. When
+conducting the study, participants were allowed to use both the git
+command line and Gitk together, and \tool. We will refer to Gitk in the
+study, but this includes the git command line, as we recognize that git
+power-users may be more comfortable with the command line than a GUI.
 
+The primary goal of the study is to determine if \tool is more capable
+of providing the participants of our study with a better conceptual
+understanding of how a commit is integrated into the kernel, and a
+better summarization of various metrics about the files and authors
+involved with the integration. The conceptual questions are to determine
+if the DAG visualization provides enough information to determine how a
+commit, and any related commits, are merged into a project. \tool
+displays this information directly in the form of a tree, so we will not
+be performing a comparison on this section, only evaluating the results
+from Gitk. The summarization tasks compare \tool and Gitk, with the
+participants using one tool followed by the other on two commits from
+merge-trees of differeing sizes. In both of these sections, the
+participant is given a task that they are to find an answer to; we
+evaluate the time it took, if the answer was correct, and how far from
+the right answer they were. The user opinions provide us with a clear
+comparison between the tools from the point-of-view of the participant,
+providing us information about which aspects of each tool they prefered.
 
-\dmg{start by describing what you mean by user study... to evaluate linvis we performed a user study...}
-
-
-\dmg{and you are evaluating the visualizations, NOT the DAG}
-
-
-We use a controlled mixed-methods users study in order to evaluate the
-ability for the DAG to provide users with a conceptual image of how a
-commit is integrated into a project, to compare the DAG and \mt models,
-and determine which model the users preferred.
-
-In this section, we describe the methods used to for designing and
-implementing the user study.
-\dmg{no, you describe the study, which includes the methods}
-
-\dmg{Start by giving an overall overview of the study: the study consists of a set of tasks that users are expected to
-  perform... do a top down description of what users will do
-}
+% TODO: Add the participant profile
 
 \subsection{Tasks}
 \label{sub:tasks}
@@ -248,6 +258,11 @@ will refer to as \comB.
 \end{figure}
 
 
+
+\subsection{Participant Profile}
+\label{sub:participant_profile}
+
+
 \subsection{Results}
 \label{sec:results}
 
@@ -297,7 +312,7 @@ between tasks if the participant changes their answer after answering
 another question. This will also modify the answer used for measuring
 the accuracy.
 
-\subsection{Conceptual Tasks}
+\subsubsection{Conceptual Tasks}
 \label{sub:conceptual_tasks}
 
 \dmg{i don't like the expression: we are able to see... too long.. be to the point: Table X shows/depicts/ etc ... they
@@ -328,7 +343,7 @@ It should be noted that these questions were answered after spending
 roughly ten minutes attesting to draw a picture that held the answers to
 these questions.
 
-\subsection{Summarization Tasks}
+\subsubsection{Summarization Tasks}
 \label{sub:summarization_tasks}
 
 In Figure~\ref{fig:summarization_results}, we see all of the
@@ -566,7 +581,7 @@ accuracy and timing results for each summarization task follow:
 
 \end{itemize}
 
-\subsection{User Opinions}
+\subsubsection{User Opinions}
 \label{sub:user_opinions}
 
 Among the 12 pariticipants, there was nearly unanimous agreement that
