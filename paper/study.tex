@@ -304,10 +304,17 @@ these questions.
 
 In Figure~\ref{fig:summarization_results}, we see all of the
 correctness, accuracy, and timing results. The first row of plots are
-the correctness results. We see in all cases except for T10, that the
+the correctness results. \dmg{be more direct: we see that linvis outperforms gitk by a large margin (then you can
+  clarify with the statement you have below; otherwise you are asking the reader to make that connection; don't leave
+  that to chance. be explicit on what the results tell you, at the high level.)}
+ We see in all cases except for T10, that the
 number of instances of a correct result with \tool is roughly the same
-as the number of incorrect instances with Gitk. We test each task with
-the McNemar Chi-square test~\cite{McNemar1947}.
+as the number of incorrect instances with Gitk.
+\dmg{you don't test the task. You test what? the statistical significance than one tool is better than the other? Again,
+be explicit}
+We test each task with
+the McNemar Chi-square test~\cite{McNemar1947}.\dmg{don't break the paragraphs here.. you keep talking about the
+  test. If you need to break them, break them before this sentence, not after}
 
 \begin{figure*}[htpb]
   \centering
@@ -319,20 +326,28 @@ the McNemar Chi-square test~\cite{McNemar1947}.
   \label{fig:summarization_results}
 \end{figure*}
 
+\dmg{McNemar is used to test if there was an effect on the tool used in the correctness of the answers of the
+  users. It is not an analysis of the participants. Don't elaborate on what it does or does not. Just leave it at what
+  it does: if you want to be precise you can say it ``marginal homogeneity'' of the answers}
+
 With the McNemar's tests, we analyze the participants that change from
-being correct with one tool to being incorrect with the other. This does
+being correct with one tool to being incorrect with the other. \dmg{Again, never, ever, use a pronom like this to start
+  a stence. State that this is instead: The McNemar test..., but i vote for removing this info} This does
 not take into account the number of people who were able to provide the
 correct answer for both tools, nor the people who were incorrect for both
-tools. The results show whether providing the participants with \tool
+tools. \dmg{this is better, see my comment before this paragraph, you can use this sentence instead, except: not the
+  results: the test is used to test the hypothesis that ...} The results show whether providing the participants with \tool
 over the current standard, gitk, improves the correctness of the
-summarization tasks among the participants. We show the results for the
+summarization tasks among the participants. \dmg{Change it to Table shows..., we don't show, we wrote} We show the results for the
 number of people who were, with both tools, correct, incorrect, and
 changed in Table~\ref{tab:correctness_table}.
 
-In all cases, except for task T10, we saw statistically significant
-results suggesting that we reject the null hypothesis. We tested each
+In all cases, except for task T10, \dmg{we don't ``see'', ``these is'' instead: in all cases.. there the differences
+  are statistically significant} we saw statistically significant
+results \dmg{remove suggesting} suggesting that we reject the null hypothesis \dmg{did you tell us what the null hypo
+  is?}. \dmg{say this before making conclusions about the results} We tested each
 correctness with an $\alpha = 0.005$. The $\chi^2$ test value with one
-degree of freedom is $7.879$.
+degree of freedom is $7.879$.\dmg{what is this number? what is it used for? where does it come from?}
 
 \begin{table*}[htpb]
   \centering
@@ -534,5 +549,5 @@ professional understanding of Gitk and the git commandline may be to
 extract the a good conceptual understanding from the DAG, and perform
 the summarization tasks from the commandline. One of these three
 participants said that they would prefer to have both tools available,
-as they are able to complement eachother.
+as they are able to complement each other.
 

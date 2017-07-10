@@ -20,11 +20,17 @@
     \newcommand{\dmg}[1]{{\color{blue}\emph{dmg Says: #1}}\@\xspace}
     \newcommand{\dmgtodo}[1]{{\color{blue}\emph{dmg Todo: #1}}\@\xspace}
 \else
-    \usepackage[disable]{todonotes}
-    \newcommand{\evan}[1]{}
-    \newcommand{\evantodo}[1]{}
-    \newcommand{\dmg}[1]{}
-    \newcommand{\dmgtodo}[1]{}
+    \usepackage[colorinlistoftodos]{todonotes}
+    \newcommand{\evan}[1]{{\color{blue}\emph{Evan Says: #1}}\@\xspace}
+    \newcommand{\evantodo}[1]{{\color{blue}\emph{Evan Todo: #1}}\@\xspace}
+    \newcommand{\dmg}[1]{{\color{blue}\emph{dmg Says: #1}}\@\xspace}
+    \newcommand{\dmgtodo}[1]{{\color{blue}\emph{dmg Todo: #1}}\@\xspace}
+    % \usepackage[disable]{todonotes}
+    % \newcommand{\evan}[1]{}
+    % \newcommand{\evantodo}[1]{}
+    % \newcommand{\dmg}[1]{}
+    % \newcommand{\dmgtodo}[1]{}
+
 \fi
 
 
