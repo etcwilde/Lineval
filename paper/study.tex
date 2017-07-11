@@ -3,11 +3,10 @@ the effectiveness of \tool compared to the DAG-based visualizations
 found in Gitk or the git command line. The study is broken into three
 task-based sections; conceptual tasks, summarization tasks, and
 participant opinions. The study was performed in June of 2017 in
-Kingston ON, in a controlled environment running Ubuntu 14.04. When
-conducting the study, participants were allowed to use both the git
-command line and Gitk together, and \tool. We will refer to Gitk in the
-study, but this includes the git command line, as we recognize that git
-power-users may be more comfortable with the command line than a GUI.
+Kingston ON, in a controlled environment running Ubuntu 14.04.
+Participants were allowed to use both Gitk and the git command line
+tools together, which we will refer to as the git tools. Then they were
+asked to perform the same tasks using \tool.
 
 The primary goal of the study is to determine if \tool is more capable
 of providing the participants of our study with a better conceptual
@@ -32,8 +31,24 @@ providing us information about which aspects of each tool they prefered.
 \subsection{Tasks}
 \label{sub:tasks}
 
-\dmg{use tasks, not questions. you are asking them to do something that requires an answer, that is different than a question}
+% \dmg{use tasks, not questions. you are asking them to do something that requires an answer, that is different than a question}
 
+The conceptual tasks are designed to gain better insight on the
+comprehension of the DAG, and determine if the DAG is sufficient for
+understanding what other commits are related to a given commit, and how
+those commits are merged. The tasks are outlined in
+Table~\ref{tab:conceptual_tasks}. The tasks are performed in order
+using the git tools. T1 has the participant draw a diagram of the merge
+tree, which will be used to answer the other two questions. This enables
+us to visually see issues with comprehending the DAG visualizations.
+Participants are given 10 minutes to perform this task, which also is
+used to familiarize the participant with the git tools interface, if
+they are not already, and with the set of commits they will be working
+with. T2 and T3 are drawn directly from the diagram from T1, giving
+quantitative metrics to measure the comprehension. T2 asks the
+participant to verify the number of commits, and T3 asks for the number
+of merges. The three tasks are performed on both commits before
+continuing to the summarization tasks.
 
 \begin{table*}[htpb]
   \centering
@@ -50,6 +65,28 @@ providing us information about which aspects of each tool they prefered.
   \end{tabulary}
 \end{table*}
 
+The summarization tasks, listed in Table~\ref{tab:summarization_tasks},
+are designed to compare the ability of the participants to summarize
+information about the two commits used in the study when using git tools
+verses \tool. The tasks are broken into four sets based on what is being
+summarized: merges, authorship, files, and modules. The order that the
+participants perform each task is randomized within each task set, and
+the order of the task sets are then randomized with the exception of the
+merges task set which will always come first. We measure and evaluate
+three metrics for each task: correctness, accuracy, and timing.
+Correctness measures whether the answer was correct or incorrect.
+Accuracy measures how far from being correct the provided answer was.
+Timing is the duration, in seconds, that the participant took to answer
+the task. We begin timing the task at the end of the question, and stop
+timing before the last modification to the answer. For this reason, it
+is possible for times to overlap between tasks if the participant
+changes their answer after answering another question. This will also
+modify the answer used for measuring the accuracy. We measure the timing
+from the screen capture.
+
+\evan{Is this better, or do you still want me to move the information
+  about the randomization to the bottom?}
+
 \begin{table}[htpb]
   \centering
   \caption{Summarization Tasks}
@@ -59,90 +96,55 @@ providing us information about which aspects of each tool they prefered.
     Task Set   & Task & Description\\\midrule
     Merge      & T4   & What is the series of merges involved with merging this
     commit?\\
-               & T5   & What other commits are merged?\\
+    & T5   & What other commits are merged?\\
     Authorship & T6   & How many authors are involved?\\
-               & T7   & Who contributed the most changes?\\
+    & T7   & Who contributed the most changes?\\
     Files      & T8   & How many files were modified?\\
-               & T9   & Which file had the most changes?\\
+    & T9   & Which file had the most changes?\\
     Modules    & T10  & Which modules does this merge tree involve?\\
     \bottomrule
   \end{tabulary}
 \end{table}
 
-\dmg{avoid editorializing your text: remove purely}
 
-\dmg{watch for tense... we don't begin... the tasks begin... or better, the first tasks...}
+While the merge task set is part of the summarization task group, it
+works less with the summarization of the commits and more with
+comprehension of the models. The task is designed with two goals in
+mind; first we want to measure and define which commits and which merges
+the participant has defined to be in the merge tree; second to help
+solidify which commits and merges will be used in the merge tree.
 
-The questions and tasks are broken down into four groups. The first two
-groups are purely quantitative in nature; the study begins with
-conceptual tasks to understand whether the DAG is capable of providing
-users with an understanding of how a commit is merged into the master
-branch, and other commits that it is merged with. We continue with
-summarization tasks, to quantitatively understand if the \mt model makes
-a difference in summarization tasks.
+T4 provides a concrete series of merges that the participant believes to
+be integrating the commit into the repository. T5 provides a concrete
+set of commits that are related to the commit. We place these tasks
+first as the answers to these will be necessary for the participant to
+answer the tasks that follow, specifically finding the merge into the
+master branch. T6 and T7 are related to the authorship at merges,
+determining how many authors are involved and who made the most changes.
+T8 and T9 are related to the files that were modified in the merge,
+determining how many files were modified and which file had the most
+changes. T10 is related to the modules that were modified in the merge.
+Modules are not explicitly defined in git, but are a property of the
+Linux repository that we noticed while looking at various commits. To
+find the modules, take the text up to the first colon in the git log
+preview. For the log preview \textit{``ALSA: kernel docs: fix
+  sound/core/ kernel-doc''} the module is \textit{``ALSA''}, e.g.
 
-The third task set is purely qualitative, \dmg{and are their goal is ... don't imply content in your sentences... be
-  precise; this applies to the paragraph before} to gain better understanding
-of whether participants preferred working with the \mt model in \tool,
-or working with the DAG in Gitk, and what aspects they preferred from
-each tool. The final group of questions is simply to gain a better
-understanding of the demographic of our participants.
-
-
-\textbf{Conceptual Tasks}
-
-
-\dmg{given the choice, not allowed.  I don't understand this section.
-  You need to be more top-down in your description. you need to provide
-  context on what the users are expected to do, and why. So what are the
-  tasks? You never explain.  what is the goal of the tasks? how many?
-  what were the tasks? what is expected from each? you need to answer
-  these questions, not necessarily in the same order.  also, remember
-  this is a comparative study, so I presume the users were asked to do
-  both with linvis and without it (choice of gitk/git command line) }
-
-% TODO: Move to methodology
-The participants were given the choice of Gitk or the git command line
-tools to perform the tasks .
-
-The participants were allowed to use Gitk or the git command line tools
-to perform these tasks. These tasks are asked in the specified order,
-allowing tabularr to first, create a conceptual understanding of the
-commits and merges that will be involved with the rest of the tasks that
-follow.tabularmay then use their diagrams to answer T2 and T3. We do not
-collect metrics from \tool for the conceptual tasks, opting instead to
-determine if the DAG is sufficient for understanding how a commit is
-integrated. \tool uses the \mt model show a tree visualization of how
-commits are merged, until the commit reaches the master branch.
-Table~\ref{tab:conceptual_tasks} shows the conceptual tasks.
-
-\dmg{I don't like the present tense, but that is your option}
-
-We provide the participant with 10 minutes per commit to complete the
-first task. The answers to the two other questions in this section are
-drawn from the answer in the first task.
-
-\textbf{Summarization Tasks}
-
-
-\dmg{again, you are going into details first. First the tasks --see
-  above-- including their grouping.  then at the end, describe the
-  randomization and why it is done (which you did) }
-
-The summarization tasks (Table~\ref{tab:summarization_tasks}) are
-grouped into \dmg{how many?} set of tasks according to their theme. The
-tasks within a given task set are shuffled, and the task sets are
-shuffled, to ensure that similar questions are together, but not in the
-same order, and to ensure that the themes are in randomized order
-between participants. The order of the commits is shuffled, as well. The
-order of the tool is randomized, choosing to start with either \tool or
-Gitk, to ensure that we do not place a bias on one tool through the
-experiment.
-
-As understanding where the merge begins and ends is vital to answering
-the other question, the merge task set will always be the first task set
-presented; however, the questions will still be re-ordered within the
-task set.
+The accuracy metrics are measured slightly differently between tasks due
+to different requirements and structures in the answer. In task T4, both
+the order and the merges are important. We define the distance to be the
+edit distance with insertion, deletion, and transposition at unit cost.
+The accuracy is the minimum edit distance necessary to make the answer
+correct. T5, T9, and T10 are concerned with the set of elements in the
+response; the order is not important. We use the Levenshtein distance,
+with insertion, deletion, and substitution of unit cost, from the
+provided answer to the correct answer. The answers to T6 and T8 are
+single number values; the distance is measured as the absolute value of
+the difference between the provided answer and the correct answer. T7
+has only a single correct answer, thus the distance would either be zero
+or one. For this reason, it is acceptable to omit the accuracy metric
+from this task. The correctness metric is simply whether the answer was
+correct or not; an accuracy of zero indicates a correct answer.
 
 \textbf{User Opinion and Profile}
 
@@ -248,10 +250,10 @@ will refer to as \comB.
 
 \begin{figure}[bpt]
   \centering
-\begin{tabular}{ m{1.5cm} m{3cm} }
-  \includegraphics[height=0.5in]{figures/commits/1-commit.pdf} &
-  \includegraphics[height=1in]{figures/commits/7-commits.pdf}\\
-\end{tabular}
+  \begin{tabular}{ m{1.5cm} m{3cm} }
+    \includegraphics[height=0.5in]{figures/commits/1-commit.pdf} &
+    \includegraphics[height=1in]{figures/commits/7-commits.pdf}\\
+  \end{tabular}
   \caption{The merge trees used in the user study,
     containing one and seven commits, respectively.}
   \label{fig:study_commits}
@@ -268,22 +270,18 @@ will refer to as \comB.
 
 \dmg{this is still methodology.}
 % TODO: Move to methodology
-We recorded the audio and screen capture video for each participant in
-the study for further analysis.
-\dmg{you don't need this sentence, it is redundant}
-After capturing the information, we
-extracted various metrics from the videos.
-\dmg{ you don't record, you measure}
-From the conceptual tasks, we
-recorded the time in seconds, and the answer for the question. We
-extracted three metrics for the summarization tasks, the time in
-seconds, the correctness, and the accuracy.
+% We recorded the audio and screen capture video for each participant in
+% the study for further analysis.
+% \dmg{you don't need this sentence, it is redundant}
+% After capturing the information, we
+% extracted various metrics from the videos.
+% \dmg{ you don't record, you measure}
+% From the conceptual tasks, we
+% recorded the time in seconds, and the answer for the question. We
+% extracted three metrics for the summarization tasks, the time in
+% seconds, the correctness, and the accuracy.
 
-The correctness metric measures whether the answer was correct or
-incorrect.
-
-The accuracy metric measures the distance from the correct
-answer. In task T4, the merges are important, and the order of those
+In task T4, the merges are important, and the order of those
 merges is important to the answer. For this task, we use the edit
 distance, which will increment if adding merges, removing merges, and
 changing the order of the merges is necessary. T5 only asks for the set
@@ -305,12 +303,6 @@ answer, the participant must be able to identify both files. In all
 means of accuracy measurement, a correct answer will have a distance of
 zero, while a non-zero distance indicates an incorrect answer.
 
-The timing metric is measured from the video. We begin timing the task
-at the end of the question, and stop timing before the last modification
-to the answer. For this reason, it is possible for times to overlap
-between tasks if the participant changes their answer after answering
-another question. This will also modify the answer used for measuring
-the accuracy.
 
 \subsubsection{Conceptual Tasks}
 \label{sub:conceptual_tasks}
@@ -351,11 +343,11 @@ correctness, accuracy, and timing results. The first row of plots are
 the correctness results. \dmg{be more direct: we see that linvis outperforms gitk by a large margin (then you can
   clarify with the statement you have below; otherwise you are asking the reader to make that connection; don't leave
   that to chance. be explicit on what the results tell you, at the high level.)}
- We see in all cases except for T10, that the
+We see in all cases except for T10, that the
 number of instances of a correct result with \tool is roughly the same
 as the number of incorrect instances with Gitk.
 \dmg{you don't test the task. You test what? the statistical significance than one tool is better than the other? Again,
-be explicit}
+  be explicit}
 We test each task with
 the McNemar Chi-square test~\cite{McNemar1947}.\dmg{don't break the paragraphs here.. you keep talking about the
   test. If you need to break them, break them before this sentence, not after}
@@ -401,59 +393,59 @@ degree of freedom is $7.879$.\dmg{what is this number? what is it used for? wher
   \begin{tabular}{c|c|c}
 
     T4 & T5 & T6\\
-  \begin{tabular}{cc|rr}
-                           &           & \multicolumn{2}{c}{Linvis}\\
-                           &           & Correct                      & Incorrect\\\hline
-    \multirow{2}{*}{Gitk}  & Correct   & 6                            & 0\\
-                           & Incorrect & 15                           & 2\\
-  \end{tabular} &
+    \begin{tabular}{cc|rr}
+      &           & \multicolumn{2}{c}{Linvis}\\
+      &           & Correct                      & Incorrect\\\hline
+      \multirow{2}{*}{Gitk}  & Correct   & 6                            & 0\\
+      & Incorrect & 15                           & 2\\
+    \end{tabular} &
 
-  \begin{tabular}{cc|rr}
-                           &           & \multicolumn{2}{c}{Linvis}\\
-                           &           & Correct                      & Incorrect\\\hline
-    \multirow{2}{*}{Gitk}  & Correct   & 5                            & 0\\
-                           & Incorrect & 14                           & 4\\
-  \end{tabular}
+    \begin{tabular}{cc|rr}
+      &           & \multicolumn{2}{c}{Linvis}\\
+      &           & Correct                      & Incorrect\\\hline
+      \multirow{2}{*}{Gitk}  & Correct   & 5                            & 0\\
+      & Incorrect & 14                           & 4\\
+    \end{tabular}
 
-  &
+    &
 
-  \begin{tabular}{cc|rr}
-                           &           & \multicolumn{2}{c}{Linvis}\\
-                           &           & Correct                      & Incorrect\\\hline
-    \multirow{2}{*}{Gitk}  & Correct   & 5                            & 0\\
-                           & Incorrect & 16                           & 2\\
-  \end{tabular}
+    \begin{tabular}{cc|rr}
+      &           & \multicolumn{2}{c}{Linvis}\\
+      &           & Correct                      & Incorrect\\\hline
+      \multirow{2}{*}{Gitk}  & Correct   & 5                            & 0\\
+      & Incorrect & 16                           & 2\\
+    \end{tabular}
 
 
-  \\\hline
-  T7 & T8 & T9\\
+    \\\hline
+    T7 & T8 & T9\\
 
-  \begin{tabular}{cc|rr}
-                           &           & \multicolumn{2}{c}{Linvis}\\
-                           &           & Correct                      & Incorrect\\\hline
-    \multirow{2}{*}{Gitk}  & Correct   & 8                            & 0\\
-                           & Incorrect & 13                           & 2\\
-  \end{tabular}  &
-  \begin{tabular}{cc|rr}
-                           &           & \multicolumn{2}{c}{Linvis}\\
-                           &           & Correct                      & Incorrect\\\hline
-    \multirow{2}{*}{Gitk}  & Correct   & 6                            & 0\\
-                           & Incorrect & 15                           & 2\\
-  \end{tabular} &
-  \begin{tabular}{cc|rr}
-                           &           & \multicolumn{2}{c}{Linvis}\\
-                           &           & Correct                      & Incorrect\\\hline
-    \multirow{2}{*}{Gitk}  & Correct   & 6                            & 0\\
-                           & Incorrect & 14                           & 3\\
-  \end{tabular}\\\hline
+    \begin{tabular}{cc|rr}
+      &           & \multicolumn{2}{c}{Linvis}\\
+      &           & Correct                      & Incorrect\\\hline
+      \multirow{2}{*}{Gitk}  & Correct   & 8                            & 0\\
+      & Incorrect & 13                           & 2\\
+    \end{tabular}  &
+    \begin{tabular}{cc|rr}
+      &           & \multicolumn{2}{c}{Linvis}\\
+      &           & Correct                      & Incorrect\\\hline
+      \multirow{2}{*}{Gitk}  & Correct   & 6                            & 0\\
+      & Incorrect & 15                           & 2\\
+    \end{tabular} &
+    \begin{tabular}{cc|rr}
+      &           & \multicolumn{2}{c}{Linvis}\\
+      &           & Correct                      & Incorrect\\\hline
+      \multirow{2}{*}{Gitk}  & Correct   & 6                            & 0\\
+      & Incorrect & 14                           & 3\\
+    \end{tabular}\\\hline
 
-  & T10 & \\
-  & \begin{tabular}{cc|rr}
-                            &           & \multicolumn{2}{c}{Linvis}\\
-                            &           & Correct                      & Incorrect\\\hline
-    \multirow{2}{*}{Gitk}   & Correct   & 14                           & 1\\
-                            & Incorrect & 8                            & 0\\
-  \end{tabular} & \\
+    & T10 & \\
+    & \begin{tabular}{cc|rr}
+      &           & \multicolumn{2}{c}{Linvis}\\
+      &           & Correct                      & Incorrect\\\hline
+      \multirow{2}{*}{Gitk}   & Correct   & 14                           & 1\\
+      & Incorrect & 8                            & 0\\
+    \end{tabular} & \\
 
   \end{tabular}
 \end{table*}
