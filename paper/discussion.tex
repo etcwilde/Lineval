@@ -1,6 +1,11 @@
 % vim:set et sw=2 ts=4 tw=72:
 % Jun 24, 2017
 % TODO: Go back to the conceptual task results and make them stronger
+
+\dmg{don't editorialize: simply say: the results show that Linvis is superior to ... in ....
+as we discussed today, it is about the tools more than the model
+}
+
 Overall, the results show fairly conclusive results; the DAG is unable
 to adequately provide users with an explanation of the changes being
 made in the repository, the DAG is not easily understood, and the DAG is
@@ -17,12 +22,16 @@ generalize it for more repositories, and future work.
 
 % TODO: include info on merge tree sizes
 
+\dmg{I think you mean challenge using gitk, right? so be explicit}
+
 During the course of the study, we noticed a consistent theme among the
 participants. The most difficult challenge was identifying the master
 branch of the repository. Given that single-commit merge trees are the
 most common tree, and that they are relatively simple, we were
 interested in seeing if the participants would be able to identify the
-tree easily, but the results suggest that this was not the case. The
+tree easily, but the results suggest that this was not the case.
+\dmg{the following is hard to understand. even i don't quite get what you mean}
+The
 issue primarily stemmed from not being able to identify the master
 branch. Most of the participants realized that they should not be going
 backward, toward the initial commit, very early on. Furthermore, many
@@ -72,6 +81,16 @@ in improving the model in the future.
 \subsection{Threats to Validity}
 \label{sub:threats}
 
+\dmg{divide it onto internal and external validity: internal: the tasks were only two merges, but they
+were randomnly chosen to be representative; the tasks were randomized to avoid bias, few participants, 
+but statistical analysis used to measure significance}
+
+\dmg{regarding external, as you say, participants might not be experts, since they are students,
+  you compared against git and gitk (part of git) because they are the most default tools everybody uses
+  but other tools or version control systems might provide better summarizations --i don't know of any.
+}
+
+
 While git includes gitk and the git log provides a view of the DAG with
 \verb|git log --graph|, many of the participants in our study were
 unfamiliar with the DAG visualizations shown by these tools. A possible
@@ -84,6 +103,7 @@ unfamiliar with the DAG structure, these users were also unfamiliar with
 the \mt model, and were still able to better understand and summarize
 the repository using \tool.
 
+\dmg{this paragraph i don't get:}
 Each question was evaluated independently of the results from the
 previous question in the summarization tasks. Had we modified the
 correct answer to fit the conceptual understanding of which commits were
@@ -91,7 +111,6 @@ included in the tree, we may have witnessed different results. A
 modification to the study may include providing the participants with
 the correct set of commits prior to the summarization tasks, after the
 merge task set.
-
 
 \subsection{Generalization}
 \label{sub:generalization}
@@ -101,7 +120,7 @@ commits are integrated, we continue by looking at ways of improving the
 algorithm for faster operations, and making the conversion from DAG to
 \mt feasible over the internet for smaller repositories.
 
-The problem of finding the master branch is the most difficult, and is
+The problem of identifying the master branch is the most difficult, and is
 not possible without heuristic approaches. The master branch can be
 confounded by \textit{foxtrot} merges, which change the order of the
 parents in the parent list of a merge. Other than the ordering of the
@@ -291,3 +310,8 @@ shown in Figure~\ref{fig:b_plugin}.
   \label{fig:b_plugin}
 \end{figure}
 
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "userstudy"
+%%% End:
