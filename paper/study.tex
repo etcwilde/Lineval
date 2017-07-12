@@ -269,38 +269,51 @@ Following the introduction to the \mt model, we introduce Gitk and
 \tool, providing information about what each pane shows in Gitk, and
 what each tab does in \tool.
 
-Each task group is applied to both commits, with the order of the commits
-randomized between participants to mitigate the effects of order-bias.
+The conceptual tasks follow the introduction, followed by the
+summarization, which are then followed by the user opinion. The study is
+completed with three questions to enable us to know more about the
+participants;
+
+\begin{itemize}
+  \item How long have you used git?
+  \item For what kind of projects have you used git?
+  \item How many commits, files, and collaborators were involved with
+    the largest repository you have worked with?
+\end{itemize}
 
 
-The conceptual tasks are the second part of the study. These tasks start
-with the participant taking 10 minutes to draw a diagram showing how one
-of the commits
+
+To mitigate the order bias cased by using one tool before the other or
+one commit before the other, we randomize both the tool and commit
+between participants. The conceptual tasks are run twice, once with
+\comA and once with \comB, in the same order for all participants using
+the git tools.
+
+\evan{This paragraph is kind of tricky to explain well. See if you can
+  understand what I'm trying to say} The summarization tasks are run
+four times, once with \comA and \tool, \comB and \tool, \comA and git
+tools, and \comB and git tools. The participant will start with one
+tool, and complete the tasks for both commits in that tool. The order of
+the commits is the same as in the conceptual tasks. Once they complete
+the summarization tasks for both \comA and \comB, they will switch to
+the other tool and complete the tasks again on the commits in the same
+order. The order of the tasks is consistent for all four runs.
+
+The user opinions do not directly involve working with the tools or the
+commits, so the ordering of the tools
 
 % To mitigate the order bias caused by using one tool before the other,
 % one commit before the other, and the various tasks, we randomize...
 
-\textbf{Procedure}
+We use a script written in python 3.6.1 in order to assure that we do no
+bias the randomization, and ensure that correct ordering is maintained
+between tools, tasks, and commits. The script produces the entire script
+for the study, so we only need to read it to correctly conduct the
+study. Re-running the script generates the study for the next
+participant.
 
-\dmg{tell me first why you need to create a script, so I know what you
-  do something: we did random assignment of tasks (explain what you did)
-  and randomized the order in which the tasks were performed.  Then
-  explain why you need a script}
-
-\dmg{it does not randomize the order the tools. It randomizes which tool
-  is going to be used on each tasks.  be precise with your language}
-
-\dmg{what you explained how commits relate to tasks and how they get
-  assigned? think as if you are explaining this to somebody who has to
-  do this: you are the designer, explaining the why and the how }
-
-For each participant, we run a simple python script to generate the
-script for the study, eliminating the possibility of bias from us. The
-script randomizes the order of the tools, the order of the commits, the
-order of the task sets, and the order of the tasks within each task set,
-where appropriate.
-
-
+\evan{Should I include the python script? It would make explaining how
+  the test was conducted 100\% clear.}
 
 \subsection{Results}
 \label{sec:results}
