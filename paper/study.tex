@@ -173,30 +173,69 @@ is meant to address this. % TODO add T12 results
 \end{table}
 
 
-% \textbf{User Opinion and Profile}
+\subsection{Commit Selection}
+\label{sub:commit_selection}
 
-% Finally, we ask the user for their opinions on the tools and for some
-% information about their level of experience with git.  \dmg{be more
-%   precise: understanding or preference is too broad. What you want to
-%   know answers to specific questions regarding how the tools compare and
-%   which ones they would prefer} The first three questions are intended
-% to provide us with a better understanding of preference, and insight on
-% why, the participant had that preference.  The last three questions in
-% this section are aimed at getting a better understanding of the
-% demographic of our participants.
-% \begin{enumerate}
-%   \item Given these tasks again, which tool would you prefer to use?
-%   \item Which aspects of each tool did you like and why?
-%   \item How long have you used git?
-%   \item If you have used git, for what kind of projects? (personal,
-%     school courses, professional?)
-%   \item If you have used git, how many commits, files, and contributors
-%     were involved with the largest repository you have worked with?
-% \end{enumerate}
+We include two commits in the study to detect differences between merge
+tree sizes. The order that the commits are presented to each participant
+is randomized. We analyzed the 15096 merge-trees from April 16th 2005 to
+October 14th 2014, which corresponds to the releases Linux 2.6.12-rc3
+and Linux 3.17-rc1. 25\% of the trees contain at most a single commit
+not including the root, while 50\% of the trees contain at most seven
+nodes non-root nodes.
+% TODO: get the number for this if there is time
+75\% of the trees contain at least 51 nodes, and the largest tree
+contains 7217 nodes.
+
+From this information, we selected one tree with a single commit, and
+one tree with seven other nodes to represent a small tree and a
+medium-sized tree. A majority of the trees are flat, where all nodes
+merge directly into the root node. Of the 8031 trees containing at least
+seven nodes, only 593 contained at least a single internal merge node.
+Trivially, trees with a single node cannot have any internal nodes, and
+of the 624 trees with seven nodes, only 135 contained at least one inner
+node. To increase the complexity of the medium-sized tree, we randomly
+selected one of the 135 trees to represent the medium tree.
+
+From the 2008 trees containing only a single node, we selected one at
+random, and trivially selected the only commit in the tree. From the
+trees containing seven nodes, we selected one randomly, then randomly
+selected one of the commits in the tree. We selected commit
+\emph{a3c1239eb59c0a907f8be5587d42e950f44543f8} from the tree containing
+a single node, which we will refer to as \comA, and commit
+\emph{cdbdd1676a5379f1d5cbd4d476f5e349f445befe} from the tree containing
+seven nodes, which we will refer to as \comB. A visual representation
+for these trees is shown in Figure~\ref{fig:study_commits}.
+
+\begin{figure}[bpt]
+  \centering
+  \begin{tabular}{ m{1.5cm} m{3cm} }
+    \includegraphics[height=0.5in]{figures/commits/1-commit.pdf} &
+    \includegraphics[height=1in]{figures/commits/7-commits.pdf}\\
+  \end{tabular}
+  \caption{The merge trees used in the user study,
+    containing one and seven commits, respectively.}
+  \label{fig:study_commits}
+\end{figure}
+
+\subsection{Participant Profile}
+\label{sub:participant_profile}
 
 \subsection{Study Procedure}
 \label{sub:study_procedure}
 
+The study begins with a short introduction to the \mt model, followed by
+an introduction to Gitk and \tool. We provided two examples of
+converting the DAG to the \mt. The first DAG was a flat merge, so the
+corresponding merge tree did not have any internal nodes. The second was
+not a flat merge, so the corresponding merge tree contained a single
+internal node. Any questions about the model were answered at this time.
+Following the introduction to the \mt model, we introduce Gitk and
+\tool, providing information about what each pane shows in Gitk, and
+what each tab does in \tool.
+
+To mitigate the bias between tools, commits, and tasks, we randomize the
+orders.
 
 \textbf{Procedure}
 
@@ -218,80 +257,6 @@ script randomizes the order of the tools, the order of the commits, the
 order of the task sets, and the order of the tasks within each task set,
 where appropriate.
 
-
-\subsection{Commit Selection}
-\label{sub:commit_selection}
-
-\dmg{see my comments in previous section. it is ok to explain them here,
-  but you need to explain what they are briefly in the previous section}
-
-We chose two commits for use in the study. The order that the commits
-are presented is randomized between participants, but the order is kept
-consistent through the tasks described in the next subsection.
-
-\dmg{this place does not require a description of the database. This
-  requires just to say the commits/merge set (dates and numbers are ok)
-  only} We use the \tool database, containing commits and merge-tree
-information from April 16th 2005 to October 14th, 2014, which
-corresponds to being between Linux release 2.6.12-rc3 and Linux
-3.17-rc1. \evan{Cite the database even more?} \dmg{again, i have
-  problems with your writing: ``we wanted to use in the study commits of
-  different size, to determine if the size had an impact in the
-  completion of the tasks. We chose commits of three different sizes...}
-We chose the commits based on tree sizes. We \dmg{we didn't find: this
-  is a fact, not a discovery; what is a majority? 50\%+1? be precise}
-\dmg{drop the word inner, and do it in order: 25\% of trees have only
-  one commit, 50\%.., 75\%...} found that a majority of the trees
-contain at most seven inner commits, while more than 25\% of the trees
-contain a single commit. 75\% of the tree contained up to 51 inner
-commits and merges, and finally the largest tree contained 7217 nodes.
-We chose to work with the trees in \dmg{if you are going to use the
-  words quartile, just use them before in your description eg: the
-  distribution of the sizes of the trees is x, y merges, whose size
-  corresponded to the 25 ,50 quartiles, simple and precisee} the first
-and second quartile, as merge trees of sizes between one and seven, not
-including the merge into the master branch, make up the majority of the
-trees in the database.
-
-\dmg{remove from here, what is here? this is not a road trip :)} From
-here, we selected one tree from the trees of a single commit at random.
-Selecting a commit from that tree is trivial, as there is only one to
-choose.\dmg{remove the obvious, instead concentrate on why the others
-  are not trivial}
-
-We selected one tree of size seven at random from all trees of size
-seven\dmg{how many where there?}. We placed a restriction the trees, the
-selected tree must include at least one internal merge to increase the
-complexity of the trees tested. For each randomly selecting a tree, we
-chose one of its internal commits at random (using the
-\verb|random.choice| function in python 3.6.1).
-
-\dmg{question: so you chose only one commit of each size, and the
-  randomization was which tool to use for each question? or did they
-  have to do the same task for two commits?}
-
-Using this technique, we selected commit
-\emph{a3c1239eb59c0a907f8be5587d42e950f44543f8} from the tree containing
-a single node (Figure~\ref{fig:commit_1}), which we will refer to as
-\comA, and commit \emph{cdbdd1676a5379f1d5cbd4d476f5e349f445befe}, from
-the tree containing seven nodes (Figure~\ref{fig:commit_2}), which we
-will refer to as \comB.
-
-\begin{figure}[bpt]
-  \centering
-  \begin{tabular}{ m{1.5cm} m{3cm} }
-    \includegraphics[height=0.5in]{figures/commits/1-commit.pdf} &
-    \includegraphics[height=1in]{figures/commits/7-commits.pdf}\\
-  \end{tabular}
-  \caption{The merge trees used in the user study,
-    containing one and seven commits, respectively.}
-  \label{fig:study_commits}
-\end{figure}
-
-
-
-\subsection{Participant Profile}
-\label{sub:participant_profile}
 
 
 \subsection{Results}
