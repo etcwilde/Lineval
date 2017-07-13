@@ -141,14 +141,76 @@ edit distance with insertion, deletion, and transposition at unit cost.
 The accuracy is the minimum edit distance necessary to make the answer
 correct. T5, T9, and T10 are concerned with the set of elements in the
 response; the order is not important. We use the Levenshtein distance,
-with insertion, deletion, and substitution of unit cost, from the
-provided answer to the correct answer. The answers to T6 and T8 are
+with insertion, deletion, and substitution operations of unit cost, from
+the provided answer to the correct answer. The answers to T6 and T8 are
 single number values; the distance is measured as the absolute value of
 the difference between the provided answer and the correct answer. T7
 has only a single correct answer, thus the distance would either be zero
 or one. For this reason, it is acceptable to omit the accuracy metric
 from this task. The correctness metric is simply whether the answer was
 correct or not; an accuracy of zero indicates a correct answer.
+
+Statistical significance testing is performed to verify that the results
+are meaningful. We use $alpha = 0.05$ or a $95\%$ confidence level. The
+McNemar $\chi^2$ test\cite{McNemar1947} with continuity correct is used
+to test the statistical significance of the hypothesis that \tool
+improves correctness of the participants. The $\chi^2$ threshold
+statistic at $\alpha = 0.05$ is 3.841. The Wilcoxon\cite{Wilcoxon45}
+test and Cliff's effect size\cite{Cliff93} are applied to the accuracy
+and timing metrics to determine the significance of the difference
+between \tool and Gitk. The Wilcoxon test is applied between commits to
+determine if the size of the merge-tree effects timing and accuracy. The
+null hypotheses and alternative hypotheses are stated in
+Table~\ref{tab:null_alt_hypoths}.
+
+\begin{table*}[h!]
+  \centering
+  \caption{Null and Alternative Hypotheses for Summarization Tasks\evan{Should I say exactly
+      what the null hypotheses are referring to (counting authors,
+      files, etc... or is this good enough? It's already a huge and
+      redundant table) }}
+  \label{tab:null_alt_hypoths}
+  \begin{tabulary}{0.98\linewidth}{CCLL}
+    \toprule
+    Task & Metric             & Null Hypothesis                                                      & Alternative Hypothesis\\\midrule
+    T4   & \tiny{Commit}      & There is no difference on accuracy or timing between \comA and \comB & There is a difference on accuracy or timing between \comA and \comB \\
+    T4   & \tiny{Correctness} & \tool does not effect the correctness of the participants            & \tool does effect the correctness of the participants\\
+    T4   & \tiny{Accuracy}    & There is no difference between \tool and Gitk on accuracy            & There is a difference between \tool and Gitk on accuracy\\
+    T4   & \tiny{Timing}      & There is no difference between \tool and Gitk on timing              & There is a difference between \tool and Gitk on timing\\
+
+    T5   & \tiny{Commit}      & There is no difference on accuracy or timing between \comA and \comB & There is a difference on accuracy or timing between \comA and \comB \\
+    T5   & \tiny{Correctness} & \tool does not effect the correctness of the participants            & \tool does effect the correctness of the participants\\
+    T5   & \tiny{Accuracy}    & There is no difference between \tool and Gitk on accuracy            & There is a difference between \tool and Gitk on accuracy\\
+    T5   & \tiny{Timing}      & There is no difference between \tool and Gitk on timing              & There is a difference between \tool and Gitk on timing\\
+
+    T6   & \tiny{Commit}      & There is no difference on accuracy or timing between \comA and \comB & There is a difference on accuracy or timing between \comA and \comB \\
+    T6   & \tiny{Correctness} & \tool does not effect the correctness of the participants            & \tool does effect the correctness of the participants\\
+    T6   & \tiny{Accuracy}    & There is no difference between \tool and Gitk on accuracy            & There is a difference between \tool and Gitk on accuracy\\
+    T6   & \tiny{Timing}      & There is no difference between \tool and Gitk on timing              & There is a difference between \tool and Gitk on timing\\
+
+    T7   & \tiny{Commit}      & There is no difference on accuracy or timing between \comA and \comB & There is a difference on accuracy or timing between \comA and \comB \\
+    T7   & \tiny{Correctness} & \tool does not effect the correctness of the participants            & \tool does effect the correctness of the participants\\
+    T7   & \tiny{Accuracy}    & There is no difference between \tool and Gitk on accuracy            & There is a difference between \tool and Gitk on accuracy\\
+    T7   & \tiny{Timing}      & There is no difference between \tool and Gitk on timing              & There is a difference between \tool and Gitk on timing\\
+
+    T8   & \tiny{Commit}      & There is no difference on accuracy or timing between \comA and \comB & There is a difference on accuracy or timing between \comA and \comB \\
+    T8   & \tiny{Correctness} & \tool does not effect the correctness of the participants            & \tool does effect the correctness of the participants\\
+    T8   & \tiny{Accuracy}    & There is no difference between \tool and Gitk on accuracy            & There is a difference between \tool and Gitk on accuracy\\
+    T8   & \tiny{Timing}      & There is no difference between \tool and Gitk on timing              & There is a difference between \tool and Gitk on timing\\
+
+    T9   & \tiny{Commit}      & There is no difference on accuracy or timing between \comA and \comB & There is a difference on accuracy or timing between \comA and \comB \\
+    T9   & \tiny{Correctness} & \tool does not effect the correctness of the participants            & \tool does effect the correctness of the participants\\
+    T9   & \tiny{Accuracy}    & There is no difference between \tool and Gitk on accuracy            & There is a difference between \tool and Gitk on accuracy\\
+    T9   & \tiny{Timing}      & There is no difference between \tool and Gitk on timing              & There is a difference between \tool and Gitk on timing\\
+
+    T10   & \tiny{Commit}      & There is no difference on accuracy or timing between \comA and \comB & There is a difference on accuracy or timing between \comA and \comB \\
+    T10   & \tiny{Correctness} & \tool does not effect the correctness of the participants            & \tool does effect the correctness of the participants\\
+    T10   & \tiny{Accuracy}    & There is no difference between \tool and Gitk on accuracy            & There is a difference between \tool and Gitk on accuracy\\
+    T10   & \tiny{Timing}      & There is no difference between \tool and Gitk on timing              & There is a difference between \tool and Gitk on timing\\
+    \bottomrule
+  \end{tabulary}
+\end{table*}
+
 
 \textbf{The user-opinion} questions, listed in
 Table~\ref{tab:opinion_questions}, are designed to determine which tool
@@ -377,52 +439,105 @@ was able to interpret their conceptual understanding.
 \subsubsection{Summarization Tasks}
 \label{sub:summarization_tasks}
 
-% TODO: Add the null hypotheses for each question to the procedures
-% TODO: Include the Wilcoxon Test and Cliff effect size test results
-
-The results show ( Figure~\ref{fig:summarization_results} ) that in all
-cases, except for T10, the number of instances of a correct result with
-\tool is roughly the same as the number of incorrect instances with
-gitk. \tool outperforms Gitk in correctness by a large margin. We use
-the McNemar Chi-square test~\cite{McNemar1947} with continuity
-correction to test the statistical significance of the hypothesis that
-\tool improves the correctness of the participants. We use $\alpha =
-0.05$, or a $95\%$ confidence level, therefore the $\chi^2$ test
-statistic is 3.841.
-
-
-\begin{figure*}[htpb]
-  \centering
-  \includegraphics[width=\textwidth]{figures/userstudy/results.pdf}
-  \caption{Results from the summarization tasks. The first row plots the
-    correctness metric for each task. The second row plots the
-    accuracy metric for each task. The third row plots the time metric
-    for each task.}
-  \label{fig:summarization_results}
-\end{figure*}
+Table~\ref{tab:cross_commit_results} shows whether the merge-tree size
+has an effect on the three studied metrics. An interesting observation
+from the figure is that the corrected for T5 and T9 are effected by the
+size of the merge-tree, but the accuracy is not. The correctness results
+for T5 and T9 are shown in Figure~\ref{fig:correctness_t5_t9}, and the
+timing results for T7 are shown in Figure~\ref{fig:timing_t7}.
 
 \begin{table}[htpb]
   \centering
-  \caption{Correctness Results}
-  \label{tab:correctness_table}
-  \begin{tabular}{crrc}
+  \caption{Cross-Commit Results\evan{Should I group the results by task
+      or by metric? It's by metric right now}}
+  \label{tab:cross_commit_results}
+  \begin{tabular}{ccrl}
     \toprule
-    Task & $\chi^2$ & $p$-value & Conclusion\\\midrule
-    T4   & 13.07    & 0.0003    & Reject $H_0$\\
-    T5   & 12.07    & 0.0005    & Reject $H_0$\\
-    T6   & 14.06    & 0.0002    & Reject $H_0$\\
-    T7   & 11.07    & 0.0009    & Reject $H_0$\\
-    T8   & 13.07    & 0.0003    & Reject $H_0$\\
-    T9   & 12.07    & 0.0005    & Reject $H_0$\\
-    T10  & 4.00     & 0.0455    & Reject $H_0$\\
+    Task & Metric      & $p$-value & Conclusion\\\midrule
+    T4   & Correctness & 0.22      & Do not reject $H_0$\\
+    T5   & Correctness & 0.04      & Reject $H_0$\\
+    T6   & Correctness & 0.13      & Do not reject $H_0$\\
+    T7   & Correctness & 0.06      & Do not reject $H_0$\\
+    T8   & Correctness & 0.07      & Do not reject $H_0$\\
+    T9   & Correctness & 0.04      & Reject $H_0$\\
+    T10  & Correctness & 0.62      & Do not reject $H_0$\\
+
+    T4  & Accuracy & 0.94 & Do not reject $H_0$\\
+    T5  & Accuracy & 0.09 & Do not reject $H_0$\\
+    T6  & Accuracy & 0.19 & Do not reject $H_0$\\
+    T8  & Accuracy & 0.16 & Do not reject $H_0$\\
+    T9  & Accuracy & 0.08 & Do not reject $H_0$\\
+    T10 & Accuracy & 0.37 & Do not reject $H_0$\\
+
+    T4  & Time & 0.77 & Do not reject $H_0$\\
+    T5  & Time & 0.97 & Do not reject $H_0$\\
+    T6  & Time & 0.90 & Do not reject $H_0$\\
+    T7  & Time & 0.01 & Reject $H_0$\\
+    T8  & Time & 0.87 & Do not reject $H_0$\\
+    T9  & Time & 0.99 & Do not reject $H_0$\\
+    T10 & Time & 0.68 & Do not reject $H_0$\\
     \bottomrule
   \end{tabular}
 \end{table}
 
-The results for the correctness metric are summarized in
-Table~\ref{tab:correctness_table}; the full results are as follows;
+\begin{figure*}[htpb]
+  \centering
+  \includegraphics[width=\textwidth]{figures/userstudy/results.pdf}
+  \caption{Aggregated results from the summarization tasks. The first row plots the
+    correctness metric for each task. The second row plots the
+    accuracy metric for each task. The third row plots the time metric
+    for each task. The correctness results for T5, T9, and the timing
+    results for T7 cannot be aggregated across commits, thus are
+    omitted.}
+  \label{fig:summarization_results}
+\end{figure*}
+
+\begin{figure*}[htpb]
+  \centering
+
+  \begin{tabular}{ m{6cm} m{6cm} }
+    \includegraphics[width=6cm]{figures/userstudy/correctness/5.pdf} &
+    \includegraphics[width=6cm]{figures/userstudy/correctness/9.pdf}
+  \end{tabular}
+  \caption{Unaggregated Correctness results for T5 and T9 \evan{Split
+      this? Is it clear that between Commit 2 and Commit 1 is where the
+    separation of the plots is?}}
+  \label{fig:correctness_t5_t9}
+\end{figure*}
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figures/userstudy/time/7.pdf}
+  \caption{Unaggregated Timing results for T7}
+  \label{fig:timing_t7}
+\end{figure}
+
+\begin{table}[htpb]
+  \centering
+  \caption{Summarization Correctness Results}
+  \label{tab:correctness_table}
+  \begin{tabular}{crrc}
+    \toprule
+    Task                & $\chi^2$ & $p$-value & Conclusion\\\midrule
+    T4                  & 13.07    & 0.0003    & Reject $H_0$\\
+    \multirow{2}{*}{T5} & 5.14     & 0.0233    & Reject $H_0$\\
+                        & 5.14     & 0.0233    & Reject $H_0$\\
+    T6                  & 14.06    & 0.0002    & Reject $H_0$\\
+    T7                  & 11.07    & 0.0009    & Reject $H_0$\\
+    T8                  & 13.07    & 0.0003    & Reject $H_0$\\
+    \multirow{2}{*}{T9} & 4.17     & 0.0412    & Reject $H_0$\\
+                        & 6.13     & 0.0133    & Reject $H_0$\\
+    T10                 & 4.00     & 0.0455    & Reject $H_0$\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Summaries for correctness, accuracy, and timing are shown in
+tables~\ref{tab:correctness_table}.
 
 % TODO: add results for other metrics
+
+The full results are as follows;
 
 \begin{itemize}
   \item
@@ -430,26 +545,43 @@ Table~\ref{tab:correctness_table}; the full results are as follows;
     T4; The $\chi^2$ statistic is $13.07$ with a p-value of $0.0003$.
     $13.07 > 3.841$ and $0.0003 < 0.05$, therefore we reject the null
     hypothesis.
-
+    \vspace{2mm}
     \begin{tabular}{cc|rr}
-                            &           & \multicolumn{2}{c}{Linvis}\\
-                            &           & Correct                      & Incorrect\\\hline
+      &           & \multicolumn{2}{c}{Linvis}\\
+      &           & Correct                      & Incorrect\\\hline
       \multirow{2}{*}{Gitk} & Correct   & 6                            & 0\\
-                            & Incorrect & 15                           & 2\\
-    \end{tabular}\\
+      & Incorrect & 15                           & 2\\
+    \end{tabular}
+    \vspace{3mm}
 
   \item
 
-    T5; The $\chi^2$ statistic is $12.07$ with a p-value of $0.0005$.
-    $12.07 > 3.841$ and $0.0003 < 0.05$, therefore we reject the null
+    T5; The correctness results are split for this task. For \comA, the
+    $\chi^2$ statistic is $5.14$ with a $p-value$ of $0.02334$. $5.14 >
+    3.841$ and $0.02334 < 0.05$, therefore we reject the null
     hypothesis.
-
+    \vspace{2mm}
     \begin{tabular}{cc|rr}
-                            &           & \multicolumn{2}{c}{Linvis}\\
-                            &           & Correct                      & Incorrect\\\hline
-      \multirow{2}{*}{Gitk} & Correct   & 5                            & 0\\
-                            & Incorrect & 14                           & 4\\
-    \end{tabular}\\
+                             &           & \multicolumn{2}{c}{Linvis}\\
+                             &           & Correct                      & Incorrect\\\hline
+      \multirow{2}{*}{Gitk}  & Correct   & 4                            & 0\\
+                             & Incorrect & 7                            & 0\\
+    \end{tabular}
+    \vspace{3mm}
+
+    The $\chi^2$ statistic for \comB is $5.14$ with a p-value of
+    $0.02334$. $4.14 > 3.841$ and $0.02334 < 0.05$, therefore we reject
+    the null hypothesis.
+    \vspace{2mm}
+    \begin{tabular}{cc|rr}
+                             &           & \multicolumn{2}{c}{Linvis}\\
+                             &           & Correct                      & Incorrect\\\hline
+      \multirow{2}{*}{Gitk}  & Correct   & 1                            & 0\\
+                             & Incorrect & 7                            & 4\\
+    \end{tabular}
+    \vspace{3mm}
+
+
 
   \item
 
@@ -458,10 +590,10 @@ Table~\ref{tab:correctness_table}; the full results are as follows;
     hypothesis.
 
     \begin{tabular}{cc|rr}
-                            &           & \multicolumn{2}{c}{Linvis}\\
-                            &           & Correct                      & Incorrect\\\hline
+      &           & \multicolumn{2}{c}{Linvis}\\
+      &           & Correct                      & Incorrect\\\hline
       \multirow{2}{*}{Gitk} & Correct   & 5                            & 0\\
-                            & Incorrect & 16                           & 2\\
+      & Incorrect & 16                           & 2\\
     \end{tabular}
 
   \item
@@ -471,10 +603,10 @@ Table~\ref{tab:correctness_table}; the full results are as follows;
     hypothesis.
 
     \begin{tabular}{cc|rr}
-                            &           & \multicolumn{2}{c}{Linvis}\\
-                            &           & Correct                      & Incorrect\\\hline
+      &           & \multicolumn{2}{c}{Linvis}\\
+      &           & Correct                      & Incorrect\\\hline
       \multirow{2}{*}{Gitk} & Correct   & 8                            & 0\\
-                            & Incorrect & 13                           & 2\\
+      & Incorrect & 13                           & 2\\
     \end{tabular}\\
 
 
@@ -486,24 +618,37 @@ Table~\ref{tab:correctness_table}; the full results are as follows;
     hypothesis.
 
     \begin{tabular}{cc|rr}
-                            &           & \multicolumn{2}{c}{Linvis}\\
-                            &           & Correct                      & Incorrect\\\hline
+      &           & \multicolumn{2}{c}{Linvis}\\
+      &           & Correct                      & Incorrect\\\hline
       \multirow{2}{*}{Gitk} & Correct   & 6                            & 0\\
-                            & Incorrect & 15                           & 2\\
+      & Incorrect & 15                           & 2\\
     \end{tabular}\\
 
   \item
 
-    T9; The $\chi^2$ statistic is $12.07$ with a p-value of $0.0005$.
-    $12.07 > 3.841$ and $0.0005 < 0.05$, therefore we reject the null
-    hypothesis.
-
+    T9; The correctness results are split for this task. For \comA, the
+    $\chi^2$ statistic is $4.17$ with a p-value of $0.0412$. $4.17 >
+    3.841$ and $0.0412 < 0.05$, therefore we reject the null hypothesis.
+    \vspace{2mm}
     \begin{tabular}{cc|rr}
-      &           & \multicolumn{2}{c}{Linvis}\\
-      &           & Correct                      & Incorrect\\\hline
-      \multirow{2}{*}{Gitk}  & Correct   & 6                            & 0\\
-      & Incorrect & 14                           & 3\\
+                             &           & \multicolumn{2}{c}{Linvis}\\
+                             &           & Correct                      & Incorrect\\\hline
+      \multirow{2}{*}{Gitk}  & Correct   & 5                            & 0\\
+                             & Incorrect & 6                            & 0\\
     \end{tabular}
+    \vspace{3mm}
+
+    The $\chi^2$ statistic for \comB is $6.125$ with a p-value of
+    $0.0133$. $6.125 > 3.841$ and $0.0133 < 0.05$, therefore we reject
+    the null hypothesis.
+    \vspace{2mm}
+    \begin{tabular}{cc|rr}
+                             &           & \multicolumn{2}{c}{Linvis}\\
+                             &           & Correct                      & Incorrect\\\hline
+      \multirow{2}{*}{Gitk}  & Correct   & 1                            & 0\\
+                             & Incorrect & 8                            & 3\\
+    \end{tabular}
+    \vspace{3mm}
 
   \item
 
