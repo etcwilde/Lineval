@@ -512,25 +512,57 @@ timing results for T7 are shown in Figure~\ref{fig:timing_t7}.
   \label{fig:timing_t7}
 \end{figure}
 
-\begin{table}[htpb]
+\begin{table*}[htpb]
   \centering
-  \caption{Summarization Correctness Results}
-  \label{tab:correctness_table}
-  \begin{tabular}{crrc}
-    \toprule
-    Task                & $\chi^2$ & $p$-value & Conclusion\\\midrule
-    T4                  & 13.07    & 0.0003    & Reject $H_0$\\
-    \multirow{2}{*}{T5} & 5.14     & 0.0233    & Reject $H_0$\\
-                        & 5.14     & 0.0233    & Reject $H_0$\\
-    T6                  & 14.06    & 0.0002    & Reject $H_0$\\
-    T7                  & 11.07    & 0.0009    & Reject $H_0$\\
-    T8                  & 13.07    & 0.0003    & Reject $H_0$\\
-    \multirow{2}{*}{T9} & 4.17     & 0.0412    & Reject $H_0$\\
-                        & 6.13     & 0.0133    & Reject $H_0$\\
-    T10                 & 4.00     & 0.0455    & Reject $H_0$\\
-    \bottomrule
+  \caption{Summarized Correctness, Accuracy, and Timing results for the summarization tasks}
+  \label{tab:summarization_table}
+  \begin{tabular}{ccc}
+    % Correctness
+    \begin{tabular}{crrc}
+      \toprule
+      Task                  & $\chi^2$ & $p$-value  & Conclusion\\\midrule
+      T4                    & 13.07    & 0.0003     & Reject $H_0$\\
+      \multirow{2}{*}{T5}   & 5.14     & 0.0233     & Reject $H_0$\\
+                            & 5.14     & 0.0233     & Reject $H_0$\\
+      T6                    & 14.06    & 0.0002     & Reject $H_0$\\
+      T7                    & 11.07    & 0.0009     & Reject $H_0$\\
+      T8                    & 13.07    & 0.0003     & Reject $H_0$\\
+      \multirow{2}{*}{T9}   & 4.17     & 0.0412     & Reject $H_0$\\
+                            & 6.13     & 0.0133     & Reject $H_0$\\
+      T10                   & 4.00     & 0.0455     & Reject $H_0$\\
+      \bottomrule
+    \end{tabular}
+    &
+
+    % Accuracy
+    \begin{tabular}{clrc}
+      \toprule
+      Task & $p$-value            & Delta Est. & Conclusion\\\midrule
+      T4   & $7.8 \times 10^{-5}$ & -0.61      & Reject $H_0$\\
+      T5   & $7.2 \times 10^{-5}$ & -0.63      & Reject $H_0$\\
+      T6   & $1.2 \times 10^{-5}$ & -0.69      & Reject $H_0$\\
+      T8   & $5.8 \times 10^{-4}$ & -0.54      & Reject $H_0$\\
+      T9   & $0.009$              & -0.42      & Reject $H_0$\\
+      T10  & $0.002$              & -0.35      & Reject $H_0$\\
+      \bottomrule
+    \end{tabular}
+    &
+    % Timing
+    \begin{tabular}{clrc}
+      \toprule
+      Task                 & $p$-value & Delta Est. & Conclusion\\\midrule
+      T4                   & 0.0007    & -0.58      & Reject $H_0$\\
+      T5                   & 0.0142    & -0.42      & Reject $H_0$\\
+      T6                   & 0.0168    & -0.41      & Reject $H_0$\\
+      \multirow{2}{*}{T7}  & 0.2586    & -0.29      & Do not reject $H_0$\\
+                           & 0.0780    & -0.43      & Do not reject $H_0$\\
+      T8                   & 0.0009    & -0.57      & Reject $H_0$\\
+      T9                   & 0.0002    & -0.63      & Reject $H_0$\\
+      T10                  & 0.0001    & -0.66      & Reject $H_0$\\
+      \bottomrule
+    \end{tabular}
   \end{tabular}
-\end{table}
+\end{table*}
 
 Summaries for correctness, accuracy, and timing are shown in
 tables~\ref{tab:correctness_table}.
@@ -540,23 +572,43 @@ tables~\ref{tab:correctness_table}.
 The full results are as follows;
 
 \begin{itemize}
-  \item
+  \item T4
 
-    T4; The $\chi^2$ statistic is $13.07$ with a p-value of $0.0003$.
+    \textbf{Correctness:}
+    The $\chi^2$ statistic is $13.07$ with a p-value of $0.0003$.
     $13.07 > 3.841$ and $0.0003 < 0.05$, therefore we reject the null
     hypothesis.
     \vspace{2mm}
     \begin{tabular}{cc|rr}
-      &           & \multicolumn{2}{c}{Linvis}\\
-      &           & Correct                      & Incorrect\\\hline
+                            &           & \multicolumn{2}{c}{Linvis}\\
+                            &           & Correct                      & Incorrect\\\hline
       \multirow{2}{*}{Gitk} & Correct   & 6                            & 0\\
-      & Incorrect & 15                           & 2\\
+                            & Incorrect & 15                           & 2\\
     \end{tabular}
     \vspace{3mm}
 
-  \item
+    \tool improves the correctness when determine the series of merges
+    involved with merging a commit.
 
-    T5; The correctness results are split for this task. For \comA, the
+    \textbf{Accuracy:} The p-value is $7.8 \times 10^{-5}$, which is
+    less than 0.05; therefore we reject the null hypothesis. The Delta
+    estimate is -0.61, which indicates a large effect size. \tool
+    improves accuracy when determining the series of merges involved
+    with merging a commit.
+
+    \textbf{Timing:}
+    The p-value is $0.0007$, which is less than 0.05; therefore we
+    reject the null hypothesis. The delta estimate is -0.58, which
+    indicates a large effect size. \tool decreases the time taken to
+    determine the series of merges involved with merging a commit.
+
+    Overall, \tool is able to help users determine the series of merges
+    that a commit takes more quickly and more accurately than Gitk.
+
+  \item T5
+
+    \textbf{Correctness:}
+    The correctness results are split for this task. For \comA, the
     $\chi^2$ statistic is $5.14$ with a $p-value$ of $0.02334$. $5.14 >
     3.841$ and $0.02334 < 0.05$, therefore we reject the null
     hypothesis.
@@ -581,52 +633,112 @@ The full results are as follows;
     \end{tabular}
     \vspace{3mm}
 
+    While there is a difference in correctness between different-sized
+    merge-trees, \tool improves correctness of determining the other
+    commits related to a commit in trees of varying sizes.
+
+    \textbf{Accuracy:}
+    The p-value is $7.2 \times 10^{-5}$, which is less than 0.05;
+    therefore we reject the null hypothesis. The Delta estimate is
+    -0.63, which indicates a large effect size. \tool improves
+    accuracy when determining other commits related to a commit.
 
 
-  \item
+    \textbf{Timing:}
+    The p-value is $0.0142$, which is less than 0.05; therefore we
+    reject the null hypothesis. The delta estimate is -0.58, which
+    indicates a large effect size. \tool decreases the time taken to
+    determine other commits related to a commit.
 
-    T6; The $\chi^2$ statistic is $14.06$ with a p-value of $0.0002$.
+    Overall, \tool helps users determine other commits that are merged
+    with another commit more quickly and more accurately.
+
+  \item T6
+
+    \textbf{Correctness:}
+    The $\chi^2$ statistic is $14.06$ with a p-value of $0.0002$.
     $14.06 > 3.841$ and $0.0002 < 0.05$, therefore we reject the null
     hypothesis.
-
+    \vspace{2mm}
     \begin{tabular}{cc|rr}
       &           & \multicolumn{2}{c}{Linvis}\\
       &           & Correct                      & Incorrect\\\hline
       \multirow{2}{*}{Gitk} & Correct   & 5                            & 0\\
       & Incorrect & 16                           & 2\\
     \end{tabular}
+    \vspace{3mm}
 
-  \item
+    \tool improves correctness when determining how many authors are
+    involved with a merge.
 
-    T7; The $\chi^2$ statistic is $11.07$ with a p-value of $0.0009$.
+    \textbf{Accuracy:} The p-value is $1.2 \times 10^{-5}$, which is
+    less than 0.05; we reject the null hypothesis. The delta estimate is
+    -0.69, which indicates a large effect size. \tool improves accuracy
+    when determining how many authors are involved with a merge.
+
+    \textbf{Timing:} The p-value is 0.0168, which is less that 0.05; we
+    reject the null hypothesis. The delta estimate is -0.41, which
+    indicates a medium effect size. \tool decreases the time taken to
+    determine the number of authors involved in a commit.
+
+    Overall, \tool assists users with determining the number of authors
+    involved in a merge more quickly and more accurately.
+
+  \item T7
+
+    \textbf{Correctness:}
+    The $\chi^2$ statistic is $11.07$ with a p-value of $0.0009$.
     $11.07 > 3.841$ and $0.0009 < 0.05$, therefore we reject the null
     hypothesis.
-
+    \vspace{2mm}
     \begin{tabular}{cc|rr}
       &           & \multicolumn{2}{c}{Linvis}\\
       &           & Correct                      & Incorrect\\\hline
       \multirow{2}{*}{Gitk} & Correct   & 8                            & 0\\
       & Incorrect & 13                           & 2\\
     \end{tabular}\\
+    \vspace{3mm}
 
+    \tool improves the correctness of participants when determining the
+    author that contributed the most changes to a merge.
 
+    \textbf{Timing:} The null hypothesis is not rejected in the case of
+    \comA, but is rejected in the case of \comB. This indicates that
+    \tool is able to help users determine who made the most
+    contributions to a merge in a large tree than in a small tree.
 
-  \item
+    Overall, \tool improves the correctness for trees of various sizes,
+    but only has an effect on the amount of time taken when the tree is
+    large.
 
-    T8; The $\chi^2$ statistic is $13.07$ with a p-value of $0.0003$.
+  \item T8
+
+    \textbf{Correctness:}
+    The $\chi^2$ statistic is $13.07$ with a p-value of $0.0003$.
     $13.07 > 3.841$ and $0.0003 < 0.05$, therefore we reject the null
     hypothesis.
-
+    \vspace{2mm}
     \begin{tabular}{cc|rr}
       &           & \multicolumn{2}{c}{Linvis}\\
       &           & Correct                      & Incorrect\\\hline
       \multirow{2}{*}{Gitk} & Correct   & 6                            & 0\\
       & Incorrect & 15                           & 2\\
     \end{tabular}\\
+    \vspace{3mm}
 
-  \item
+    \textbf{Accuracy:} The p-value is $5.8 \times 10^{-4}$, which is
+    less than 0.05; we reject the null hypothesis. The delta estimate is
+    -0.54, indicating a large effect size. \tool improves accuracy when
+    determining how many files were modified at a merge.
 
-    T9; The correctness results are split for this task. For \comA, the
+    \textbf{Timing:} The p-value is 0.0009, which is less than 0.05; we
+    reject the null hypothesis. The delta estimate is -0.57, indicating
+    a large effect size.
+
+  \item T9
+
+    \textbf{Correctness:}
+    The correctness results are split for this task. For \comA, the
     $\chi^2$ statistic is $4.17$ with a p-value of $0.0412$. $4.17 >
     3.841$ and $0.0412 < 0.05$, therefore we reject the null hypothesis.
     \vspace{2mm}
@@ -650,23 +762,55 @@ The full results are as follows;
     \end{tabular}
     \vspace{3mm}
 
-  \item
+    \textbf{Accuracy:} The p-value is $0.009$, which is less than
+    $0.05$; we reject the null hypothesis. The delta estimate is -0.42,
+    indicating a medium effect size. \tool improves accuracy when
+    determining which file had the most changes.
 
-    T10; The $\chi^2$ statistic is $4$ with a p-value of $0.0455$.
+    \textbf{Timing:} We reject the null hypothesis; the delta estimate
+    is -0.63, indicating a large effect size. \tool decreases the time
+    taken to determine which file had the most changes.
+
+    Overall, \tool is able to assist users determine which file had the
+    most changes more quickly and accurately.
+
+  \item T10
+
+    \textbf{Correctness:}
+    The $\chi^2$ statistic is $4$ with a p-value of $0.0455$.
     $4 > 3.841$ and $0.0455 < 0.05$, therefore we reject the null
     hypothesis. The p-value is very close to the $\alpha$ value in this
     case, so the conclusion is not as well defined.
-
+    \vspace{2mm}
     \begin{tabular}{cc|rr}
       &           & \multicolumn{2}{c}{Linvis}\\
       &           & Correct                      & Incorrect\\\hline
       \multirow{2}{*}{Gitk}   & Correct   & 14                           & 1\\
       & Incorrect & 8                            & 0\\
     \end{tabular}
+    \vspace{3mm}
 
+    \textbf{Accuracy:} The null hypothesis is rejected; the delta
+    estimate is -0.35, indicating a medium effect size. \tool provides
+    an improvement in accuracy when determining which modules are
+    involved with a merge.
+
+    \textbf{Timing:} The null hypothesis is rejected; the delta estimate
+    is -0.66, indicating a large effect size. \tool decreases the time
+    taken to determine the modules involved with a merge.
+
+    Overall, \tool assists users determine which modules are involved
+    with a merge more quickly and accurately.
 
 \end{itemize}
 
+\tool is able to assist users with summarizing various aspects of a
+merge more quickly and accurately than Gitk. In two tasks, T5 and T9,
+correctness was affected by the size of a tree, but in both trees, \tool
+was able to provide a statistically significant improvement to the
+correctness. Only in one task, T7, was timing affected by the size of a
+tree; \tool did not significantly improve the time taken to answer T7 on
+the smaller tree, but did improve the time taken on the larger tree.
 
 \subsubsection{User Opinions}
 \label{sub:user_opinions}
