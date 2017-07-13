@@ -5,8 +5,8 @@ task-based sections; conceptual tasks, summarization tasks, and
 participant opinions. The study was performed in June of 2017 in
 Kingston ON, in a controlled environment running Ubuntu 14.04.
 Participants were allowed to use both Gitk and the git command line
-tools together, which we will refer to as the git tools. Then they were
-asked to perform the same tasks using \tool.
+tools together, which we will refer to as the git tools or as Gitk. Then
+they were asked to perform the same tasks using \tool.
 
 \evan{Do I need to say where the study took place? I see it showing up
   in other papers, but it makes it kind of obvious about the lab I'm
@@ -377,19 +377,19 @@ was able to interpret their conceptual understanding.
 \subsubsection{Summarization Tasks}
 \label{sub:summarization_tasks}
 
-In Figure~\ref{fig:summarization_results}, we see all of the
-correctness, accuracy, and timing results. The first row of plots are
-the correctness results. \dmg{be more direct: we see that linvis outperforms gitk by a large margin (then you can
-  clarify with the statement you have below; otherwise you are asking the reader to make that connection; don't leave
-  that to chance. be explicit on what the results tell you, at the high level.)}
-We see in all cases except for T10, that the
-number of instances of a correct result with \tool is roughly the same
-as the number of incorrect instances with Gitk.
-\dmg{you don't test the task. You test what? the statistical significance than one tool is better than the other? Again,
-  be explicit}
-We test each task with
-the McNemar Chi-square test~\cite{McNemar1947}.\dmg{don't break the paragraphs here.. you keep talking about the
-  test. If you need to break them, break them before this sentence, not after}
+% TODO: Add the null hypotheses for each question to the procedures
+% TODO: Include the Wilcoxon Test and Cliff effect size test results
+
+The results show ( Figure~\ref{fig:summarization_results} ) that in all
+cases, except for T10, the number of instances of a correct result with
+\tool is roughly the same as the number of incorrect instances with
+gitk. \tool outperforms Gitk in correctness by a large margin. We use
+the McNemar Chi-square test~\cite{McNemar1947} with continuity
+correction to test the statistical significance of the hypothesis that
+\tool improves the correctness of the participants. We use $\alpha =
+0.05$, or a $95\%$ confidence level, therefore the $\chi^2$ test
+statistic is 3.841.
+
 
 \begin{figure*}[htpb]
   \centering
@@ -401,216 +401,127 @@ the McNemar Chi-square test~\cite{McNemar1947}.\dmg{don't break the paragraphs h
   \label{fig:summarization_results}
 \end{figure*}
 
-\dmg{McNemar is used to test if there was an effect on the tool used in the correctness of the answers of the
-  users. It is not an analysis of the participants. Don't elaborate on what it does or does not. Just leave it at what
-  it does: if you want to be precise you can say it ``marginal homogeneity'' of the answers}
-
-With the McNemar's tests, we analyze the participants that change from
-being correct with one tool to being incorrect with the other. \dmg{Again, never, ever, use a pronom like this to start
-  a stence. State that this is instead: The McNemar test..., but i vote for removing this info} This does
-not take into account the number of people who were able to provide the
-correct answer for both tools, nor the people who were incorrect for both
-tools. \dmg{this is better, see my comment before this paragraph, you can use this sentence instead, except: not the
-  results: the test is used to test the hypothesis that ...} The results show whether providing the participants with \tool
-over the current standard, gitk, improves the correctness of the
-summarization tasks among the participants. \dmg{Change it to Table shows..., we don't show, we wrote} We show the results for the
-number of people who were, with both tools, correct, incorrect, and
-changed in Table~\ref{tab:correctness_table}.
-
-In all cases, except for task T10, \dmg{we don't ``see'', ``these is'' instead: in all cases.. there the differences
-  are statistically significant} we saw statistically significant
-results \dmg{remove suggesting} suggesting that we reject the null hypothesis \dmg{did you tell us what the null hypo
-  is?}. \dmg{say this before making conclusions about the results} We tested each
-correctness with an $\alpha = 0.005$. The $\chi^2$ test value with one
-degree of freedom is $7.879$.\dmg{what is this number? what is it used for? where does it come from?}
-
-\begin{table*}[htpb]
+\begin{table}[htpb]
   \centering
-  \caption{Correctness tables showing how many people stayed correct,
-    incorrect, and how many people changed between tool}
+  \caption{Correctness Results}
   \label{tab:correctness_table}
-  \begin{tabular}{c|c|c}
+  \begin{tabular}{crrc}
+    \toprule
+    Task & $\chi^2$ & $p$-value & Conclusion\\\midrule
+    T4   & 13.07    & 0.0003    & Reject $H_0$\\
+    T5   & 12.07    & 0.0005    & Reject $H_0$\\
+    T6   & 14.06    & 0.0002    & Reject $H_0$\\
+    T7   & 11.07    & 0.0009    & Reject $H_0$\\
+    T8   & 13.07    & 0.0003    & Reject $H_0$\\
+    T9   & 12.07    & 0.0005    & Reject $H_0$\\
+    T10  & 4.00     & 0.0455    & Reject $H_0$\\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
-    T4 & T5 & T6\\
-    \begin{tabular}{cc|rr}
-      &           & \multicolumn{2}{c}{Linvis}\\
-      &           & Correct                      & Incorrect\\\hline
-      \multirow{2}{*}{Gitk}  & Correct   & 6                            & 0\\
-      & Incorrect & 15                           & 2\\
-    \end{tabular} &
+The results for the correctness metric are summarized in
+Table~\ref{tab:correctness_table}; the full results are as follows;
+
+% TODO: add results for other metrics
+
+\begin{itemize}
+  \item
+
+    T4; The $\chi^2$ statistic is $13.07$ with a p-value of $0.0003$.
+    $13.07 > 3.841$ and $0.0003 < 0.05$, therefore we reject the null
+    hypothesis.
 
     \begin{tabular}{cc|rr}
-      &           & \multicolumn{2}{c}{Linvis}\\
-      &           & Correct                      & Incorrect\\\hline
-      \multirow{2}{*}{Gitk}  & Correct   & 5                            & 0\\
-      & Incorrect & 14                           & 4\\
+                            &           & \multicolumn{2}{c}{Linvis}\\
+                            &           & Correct                      & Incorrect\\\hline
+      \multirow{2}{*}{Gitk} & Correct   & 6                            & 0\\
+                            & Incorrect & 15                           & 2\\
+    \end{tabular}\\
+
+  \item
+
+    T5; The $\chi^2$ statistic is $12.07$ with a p-value of $0.0005$.
+    $12.07 > 3.841$ and $0.0003 < 0.05$, therefore we reject the null
+    hypothesis.
+
+    \begin{tabular}{cc|rr}
+                            &           & \multicolumn{2}{c}{Linvis}\\
+                            &           & Correct                      & Incorrect\\\hline
+      \multirow{2}{*}{Gitk} & Correct   & 5                            & 0\\
+                            & Incorrect & 14                           & 4\\
+    \end{tabular}\\
+
+  \item
+
+    T6; The $\chi^2$ statistic is $14.06$ with a p-value of $0.0002$.
+    $14.06 > 3.841$ and $0.0002 < 0.05$, therefore we reject the null
+    hypothesis.
+
+    \begin{tabular}{cc|rr}
+                            &           & \multicolumn{2}{c}{Linvis}\\
+                            &           & Correct                      & Incorrect\\\hline
+      \multirow{2}{*}{Gitk} & Correct   & 5                            & 0\\
+                            & Incorrect & 16                           & 2\\
     \end{tabular}
 
-    &
+  \item
+
+    T7; The $\chi^2$ statistic is $11.07$ with a p-value of $0.0009$.
+    $11.07 > 3.841$ and $0.0009 < 0.05$, therefore we reject the null
+    hypothesis.
 
     \begin{tabular}{cc|rr}
-      &           & \multicolumn{2}{c}{Linvis}\\
-      &           & Correct                      & Incorrect\\\hline
-      \multirow{2}{*}{Gitk}  & Correct   & 5                            & 0\\
-      & Incorrect & 16                           & 2\\
-    \end{tabular}
+                            &           & \multicolumn{2}{c}{Linvis}\\
+                            &           & Correct                      & Incorrect\\\hline
+      \multirow{2}{*}{Gitk} & Correct   & 8                            & 0\\
+                            & Incorrect & 13                           & 2\\
+    \end{tabular}\\
 
 
-    \\\hline
-    T7 & T8 & T9\\
+
+  \item
+
+    T8; The $\chi^2$ statistic is $13.07$ with a p-value of $0.0003$.
+    $13.07 > 3.841$ and $0.0003 < 0.05$, therefore we reject the null
+    hypothesis.
 
     \begin{tabular}{cc|rr}
-      &           & \multicolumn{2}{c}{Linvis}\\
-      &           & Correct                      & Incorrect\\\hline
-      \multirow{2}{*}{Gitk}  & Correct   & 8                            & 0\\
-      & Incorrect & 13                           & 2\\
-    \end{tabular}  &
-    \begin{tabular}{cc|rr}
-      &           & \multicolumn{2}{c}{Linvis}\\
-      &           & Correct                      & Incorrect\\\hline
-      \multirow{2}{*}{Gitk}  & Correct   & 6                            & 0\\
-      & Incorrect & 15                           & 2\\
-    \end{tabular} &
+                            &           & \multicolumn{2}{c}{Linvis}\\
+                            &           & Correct                      & Incorrect\\\hline
+      \multirow{2}{*}{Gitk} & Correct   & 6                            & 0\\
+                            & Incorrect & 15                           & 2\\
+    \end{tabular}\\
+
+  \item
+
+    T9; The $\chi^2$ statistic is $12.07$ with a p-value of $0.0005$.
+    $12.07 > 3.841$ and $0.0005 < 0.05$, therefore we reject the null
+    hypothesis.
+
     \begin{tabular}{cc|rr}
       &           & \multicolumn{2}{c}{Linvis}\\
       &           & Correct                      & Incorrect\\\hline
       \multirow{2}{*}{Gitk}  & Correct   & 6                            & 0\\
       & Incorrect & 14                           & 3\\
-    \end{tabular}\\\hline
+    \end{tabular}
 
-    & T10 & \\
-    & \begin{tabular}{cc|rr}
+  \item
+
+    T10; The $\chi^2$ statistic is $4$ with a p-value of $0.0455$.
+    $4 > 3.841$ and $0.0455 < 0.05$, therefore we reject the null
+    hypothesis. The p-value is very close to the $\alpha$ value in this
+    case, so the conclusion is not as well defined.
+
+    \begin{tabular}{cc|rr}
       &           & \multicolumn{2}{c}{Linvis}\\
       &           & Correct                      & Incorrect\\\hline
       \multirow{2}{*}{Gitk}   & Correct   & 14                           & 1\\
       & Incorrect & 8                            & 0\\
-    \end{tabular} & \\
+    \end{tabular}
 
-  \end{tabular}
-\end{table*}
-
-The correctness test statistics and conclusion for each summarization
-task;
-
-The correctness test statistics, conclusions, and a description of the
-accuracy and timing results for each summarization task follow:
-
-\begin{itemize}
-
-  \item
-
-    T4; the resulting $\chi^2$ value is $15$. $15 > 7.879$, therefore we
-    reject the null hypothesis that \tool does not make a difference in
-    the correctness when determining the series of merges that a commit
-    takes, with $99.5\%$ confidence.
-
-    There is almost no variation in accuracy between participants using
-    \tool, while there is more variance in Gitk. There were two outliers
-    among the instances using \tool, which lie within the second and
-    third quartiles for the accuracy measure of Gitk. The furthest
-    outlier for \tool lies at a distance that is slightly greater than
-    the median for Gitk.
-
-    We see similar results in the timing metric; all significant data
-    occurs within less time than the second, third, and fourth quartile
-    of the Gitk results. Nearly all outlier instances in \tool are
-    within the third quartile group of the instances of Gitk with the
-    exception of the most extreme, which lies in the fourth quartile
-    group.
-
-    The results indicate that \tool is able to assist users with
-    determining how a commit is merged more accurately, and more
-    quickly.
-
-  \item
-
-    T5; the resulting $\chi^2$ value is $14$. $14 > 7.879$, therefore we
-    reject the null hypothesis that \tool does not make a difference in
-    the correctness when determining the other related commits, with
-    $99.5\%$ confidence.
-
-    There is very little variance in the accuracy of results for \tool
-    compared to the accuracy of the results in Gitk. The median distance
-    is smaller, indicating that the participants performed more
-    accurately using \tool.
-
-    There is less variance in the time taken to come to an answer with
-    \tool than with Gitk. Furthermore, we see that a majority of the
-    participants were able to complete the task in \tool in much less
-    time than 50\% of the participants using Gitk.
-
-    The results indicate that \tool is able to assist users in
-    understanding which commits are related to a given commit.
-
-  \item
-
-    T6; the resulting $\chi^2$ value is $16$. $16 > 7.879$, therefore we
-    reject the null hypothesis that \tool does not make a difference in
-    the correctness when determining the number of authors involved with
-    the merge tree, with $99.5\%$ confidence.
-
-    We see the same results from this task as with the previous tasks,
-    suggesting that \tool assists users determine the number of authors
-    more quickly and more accurately.
-
-  \item
-
-    T7; the resulting $\chi^2$ value is $13$. $13 > 7.879$, therefore we
-    reject the null hypothesis that \tool does not make a difference in
-    the correctness when determining who contributed the most changes,
-    with $99.5\%$ confidence.
-
-    This question does not include an accuracy metric, as there are only
-    two possible outcomes. We see the same result in the timing metric
-    as we did from the previous questions.
-
-    The results suggest that \tool is able to help users correctly
-    identify the person who contributed the most lines of code to a
-    merge tree in less time.
-
-  \item
-
-    T8; the resulting $\chi^2$ value is $15$. $15 > 7.879$, therefore we
-    reject the null hypothesis that \tool does not make a difference in
-    the correctness when determining how many files were contributed,
-    with $99.5\%$ confidence.
-
-    The results of this task are the same as in the previous tasks.
-    This suggest that \tool is able to assist users determine how many
-    files were modified, more quickly and more accurately.
-
-  \item
-
-    T9; the resulting $\chi^2$ value is $14$. $14 > 7.879$, therefore we
-    reject the null hypothesis that \tool does not make a difference in
-    the correctness when determining which file had the most changes,
-    with $99.5\%$ confidence.
-
-    While this question appears to have a similar answer to the correct
-    answer for T7, the answer \comA had two files with the same number
-    of midifications, thus the participant must correctly identify both
-    of these files to be correct. For this reason, we include an
-    accuracy metric.
-
-    The results of this task are the same as the previous tasks.
-    This suggests that \tool is able to assist users to determine which
-    file had the most changes.
-
-  \item
-
-    T10; the resulting $\chi^2$ value is $5.44$. $5.44 < 7.879$,
-    therefore we do not reject the null hypothesis, suggesting that
-    \tool does not make a difference in determining which modules are
-    involved with a merge tree.
-
-    The accuracy and timing results for this task are the same as the
-    others, showing that there is less variability in both accuracy and
-    the time taken to have an answer between participants using \tool
-    than using Gitk. Looking Table~\ref{tab:correctness_table}, we can
-    see that, unlike the other questions, a majority of the participants
-    were correct using both tools.
 
 \end{itemize}
+
 
 \subsubsection{User Opinions}
 \label{sub:user_opinions}
