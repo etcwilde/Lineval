@@ -1,57 +1,60 @@
 % vim:set et sw=2 ts=4 tw=72:
 % Jun 24, 2017
 
-\dmg{don't editorialize: simply say: the results show that Linvis is superior to ... in ....
-as we discussed today, it is about the tools more than the model
-}
 
-Overall, the results show fairly conclusive results; the DAG is unable
-to adequately provide users with an explanation of the changes being
-made in the repository, the DAG is not easily understood, and the DAG is
-unable to provide summarizations of the changes being made at a merge.
-Meanwhile, the \mt model is able to provide a better explanation of how
-a commit is integrated, along with better summarization capabilities. In
-this section, we discuss some observations made during the study,
-threats to the validity of the study, comments made by the participants
-during the study, modifications to the original algorithm to help
-generalize it for more repositories, and future work.
+The results show conclusive results; the DAG is unable to adequately
+provide users with an explanation of the changes being made in the
+repository, the DAG is not easily understood, and the DAG is unable to
+provide summarizations of the changes being made at a merge. Meanwhile,
+the \mt model is able to provide a better explanation of how a commit is
+integrated, along with better summarization capabilities. In this
+section, we discuss some observations made during the study, threats to
+the validity of the study, comments made by the participants during the
+study, modifications to the original algorithm to help generalize it for
+more repositories, and future work.
 
 \subsection{Observations}
 \label{sub:observations}
 
 % TODO: include info on merge tree sizes
 
-\dmg{I think you mean challenge using gitk, right? so be explicit}
+% \dmg{I think you mean challenge using gitk, right? so be explicit}
 
-During the course of the study, we noticed a consistent theme among the
-participants. The most difficult challenge was identifying the master
-branch of the repository. Given that single-commit merge trees are the
-most common tree, and that they are relatively simple, we were
-interested in seeing if the participants would be able to identify the
-tree easily, but the results suggest that this was not the case.
-\dmg{the following is hard to understand. even i don't quite get what you mean}
-The
-issue primarily stemmed from not being able to identify the master
-branch. Most of the participants realized that they should not be going
-backward, toward the initial commit, very early on. Furthermore, many
-would identify the correct commit; however, they would start listing
-every merge along the master branch as being a merge in the tree, and
-including the commits from that merge. In the case of the single commit,
-simply identifying the master branch would most likely be sufficient in
-providing a clearer understanding of how a commit or flat tree is
-integrated into the master branch of the repository.
+During the course of the study, we noticed an issue that was consistent
+among the participants when using Gitk; the most difficult challenge was
+identifying the master branch of the repository. Many participants would
+identify the tag as being the ``master branch'', but a tag is not a
+branch. The visualization of the DAG does not provide any notion of
+which branch being shown is the master branch. The default assumption is
+that the first branch on the left is the master branch, but this is not
+a good assumption. Furthermore, the visualization in Gitk is not
+consistent, the ordering of the branches changes between runs, so
+identifying the branch once will not guarantee that it will be
+identifiable after restarting Gitk.
+
+If users were able to easily identify the master branch using the
+visualizations of the DAG, the results of the study would likely be very
+different. This would certainly be the case for the single-commit tree;
+it is trivial to summarize information about a single item, but
+identifying that there was only a single commit in the tree was
+non-trivial. This information is important because many trees contain a
+single commit, and the structure of these trees is identical to the
+structure of flat trees. Flat trees are the most common branching
+structure in the repository, with the root being the parent to all of
+the other nodes in the tree. To improve summarization and comprehension,
+it would likely by sufficient to indicate the master branch in the DAG.
 
 While, in general, the participants of the study preferred using \tool
 to Gitk, there were some noticeable usability issues. The most prominent
 issue being the navigation within the tree. The participants expected
 that the tabs would update when they clicked on a node in the tree,
 instead of having to click the link to the commit after clicking the
-node. This was true in both the Reingold-Tilford tree and the Pack tree.
-The second major usability issue was the inconsistency between the list
-tree and the other tree visualizations. The list tree is rooted at the
-repository event that the user is current looking at, while the other
-tree visualizations show the entire tree, and use bright orange to
-highlight the current node.
+node. This was true in both the \rt tree and the Pack tree. The second
+major usability issue was the inconsistency between the list tree and
+the other tree visualizations. The list tree is rooted at the repository
+event that the user is current looking at, while the other tree
+visualizations show the entire tree, and use bright orange to highlight
+the current node.
 
 
 \subsection{Comments From a Release Manager}
@@ -89,27 +92,56 @@ but statistical analysis used to measure significance}
   but other tools or version control systems might provide better summarizations --i don't know of any.
 }
 
+\textbf{Internal Threats:}
 
-While git includes gitk and the git log provides a view of the DAG with
+The repository contains many commits, of which we only chose two. The
+commits chosen were randomly chosen to be representative of those in the
+repository. Additional commits could be added, but this would include
+additional time costs.
+
+The answers provided by the participants to earlier tasks were not
+taken into account for determining the accuracy. If the participant was
+unable to determine the correct commits for the tree within the
+conceptual task group, the summarization results would be recorded as
+wrong, even if the summarization they provided was correct for the set
+of commits selected to be part of the tree. A further study could be
+done where the correct answer was provided to the participant after each
+task so that errors would not propagate between tasks.
+
+To mitigate the effects of order-bias, the order that the tasks were
+performed was shuffled between participants. Furthermore, the order that
+the tool the tasks were performed on changed between participants, and
+the order of the commits that the tasks were performed on was changed
+between participants.
+
+We were only able to work with 12 participants. We apply various
+statistical tests to ensure that our findings are reasonable.
+
+\textbf{External Threats:}
+
+While git includes gitk and git log provides a view of the DAG with
 \verb|git log --graph|, many of the participants in our study were
-unfamiliar with the DAG visualizations shown by these tools. A possible
-reason for this may be that unless a repository reaches a sufficient
-complexity, both in branching and number of commits, these tools are
-necessary for the normal operation of git. Furthermore, fear of the
-complexity caused by branching may cause personal and academic
-repositories to have relatively simple structures. While they were
-unfamiliar with the DAG structure, these users were also unfamiliar with
-the \mt model, and were still able to better understand and summarize
-the repository using \tool.
+unfamiliar with the DAG visualizations shown by these tools. Other tools
+may provide better summarizations and visualizations, but we are unaware
+of them. We investigated the gui tools for Linux on the git
+website\footnote{\url{https://git-scm.com/download/gui/linux}}, but none
+of the tools, with the exception of Gitk and git log, were able to
+produce a visualization of the DAG for the Linux repository.
+Investigating the tools more deeply, it appears that GitKraken is the
+most popularly cited git client. The visualization provided by GitKraken
+was centered around the same DAG metaphor used by git log. GitKraken was
+unable to produce a visualization for the Linux repository on our
+system.
 
-\dmg{this paragraph i don't get:}
-Each question was evaluated independently of the results from the
-previous question in the summarization tasks. Had we modified the
-correct answer to fit the conceptual understanding of which commits were
-included in the tree, we may have witnessed different results. A
-modification to the study may include providing the participants with
-the correct set of commits prior to the summarization tasks, after the
-merge task set.
+% A possible
+% reason for this may be that unless a repository reaches a sufficient
+% complexity, both in branching and number of commits, these tools are
+% unnecessary for the normal operation of git. Furthermore, fear of the
+% complexity caused by branching may cause personal and academic
+% repositories to have relatively simple structures. While they were
+% unfamiliar with the DAG structure, these users were also unfamiliar with
+% the \mt model, and were still able to better understand and summarize
+% the repository using \tool.
 
 \subsection{Generalization}
 \label{sub:generalization}
