@@ -45,57 +45,55 @@
 
 \input{model.tex}
 
-\section{Visualizing the merge-tree of Linux}
+\section{Visualizing the \mt of Linux}
 
 The goal of \tool is to simplify the navigation of the kernel commit
 information, specifically focusing on merges. This is done by leveraging
-the merge-tree to inspect how commits are merged on the path to the
-master repository.
+the \mt to inspect how commits are merged on the path to the
+master branch of the repository.
 
 \subsection{Use cases}
 
 We designed \tool with two use-cases in mind, though a user may switch
 between the cases as they work.
 
-\noindent \textbf{Use-case 1: top-to-bottom
-  approach}\label{sec:usecase1}\\ These are users that are maintaining a
-section of the kernel and would like to pick a merge (including all the
-commits that it merges) and merge it directly into their current
-repository. This is useful for reducing the amount of re-implementation
-work. For these users, it is important to have the ability to aggregate
-metadata about files and modules being effected by the merge. Also, it
-is important for these users to be able to navigate from the root of the
-merge-tree toward the leaves.
+\noindent \textbf{Use-case 1: top-to-bottom approach}
+\label{sec:usecase1}\\ These are users that are maintaining a section of
+the kernel and would like to pick a merge (including all commits that it
+merges) and merge it directly into their current repository. This is
+useful for reducing the amount of re-implementation work necessary for
+integration. For these users, it is important to have the ability to
+aggregate metadata about files and modules being effected by the merge.
+Also, it is important for these users to be able to navigate from the
+root of the \mt toward the leaves.
 
-\noindent \textbf{Use-case 2: bottom-to-top
-  approach}\label{sec:usecase2}\\ These are users that start with a
-known merge or commit and would like to see what other changes are being
-made in commits that are in the same merge, including knowing the
-merge-tree they belong to. This is useful to see what other commits are
-related to the current commit and how they get collated into merges that
-eventually end in the master branch. This is primarily for maintainers
-that need to perform some specific cherry picking of commits. We must
-provide these users a mechanism for navigating from a single commit
-toward the master branch, allowing them to see other commits that might
-be related to their original commit.
+\noindent \textbf{Use-case 2: bottom-to-top approach}
+\label{sec:usecase2}\\ These are users that start with a known merge or
+commit and would like to see what other changes are being made in
+commits that are in the same merge, including knowing the \mt
+they belong to. This is useful to see what other commits are related to
+the current commit and how they get joined into merges that eventually
+end in the master branch. This is primarily for maintainers that need to
+perform some specific cherry picking of commits. We must provide these
+users a mechanism for navigating from a single commit toward the master
+branch, allowing them to see other commits that might be related to
+their original commit.
 
 \subsection{Data Model}
 
-In our visualizations, we leverage the merge-tree model described in
-Section~\ref{sec:mergetree}. In this model each commit is either already
-in the master branch, or is part of a tree which is rooted in the merge
-that merged it into the master branch.  Each commit, whether a merge or
-non-merge, has only one successor; the root of each tree has none as it
-was made by Linus Torvalds directly into the master branch. Non-merge
-commits contain the metadata for the changes made.  This metadata
+In our visualizations, we leverage the \mt model described in
+Section~\ref{sec:mergetree}. In this model, commits are either on the
+master branch, or part of a tree which is rooted at a merge into the
+master branch. Each commit, whether a merge or non-merge, has only one
+parent, with the exception of the root which has no parents. Non-merge
+commits contain the metadata for the changes made. This metadata
 includes the files changed, the lines added and removed from each file,
 the author, the date the commit was merged into the merge that led to
 being merged into the kernel, the date the commit was authored, the
-patch, and the commit log. Merges contain similar metadata,
-the author of the merge, the committer of the merge, if it has been rebased, the log, the commit date, and the author date,
-and potentially, changes necessary to address conflicts during the
-merge. The details of the model are outlined in \cite{German2015}.
-
+patch, and the commit log. Merges contain similar metadata, the author
+of the merge, the committer of the merge, if it has been rebased, the
+log, the commit date, and the author date, and potentially, changes
+necessary to address conflicts during the merge.
 
 \section{Design and Implementation}
 
