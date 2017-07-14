@@ -1,18 +1,12 @@
 % vim:set et sw=2 ts=4 tw=72:
 
 We constructed a web-based tool called \tool in order to navigate and
-inspect the \mt model of the kernel. Creating the web-based tool enables
-users to use the system without having to install additional software or
-store a large database, which makes it more accessible, easily
-maintainable, and platform independent.
-
-To navigate and inspect the merge-tree view of the kernel we created a
-web-based tool called \tool. Creating a web-based tool enables users to
-use the system without having to install additional software or store a
-large database, making it more accessible, more easily maintainable, and
-platform independent. \tool uses the following mechanisms to reach our
-goals of better navigation and better explanation of the selected
-changes.
+inspect the \mt visualizations of the kernel. Creating the web-based
+tool enables users to use the system without having to install
+additional software or store a large database, which makes it more
+accessible, easily maintainable, and platform independent. \tool uses
+the following mechanisms to reach our goals of better navigation and
+better explanation of the selected changes.
 
 \begin{itemize}
         \item Filter by searching
@@ -38,34 +32,39 @@ the commit was authored, and the date the commit was committed.
   \label{fig:search_results}
 \end{figure}
 
-Before presentation, the results are grouped by merge tree. Each
-merge tree group has a link to the root-node of the tree at the top,
-followed by a table of commits and merges within the tree that match the
-query, shown in Figure~\ref{fig:search_results}. The table includes the
-relevancy rank of the entry, the commit log message preview, author, the
-date the repository event was committed, and the date it was authored.
-The merge tree groups are ordered based on the mean of the relevancy
-scores of the relevant results in that tree.
+Before presentation, the results are grouped by \mt root. Each group
+has a link to the root-node of the tree at the top, followed by a table
+of commits and merges within the tree that match the query, shown in
+Figure~\ref{fig:search_results}. The table includes the relevancy rank
+of the entry, the commit log message preview, author, the date the
+repository event was committed, and the date it was authored. The merge
+tree groups are ordered based on the mean of the relevancy scores of the
+relevant results in that tree.
 
 \subsection{Summarization}
 \label{sub:summarization}
 
 \tool uses seven tabs to show the information and visualizations for a
-selected commit or merge. The message tab shows the full commit log
-message. This does not include the diff, but given the commit hash, this
-information can be found directly from the repository. The files tab
-shows an aggregated table of all files that were modified in a merge. It
-includes metrics like the number of lines added, lines removed, total
-lines modified, and the delta, summed across all commits in the merge
-tree that modify this file. A details drop-down button allows a user to
-see exactly which commit makes the changes, as shown in
+selected repository event. The summarization tabs are; messages, files, modules,
+authors; the visualization tabs are; list tree, pack tree, and \rt tree.
+
+The message tab shows the full commit log message. This does not include
+the diff, but given the commit hash, this information can be found
+directly from the repository.
+
+The files tab shows an aggregated table of all files that were modified
+in a merge. It includes metrics like the number of lines added, lines
+removed, total lines modified, and the delta, summed across all commits
+in the merge tree that modify this file. A details drop-down button
+allows a user to see exactly which commit makes the changes, as shown in
 Figure~\ref{fig:linvis_files}. If the current repository event being
 viewed is a commit, the aggregate views will only show modifications
-made by the commit. The modules tab shows the modules modified in the
-merge tree. Like the files tab, the modules tab uses a table to show the
-name of the module, the number of commits that are in the merge tree
-that work with the module, and a details button to provide the links to
-those commits.
+made by the commit.
+
+The modules tab shows the modules modified in the merge tree. Like the
+files tab, the modules tab uses a table to show the name of the module,
+the number of commits that are in the merge tree that work with the
+module, and a details button to provide the links to those commits.
 
 \begin{figure}[htpb]
   \centering
@@ -77,9 +76,9 @@ those commits.
 
 The authorship tab is very similar to the files tab, but shows the
 authorship information. It shows the sum of the number of lines added,
-removed, modified, and the delta within the \mt. It also shows
-the number of files that were modified by the author. The details tab is
-organized slightly differently. Instead of organizing these results by
+removed, modified, and the delta within the \mt. It also shows the
+number of files that were modified by the author. The details tab is
+organized slightly differently. Instead of organizing the results by
 commit, the details are organized by file, showing which files were
 modified by the author in this \mt (Figure~\ref{fig:linvis_authors}).
 
@@ -105,7 +104,7 @@ three visualizations, the list tree, pack tree, and \rt tree.
 The list tree, depicted in Figure~\ref{fig:linvis_list_tree}, is
 constructed as a series of nested lists. The nesting indicates the
 parent-child relationship. This visualization is text-based enabling
-fast navigation to commits using the built-in search fin most
+fast navigation to commits using the built-in search in most
 web-browsers. The list tree is rooted at the current repository event;
 if the current event being inspected is a commit, only that commit will
 be shown. Conversely, if the selected event is the root, the entire
@@ -136,7 +135,7 @@ of that node, and darker blue indicates more children.
 \subsubsection{Pack Tree}
 
 Pack trees\cite{Wang2006} are useful for displaying an overview of large
-data sets. The initial goals for the pack tree were for visualizing file
+data sets. The initial goal for the pack tree was for visualizing file
 systems, which are similar to git repositories in that they are
 relatively shallow, but very wide trees. The tree is represented by sets
 of nested circles. The largest circle, containing all of the other
@@ -159,4 +158,5 @@ We depict the pack tree in Figure~\ref{fig:linvis_pack}. Like with the
 \rt tree, \tool uses white to indicate the individual commits, and
 orange to indicate the currently selected node. The inner merges are
 colored with shades of blue to indicate the depth in the tree. Darker
-shades of blue indicate that the merge is deeper in the tree.
+shades of blue indicate that the merge is deeper in the tree; the root
+will be the lightest shade.
