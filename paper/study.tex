@@ -239,14 +239,15 @@ is meant to address this. % TODO add T12 results
 \subsection{Commit Selection}
 \label{sub:commit_selection}
 
-We include two commits in the study to detect differences between \mt
-sizes. The order that the commits are presented to each participant is
-randomized. We analyzed the 15096 \mt{s} from April 16th 2005 to
-October 14th 2014, which corresponds to the releases Linux 2.6.12-rc3
-and Linux 3.17-rc1. 25\% of the trees contain at most a single commit
-not including the root, while 50\% of the trees contain at most seven
-non-root nodes. 75\% of the trees contain at least 51 nodes, and the
-largest tree contains 7217 nodes.
+We include two commits in the study to detect differences in the
+correctness, accuracy, and timing between \mt sizes. The order that the
+commits are presented to each participant is randomized. We analyzed the
+15096 \mt{s} from April 16th 2005 to October 14th 2014, which
+corresponds to the releases Linux 2.6.12-rc3 and Linux 3.17-rc1. 25\% of
+the trees contain at most a single commit not including the root, while
+50\% of the trees contain at most seven non-root nodes. 75\% of the
+trees contain at least 51 nodes, and the largest tree contains 7217
+nodes.
 
 From this information, we selected one tree with a single commit, and
 one tree with seven non-root nodes to represent a small tree and a
@@ -418,7 +419,7 @@ understanding.
 \subsubsection{Summarization Tasks}
 \label{sub:summarization_tasks}
 
-Table~\ref{tab:cross_commit_results} shows whether the \mtsize
+Table~\ref{tab:cross_commit_results} shows whether the \mt size
 has an effect on the three studied metrics. An interesting observation
 from the figure is that the correctness for T5 and T9 are effected by
 the size of the \mt, but the accuracy is not. The correctness
