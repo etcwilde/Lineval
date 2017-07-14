@@ -1,18 +1,21 @@
 % vim:set et sw=2 ts=4 tw=72:
-The \mt model inverts the DAG, so that reference point from the parent
-to the child instead of from child to parent. This provides a clear path
-from a commit to the closest merge into the master branch. We define the
-distance as a measure of time from when the commit was initially
-commited to the date it was merged into the project. The merge into the
-master branch becomes the root of the tree, and the commits are the
-leaves. Any merges that that a commit must pass through to reach the
-master branch become an inner node of the tree. The structure is able to
-help a user identify the path that the commit took to reach the master
-branch, as well as understand how commits were grouped together in order
-to be integrated. In this model, not only has the DAG been inverted, but
-the entire notion of parent-child relationship has been reversed. The
-terminology surrounding the parent-child relationship will prove to be
-confusing through the rest of the paper, when we are referring to the
+
+\section{Merge-Tree model}
+
+\label{sec:mergetree}
+
+
+The \mt model abstracts the DAG of the repository into a set of \mt{}s. Each \mt is rooted at a merge into the master
+branch. The children of this tree are the commits and merges that are merged together into master by this merge. A \mt is build
+recursively with every merge in the \mt merging a sub-\mt. Any merges that a commit must pass through to reach the
+master branch become an inner node of the tree. 
+Effectively, a \mt is a tree that
+shows the path that commits follow in their way to the master branch of a repository.
+The \mt{}s also help understand how commits were grouped together in order
+to be integrated. In this model, not only has the DAG been inverted (and simplified), but
+the entire notion of parent-child relationship has been reversed.
+
+Please note that when we are referring to the
 \mt, the parent is the next node toward the merge into the master
 branch, or the root of the tree. When referring to the DAG, the parent
 relationship is in the opposite direction, from the root toward the
@@ -20,7 +23,8 @@ branch-point. In addition to identifying the path that a commit took to
 being merged, we are able to aggregate the commit metadata at merges as
 we retain the parent-child and child-parent relationship for each event.
 
-A short example: assume the commits represented in
+To illustrate this model we will use a small example:
+assume the commits represented in
 Figure~\ref{fig:repoEvents} show the sequence of events in a repository.
 The sequence starts with the initiall commit in the master branch of the
 master repository at time $t_0$. Repository event 1 is a commit, which
@@ -191,6 +195,9 @@ identifies the commits made directly to the master branch; whereafter it
 recursively determines the shortest path (in terms of time), using the
 DAG, from each commit to the master branch using the inverted DAG.
 
+\dmg{I think you abbreviated this section too much. It will be helpful to describe the algorithm
+at a very high level,as in the vissoft paper.}
+
 \begin{algorithm}
         \caption{Computing the merge-tree of Linux Git's DAG}\label{fig:alg}
         \begin{algorithmic}
@@ -332,3 +339,8 @@ In summary, of the merges after Sept. 4, 2007, our heuristic was correct
 in 100\% of the 16,680 commits. It failed in 1,542 commits before Dec.
 12, 2006 and in 836 it appears to be correct (Dec 7, 2006 to Sept 4,
 2007).
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "lineval.tex"
+%%% End:

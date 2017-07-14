@@ -1,23 +1,30 @@
+\section{Controlled User Study}
+\label{sec:study}
+
 The purpose of the study is to quantitatively and qualitatively evaluate
 the effectiveness of \tool compared to the DAG-based visualizations
 found in Gitk or the git command line. The study is broken into three
 task-based sections; conceptual tasks, summarization tasks, and
-participant opinions. The study was performed in June of 2017 in
-Kingston ON, in a controlled environment running Ubuntu 14.04.
+participant opinions. The study was performed during June of 2017
+%in Kingston ON,
+in a controlled environment running Ubuntu 14.04.
 Participants were allowed to use both Gitk and the git command line
 tools together, which we will refer to as the git tools or as Gitk. Then
 they were asked to perform the same tasks using \tool.
 
-\evan{Do I need to say where the study took place? I see it showing up
-  in other papers, but it makes it kind of obvious about the lab I'm
-  talking about, doesn't it?}
+\dmg{I thought you had randomized the order of tool use? also clarify that they were done with different commits to
+  avoid bias}
+
+% \evan{Do I need to say where the study took place? I see it showing up
+%   in other papers, but it makes it kind of obvious about the lab I'm
+%   talking about, doesn't it?}
 
 The primary goal of the study is to determine if \tool is more capable
 of providing the participants of our study with a better conceptual
 understanding of how a commit is integrated into the kernel, and a
 better summarization of various metrics about the files and authors
 involved with the integration. The conceptual questions are to determine
-if the DAG visualization provides enough information to determine how a
+if the DAG-based visualizations (gitk and git command line) provide enough information to determine how a
 commit, and any related commits, are merged into a project. \tool
 displays this information directly in the form of a tree, so we will not
 be performing a comparison on this section, only evaluating the results
@@ -35,22 +42,9 @@ providing us information about which aspects of each tool they prefered.
 
 % \dmg{use tasks, not questions. you are asking them to do something that requires an answer, that is different than a question}
 
-\textbf{The conceptual tasks} are designed to gain better insight on the
-comprehension of the DAG, and determine if the DAG is sufficient for
-understanding what other commits are related to a given commit, and how
-those commits are merged. The tasks are outlined in
-Table~\ref{tab:conceptual_tasks}. The tasks are performed in order
-using the git tools. T1 has the participant draw a diagram of the merge
-tree, which will be used to answer the other two questions. This enables
-us to visually see issues with comprehending the DAG visualizations.
-Participants are given 10 minutes to perform this task, which also is
-used to familiarize the participant with the git tools interface, if
-they are not already, and with the set of commits they will be working
-with. T2 and T3 are drawn directly from the diagram from T1, giving
-quantitative metrics to measure the comprehension. T2 asks the
-participant to verify the number of commits, and T3 asks for the number
-of merges. The three tasks are performed on both commits before
-continuing to the summarization tasks.
+\dmg{I don't like how you talk about the DAG comprehension. Few paragraphs above I replaced it
+  with the DAG-based tools, which might be a better description, since you are evaluating tool
+vs tool}
 
 \begin{table*}[htpb]
   \centering
@@ -66,28 +60,6 @@ continuing to the summarization tasks.
     \bottomrule
   \end{tabulary}
 \end{table*}
-
-\textbf{The summarization tasks}, listed in Table~\ref{tab:summarization_tasks},
-are designed to compare the ability of the participants to summarize
-information about the two commits used in the study when using git tools
-verses \tool. The tasks are broken into four sets based on what is being
-summarized: merges, authorship, files, and modules. The order that the
-participants perform each task is randomized within each task set, and
-the order of the task sets are then randomized with the exception of the
-merges task set which will always come first. We measure and evaluate
-three metrics for each task: correctness, accuracy, and timing.
-Correctness measures whether the answer was correct or incorrect.
-Accuracy measures how far from being correct the provided answer was.
-Timing is the duration, in seconds, that the participant took to answer
-the task. We begin timing the task at the end of the question, and stop
-timing before the last modification to the answer. For this reason, it
-is possible for times to overlap between tasks if the participant
-changes their answer after answering another question. This will also
-modify the answer used for measuring the accuracy. We measure the timing
-from the screen capture.
-
-\evan{Is this better, or do you still want me to move the information
-  about the randomization to the bottom?}
 
 \begin{table}[htpb]
   \centering
@@ -107,6 +79,50 @@ from the screen capture.
     \bottomrule
   \end{tabulary}
 \end{table}
+
+
+\textbf{The conceptual tasks} are designed to gain better insight on the
+comprehension of the DAG, and determine if the DAG is sufficient for
+understanding what other commits are related to a given commit, and how
+those commits are merged. The tasks are outlined in
+Table~\ref{tab:conceptual_tasks}. The tasks are performed in order
+using the git tools. T1 has the participant draw a diagram of the merge
+tree, which will be used to answer the other two questions. This enables
+us to visually see issues with comprehending the DAG visualizations.
+Participants are given 10 minutes to perform this task, which also is
+used to familiarize the participant with the git tools interface, if
+they are not already, and with the set of commits they will be working
+with. T2 and T3 are drawn directly from the diagram from T1, giving
+quantitative metrics to measure the comprehension. T2 asks the
+participant to verify the number of commits, and T3 asks for the number
+of merges. The three tasks are performed on both commits before
+continuing to the summarization tasks.
+
+
+\textbf{The summarization tasks}, listed in Table~\ref{tab:summarization_tasks},
+are designed to compare the ability of the participants to summarize
+information about the two commits used in the study when using git tools\dmg{be consistent, either you say dag-based
+  tools, or git tools, either one is fine, but be consistent}
+versus \tool. The tasks are broken into four sets based on what is being
+summarized: merges, authorship, files, and modules. The order that the
+participants perform each task is randomized within each task set, and
+the order of the task sets are then randomized with the exception of the
+merges task set which will always come first. We measure and evaluate
+three metrics for each task: correctness, accuracy, and timing.
+Correctness measures whether the answer was correct or incorrect.
+Accuracy measures how far from being correct the provided answer was.
+Timing is the duration, in seconds, that the participant took to answer
+the task. We begin timing the task at the end of the question, and stop
+timing before the last modification to the answer. For this reason, it
+is possible for times to overlap between tasks if the participant
+changes their answer after answering another question. This will also
+modify the answer used for measuring the accuracy. We measure the timing
+from the screen capture.
+
+\evan{Is this better, or do you still want me to move the information
+  about the randomization to the bottom?}
+\dmg{I didn't see anything about choosing what commits to inspect here... but this section looks good}
+
 
 
 While the merge task set is part of the summarization task group, it
@@ -298,13 +314,15 @@ experience with repositories being modified by multiple people, with the
 most being 219. The median number of collaborators was four.
 
 Five participants had only worked with personal and academic
-repositories. Two participants had only worked with school and
+repositories. Two participants had worked with school and
 professional repositories, and two had only worked with professional
 repositories. One participant worked with personal, academic, and
 professional repositories, one participant had only worked with personal
 repositories, and one participant had worked with personal, academic,
 and school repositories.
-
+\dmg{you made it confusing: just say: how many had experience with
+  professional repositories and remove the above
+}
 \evan{Do you want more information about the participants?}
 
 All participants have had at least some experience with the idea of
@@ -313,6 +331,15 @@ are all from the same lab, and each participant worked with both tools
 in the study, thus, keeping the sample populations identical for both
 tools, with some variation between participants in experience with
 repositories.
+
+\dmg{BIG QUESTION}
+for each task, did they do always git tools then linvis for the same commit?  if so, there is potential for learning
+bias: they learn the structure of the commits with git tools, so therefore it was easier for them to do
+them with linvis.
+\dmg{END QUESTION}
+
+\dmg{I'll stop here today}
+
 
 \subsection{Study Procedure}
 \label{sub:study_procedure}
@@ -818,3 +845,8 @@ extract a conceptual understanding from the DAG and perform the
 summarization tasks. One of these three participants said that they
 would prefer to have both tools available, as they are able to
 complement each other.
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "lineval.tex"
+%%% End:

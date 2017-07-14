@@ -1,5 +1,7 @@
 % vim:set et sts=2 sw=2 ts=2 tw=72:
 
+\section{Introduction}
+
 Between 50k and 70k commits are added to the Linux kernel per version,
 requiring maintainers of older versions of the kernel to sift through
 thousands of commits and merges with tools that are unable to filter and
@@ -46,7 +48,7 @@ a branch forks from the master branch. In large modular projects, like
 the Linux kernel, the DAG becomes a mess of merges and commits
 (Figure~\ref{fig:gitk}) losing its visual meaning. In some cases, the
 Linux kernel is simply too large for the system to generate a
-visualization; Github provides a DAG view for many projects, but is
+visualization; Github provides a DAG view for a repository, but is
 unable to display the visualization for projects at the scale of the
 Linux of the kernel (Figure~\ref{fig:gitfail}). Between 60k and 70k new
 commits are created for the Linux project every year; according to
@@ -68,6 +70,7 @@ commits were merged. A user could inspect the commits that arrived into
 the master branch within a given time-frame by checking which commits
 were merged during that time-frame.
 
+\dmg{add to the abstract an abbreviation of this sentence: see my comment in the abstract }
 This paper makes three contributions; first, we describe a method of
 converting the DAG of the Linux repository into the \mt of the
 repository, that represents the path used by a commit to reach the

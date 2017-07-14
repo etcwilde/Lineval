@@ -2,7 +2,10 @@
 % Jul 04, 2017
 % Evan Wilde
 
-version control systems monitor the development lifetime of software
+\section{Related Works}
+\label{sec:related_works}
+
+Version control systems monitor the development lifetime of software
 projects. This makes the version control system vital in providing
 information about how a software project is being developed. To do this,
 the user must be able to gain a clear understanding of how commits are
@@ -65,9 +68,10 @@ them.
 
 
 % TODO: Check this -- Look into source tree
-Not included in an academic project are both the git commandline with
-the \verb|git log| command, and Gitk, which is a graphical tool shipped
-with git. Many other tools are designed with a similar visual metaphore
+Git itself is shipped with summarization and visualization tools:
+the \verb|git log| command and Gitk, which is a graphical tool for the purpose of browsing
+the DAG of the repository.
+Many other tools are designed with a similar visual metaphore
 as what is presented in Gitk, including Git kraken, Github Desktop and
 web interfaces, the Git Lab web intereface, the Bitbucket web interface,
 and many others. The Gitk interface is built around the central DAG
@@ -91,3 +95,8 @@ be presented in a graphical form. Various graphical forms for displaying
 file and authorship data exist, the principal forms being matrix views,
 city scapes, bar and pie charts, and networks \cite{Eick2002}. Any of
 these data visualization metaphors are applicable to our system.
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "lineval.tex"
+%%% End:

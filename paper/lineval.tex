@@ -36,17 +36,12 @@
   \TheKeywords
 \end{IEEEkeywords}
 
-\section{Introduction}
-
 \input{introduction.tex}
 
-\section{Background}
 \label{sec:background}
 
 \input{background.tex}
 
-\section{Merge-Tree model}
-\label{sec:mergetree}
 
 \input{model.tex}
 
@@ -96,8 +91,8 @@ commits contain the metadata for the changes made.  This metadata
 includes the files changed, the lines added and removed from each file,
 the author, the date the commit was merged into the merge that led to
 being merged into the kernel, the date the commit was authored, the
-patch, and the commit log. Merges contain less metadata, only storing
-the author of the merge, the log, the commit date, and the author date,
+patch, and the commit log. Merges contain similar metadata,
+the author of the merge, the committer of the merge, if it has been rebased, the log, the commit date, and the author date,
 and potentially, changes necessary to address conflicts during the
 merge. The details of the model are outlined in \cite{German2015}.
 
@@ -106,13 +101,7 @@ merge. The details of the model are outlined in \cite{German2015}.
 
 \input{design.tex}
 
-\section{Related Works}
-\label{sec:related_works}
-
 \input{relatedwork.tex}
-
-\section{Controlled User Study}
-\label{sec:study}
 
 \input{study.tex}
 
