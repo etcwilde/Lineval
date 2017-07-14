@@ -456,10 +456,10 @@ understanding.
 
 Table~\ref{tab:cross_commit_results} shows whether the merge-tree size
 has an effect on the three studied metrics. An interesting observation
-from the figure is that the corrected for T5 and T9 are effected by the
-size of the merge-tree, but the accuracy is not. The correctness results
-for T5 and T9 are shown in Figure~\ref{fig:correctness_t5_t9}, and the
-timing results for T7 are shown in Figure~\ref{fig:timing_t7}.
+from the figure is that the correctness for T5 and T9 are effected by
+the size of the merge-tree, but the accuracy is not. The correctness
+results for T5 and T9 are shown in Figure~\ref{fig:correctness_t5_t9},
+and the timing results for T7 are shown in Figure~\ref{fig:timing_t7}.
 
 \begin{table}[htpb]
   \centering
@@ -584,12 +584,14 @@ tables~\ref{tab:summarization_table}.
 The full results are as follows;
 
 \begin{itemize}
-  \item T4
+  \item \emph{T4}: What is the series of merges involved with merging this
+    commit?
 
     \textbf{Correctness:}
     The $\chi^2$ statistic is $13.07$ with a p-value of $0.0003$.
     $13.07 > 3.841$ and $0.0003 < 0.05$, therefore we reject the null
     hypothesis.
+
     \vspace{2mm}
     \begin{tabular}{cc|rr}
                             &           & \multicolumn{2}{c}{Linvis}\\
@@ -617,13 +619,14 @@ The full results are as follows;
     Overall, \tool is able to help users determine the series of merges
     that a commit takes more quickly and more accurately than Gitk.
 
-  \item T5
+  \item \emph{T5}: What other commits are merged with this commit?
 
     \textbf{Correctness:}
     The correctness results are split for this task. For \comA, the
     $\chi^2$ statistic is $5.14$ with a $p-value$ of $0.02334$. $5.14 >
     3.841$ and $0.02334 < 0.05$, therefore we reject the null
     hypothesis.
+
     \vspace{2mm}
     \begin{tabular}{cc|rr}
                              &           & \multicolumn{2}{c}{Linvis}\\
@@ -636,6 +639,7 @@ The full results are as follows;
     The $\chi^2$ statistic for \comB is $5.14$ with a p-value of
     $0.02334$. $4.14 > 3.841$ and $0.02334 < 0.05$, therefore we reject
     the null hypothesis.
+
     \vspace{2mm}
     \begin{tabular}{cc|rr}
                              &           & \multicolumn{2}{c}{Linvis}\\
@@ -647,14 +651,15 @@ The full results are as follows;
 
     While there is a difference in correctness between different-sized
     merge-trees, \tool improves correctness of determining the other
-    commits related to a commit in trees of varying sizes.
+    commits related to a commit in trees of varying sizes. The
+    difference in the two commits stem from the participants that did
+    not change outcomes between the tools.
 
     \textbf{Accuracy:}
     The p-value is $7.2 \times 10^{-5}$, which is less than 0.05;
     therefore we reject the null hypothesis. The Delta estimate is
     -0.63, which indicates a large effect size. \tool improves
     accuracy when determining other commits related to a commit.
-
 
     \textbf{Timing:}
     The p-value is $0.0142$, which is less than 0.05; therefore we
@@ -665,12 +670,13 @@ The full results are as follows;
     Overall, \tool helps users determine other commits that are merged
     with another commit more quickly and more accurately.
 
-  \item T6
+  \item \emph{T6}: How many authors are involved in this merge?
 
     \textbf{Correctness:}
     The $\chi^2$ statistic is $14.06$ with a p-value of $0.0002$.
     $14.06 > 3.841$ and $0.0002 < 0.05$, therefore we reject the null
     hypothesis.
+
     \vspace{2mm}
     \begin{tabular}{cc|rr}
       &           & \multicolumn{2}{c}{Linvis}\\
@@ -696,12 +702,13 @@ The full results are as follows;
     Overall, \tool assists users with determining the number of authors
     involved in a merge more quickly and more accurately.
 
-  \item T7
+  \item \emph{T7}: Who contributed the most changes to this merge?
 
     \textbf{Correctness:}
     The $\chi^2$ statistic is $11.07$ with a p-value of $0.0009$.
     $11.07 > 3.841$ and $0.0009 < 0.05$, therefore we reject the null
     hypothesis.
+
     \vspace{2mm}
     \begin{tabular}{cc|rr}
       &           & \multicolumn{2}{c}{Linvis}\\
@@ -717,18 +724,19 @@ The full results are as follows;
     \textbf{Timing:} The null hypothesis is not rejected in the case of
     \comA, but is rejected in the case of \comB. This indicates that
     \tool is able to help users determine who made the most
-    contributions to a merge in a large tree than in a small tree.
+    contributions to a merge in a large tree but not in a small tree.
 
     Overall, \tool improves the correctness for trees of various sizes,
-    but only has an effect on the amount of time taken when the tree is
+    but only has an effect on the length of time taken when the tree is
     large.
 
-  \item T8
+  \item \emph{T8}: How many files were modified in this merge?
 
     \textbf{Correctness:}
     The $\chi^2$ statistic is $13.07$ with a p-value of $0.0003$.
     $13.07 > 3.841$ and $0.0003 < 0.05$, therefore we reject the null
     hypothesis.
+
     \vspace{2mm}
     \begin{tabular}{cc|rr}
       &           & \multicolumn{2}{c}{Linvis}\\
@@ -738,6 +746,9 @@ The full results are as follows;
     \end{tabular}\\
     \vspace{3mm}
 
+    \tool improves the correctness of users when determining the number
+    of files that were modified in a merge.
+
     \textbf{Accuracy:} The p-value is $5.8 \times 10^{-4}$, which is
     less than 0.05; we reject the null hypothesis. The delta estimate is
     -0.54, indicating a large effect size. \tool improves accuracy when
@@ -745,14 +756,19 @@ The full results are as follows;
 
     \textbf{Timing:} The p-value is 0.0009, which is less than 0.05; we
     reject the null hypothesis. The delta estimate is -0.57, indicating
-    a large effect size.
+    a large effect size. \tool decreases the time taken to determine the
+    number files modified in a merge.
 
-  \item T9
+    Overall, \tool assists users to determine the number of files
+    modified in a merge more quickly and accurately.
+
+  \item \emph{T9}: Which file(s) had the most changes in this merge?
 
     \textbf{Correctness:}
     The correctness results are split for this task. For \comA, the
     $\chi^2$ statistic is $4.17$ with a p-value of $0.0412$. $4.17 >
     3.841$ and $0.0412 < 0.05$, therefore we reject the null hypothesis.
+
     \vspace{2mm}
     \begin{tabular}{cc|rr}
                              &           & \multicolumn{2}{c}{Linvis}\\
@@ -765,6 +781,7 @@ The full results are as follows;
     The $\chi^2$ statistic for \comB is $6.125$ with a p-value of
     $0.0133$. $6.125 > 3.841$ and $0.0133 < 0.05$, therefore we reject
     the null hypothesis.
+
     \vspace{2mm}
     \begin{tabular}{cc|rr}
                              &           & \multicolumn{2}{c}{Linvis}\\
@@ -773,6 +790,12 @@ The full results are as follows;
                              & Incorrect & 8                            & 3\\
     \end{tabular}
     \vspace{3mm}
+
+    While there is a different in correctness between different-sized
+    \mt{s}, \tool improves the correctness when determining which files
+    had the most changes in trees of varying sizes. The difference in
+    the two commits stem from the participants that did not change
+    outcomes between tools.
 
     \textbf{Accuracy:} The p-value is $0.009$, which is less than
     $0.05$; we reject the null hypothesis. The delta estimate is -0.42,
@@ -786,13 +809,14 @@ The full results are as follows;
     Overall, \tool is able to assist users determine which file had the
     most changes more quickly and accurately.
 
-  \item T10
+  \item \emph{T10}: Which modules does this \mt involve?
 
     \textbf{Correctness:}
     The $\chi^2$ statistic is $4$ with a p-value of $0.0455$.
     $4 > 3.841$ and $0.0455 < 0.05$, therefore we reject the null
     hypothesis. The p-value is very close to the $\alpha$ value in this
     case, so the conclusion is not as well defined.
+
     \vspace{2mm}
     \begin{tabular}{cc|rr}
       &           & \multicolumn{2}{c}{Linvis}\\
@@ -802,10 +826,12 @@ The full results are as follows;
     \end{tabular}
     \vspace{3mm}
 
+    \tool improves correctness when determining the modules involved at
+    a merge.
+
     \textbf{Accuracy:} The null hypothesis is rejected; the delta
-    estimate is -0.35, indicating a medium effect size. \tool provides
-    an improvement in accuracy when determining which modules are
-    involved with a merge.
+    estimate is -0.35, indicating a medium effect size. \tool improves
+    accuracy when determining which modules are involved with a merge.
 
     \textbf{Timing:} The null hypothesis is rejected; the delta estimate
     is -0.66, indicating a large effect size. \tool decreases the time
