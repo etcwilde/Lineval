@@ -1,12 +1,15 @@
 % vim:set et sw=2 ts=4 tw=72:
 % Jun 24, 2017
 
+\section{Discussion}
+\label{sec:discussion}
 
-The results show conclusive results; the DAG visualization is unable to
+The results show conclusive results; the DAG visualization \dmg{provided by gitk...} is unable to \dmg{this is a very
+  long sentence that does not read very well}
 adequately provide users with an explanation of the changes being made
-in the repository, the DAG visualizatoin is not easily understood, and
+in the repository, the DAG visualization is not easily understood, and
 is unable to provide summarizations of the changes being made at a
-merge. Meanwhile, the \mt visualization is better able to provide an
+merge. Meanwhile, the \mt visualization \dmg{of linvis...} is better able to provide an
 explanation of how a commit is integrated, along with better
 summarization. In this section, we discuss some observations, threats to
 the validity, and comments made by the participants during the study
@@ -21,20 +24,23 @@ help generalize it for more repositories, concluded with future work.
 % \dmg{I think you mean challenge using gitk, right? so be explicit}
 
 During the course of the study, we noticed an issue that was consistent
-among the participants when using Gitk; the most difficult challenge was
+among the participants when using Gitk; \dmg{wrong use of semicolon} the most difficult challenge was
 identifying the master branch of the repository. Many participants would
 identify the tag as being the ``master branch'', but a tag is not a
-branch. The visualization of the DAG does not provide any notion of
+branch (it simply points to a given commit). The visualization of the DAG does not provide any notion of
 which branch being shown is the master branch. The default assumption is
 that the first branch on the left is the master branch, but this is not
-a good assumption. Furthermore, the visualization in Gitk is not
+always correct. Furthermore, the visualization in Gitk is not
 consistent, the ordering of the branches changes between runs, so
 identifying the branch once will not guarantee that it will be
-identifiable after restarting Gitk.
+identifiable after restarting Gitk.\dmg{i didn't know the ordering is non-deterministic, are you sure? make sure you are
+sure, sure? :)}
 
 If users were able to easily identify the master branch using the
 visualizations of the DAG, the results of the study would likely be very
-different. This would certainly be the case for the single-commit tree;
+different\dmg{be explicit eg.: that there was very little difference, if any, between the use of both tools}. This would
+certainly be the case for the single-commit tree; \dmg{another wrong use, i want you to read the description of colon vs
+semicolon and scan the paper for them to make sure they are used correctly}
 it is trivial to summarize information about a single item, but
 identifying that there was only a single commit in the tree was
 non-trivial. This information is important because many trees contain a
@@ -64,15 +70,17 @@ highlight the current node.
 One participant in the study worked as a release manager for more than
 three years, working with both SVN and CVS repositories, but had little
 experience with git. This subsection contains improvements made by this
-participant during the study and afterward.
+participant during the study and afterward.\dmg{he made improvements? to what? Isn't this section about his views of
+  what is needed?}
 
 Contributors making merges need to understand more than just what merges
 a commit was collected into before reaching the repository of the
 contributor. It is also important to understand order that the related
 commits were made, as the order tells the story of what the developer
 was thinking as they were writing the changes. The current \mt model
-does not order the commits, simply placing them randomly. This is the
-primary reason behind this participant's request to use both
+does not order the commits, simply placing them randomly. \dmg{this surprised me. we order the commits in the tree, you
+  know which is before which, so this is more an issue of you not displaying the data than we not having it} This is the
+primary reason behind this participant's request to use both \dmg{tools}
 simultaneously. \tool is able to help with the aggregation of the
 information, and provide a better understanding of the next merge
 involved in integrating this commit, but the DAG visualization in Gitk
@@ -93,7 +101,8 @@ the repository. Additional commits could be added, but this would
 include additional time costs during the study.
 
 The answers provided by the participants to earlier tasks were not
-taken into account for determining the accuracy. If the participant was
+taken into account for determining the accuracy\dmg{accuracy of what? the stattement is not clear to me. Oh, i think you
+mean, if they get an answer wrong it might impact the results of some following tasks; you can be more precise in the description}. If the participant was
 unable to determine the correct commits for the tree within the
 conceptual task group, the summarization results would be recorded as
 wrong, even if the summarization they provided was correct for the set
@@ -107,7 +116,7 @@ between participants. A single participant is affected by the effect,
 but this should be mitigated by the results from other participants.
 
 We were only able to work with 12 participants. We apply various
-statistical tests to ensure that our findings are reasonable.
+statistical tests to ensure that our findings are statistically significant.
 
 \textbf{External Threats:}
 
@@ -127,7 +136,11 @@ system. Inspecting these tools on smaller repositories show that the
 visualizations of the DAG were very similar to the visualization in
 Gitk.
 
+\dmg{add a couple of sentences on the fact that these were students, some with industrial experience. People who are
+  professinals might do better}
+
 % A possible
+
 % reason for this may be that unless a repository reaches a sufficient
 % complexity, both in branching and number of commits, these tools are
 % unnecessary for the normal operation of git. Furthermore, fear of the
@@ -136,6 +149,9 @@ Gitk.
 % unfamiliar with the DAG structure, these users were also unfamiliar with
 % the \mt model, and were still able to better understand and summarize
 % the repository using \tool.
+
+\dmg{the following should be a section on its own, because it is no longer part of the study, also
+use a better title: generalization of the creation of the merge-tree?}
 
 \subsection{Generalization}
 \label{sub:generalization}
@@ -243,6 +259,7 @@ programming solution, centered around the call stack. The next node on
 the shortest path to the master branch will become the parent of this
 node in the tree.
 
+\dmg{you don't generalize an alg into a tool; you implement the algorithm in a tool}
 If this algorithm is to be generalized into a dynamic, web-based, tool,
 it may not be feasible to download every every repository event in the
 repository in a reasonable period of time. We instead look toward a
@@ -343,5 +360,5 @@ shown in Figure~\ref{fig:b_plugin}.
 
 %%% Local Variables:
 %%% mode: latex
-%%% TeX-master: "userstudy"
+%%% TeX-master: "lineval.tex"
 %%% End:

@@ -428,8 +428,9 @@ and the timing results for T7 are shown in Figure~\ref{fig:timing_t7}.
 
 \begin{table}[htpb]
   \centering
-  \caption{Cross-Commit Results\evan{Should I group the results by task
-      or by metric? It's by metric right now}}
+  \caption{Cross-Commit Results\dmg{Be more descriptive in the captions.People read the papers via tables and
+      pictures. What does the table say? e.g. as it can be seen.... tell a story with the picture, instead of asking the
+    reader to make up the story... which might be different than the one you want them to have}}
   \label{tab:cross_commit_results}
   \begin{tabular}{ccrl}
     \toprule
@@ -479,9 +480,7 @@ and the timing results for T7 are shown in Figure~\ref{fig:timing_t7}.
     \includegraphics[width=6cm]{figures/userstudy/correctness/5.pdf} &
     \includegraphics[width=6cm]{figures/userstudy/correctness/9.pdf}
   \end{tabular}
-  \caption{Unaggregated Correctness results for T5 and T9 \evan{Split
-      this? Is it clear that between Commit 2 and Commit 1 is where the
-    separation of the plots is?}}
+  \caption{Unaggregated Correctness results for T5 and T9.}
   \label{fig:correctness_t5_t9}
 \end{figure*}
 
@@ -547,6 +546,8 @@ and the timing results for T7 are shown in Figure~\ref{fig:timing_t7}.
 Summaries for correctness, accuracy, and timing are shown in
 tables~\ref{tab:summarization_table}.
 The full results are as follows;
+
+\dmg{you wrongly use ``semicolon'', you mean ``colon''. Same below...}
 
 \begin{itemize}
   \item \emph{T4}: What is the series of merges involved with merging this
@@ -807,6 +808,8 @@ The full results are as follows;
 
 \end{itemize}
 
+\dmg{Emphasize: To summarize...}
+
 \tool is able to assist users with summarizing various aspects of a
 merge more quickly and accurately than Gitk. In two tasks, T5 and T9,
 correctness was affected by the size of a tree, but in both trees, \tool
@@ -819,11 +822,11 @@ the smaller tree, but did improve the time taken on the larger tree.
 \label{sub:user_opinions}
 
 Among the 12 participants, there was nearly unanimous agreement that for
-conceptual understanding and summarization tasks; \tool was easier to
-work with than Gitk. The participants cited the ability to abstract
+conceptual understanding and summarization tasks; \dmg{this is another wrong use of semicolon}\tool was easier to
+work with \dmg{avoid idiomatic expressions: what does ``work with'' mean? use a precise verb. English is a rich language.} than Gitk. The participants cited the ability to abstract
 information about the merge from the clean summarization tables and
-simple visualizations. Three participants suggested that someone with a
-professional understanding of Gitk and the git command-line may be to
+simple visualizations \dmg{be precise: from Linvis' clean summarization tables and ... }. Three participants suggested that someone with a
+professional understanding of Gitk and the git command-line may be able to
 extract a conceptual understanding from the DAG visualization and
 perform the summarization tasks. One of these three participants said
 that they would prefer to have both tools available, as they are able to
