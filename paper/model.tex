@@ -169,7 +169,7 @@ for any commit.
 
 
   \end{tikzpicture}
-  \caption{Merge-tree view of the commits  represented in
+  \caption{\mt view of the commits  represented in
     Figure~\ref{fig:repoEvents} showing the path they followed to reach
     the master branch. In this model the successors of each commit
     represents the path followed by that commit to reach the master
@@ -280,7 +280,7 @@ md/raid5: ensure we create a unique name for kmem_cache...
 We used this information to evaluate the accuracy of the \mt model
 extracted from the DAG\@. The method we followed started with the
 extraction of the commit history up to July 20, 2016 form the Linux
-repository. We computed the merge tree of every commit until that date.
+repository. We computed the \mtof every commit until that date.
 Since Linus Torvalds mostly does merging directly into the master
 branch, we assumed that every merge by Linus is the root of a \mt, later
 detecting merges that do not merge into the master branch and removing
@@ -291,9 +291,9 @@ Torvalds using the command \verb|git log --merges --author='Torvalds'|
 and compared the number of commits according to the log with the number
 of commits in the \mt rooted in this commit. We also used the summaries
 of the commits found in the merge (not necessarily all---see above) to
-make sure those commits were in their corresponding merge tree. For
+make sure those commits were in their corresponding \mt For
 example, for the merge in Figure~\ref{fig:sampleMerge} we would expect
-that the merge tree rooted at \mycode{8cbd84f} contains 24 commits, and
+that the \mt rooted at \mycode{8cbd84f} contains 24 commits, and
 the one-line summaries corresponds to commits in that \mt. We also
 inspected those with differences to make sure they were true errors. The
 results can be summarized as follows:

@@ -26,7 +26,7 @@ the commit was authored, and the date the commit was committed.
 \begin{figure}[htpb]
   \centering
   \includegraphics[width=\linewidth]{figures/linvis/search_results.png}
-  \caption{A single merge tree in the search results of \tool, showing
+  \caption{A single \mt tree in the search results of \tool, showing
     the link to the root at the top and a table of the relevant commits
     in the bottom, sorted by relevance.}
   \label{fig:search_results}
@@ -55,15 +55,15 @@ directly from the repository.
 The files tab shows an aggregated table of all files that were modified
 in a merge. It includes metrics like the number of lines added, lines
 removed, total lines modified, and the delta, summed across all commits
-in the merge tree that modify this file. A details drop-down button
+in the \mt tree that modify this file. A details drop-down button
 allows a user to see exactly which commit makes the changes, as shown in
 Figure~\ref{fig:linvis_files}. If the current repository event being
 viewed is a commit, the aggregate views will only show modifications
 made by the commit.
 
-The modules tab shows the modules modified in the merge tree. Like the
+The modules tab shows the modules modified in the \mt. Like the
 files tab, the modules tab uses a table to show the name of the module,
-the number of commits that are in the merge tree that work with the
+the number of commits that are in the \mt tree that work with the
 module, and a details button to provide the links to those commits.
 
 \begin{figure}[htpb]
@@ -108,7 +108,7 @@ fast navigation to commits using the built-in search in most
 web-browsers. The list tree is rooted at the current repository event;
 if the current event being inspected is a commit, only that commit will
 be shown. Conversely, if the selected event is the root, the entire
-merge tree will be shown.
+\mt tree will be shown.
 
 \begin{figure}
         \centering

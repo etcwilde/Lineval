@@ -62,7 +62,7 @@ about which aspects of each tool they preferred.
     & T7   & Who contributed the most changes?\\
     Files      & T8   & How many files were modified?\\
     & T9   & Which file had the most changes?\\
-    Modules    & T10  & Which modules does this merge tree involve?\\
+    Modules    & T10  & Which modules does this \mt involve?\\
     \bottomrule
   \end{tabulary}
 \end{table}
@@ -73,7 +73,7 @@ comprehension of the visualization in Gitk, and determine if it is
 sufficient for understanding what other commits are related to a given
 commit, and how those commits are merged. The tasks are outlined in
 Table~\ref{tab:conceptual_tasks}. The tasks are performed in order using
-Gitk. T1 has the participant draw a diagram of the merge tree,
+Gitk. T1 has the participant draw a diagram of the \mt,
 which will be used to answer the other two questions. This enables us to
 see issues with comprehending the DAG visualization. Participants are
 given 10 minutes to perform this task, which also is used to familiarize
@@ -110,7 +110,7 @@ While the merge task set is part of the summarization task group, it
 focuses less with summarization of the commits and more with
 comprehension of the model visualizations. The task is designed with two
 goals in mind; first we want to measure and define which commits and
-which merges the participant has defined to be in the merge tree; second
+which merges the participant has defined to be in the \mt; second
 to help solidify which commits and merges will be used in the merge
 tree.
 
@@ -156,7 +156,7 @@ statistic at $\alpha = 0.05$ is 3.841. The Wilcoxon\cite{Wilcoxon45}
 test and Cliff's effect size\cite{Cliff93} are applied to the accuracy
 and timing metrics to determine the significance of the difference
 between \tool and Gitk. The Wilcoxon test is applied between commits to
-determine if the size of the merge-tree effects timing and accuracy. The
+determine if the size of the \mt effects timing and accuracy. The
 null hypotheses and alternative hypotheses are stated in
 Table~\ref{tab:null_alt_hypoths}.
 
@@ -241,7 +241,7 @@ is meant to address this. % TODO add T12 results
 
 We include two commits in the study to detect differences between \mt
 sizes. The order that the commits are presented to each participant is
-randomized. We analyzed the 15096 merge-trees from April 16th 2005 to
+randomized. We analyzed the 15096 \mt{s} from April 16th 2005 to
 October 14th 2014, which corresponds to the releases Linux 2.6.12-rc3
 and Linux 3.17-rc1. 25\% of the trees contain at most a single commit
 not including the root, while 50\% of the trees contain at most seven
@@ -275,7 +275,7 @@ for these trees is shown in Figure~\ref{fig:study_commits}.
     \includegraphics[height=0.5in]{figures/commits/1-commit.pdf} &
     \includegraphics[height=1in]{figures/commits/7-commits.pdf}\\
   \end{tabular}
-  \caption{The merge trees used in the user study,
+  \caption{The \mt{s} used in the user study,
     containing one and seven non-root nodes, respectively.}
   \label{fig:study_commits}
 \end{figure}
@@ -418,10 +418,10 @@ understanding.
 \subsubsection{Summarization Tasks}
 \label{sub:summarization_tasks}
 
-Table~\ref{tab:cross_commit_results} shows whether the merge-tree size
+Table~\ref{tab:cross_commit_results} shows whether the \mtsize
 has an effect on the three studied metrics. An interesting observation
 from the figure is that the correctness for T5 and T9 are effected by
-the size of the merge-tree, but the accuracy is not. The correctness
+the size of the \mt, but the accuracy is not. The correctness
 results for T5 and T9 are shown in Figure~\ref{fig:correctness_t5_t9},
 and the timing results for T7 are shown in Figure~\ref{fig:timing_t7}.
 
@@ -614,7 +614,7 @@ The full results are as follows;
     \vspace{3mm}
 
     While there is a difference in correctness between different-sized
-    merge-trees, \tool improves correctness of determining the other
+    \mt{s}, \tool improves correctness of determining the other
     commits related to a commit in trees of varying sizes. The
     difference in the two commits stem from the participants that did
     not change outcomes between the tools.
