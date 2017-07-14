@@ -1,56 +1,53 @@
 % vim:set et sw=2 ts=4 tw=72:
 
 \section{Merge-Tree model}
-
 \label{sec:mergetree}
 
+The \mt model abstracts the DAG of the repository into a set of \mt{s}.
+Each \mt is rooted at a merge into the master branch. The leaves of this
+tree are the commits and the merges are the inner nodes. A \mt is built
+recursively with every merge in the \mt merging a sub-\mt. Any merges
+that a commit must pass through to reach the master branch become an
+inner node of the tree. Effectively, a \mt is a tree that shows the path
+that commits follow in their way to the master branch of a repository.
+The \mt{s} also help understand how commits were grouped together in
+order to be integrated. In this model, not only has the DAG been
+inverted (and simplified), but the entire notion of parent-child
+relationship has been reversed. Due to this property, the terminology
+will be different depending on the model we are referring to; when we
+are referring to the \mt, the parent is the next node toward the merge
+into the master branch, or the root of the tree. When referring to the
+DAG, the parent relationship is in the opposite direction, from the root
+toward the branch-point. In addition to identifying the path that a
+commit took to being merged, we are able to aggregate the commit
+metadata at merges as we retain the parent-child and child-parent
+relationship for each event and know which commits belong to the merge.
 
-The \mt model abstracts the DAG of the repository into a set of \mt{}s. Each \mt is rooted at a merge into the master
-branch. The children of this tree are the commits and merges that are merged together into master by this merge. A \mt is build
-recursively with every merge in the \mt merging a sub-\mt. Any merges that a commit must pass through to reach the
-master branch become an inner node of the tree. 
-Effectively, a \mt is a tree that
-shows the path that commits follow in their way to the master branch of a repository.
-The \mt{}s also help understand how commits were grouped together in order
-to be integrated. In this model, not only has the DAG been inverted (and simplified), but
-the entire notion of parent-child relationship has been reversed.
+To illustrate this model we will use a small example: assume the commits
+represented in Figure~\ref{fig:repoEvents} show the sequence of events
+in a repository. The sequence starts with the initial commit in the
+master branch of the master repository at time $t_0$. Repository event 1
+is a commit, which gets forked into a separate repository, \textit{Repo
+  A}, where another commit is made, event 2. Event 5 is a merge event,
+merging event 2, 3, and 4 into \textit{Repo A}. Event 5 is branched
+from, commit 6 happens in the new branch, while commit 7 is added
+simultaneously to the original branch in \textit{Repo A}. Events 11 and
+12 are both merge events, merging changes made in \textit{Repo A} into
+the master branch of the master repository. As every repository is a
+first-class repository, including local copies and forks, Git does not
+distinguish between forked repositories and branches, and in neither
+case does it explicitly record where a commit was made. In this case,
+commits are performed in various repositories and branches. The DAG
+representation of these events is shown in Figure~\ref{fig:repoDAG}.
 
-Please note that when we are referring to the
-\mt, the parent is the next node toward the merge into the master
-branch, or the root of the tree. When referring to the DAG, the parent
-relationship is in the opposite direction, from the root toward the
-branch-point. In addition to identifying the path that a commit took to
-being merged, we are able to aggregate the commit metadata at merges as
-we retain the parent-child and child-parent relationship for each event.
-
-To illustrate this model we will use a small example:
-assume the commits represented in
-Figure~\ref{fig:repoEvents} show the sequence of events in a repository.
-The sequence starts with the initiall commit in the master branch of the
-master repository at time $t_0$. Repository event 1 is a commit, which
-gets forked into a separate repository, \textit{Repo A}, where another
-commit is made, event 2. Event 5 is a merge event, merging event 2, 3,
-and 4 into \textit{Repo A}. Event 5 is branched from, event 6 happens in
-the new branch, while event 7 is added simultaneously to the original
-branch in \textit{Repo A}. Events 11 and 12 are both merge events,
-merging changes made in \textit{Repo A} into the master branch of the
-master repository.
-
-As every repository is a first-class repository, including local copies
-and forks, Git does not distinguish between forked repositories and
-branches, and in neither case does it explicitly record where a commit
-was made. In this case, commits are performed in various repositories
-and branches. The DAG representation of these events is shown in
-Figure~\ref{fig:repoDAG}.
-
- Notice that the DAG loses information about
-the master branch and the repository that the master branch is part of.
-The merge-tree view of this DAG is visible in Figure~\ref{fig:repoTree}.
-Note that the direction of the edges of the DAG have been inverted,
-instead of pointing from the child to the parent, it points from the
-parent to its children, forming a path to the master branch. Also
-note that the DAG has been simplified, showing only a single edge on the
-path to master for any commit.
+Notice that the DAG loses information about the master branch and the
+repository that the master branch is part of. The \mt view of
+this DAG is visible in Figure~\ref{fig:repoTree}. Note that the
+direction of the edges of the DAG have been inverted, instead of
+pointing from the child to the parent, it points from the parent to its
+children, forming a path to the master branch. Also note that the DAG
+has been simplified, showing only a single edge on the path to master
+for any commit.
 
 \begin{figure}[htbp]
   \centering
@@ -104,33 +101,33 @@ path to master for any commit.
 
 \begin{figure}[htbp]
   \centering
-  \begin{tikzpicture}[auto, on grid, semithick, state/.style={circle, text=black}]
-    \node[state, draw=chartblue] (1) {1};
-    \node[state, draw=chartyellow, above right= of 1] (2) {2};
-    \node[state, draw=chartmagenta, above right= 2cm and 1cm of 2] (3) {3};
-    \node[state, draw=chartblue, right= 2cm of 1] (4) {4};
-    \node[state, draw=chartyellow, above right=of 4] (5) {5};
-    \node[state, draw=chartred, above right=of 5] (6) {6};
-    \node[state, draw=chartyellow, right=of 5] (7) {7};
-    \node[state, draw=chartmagenta, above right= 2cm and 1cm of 7](8) {8};
-    \node[state, draw=chartyellow, right= 2cm of 7] (9) {9};
-    \node[state, draw=chartyellow, right=of 9] (10) {10};
-    \node[state, draw=chartblue, below right=of 9] (11) {11};
-    \node[state, draw=chartblue, below right=of 10] (12) {12};
+  \begin{tikzpicture}[auto, on grid, semithick, state/.style={circle, text=black, black}]
+    \node[state, black] (1) {1};
+    \node[state, black, above right= of 1] (2) {2};
+    \node[state, black, above right= 2cm and 1cm of 2] (3) {3};
+    \node[state, black, right= 2cm of 1] (4) {4};
+    \node[state, black, above right=of 4] (5) {5};
+    \node[state, black, above right=of 5] (6) {6};
+    \node[state, black, right=of 5] (7) {7};
+    \node[state, black, above right= 2cm and 1cm of 7](8) {8};
+    \node[state, black, right= 2cm of 7] (9) {9};
+    \node[state, black, right=of 9] (10) {10};
+    \node[state, black, below right=of 9] (11) {11};
+    \node[state, black, below right=of 10] (12) {12};
 
-    \draw (12) edge[-stealth] (11) edge[chartyellow, -stealth] (10);
-    \draw (11) edge[-stealth] (4) edge[chartyellow, -stealth] (9);
-    \draw (10) edge[chartyellow, -stealth] (9);
-    \draw (9) edge[chartmagenta, -stealth] (8) edge[chartred, -stealth] (6)
-              edge[chartyellow, -stealth] (7);
-    \draw (8) edge[chartmagenta, -stealth] (7);
-    \draw (7) edge[chartyellow, -stealth] (5);
-    \draw (6) edge[chartred, -stealth] (5);
-    \draw (5) edge[chartmagenta, -stealth] (3) edge[chartyellow,-stealth] (2)
-              edge[chartyellow, -stealth] (4);
+    \draw (12) edge[-stealth] (11) edge[-stealth] (10);
+    \draw (11) edge[-stealth] (4) edge[-stealth] (9);
+    \draw (10) edge[-stealth] (9);
+    \draw (9) edge[-stealth] (8) edge[-stealth] (6)
+              edge[-stealth] (7);
+    \draw (8) edge[-stealth] (7);
+    \draw (7) edge[-stealth] (5);
+    \draw (6) edge[-stealth] (5);
+    \draw (5) edge[-stealth] (3) edge[-stealth] (2)
+              edge[-stealth] (4);
     \draw (4) edge[-stealth] (1);
-    \draw (3) edge[chartmagenta, -stealth] (2);
-    \draw (2) edge[chartyellow, -stealth] (1);
+    \draw (3) edge[-stealth] (2);
+    \draw (2) edge[-stealth] (1);
   \end{tikzpicture}
   \caption{DAG representation of the commits represented in
     Figure~\ref{fig:repoEvents}. The DAG loses information about which
@@ -182,24 +179,21 @@ path to master for any commit.
 \end{figure}
 
 
-\subsection{Computing the merge-tree of the DAG of Linux}
+\subsection{Computing the \mt of the DAG of Linux}
 
-Computing the merge-tree from a DAG for any repository may not be
+Computing the \mt from a DAG for any repository may not be
 possible; however, certain features of the development process of Linux
-make it feasible to compute the merge-tree for the Linux repository.
+make it feasible to compute the \mt for the Linux repository.
 First, the master branch of Linux is maintained by Linus Torvalds, and
 only Linus has write access to it. We have verified this assertion in
 previous research~\cite{German2015}. We have developed a heuristic that
 is presented in Algorithm~\ref{fig:alg}. In short, the algorithm first
-identifies the commits made directly to the master branch; whereafter it
+identifies the commits made directly to the master branch, whereafter it
 recursively determines the shortest path (in terms of time), using the
 DAG, from each commit to the master branch using the inverted DAG.
 
-\dmg{I think you abbreviated this section too much. It will be helpful to describe the algorithm
-at a very high level,as in the vissoft paper.}
-
 \begin{algorithm}
-        \caption{Computing the merge-tree of Linux Git's DAG}\label{fig:alg}
+        \caption{Computing the \mt of Linux Git's DAG}\label{fig:alg}
         \begin{algorithmic}
                 \Function{ComputeMergeTree}{DAG}: tree
                 \State {\# Compute the tree from the DAG of Linux repository.}
@@ -255,9 +249,8 @@ Merges that do not have conflicts provide information to verify this
 heuristic. If a merge does not contain a conflict, it records a summary
 of the commits that it merges. See Figure~\ref{fig:sampleMerge} for an
 example. This summary contains a list of the first 20 non-merge commits
-in the merge, including their one-line log description, the full logs of
-the merge commits that merge this subset, and the total number of
-non-merge commits in the merge.
+in the merge, including their one-line log description, and the total
+number of non-merge commits in the merge.
 
 \begin{figure}[htbp]
         \centering
@@ -284,24 +277,26 @@ md/raid5: ensure we create a unique name for kmem_cache...
         \label{fig:sampleMerge}
 \end{figure}
 
-We used this information to evaluate the accuracy of the merge-tree
-model extracted from the DAG\@. The method we followed started with the
-extraction of the commit history up to July 20, 2016. We computed the
-merge tree of every commit until then. Since Linus Torvalds mostly does
-merging directly into master, we assumed that every merge by him is the
-root of a merge-tree. As described above, the log of a merge-commit
-usually contains the number of commits in the merge the first 20
-summaries of commits being merged. We extracted merges by Linus Torvalds
-using the command \mycode{log --merges --author='Torvalds} and compared
-the number of commits according to the log with the number of commits in
-the  merge-tree rooted in this commit. We also used the summaries of the
-commits found in the merge (not necessarily all---see above) to make
-sure those commits were in their corresponding merge tree. For example,
-for the merge in Figure~\ref{fig:sampleMerge} we would expect that the
-merge tree rooted at \mycode{8cbd84f} contains 24 commits, and the
-one-line summaries corresponds to commits in that merge-tree. We also
-inspected those with differences to make sure they were true errors.
-The results can be summarized as follows:
+We used this information to evaluate the accuracy of the \mt model
+extracted from the DAG\@. The method we followed started with the
+extraction of the commit history up to July 20, 2016 form the Linux
+repository. We computed the merge tree of every commit until that date.
+Since Linus Torvalds mostly does merging directly into the master
+branch, we assumed that every merge by Linus is the root of a \mt, later
+detecting merges that do not merge into the master branch and removing
+them from the set of root merges. As described above, the log of a
+merge-commit usually contains the number of commits in the merge the
+first 20 summaries of commits being merged. We extracted merges by Linus
+Torvalds using the command \verb|git log --merges --author='Torvalds'|
+and compared the number of commits according to the log with the number
+of commits in the \mt rooted in this commit. We also used the summaries
+of the commits found in the merge (not necessarily all---see above) to
+make sure those commits were in their corresponding merge tree. For
+example, for the merge in Figure~\ref{fig:sampleMerge} we would expect
+that the merge tree rooted at \mycode{8cbd84f} contains 24 commits, and
+the one-line summaries corresponds to commits in that \mt. We also
+inspected those with differences to make sure they were true errors. The
+results can be summarized as follows:
 
 \begin{itemize}
 
@@ -325,13 +320,13 @@ The results can be summarized as follows:
     that it could be verified.  Before this date, and until Dec 12,
     2006, merges did not include a summary of the commits they included,
     hence making it impossible to verify; during this period, however,
-    we correctly identified the merges by Linus into master.
+    we correctly identified the merges by Linus into the master branch.
 
   \item
 
     Before Dec. 12, 2006 (1542 merges) our heuristic breaks due to the
     presence of a \foxtrot commit (\mycode{c436688\ldots}),
-    which confounded the true master branch of a repository.
+    which confounded the true master branch.
 
 \end{itemize}
 
