@@ -32,26 +32,29 @@ into the current branch, thus confounding the branch relationships.\dmg{this wou
 most people will have no idea what you are talking about.}
 
 The repository events in the DAG are immutable; once a repository event
-is created, it can't be changed. \dmg{the next sentences should be repository events, not commits}
-Git allows operations to alter commits
-and re-order them, but this will create a new commit with a new commit
-hash.  This property makes a repository event unable to record the
-traversal of merges into the master branch of the repository. A commit
-cannot have references in the direction of the merge that merges the
-commit, as this reference will change, requiring the commit to be
-changed. \dmg{BE CONSISTENT, Git or git?} git provides
-the command \verb|git log --children| which traverses
-the DAG and prints the inverted edges relationship between events.
+is created, it can't be changed. \dmg{the next sentences should be
+  repository events, not commits} Git allows operations to alter
+repository events and re-order them, but this will create a new event
+with a new commit hash. This property makes a repository event unable to
+record the traversal of merges into the master branch of the repository.
+Introducing an additional field to track the path to the master branch
+would create a circular dependency between the parent and child. Any
+updates to the DAG would modify the commit hashes for all repository
+events in the repository. To alleviate this, git provides the command
+\verb|git log --children| which traverses the DAG and prints the
+inverted edges relationship between events.
 
-Under perfect conditions, visualizations of the DAG should show how a
+Under perfect conditions, visualizations of the DAG show how a
 repository changes over time; where logical branches are being made,
 where merges are happening, and who is making the changes. Most
-repositories are relatively simple, with
-relatively few, small, branches with a clear, well defined
-master branch. However, in large, active repositories it becomes very difficult for developers to use the DAG
-to identify
-the master branch, and as a consequence, where branches start and are merged back in their
-way to master. 
+repositories are relatively simple, with relatively few, small, branches
+with a clear, well defined master branch. However, in large, active
+repositories it becomes very difficult for developers to use the DAG to
+identify the master branch, and as a consequence, where branches start
+and are merged on the path to the master branch. \evan{They do show in
+  perfect conditions. If you don't have many branches, and you don't
+  have any foxtrots, the first branch on the left of the DAG
+  visualization WILL be the master branch}
 
 %%% Local Variables:
 %%% mode: latex
