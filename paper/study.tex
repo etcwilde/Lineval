@@ -346,17 +346,17 @@ them with linvis.
 
 The study begins with a short introduction to the \mt model, followed by
 an introduction to Gitk and \tool. We provided two examples of
-converting the DAG to the \mt. The first DAG was a flat merge, so the
-corresponding merge tree did not have any internal nodes. The second was
-not a flat merge, so the corresponding merge tree contained a single
-internal node. Any questions about the model were answered at this time.
-Following the introduction to the \mt model, we introduce Gitk and
-\tool, providing information about what each pane shows in Gitk, and
-what each tab does in \tool.
+converting the DAG to the \mt. The first example DAG was a flat merge,
+so the corresponding \mt did not have any internal nodes. The
+second was not a flat merge, so the corresponding \mt contained a
+single internal node. Any questions about the model were answered at
+this time. Following the introduction to the \mt model, we introduce
+Gitk and \tool, providing information about what each pane shows in
+Gitk, and what each tab does in \tool.
 
 The conceptual tasks follow the introduction, followed by the
 summarization, which are then followed by the user opinion. The study is
-completed with three questions to enable us to know more about the
+concluded with three questions to enable us to learn more about the
 participants;
 
 \begin{itemize}
@@ -366,13 +366,11 @@ participants;
     the largest repository you have worked with?
 \end{itemize}
 
-
-
 To mitigate the order bias cased by using one tool before the other or
-one commit before the other, we randomize both the tool and commit
-between participants. The conceptual tasks are run twice, once with
-\comA and once with \comB, in the same order for all participants using
-the git tools.
+one commit before the other, we randomize both the order that the tools
+are used, and the order that the commits are used, between participants.
+The conceptual tasks are run twice, once with \comA and once with \comB,
+in the same order for all participants using the git tools.
 
 \evan{This paragraph is kind of tricky to explain well. See if you can
   understand what I'm trying to say} The summarization tasks are run
@@ -382,27 +380,22 @@ tool, and complete the tasks for both commits in that tool. The order of
 the commits is the same as in the conceptual tasks. Once they complete
 the summarization tasks for both \comA and \comB, they will switch to
 the other tool and complete the tasks again on the commits in the same
-order. The order of the tasks is consistent for all four runs.
+order. The order of the tasks is consistent over all four runs. The
+questions in the user opinions section do not directly involve the tools
+or commits.
 
-The user opinions do not directly involve working with the tools or the
-commits, so the ordering of the tools
-
-% To mitigate the order bias caused by using one tool before the other,
-% one commit before the other, and the various tasks, we randomize...
-
-We use a script written in python 3.6.1 in order to assure that we do no
-bias the randomization, and ensure that correct ordering is maintained
-between tools, tasks, and commits. The script produces the entire script
-for the study, so we only need to read it to correctly conduct the
-study. Re-running the script generates the study for the next
-participant. We use screen capture to record the audio and video. From
-the screen capture, we measure the time, as well as recording the
+We use a script written in python 3.6.1 in order to assure that we do
+not bias the randomization, and ensure that correct ordering is
+maintained between tools, tasks, and commits. The script produces the
+entire script for the study, so we only need to read it to correctly
+conduct the study. Re-running the script generates the study for the
+next participant. We use screen capture to record the audio and video.
+From the screen capture, we measure the time, as well as recording the
 responses in the study.
 
 \evan{Should I include the python script? It would make explaining how
   the test was conducted 100\% clear.}
-
-% TODO: maybe move the time measuring procedure from summ. to here
+\evan{I think it would be far too long then.}
 
 \subsection{Results}
 \label{sec:results}
