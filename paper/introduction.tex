@@ -59,10 +59,10 @@ today, containing new commits authored in the past; distinguishing these
 new commits from the commits in the snapshot from today is not trivial.
 
 One major challenge with visualizing the arrival of commits to a
-repository is that Git does not store the date that a commit was merged
+repository is that git does not store the date that a commit was merged
 into another branch, including the master branch. To complicate the
 problem, the DAG only has references to the parents of a commit (a
-model necessary for the operation of Git), but maintainers would prefer
+model necessary for the operation of git), but maintainers would prefer
 knowing the path a commit followed to reach the master repository.
 Tracing a path that any commit followed to the master repository would
 imply that for any given commit, we know the next merge in the direction

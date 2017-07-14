@@ -34,7 +34,7 @@ from, commit 6 happens in the new branch, while commit 7 is added
 simultaneously to the original branch in \textit{Repo A}. Events 11 and
 12 are both merge events, merging changes made in \textit{Repo A} into
 the master branch of the master repository. As every repository is a
-first-class repository, including local copies and forks, Git does not
+first-class repository, including local copies and forks, git does not
 distinguish between forked repositories and branches, and in neither
 case does it explicitly record where a commit was made. In this case,
 commits are performed in various repositories and branches. The DAG
@@ -193,7 +193,7 @@ recursively determines the shortest path (in terms of time), using the
 DAG, from each commit to the master branch using the inverted DAG.
 
 \begin{algorithm}
-        \caption{Computing the \mt of Linux Git's DAG}\label{fig:alg}
+        \caption{Computing the \mt of Linux from the DAG}\label{fig:alg}
         \begin{algorithmic}
                 \Function{ComputeMergeTree}{DAG}: tree
                 \State {\# Compute the tree from the DAG of Linux repository.}
