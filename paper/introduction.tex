@@ -44,7 +44,7 @@ authored, not by when it arrived in the official Linux repository.
 The DAG is able to provide a meaningful visualization in smaller
 projects; it enables users to see when changes are made, when these
 changes are merged, how each branch is interacting, and the point where
-a branch forks from the master branch. In large modular projects, like
+a branch forks from another branch. In large modular projects, like
 the Linux kernel, the DAG becomes a mess of merges and commits
 (Figure~\ref{fig:gitk}) losing its visual meaning. In some cases, the
 Linux kernel is simply too large for the system to generate a
@@ -61,23 +61,22 @@ new commits from the commits in the snapshot from today is not trivial.
 One major challenge with visualizing the arrival of commits to a
 repository is that Git does not store the date that a commit was merged
 into another branch, including the master branch. To complicate the
-problem, the DAG only has references to the ancestors of a commit (a
+problem, the DAG only has references to the parents of a commit (a
 model necessary for the operation of Git), but maintainers would prefer
 knowing the path a commit followed to reach the master repository.
 Tracing a path that any commit followed to the master repository would
-imply that for any given merge, it would be possible to know which
-commits were merged. A user could inspect the commits that arrived into
+imply that for any given commit, we know the next merge in the direction
+of the master branch. A user could inspect the commits that arrived into
 the master branch within a given time-frame by checking which commits
 were merged during that time-frame.
 
-\dmg{add to the abstract an abbreviation of this sentence: see my comment in the abstract }
 This paper makes three contributions; first, we describe a method of
 converting the DAG of the Linux repository into the \mt of the
 repository, that represents the path used by a commit to reach the
 master branch; second, we present an implementation enabling the
 inspection and visualization of merges in the Linux project using the
-\mt modle; finally, we validate the \mt model and the implementation of
-the visulization through a controlled user study. We further discuss the
+\mt model; third, we validate the \mt model and the implementation of
+the visualization through a controlled user study. We further discuss the
 issues of generalizing the model to other repositories, but present an
 updated version that improves the performance of the algorithm by
 pruning the DAG.\@
@@ -87,9 +86,7 @@ called \tool\footnote{\tool is currently available at
   \url{http://li.turingmachine.org}}. Our visualizations and tool
 provide information about the location of any given commit or merge in
 its respective merge-tree, the files edited, the modules edited, and the
-commit message. \tool allows users to apply various filters, including
-the release version, along with a keyword or phrase from the log
-preview, the name of the author, or the commit hash. The user can
-request all merges made by Linus that contain a commit or inner merge
-that matches the search query, or just the commits and merges that match
-the query.
+commit message. \tool provides a search engine that filters commits by
+commit hash, terms from the commit log, the author, filenames, and other
+information. The results are then grouped together by the root of the
+corresponding \mt.
