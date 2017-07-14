@@ -13,14 +13,13 @@ being integrated into the project, along with understanding what changes
 these commits are bringing with them. These are the tasks that we set
 out to solve with the \mt model. Ideally, we could compare our model
 against another that is designed with these goals. To our knowledge, we
-know of no git repository visualzation tool that has these specific
+know of no git repository visualization tool that has these specific
 goals. This may be due to issues with finding the master branch of the
-repository which is a non-trivial task, or due to other factors.
-
-While we have found no tool with the express goal of showing how a
-commit is integrated, and providing a summarization of a merge, there
-has been a lot of work done in providing visualizations of various
-aspects of a repository.
+repository which is a non-trivial task, or due to other factors. While
+we have found no tool with the express goal of showing how a commit is
+integrated, and providing a summarization of a merge, there has been a
+lot of work done in providing visualizations of various aspects of a
+repository.
 
 Many tools work to address the issues in communication between
 developers in inter-team collaboration work. Codebook\cite{Begel2010}
@@ -62,31 +61,30 @@ contribution types are one of, adding a file, removing a file, and
 changing a file. While the timelapse is interesting to watch, it does
 not provide any additional explanation of the changes actually being
 made, only the frequency that they are being made and who is making
-them.
+them. Codeswarm\cite{ogawa09} is similar to Gource, using an organic approach to
+visualizing events in the repository. Unlike Gource, which focuses on
+the files, Codeswarm focuses on developers and the number of commits
+they are making.
 
-% TODO: add code_swamp or something like that
-
-
-% TODO: Check this -- Look into source tree
-Git itself is shipped with summarization and visualization tools:
-the \verb|git log| command and Gitk, which is a graphical tool for the purpose of browsing
-the DAG of the repository.
-Many other tools are designed with a similar visual metaphore
-as what is presented in Gitk, including Git kraken, Github Desktop and
-web interfaces, the Git Lab web intereface, the Bitbucket web interface,
-and many others. The Gitk interface is built around the central DAG
-viewer. The DAG displays the repository events on their respective
-branches, the author, and the date that the event was authored. A user
-can select an event to view addition information about it, including the
-full commit log, the parents and children of the event, and the diff
-generated if modifications were made. In the case of the Linux kernel,
-merges are not resolved as merge conflicts in the master repository, but
-by the developers prior to merging. With this development model, no
+Git itself is shipped with summarization and visualization tools: the
+\verb|git log| command and Gitk, which is a graphical tool for the
+purpose of browsing the DAG of the repository. Many other tools are
+designed with a similar visual metaphore as what is presented in Gitk,
+including GitKraken, Github Desktop and web interfaces, the Git Lab web
+interface, the Bitbucket web interface, are a few examples. The Gitk
+interface is built around the central DAG viewer. The DAG displays the
+repository events on their respective branches, the author, and the date
+that the event was authored. A user can select an event to view addition
+information about it, including the full commit log, the parents and
+children of the event, and the diff generated if modifications were
+made. In the case of the Linux kernel, merges are not resolved as merge
+conflicts in the master repository, but by the developers prior to
+merging through rebase operations. With this development model, no
 merges will have modified any files, and will not show a diff. While the
-merge does not make changes directly, the effects of merging the
-commits persist, but Gitk is unable to provide an aggregated view of the
-files modified, the patches for those files, and the authors who
-contributed commits to that merge.
+merge does not make changes directly, the effects of merging the commits
+persist, but Gitk is unable to provide an aggregated view of the files
+modified, the patches for those files, and the authors who contributed
+commits to that merge.
 
 Our tool is primarily aimed at presenting the hierarchical structure of
 the Linux git repository. We use tables for presenting the summarized
