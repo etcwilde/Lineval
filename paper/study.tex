@@ -428,9 +428,9 @@ and the timing results for T7 are shown in Figure~\ref{fig:timing_t7}.
 
 \begin{table}[htpb]
   \centering
-  \caption{Cross-Commit Results\dmg{Be more descriptive in the captions.People read the papers via tables and
-      pictures. What does the table say? e.g. as it can be seen.... tell a story with the picture, instead of asking the
-    reader to make up the story... which might be different than the one you want them to have}}
+  \caption{Cross-Commit Metrics: Showing that tree size make a
+    difference in the correctness metric for T5 and T9, and the timing
+    metric for task T7.}
   \label{tab:cross_commit_results}
   \begin{tabular}{ccrl}
     \toprule
@@ -493,7 +493,9 @@ and the timing results for T7 are shown in Figure~\ref{fig:timing_t7}.
 
 \begin{table*}[htpb]
   \centering
-  \caption{Summarized Correctness, Accuracy, and Timing results for the summarization tasks}
+  \caption{Summarized Correctness, Accuracy, and Timing results for the
+    summarization tasks. In all cases except for the timing metric of
+    T7, there was a difference between \tool and Gitk.}
   \label{tab:summarization_table}
   \begin{tabular}{ccc}
     % Correctness
@@ -545,9 +547,7 @@ and the timing results for T7 are shown in Figure~\ref{fig:timing_t7}.
 
 Summaries for correctness, accuracy, and timing are shown in
 tables~\ref{tab:summarization_table}.
-The full results are as follows;
-
-\dmg{you wrongly use ``semicolon'', you mean ``colon''. Same below...}
+The full results are as follows:
 
 \begin{itemize}
   \item \emph{T4}: What is the series of merges involved with merging this
@@ -808,28 +808,28 @@ The full results are as follows;
 
 \end{itemize}
 
-\dmg{Emphasize: To summarize...}
-
-\tool is able to assist users with summarizing various aspects of a
-merge more quickly and accurately than Gitk. In two tasks, T5 and T9,
-correctness was affected by the size of a tree, but in both trees, \tool
-was able to provide a statistically significant improvement to the
-correctness. Only in one task, T7, was timing affected by the size of a
-tree; \tool did not significantly improve the time taken to answer T7 on
-the smaller tree, but did improve the time taken on the larger tree.
+To summarize, \tool is able to assist users with summarizing various
+aspects of a merge more quickly and accurately than Gitk. In two tasks,
+T5 and T9, correctness was affected by the size of a tree, but in both
+trees, \tool was able to provide a statistically significant improvement
+to the correctness. Only in one task, T7, was timing affected by the
+size of a tree; \tool did not significantly improve the time taken to
+answer T7 on the smaller tree, but did improve the time taken on the
+larger tree.
 
 \subsubsection{User Opinions}
 \label{sub:user_opinions}
 
 Among the 12 participants, there was nearly unanimous agreement that for
-conceptual understanding and summarization tasks; \dmg{this is another wrong use of semicolon}\tool was easier to
-work with \dmg{avoid idiomatic expressions: what does ``work with'' mean? use a precise verb. English is a rich language.} than Gitk. The participants cited the ability to abstract
+conceptual understanding and summarization tasks, \tool was easier to
+use than Gitk. The participants cited the ability to abstract
 information about the merge from the clean summarization tables and
-simple visualizations \dmg{be precise: from Linvis' clean summarization tables and ... }. Three participants suggested that someone with a
-professional understanding of Gitk and the git command-line may be able to
-extract a conceptual understanding from the DAG visualization and
-perform the summarization tasks. One of these three participants said
-that they would prefer to have both tools available, as they are able to
+simple visualizations as the primary reasons for preferring \tool to
+Gitk. Three participants suggested that someone with a professional
+understanding of Gitk and the git command-line may be able to extract a
+conceptual understanding from the DAG visualization and perform the
+summarization tasks. One of these three participants said that they
+would prefer to have both tools available, as they are able to
 complement each other.
 
 %%% Local Variables:
