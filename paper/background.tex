@@ -28,12 +28,12 @@ A \foxtrot\footnote{See
   \url{http://bit-booster.blogspot.ca/2016/02/no-foxtrots-allowed.html}
   for a full description of the issue.} merge occurs when the parent on
 the current branch is replaced by a parent from a branch being merged
-into the current branch, thus confounding the branch relationships.\dmg{this would benefit from a diagram, since
-most people will have no idea what you are talking about.}
+into the current branch, thus confounding the branch relationships.
+
+% TODO: Get a diagram of a foxtrot
 
 The repository events in the DAG are immutable; once a repository event
-is created, it can't be changed. \dmg{the next sentences should be
-  repository events, not commits} Git allows operations to alter
+is created, it can't be changed. Git allows operations to alter
 repository events and re-order them, but this will create a new event
 with a new commit hash. This property makes a repository event unable to
 record the traversal of merges into the master branch of the repository.
