@@ -1,59 +1,53 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-\dmg{in this paper we describe, not develop}
-
-In this paper, we develop a tree-based model, \mt, designed to provide git
+In this paper, we describe a tree-based model, \mt, designed to provide git
 users with a better explanation of the events occurring in a git
 repository. The \mt model is rooted at the merge into the master branch
 of a repository, where the leaves are the individual commits.
 
 We implement a tool, \tool, using the \mt model, which allows a user to
-filter the commits with a simple search interface. Once the user finds \dmg{user => they or he/she or users => they, tense issue?}
-the commit that they are interested in, they are provided simple
-aggregated tables showing the files that were modified, the authors that
-made the modifications, among other information. \dmg{they is very ambiguous: are we talking authors, users, tables,
-  files? be precise}
-They are also provided
-with three visualizations, a list tree, a pack tree, and a
-Reingold-Tilford tree view. The list tree enables easy searching for
-textual features, while the pack tree is good for visualizing the
-structure of large \mt{s}, and the Reingold-Tilford tree is better
-at visualizing the structure of small \mt{s}.
+filter the commits with a simple search interface. Once the desired
+commit is found, \tool provides tabs for simple aggregated tables
+showing the files that were modified, the authors that made the
+modifications, among other information. \tool also provides three
+visualizations, list tree, pack tree, and a \rt tree view. The list tree
+enables easy searching for textual features, while the pack tree is good
+for visualizing the structure of large \mt{s}, and the \rt tree is
+better at visualizing the structure of small \mt{s}.
 
-\dmg{not necessary: useful, and not only the model, but the implementation}
-To ensure that our model is necessary, we evaluate the ability of users
-to perform simple conceptual tasks \dmg{using linvis and comparing it with ... be precise}
-, finding how a commit was merged into
-the master branch of the Linux repository, and determining other commits
-that were merged with the given merge. Finding that the participants in
-our study were unable to perform this task \dmg{using gitk?, be precise, but you didn't ask them to compare based on
-  their unability to perform the task, they were ask to do it nonetheless}, we compared the ability of
-the participants to summarize key pieces of information aggregated in
-these groups of commits. We asked for information about what files were
-modified, the authors making the changes, among other tasks\dmg{among other tasks? tasks are T1...Tn. Don't overload
-  uses of a word}. Finally, we
-asked the participants about their preference in tools, and which
-aspects of each they preferred. We found that the participants in our
-study were able to identify the correct answer more quickly and
-accuractly using the \mt visualization than they were able to with
-visualizations of the DAG.
+To ensure that our model and implementation are useful, we evaluated the
+tool with a three-part user study. We tested the conceptual understanding
+using the Gitk, ability to summarize merges into the master branch, and
+ask for the opinions of the participants. We found that the participants
+were unable to determine the commits and merges that are related to the
+commits we tested with and build a conceptual understanding from the DAG
+visualization. The correctness, accuracy, and timing of summarization
+tasks were improved using \tool compared to Gitk. The participants
+generally enjoyed the clean summarizations and simple visualizations
+provided by the \mt-based visualizations in \tool.
 
 Given that visualization of the model provides users with a better
 understanding of events in the repository, we describe some issues with
 identifying the master branch of the repository and a more generalized
-approach to constructing \mt{s}. We implement \dmg{this should be past tense} the generalized approach
-as a Bitbucket plugin to verify that it is able to quickly produce
-results online, unlike in the implementation of \tool.\dmg{the most important aspect is nto that it can quickly produce
-  results, but that it can be applied to any repo in bitbucket}
+approach to constructing \mt{s}. We implemented the generalized approach
+as a Bitbucket plugin to verify that it is able to produce
+visualizations for arbitrary bitbucket repositories. We found that it
+was able to produce visualizations for many repositories, but was unable
+to produce the visualizations of others due to rate-limiting. An
+interesting side-effect of pruning the DAG is that some \mt{s} in the
+repository can be visualized, while other trees are too large to
+download the commit information for. The original algorithm design would
+be unable to produce a visualization for any of the \mt{s}.
 
-Participants in our study found them \dmg{who/what is them?} to be more enjoyable for
-summarization tasks than visualizations of the DAG.\@ While there are
-some issues \dmg{with what tool? linvis?, \mt should be in the first phrase, not the ending phrase} with identifying the master branch in a robust manner, \mt
-visualizations are an effective means of providing a clear conceptual
-understanding and simple summarization of the events being merged into a
-the master branch of a repository.
-
+\mt{s} are a novel means of building a model which can be visualized and
+summarized in an effective way. Participants in our study found
+visualizations of the \mt to be more enjoyable for summarization tasks
+than the visualizations of the DAG\@. While there are some
+implementation issues with \tool, \mt visualizations are an effective
+means of providing a clear conceptual understanding and simple
+summarization of the events being merged into the master branch of a
+repository.
 
 %%% Local Variables:
 %%% mode: latex
