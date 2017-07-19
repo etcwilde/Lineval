@@ -1,0 +1,476 @@
+We would like to thank the reviewers for their extensive comments and
+analysis. The paper has been considerably improved as a results of the
+review.
+
+The paper has been heavily modified, shifting focus from the
+generalization of the algorithm toward the comparison user study between
+Linvis and Gitk.
+
+Linvis has since had minor updates. We removed most of the search
+interface, replacing it with a full-text search engine that searches by
+author name, filename, commit hash, commit and authorship date, and
+keywords from the commit logs. The results of the search engine are
+aggregated together by merge-tree.
+
+The responses to Reviewer 1:
+
+      While the technical descriptions of the algorithms are detailed and
+      comprehensive, they need to be re-written for better clarification. The
+      reading of Section III.B is specially hard. It is a complicated
+      algorithm that demands a lot of attention from the reader. As such, in
+      order to keep the reader interested, the authors should improve the
+      description by adding a diagram or a flowchart. A simple example that
+      the reader can follow along with the authors would also be a great
+      improvement.
+
+We provided a further description of the original algorithm followed by
+a step-by-step example starting at commit 5 from the example in Figure 3
+to help clarify things in Section III.A.
+
+The generalized algorithm that was presented in section III.B was moved
+to a separate section (Section IX). We re-worded and extended the
+description and provided an example starting with the merge commit 11
+(the algorithms run in opposing directions on the DAG) from the example
+shown in Figure 3.
+
+      The testing and evaluation of the generalized version of the algorithm
+      must also be improved. Right now the test suite and the results are
+      not concretely described and must be better clarified.
+
+This is not applicable anymore. The generalization has become a
+discussion point in Section IX. The proposed algorithm is a possible
+means of improving the runtime performance by pruning the DAG to contain
+a smaller superset of the repository events necessary for computing the
+merge-tree of a given merge. The test suite was not a comprehensive test
+of all possible merges, but tested some of the issues that we
+encountered while designing it and the original algorithm.
+
+    While the tree-based visualizations are well described, they are not
+    novel visualizations and simply use abstractions that are already
+    available from previous work. As such, the practical use of these
+    visualizations in the context of the paper should be better described.
+    The authors are advised to add at least one fully described use case,
+    as a step-by-step that can be followed by the reader, showing how the
+    visualizations are actually used to obtain useful insight from the
+    merge-trees.
+
+The intent is less focused on providing a new metaphor for trees, and
+more focused on providing a new visualization of git repositories. The
+visualization is focused on showing how a commit is integrated into the
+master branch.
+
+We conducted a user study to verify that the goals of the model and tool
+are met with the visual metaphors and tables provided. The study is
+broken down into what we see as being the two major issues with the DAG;
+conceptual understanding and summarization.
+
+See section VII.
+
+Responses to the Attached PDF:
+
+    Introduction
+    The last paragraph of the intro is a bit confusing. It is not clear
+    whether the authors mean that the algorithm was extended to work with
+    more than one repository, or with repositories other than the Linux
+    kernel (or both at the same time, which is what I think is the right
+    answer). Also, they talk about an extension, explain its goals, but
+    not what that extension is, i.e., how the original algorithm is
+    actually extended to reach the goals (that should be done here only
+    briefly, of course). A clearer explanation here would help motivate
+    the reader to continue reading.
+
+The generalization has been moved to the discussion portion of the paper
+to signify that it is less of a contribution, and more of an idea. The
+extension section is introduced with
+
+"
+The visualizations of the Merge-Tree model assist users with
+understanding how commits are integrated. We continue by discussing
+possible methods for improving the algorithm to directly produce the
+combined DAG Merge-Tree without a post-processing step and pruning the
+DAG to improve the performance and make it feasible to compute over the
+internet. Furthermore, we look to generalize the algorithm to work with
+arbitrary repositories.
+"
+
+To address the confusion surrounding the type of generalization, we
+specify it in the last sentence of the first paragraph of section IX.
+
+"Furthermore, we look to generalize the algorithm to work with arbitrary
+repositories."
+
+    In page 2, column 2, line 28, the authors introduce the concept of an
+    “event”. By reading further, one realizes that “events” are either
+    commits or merges. However, in previous paragraphs, the authors
+    regarded this as “merge commits” and ”non-merge commits”. A
+    clarification of these two terminologies would be useful to make the
+    text clearer.
+
+The terminology surrounding events, commits, and merges has been
+clarified in the last sentence of the first paragraph of the Background
+Section.
+
+"In this paper, we will refer to the individual code-carrying commits as
+commits, the structural merge commits as merges, and refer to both types
+without discrimination as repository events."
+
+    In Figure 3, legend: The sentence “Each horizontal section” is not
+    totally clear. One way of improving the figure would be to add a
+    separator between branches/repos, effectively turning the image into a
+    matrix. Or simply explaining more clearly that nodes are arranged in
+    rows. Also, the authors should mention that the colors also represent
+    branches/repos.
+
+The caption has been clarified and we state that the branches and
+repositories are color-coded.
+
+"
+An example sequence of events performed in different repositories. The
+horizontal axis represents time. The branches and repositories are
+aligned horizontally, and color-coded. Each commit points to its parent.
+The initial commit is at time t0, and the head is at t8.
+"
+
+    In Figure 4: the authors mention that the DAG loses information about
+    which repository or branch each commit is performed in, but the figure
+    retains the nodes’ colors, which contradicts that statement. While the
+    reader comprehends the concept, removing the colors of the figure
+    would probably communicate the message better.
+
+The color was removed from figure four to clarify that branch and
+repository information is removed in the DAG.
+
+    Figures 3, 4 and 5 represent a sequence of steps in the explanation of
+    the algorithm, so it would be significantly better for the reader if
+    they were all in the same page.
+
+The figures have been placed on the same page, and are in the same
+column.
+
+    Constructing the Merge Tree
+    A small description of the children function on Algorithm 1 would be
+    useful, as it searches for children in the opposite way than a normal
+    depth-search algorithm does. A normal depth-search would traverse the
+    nodes to which cid points to (its ancestors in git), but children does
+    the opposite: it traverses the nodes which point to cid
+
+The children function is the list of (DAG) children for the commit. I am
+unsure of how to make this more explicit.
+
+    There is apparently a problem when calculating d in Algorithm 1. It is
+    only updated when a commit is directly connected to a master commit,
+    i.e., it has a child c in master. As an example, consider first node 9
+    from Fig. 4. It has a child in master (node 11), so its distance is
+    d(9) = commitTime(11) – commitTime(9). Now let’s consider node 8. Its
+    only child is node 9, which is not in master. Thus, it recursively
+    calls distance2Master(9), which returns d(9). Since d(9) is smaller
+    than infinity, then d(8) = d(9). But shouldn’t it be d(8) =
+    commitTime(8) – d(9)? The problem becomes worse when we consider node
+    7. It has two children, nodes 8 and 9. If d(8) = d(9), then how can
+    node 7 know which of its children to choose? By looking at Figure 5 it
+    obviously chose node 9, which seems to be the right choice, but was it
+    an arbitrary choice?
+
+Thank you for identifying this issue. We missed a few details of the
+algorithm as implemented when describing it in the paper. We have
+carefully followed our implementation to re-describe the algorithm more
+accurately. Furthermore, a full example stepping through the algorithm
+has been provided, starting at commit 5. We have worked to fully clarify
+the algorithm and how it works. We are also making the source code
+available in the replication package.
+
+    Section III.B starts abruptly without a clear motivation on what the
+    Generalized Merge Tree Construction is supposed to do. The authors
+    should better motivate the jump from the Linux kernel tree to the
+    generalized one. Also, it seems that the authors have used “branch”
+    and “commit” interchangeably, without a clear distinction. The
+    sentence “There is still some ambiguity in which child is the correct
+    child to link to for a branch after phase 1”, for example, is not
+    clear. In the sentence “The order of children at a branch node is
+    based on the length of the path to that node, not the order that the
+    nodes show up in as parents.”, what is a “branch node”, and what does
+    the order of its children impact? Such concepts were not introduced
+    before this section, and as such it makes the reading very hard. I
+    suggest the authors start this section with a more general and
+    “lightweight” introduction of concepts and ideas before going fully
+    into technical details.
+
+The section has been removed and replaced with a new section for
+discussing the generalization, Section IX.
+
+The first sentence motivates generalizing the algorithm as we have
+quantifiable evidence that the merge trees help users. Therefore a
+generalization is the next step.
+
+"
+The visualizations of the Merge-Tree model assist users with
+understanding how commits are integrated into a project. We
+continue by discussing possible methods for improving the
+algorithm to produce the combined DAG Merge-Tree without
+a post-processing step and pruning the DAG to improve the
+performance and make it feasible to compute over the internet.
+Furthermore, we look to generalize the algorithm to work with
+arbitrary repositories.
+"
+
+    In Algorithm 2, what is a parent? Are we dealing with the normal DAG
+    or the inverted DAG? Apparently neither, because Algorithm 2 does not
+    mention any symbol called DAG. But if Algorithm 2 starts from the root
+    commit, and according to Section II the root has no ancestors, who are
+    the parents being accessed in line 6 of the algorithm (and everywhere
+    else)? It would be logical to assume that Algorithm 2, starting from
+    the root, would have no parents and thus only run once and exit. I
+    assume that by “root” the authors mean any master commit (so it
+    would be the root of one merge-tree, and not of the whole
+    repository).
+
+This is addressed by specifying the terminology surrounding parents and
+children in the first paragraph of the Merge-Tree model section.
+
+"In this model, not only has the DAG been inverted (and simplified), but
+the entire notion of parent-child has been reversed. Due to this
+property, the terminology will be different depending on the model we
+are referring to; when we are referring to the Merge-Tree, the parent is
+the next node toward the merge into the master branch, or the root of
+the tree. When referring to the DAG, the parent relationship is in the
+opposite direction, from the root toward the branch-point."
+
+    The explanation of Algorithm 2 is, in its current state, generally
+    very hard to follow. An example should be included, in a similar way
+    as Figures 3, 4, and 5 helped to comprehend the first algorithm. The
+    authors must seriously consider simplifying this explanation
+    significantly, or the reader is simply lost. A step-by-step graphical
+    explanation, using e.g. a flowchart or a diagram, would be much
+    appreciated.
+
+An example is included using the DAG in Figure 4. The steps are shown in
+Table VIII. A high level description of the algorithm is provided in
+paragraphs 3, with the subsequent paragraphs going into more detail.
+
+
+    In Section C, the authors mention that “The left-most child of a merge
+    is on the same branch as the merge.” But what does left-most mean in
+    this context? What is left and right when considering the children of
+    a node? This was not introduced.
+
+This is no longer applicable. The 'left-most' was in reference to the
+figure showing the visualization of the tree in the plugin. The section
+has since been removed.
+
+    Evaluation
+    Figure 6 would benefit from a frame, or any other clearer visual cue
+    that its text is not part of the main text, such as a different
+    background color. Right now it merges (no pun intended) with the rest
+    of the text.
+
+A bounding box has been placed around the figure.
+
+    In Section IV.A, the authors mention: “…compared the number of commits
+    according to the log with the number of commits in the merge tree
+    rooted in this commit.” However, it is not clear what “this commit”
+    means, as there is no mention to a specific commit being analyzed.
+    This is a little confusing and must be clarified. The way I
+    understand, what the authors mean is that for each merge commit (mc),
+    they (1) extract mc’s log message, (ii) extract from the log message
+    the number of commits that were merged in mc, and (3) compare this
+    number to the number of commits on mc’s merge-tree.
+
+We replaced the section with a slight re-wording:
+
+"
+We extracted merges by Linus Torvalds using the command
+git log --merges --author=’Torvalds’ and
+compared the number of commits stated in the log message
+with the number of commits in the Merge-Tree. We also
+used the summaries of the commits found in the merge
+(not necessarily all—see above) to make sure those commits
+were in their corresponding Merge-Tree.
+"
+
+Basically, we look at the commit log. If it says there are 24 commits
+and there are 24 commits in the merge tree, it is correct. If there are
+more or fewer, then it is incorrect.
+
+    In Section IV.B the authors suddenly mention a bitbucket limitation,
+    but so far nothing has been introduced or explained about why the
+    proposed technique is dependent on bitbucket. Also, the authors
+    mention test cases, but don’t describe them concretey and
+    unambiguously, using “…, and other various tests.” For reproducibility
+    it would be preferred that the test suite is at least quickly
+    described in full (if it is too long, then it should be provided as
+    supplemental material to be available to the reader on demand). I
+    recommend a rewrite of Section IV.B into a more concise, objective
+    description of the tests and results.
+
+Not applicable. This section has been removed, and the algorithm
+generalization has been made into a discussion piece. The references to
+bitbucket have been removed, as they are not necessary anymore.
+
+    In Section V, in the sentence “These visualizations can be…”, what are
+    these visualizations? No visualizations have been introduced so far.
+    Also, the reference for the Reingold-Tilford tree should be shown in
+    the first occurrence.
+
+This part has been removed, instead opting to go directly into the
+original use-cases that we were designing for.
+
+"
+The goal of Linvis is to simplify the navigation of the kernel
+commit information, specifically focusing on merges. This is
+done by leveraging the Merge-Tree to inspect how commits
+are merged on the path to the master branch of the repository.
+
+A. Use cases
+"
+
+
+    In Section 6, Reingold-Tilford tree, the authors describe that
+    clicking a node will take me to that commit’s page, but I could not
+    reproduce that behavior on the web application. Clicking a node simply
+    centers that node on the screen.
+
+Clicking a node will select that node (and center it), but not navigate to it.
+Navigation requires clicking on the title that gets updated.
+
+    Bubble Tree: there is now intermediate way of zooming in this
+    representation, only from the root to the leaves and vice-versa. For
+    big trees, this makes it very hard to navigate the tree. From an
+    overview, the leaves are simply too small to be chosen (or clicked on)
+    effectively and with accuracy. The navigation of the tree in its
+    current state is not very useful.
+
+Clicking on other circles will select that circle. Clicking on an
+already selected circle will take you to the root. The interface was
+updated slightly to increase the size of the border when the cursor is
+hovering over a circle to indicate this.
+
+For incredibly large trees, this is true, and I do not have ideas for
+fixing this. Most trees are small though, containing less than 100
+nodes.
+
+    Although the two different tree visualizations are described, it is
+    not clear how they can be actually used in order to extract new
+    knowledge from the data. The authors are advised to add at least one
+    interesting use case/example where the reader can follow,
+    step-by-step, how the visualizations can be used to obtain insight
+    from the data. Since the visualizations themselves are not novel, the
+    novel use in this application context must be better motivated.
+
+The new information is showing how a commit is merged into the master
+branch of a repository, using different visualization metaphors. This
+gives a person choices depending on which metaphor they like.
+
+    Discussion
+    In Section VIII, I agree that the proposed tool is more concise in
+    showing the information than Gitk, however the practical use of the
+    tool is still unclear. In order to replace the use that Gitk offers,
+    the interface should be improved to include easier navigation and more
+    information about each commit that is shown. In its current state, we
+    see the nodes but it is very hard to have any kind of extra
+    information about which are the commits we are seeing. The authors
+    mention that “With Linvis we are able to immediately see what section
+    of the kernel these commits and merges pertain to” but just by looking
+    at Figure 18 that is not the case. In the paragraph starting on Page
+    12, Line 19, the author talks about files that are nowhere to be
+    found; maybe there is a missing figure to explain this point?
+
+
+The discussion has shifted focus from the tool toward the results of the
+study. For the specific use-cases described in section IV Linvis is
+better than Gitk, but Linvis will never replace gitk.
+
+    General Style Notes and Typos
+
+Thank you, these have been addressed.
+
+Responses to Reviewer 2:
+
+    The focus of this paper is about two things notably the merge tree
+    algorithm and visualizations. The merge tree algorithm part is
+    impressive, while the visualizations are weak and not particularly
+    novel. The paper shows a strong engineering effort. I am an advocate
+    of this paper. Even though the algorithm is the stronger part, the
+    contribution on visualization could be improved.
+
+Thank you. The goal is to implement a visualization with the merge-tree
+model so we can verify that it works, not to design a novel
+visualization metaphor for trees.
+
+    It is not clear how visualization will actually help in this project.
+    There is a claim that it will, but no evidence supports that claim.
+    Even with the visualizations that are presented it is not clear how to
+    interpret them, interact with them, and what we can learn from them.
+    An example that steps through the visualization techniques would be
+    useful here, much like some of the panels described in the tool, to
+    illustrate how effective the visualizations really are.
+
+We conducted a user study to show that our tool/visualizations are able
+to improve the correctness, accuracy, and timing when trying to
+understand and summarize the events in the repository. See section VII.
+We found that Linvis does impact comprehension and summarization.
+
+    The LinVis tool is more like a search tool with visualizations as an
+    added bonus. The visualizations almost feel like an afterthought. The
+    paper does not describe in detail the justification of these
+    visualization techniques over other ones. The visualizations
+    themselves are not particularly novel. There is claims in the paper
+    that the tool is effective, supports better navigation, and better
+    explanation; there is simply no evidence. There is no evaluation of
+    any kind. It is not clear how these claims are quantified. I
+    understand an evaluation is a follow up project, but some details
+    should be provided about how an evaluation is planned to be conducted.
+    A few additional paragraphs to justify the visualization design and
+    evaluation should suffice here.
+
+From section V.C on page 7.
+
+List tree:
+
+"The nesting indicates the parent-child relationship. This visualization
+is text-based enabling fast navigation to commits using the built-in
+search in most web-browsers."
+
+It allows users to quickly search for an exact commit, but isn't as good
+as the others for visualizing the structure.
+
+Reingold-Tilford Tree:
+
+"is the classic tree visualization"
+
+This is the tree diagram that computer scientists will draw if asked to
+draw a tree structure. This tree is easy to understand and see how
+commits are related and to which merge they belong, but is not great
+with very wide trees.
+
+Pack Tree:
+
+"are useful for displaying an overview of large datasets. The initial
+goal for the pack tree was for visualizing file systems, which are
+similar to git repositories in that they are relatively shallow, but
+very wide."
+
+The pack tree visualization is designed to alleviate the remaining
+issue.
+
+    Missing related Work
+
+Yes, added this to related work. There are likely many other
+visualizations missing, but none that we found are designed with same
+goals of showing how a commit is integrated into the master branch of a
+repository.
+
+    Regarding the term user
+
+We are unaware of another concise term that is more gender-neutral than
+the term "user" for describing people who use something. If there is a
+term that you would prefer, we will be happy to looking into the
+changes. For this reason, we retain the term "user" for general people
+who will use the tool, regardless of intent.
+
+We refer to the members of our user study as "participants".
+
+    Minor Changes
+
+Yes thank you. The structure of the paper has vastly changed since the
+original paper was submitted. I believe that all of these have been
+taken care of since then.
