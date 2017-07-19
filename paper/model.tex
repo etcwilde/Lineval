@@ -40,14 +40,20 @@ case does it explicitly record where a commit was made. In this case,
 commits are performed in various repositories and branches. The DAG
 representation of these events is shown in Figure~\ref{fig:repoDAG}.
 
-Notice that the DAG loses information about the master branch and the
-repository that the master branch is part of. The \mt view of
-this DAG is visible in Figure~\ref{fig:repoTree}. Note that the
-direction of the edges of the DAG have been inverted, instead of
-pointing from the child to the parent, it points from the parent to its
-children, forming a path to the master branch. Also note that the DAG
-has been simplified, showing only a single edge on the path to master
-for any commit.
+The DAG does not retain information about where a commit was originally
+created. The \mt form (Figure~\ref{fig:repoTree}) does not completely
+rebuild the lost information, but is able to re-create the sequence of
+merges required to merge the event, and the depth, in the tree, of that
+event. The \mt does not include information about how the repository
+events that are the children of a merge are related. The order of the
+children does not matter.
+
+Combining the DAG and the \mt results in a hybrid structure
+(Figure~\ref{fig:repoDAGTree}) that no only shows which merges a commit
+passes through, it rebuilds the order of those commits. In the example
+shown, this hybrid structure makes it clear that merge 9 merges the
+changes made in 6 and 8 into the commit 7. Finally, 11 merges merge 9
+into the master branch.
 
 \begin{figure}[htbp]
   \centering
@@ -91,9 +97,9 @@ for any commit.
     \node[shift={(\x, -0.6)}, color=black] {$t_\x$};
   \end{tikzpicture}
   \caption{Example of a sequence of events performed in different
-    repositories. The horizontal axis represents time. Each horizontal
-    section represents a different branch and/or repository. Each commit
-    points to its parent. The intial commit is at time $t_0$, and the
+    repositories. The horizontal axis represents time. The branches and
+    repositories are aligned horizontally, and color-coded. Each commit
+    points to its parent. The initial commit is at time $t_0$, and the
     head is at $t_8$.}
   \label{fig:repoEvents}
 %\vspace{-3mm}
@@ -138,6 +144,38 @@ for any commit.
 %\vspace{-3mm}
 \end{figure}
 
+\begin{figure}[htpb]
+  \begin{center}
+    \begin{tikzpicture}[auto, on grid, semithick, node distance=1cm, state/.style={circle, text=black, minimum size=7mm}]
+
+      \node[state, draw=chartblue] (1) {1};
+      \node[state, draw=chartblue, right=of 1] (4) {4};
+      \node[state, draw=chartblue, right=of 4] (11) {11};
+      \node[state, draw=chartblue, right=2.5cm of 11] (12) {12};
+
+      \node[state, draw=chartyellow, above right= 1cm and 0.5cm of 11] (7) {7};
+      \node[state, draw=chartyellow, above left= 1cm and 0.5cm of 11] (5) {5};
+      \node[state, draw=chartyellow, right=of 7] (9) {9};
+      \node[state, draw=chartyellow, left=of 5] (2) {2};
+      \node[state, draw=chartmagenta, above=of 5] (3) {3};
+      \node[state, draw=chartmagenta, above left=1cm and 0.5cm of 9] (6) {6};
+      \node[state, draw=chartmagenta, above right=1cm and 0.5cm of 9] (8){8};
+      \node[state, draw=chartyellow, above=of 12] (10) {10};
+
+      \draw (11) edge[chartyellow, stealth-] (2) edge[chartyellow, stealth-] (5) edge[chartyellow, stealth-] (7) edge[chartyellow, stealth-] (9)
+            (5) edge[chartmagenta, stealth-] (3)
+            (9) edge[chartmagenta, stealth-] (6) edge[chartmagenta, stealth-] (8)
+            (12) edge[chartyellow, stealth-] (10);
+    \end{tikzpicture}
+  \end{center}
+  \caption{The \mt{s} computed for each commit in
+    Figure~\ref{fig:repoDAG} showing the path that each commit takes to
+    be merged into the master branch of the repository. This does not
+    indicate how the events being merged are related. We retained the
+    numerical order of the events, but the order can be arbitrary.}
+  \label{fig:repoTree}
+\end{figure}
+
 \begin{figure}[htbp]
   \centering
   \begin{tikzpicture}[auto, on grid, semithick, state/.style={circle, text=black}]
@@ -169,78 +207,139 @@ for any commit.
 
 
   \end{tikzpicture}
-  \caption{\mt view of the commits  represented in
-    Figure~\ref{fig:repoEvents} showing the path they followed to reach
-    the master branch. In this model the successors of each commit
-    represents the path followed by that commit to reach the master
-    branch.}
-  \label{fig:repoTree}
+  \caption{The \mt applied to the inverted DAG to show the order that
+    commits are created, as well as the merge sequence for the events in
+  Figure~\ref{fig:repoEvents}. This requires a post-processing step
+  involving the \mt produced by Algorithm~\ref{fig:alg} and the DAG.}
+\label{fig:repoDAGTree}
 \vspace{-3mm}
 \end{figure}
 
-
 \subsection{Computing the \mt of the DAG of Linux}
 
-Computing the \mt from a DAG for any repository may not be
-possible; however, certain features of the development process of Linux
-make it feasible to compute the \mt for the Linux repository.
-First, the master branch of Linux is maintained by Linus Torvalds, and
-only Linus has write access to it. We have verified this assertion in
-previous research~\cite{German2015}. We have developed a heuristic that
-is presented in Algorithm~\ref{fig:alg}. In short, the algorithm first
+Computing the \mt from a DAG for any repository may not be possible;
+however, certain features of the development process of Linux make it
+feasible to compute the \mt for the Linux repository. First, the master
+branch of Linux is maintained by Linus Torvalds, and only Linus has
+write access to it. We have verified this assertion in previous
+research~\cite{German2015}. We have developed a heuristic that is
+presented in Algorithm~\ref{fig:alg}. In short, the algorithm first
 identifies the commits made directly to the master branch, whereafter it
-recursively determines the shortest path (in terms of time), using the
-DAG, from each commit to the master branch using the inverted DAG.
+recursively determines the shortest path, using the DAG, from each
+commit to the master branch using the inverted DAG.\@
 
 \begin{algorithm}
         \caption{Computing the \mt of Linux from the DAG}\label{fig:alg}
-        \begin{algorithmic}
+        \begin{algorithmic}[1]
                 \Function{ComputeMergeTree}{DAG}: tree
-                \State {\# Compute the tree from the DAG of Linux repository.}
-                \State {\# Returns $Tree$, a graph containing every commit }
-                \State {\# in DAG with the path it followed to master.}
-
+                % \State {\# Compute the tree from the DAG of Linux repository.}
+                % \State {\# Returns $Tree$, a graph containing every commit }
+                % \State {\# in DAG with the path it followed to master.}
                 \State $head \gets \textit{Head of master of git repository}$
                 \State $master \gets \textit{traverse DAG from head using }$
-                \State \quad\quad\quad\quad $\textit{first ancestor until reaching root}$
+                \State \quad\quad\quad\quad $\textit{first parent until reaching root}$
                 \State $nodes(Tree) \gets nodes(DAG)$
-                \State \Function{distance2Master}{cid} : seconds
+                \State \Function{MergeAtMaster}{cid}
+                \State {\# Returns $(depth, merge, next)$}
                 \State {\# Helper function}
-                \State {\# Recursively compute shortest distance to master}
-                \State {\# setting cid's successor (next) in its way to master.}
-                \State {\# This function should be memoized. Otherwise it}
-                \State {\# would run in exponential time.}
+                \State {\# Compute the closest merge into master, }
+                \State {\# setting the children on the way to master.}
                 \If {\textit{cid in master}}
-                \State \Return 0
+                \State \Return $(0, cid, \varnothing)$
                 \EndIf
-                \State    $d \gets 	\infty$
+                \State {$d \gets \infty$}
                 \State {\# Traverse the inverted DAG}
                 \For{$c \in children(cid, DAG)$}
-                \If {$c \in master$}
-                \State $d_1 \gets commitTime(c)-commitTime(cid)$
-                \Else
-                \State {$d_1 \gets distance2Master(c)$}
+                \State $(d_c, merge_c, next_c) \gets MergeAtMaster(c)$
+                \If {$IsMerge(c)$}
+                \State $fp \gets FindFirstParent(c)$
+                \If {$fp \neq cid$}
+                \State $d_c \gets d_c + 1$
+                \State $next_c \gets c$
                 \EndIf
-                \If {$d_1 < d $}
-                \State $next \gets c$
-                \State  $d \gets d_1$
+                \EndIf
+                \State {\# Find the shortest path}
+                \If {$d_c < d$}
+                \State $(d, m, next) \gets (d_c, merge_c, next_c)$
+                \ElsIf{ $d_c = d$ }
+
+                \State {\# Use the time as a tie-breaker}
+                \If {$ cTime(merge_c) < cTime(m) $}
+                \State $(m, next) \gets (merge_c, next_c)$
+                \EndIf
                 \EndIf
                 \EndFor
                 \State {\# $c$ is the commit that follows $cid$}
                 \State {\# in its way to master}
                 \State add edge $(cid, next)$ to $Tree$
-                \State \Return $d$
+                \State \Return $(d, m, next)$
                 \EndFunction
 
                 \State {\# Compute the distance for each commit}
                 \State {\# discarding result}
                 \For{$c \in nodes(DAG)$}
-                \State $distance2Master(c)$
+                \State $MergeAtMaster(c)$
                 \EndFor
                 \State \Return $Tree$
                 \EndFunction
         \end{algorithmic}
 \end{algorithm}
+
+The algorithm is broken into two phases. The first is determining which
+repository events are on the master branch. This is done by traversing
+the first parent from the master branch reference to the commit that has
+no parents. The second phase is encompassed by the function
+$MergeAtMaster$ which determines, for each commit, which merge the
+commit is merged at, the depth (as variable $d$ in the algorithm), and
+the next merge on the path to the master branch. The function
+$MergeAtMaster$ has two parts, the first for determining the depth, from
+the master branch, that the repository event is at. The second phase
+determines the merge into the master branch, and the next merge on the
+way to the master branch. The distance is by shortest path, staying as
+close to the master branch as possible. If there is a tie between two
+paths, the path that merges into the master branch sooner is taken.
+
+To demonstrate the behaviour of the algorithm, we use a short example,
+computing the merge at commit 5 in Figure~\ref{fig:repoEvents}.
+$MergeAtMaster$, recurses along the children of the nodes it visits.
+Eventually every child of every node along the path will be visited at
+least once. Without loss of generality, suppose that the path recursed
+along is from node 5 to 6, 9, 10, and finally 12. The depth for each,
+except 12 (a merge into the master branch), is initialized to infinity,
+the merge into master is blank, and the next merge is blank. Merges into
+master trivially have a distance of 0 from the master branch, and it
+merges itself into the master branch. The recursion at 12 returns the
+triple $(0, \varnothing, 12)$ to the call from 10. 12 is a merge commit
+and 10 is not the first parent, so the temporary depth, $d_c$, is
+incremented to 1 and the temporary next merge, $next_c$, is changed to
+12. 1 is less than infinity, so the depth is set to 1, the merge to 12,
+and the next to 12. This returns the triple $(1, 12, 12)$ to the call
+from 9. 9 is the first parent of 10, so no changes are made to the
+temporary variables. The call to 9 recurses to the second child, 11. 11
+is a merge into the master so it returns $(0, \varnothing, 11)$ to the
+call from 9. 9 is not the first parent of 11, so the $d_c$ is
+incremented to 1 and $next_c$ is changed to 11. The distances $d_c$ and
+$d$ are the same, so to break the tie, we use the time. 12 was merged
+after 11, so 11 replaces 12 as the merge into the master branch for 9,
+as well as being the next merge. The call for 9 returns the triple $(1,
+11, 11)$ to the call for 6. 6 is not the first parent of 9, so $d_c$ is
+incremented and $next_c$ is changed to 9, as 9 merges 6. 2 is less than
+infinity, so the $d$ is changed to 2, the merge to 11, and the next
+merge to 9. The call to 6 returns the triple $(2, 11, 9)$ to the call
+for 5. The call for 5 recurses on the second child of 5, calling on 7,
+which calls 8, and then 9. 9 can continue, but if the implementation of
+the algorithm uses memoization, the call to 9 can immediately return the
+triple $(1, 11, 11)$ to the call for 8, and avoid an exponential
+runtime. 8 is not the first parent of 8, so $d_c$ is incremented to 2
+and $next_c$ is changed to 9. 2 is less than infinity, so $d$ is changed
+to 2, $merge$ to 11, and $next$ to 9. The call to 8 returns the triple
+$(2, 11, 9)$ to the call for 7, which recurses on the second child of 7,
+9. 9 returns the triple $(1, 11, 11)$. 7 is the first parent of 9, so
+the depth is not incremented. $d_c$ is less than $d$, so $d$ is changed
+to 1, $m$ to 11, and $next$ to 11, returning $(1, 11, 11)$ to the call
+for 5. $d_c$ is less than $d$, so $d$ is changed to 1, $m$ to 11, and
+$next$ to 11. There are no other children, so the function halts.
+
 
 
 \subsection{Evaluation}
@@ -254,6 +353,7 @@ number of non-merge commits in the merge.
 
 \begin{figure}[htbp]
         \centering
+        \vspace{3mm}
         {\fontsize{7}{9}
         \begin{verbatim}
 Merge: 8cbd84f fd8aa2c
@@ -275,28 +375,29 @@ md/raid5: ensure we create a unique name for kmem_cache...
                 non-merge commits it merged. The ending ``\ldots'' is part of the log
                 and represents that other commits were merged.}
         \label{fig:sampleMerge}
+  \vspace{2mm}
 \end{figure}
 
 We used this information to evaluate the accuracy of the \mt model
 extracted from the DAG\@. The method we followed started with the
 extraction of the commit history up to July 20, 2016 form the Linux
-repository. We computed the \mt of every commit until that date.
-Since Linus Torvalds mostly does merging directly into the master
-branch, we assumed that every merge by Linus is the root of a \mt, later
-detecting merges that do not merge into the master branch and removing
-them from the set of root merges. As described above, the log of a
-merge-commit usually contains the number of commits in the merge the
-first 20 summaries of commits being merged. We extracted merges by Linus
-Torvalds using the command \verb|git log --merges --author='Torvalds'|
-and compared the number of commits according to the log with the number
-of commits in the \mt rooted in this commit. We also used the summaries
+repository. We computed the \mt of every commit until that date. Since
+Linus Torvalds mostly does merging directly into the master branch, we
+assumed that every merge by Linus is the root of a \mt, later detecting
+merges that do not merge into the master branch and removing them from
+the set of root merges. As described above, the log of a merge-commit
+usually contains the number of commits in the merge the first 20
+summaries of commits being merged. We extracted merges by Linus Torvalds
+using the command \verb|git log --merges --author='Torvalds'| and
+compared the number of commits stated in the log message with the number
+of commits in the \mt. We also used the summaries
 of the commits found in the merge (not necessarily all---see above) to
-make sure those commits were in their corresponding \mt For
-example, for the merge in Figure~\ref{fig:sampleMerge} we would expect
-that the \mt rooted at \mycode{8cbd84f} contains 24 commits, and
-the one-line summaries corresponds to commits in that \mt. We also
-inspected those with differences to make sure they were true errors. The
-results can be summarized as follows:
+make sure those commits were in their corresponding \mt For example, for
+the merge in Figure~\ref{fig:sampleMerge} we would expect that the \mt
+rooted at \mycode{8cbd84f} contains 24 commits, and the one-line
+summaries corresponds to commits in that \mt. We also inspected those
+with differences to make sure they were true errors. The results can be
+summarized as follows:
 
 \begin{itemize}
 
