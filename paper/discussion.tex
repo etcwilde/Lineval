@@ -141,21 +141,24 @@ comprehend the DAG visualizations in Gitk.
 \section{Generalizing the Creation of the \mt}
 \label{sub:generalization}
 
-Seeing that the visualizations of the \mt model are able to assist users
-with understanding how commits are integrated, we continue by looking at
-ways of improving the algorithm for faster operations, and making the
-conversion from DAG to \mt feasible over the internet.
 
-The problem of identifying the master branch is the most difficult, and is
-not possible without heuristic approaches. The master branch can be
-confounded by \foxtrot merges, which change the order of the
-parents in the parent list of a merge. Other than the ordering of the
-parent list, git has no other way to determine which commits are on the
-master branch of the repository. For the purpose of this discussion, we
-will assume that we can rely on the order of the parent list to be
-correct, and that \foxtrot{s} do not occur. Furthermore, merge
-information is lost in the event of fast-forward merges, which collapse
-the branch into the current branch.
+The visualizations of the \mt model assist users with understanding how
+commits are integrated. We continue by discussing possible methods for
+improving the algorithm to directly produce the combined DAG \mt without
+a post-processing step and pruning the DAG to improve the performance
+and make it feasible to compute over the internet. Furthermore, we look
+to generalize the algorithm to work with arbitrary repositories.
+
+The problem of identifying the master branch is the most difficult, and
+is not possible without heuristic approaches. The master branch can be
+confounded by \foxtrot merges, which change the order of the parents in
+the parent list of a merge. Other than the ordering of the parent list,
+git has no other way to determine which commits are on the master branch
+of the repository. For the purpose of this discussion, we will assume
+that we can rely on the order of the parent list to be correct, and that
+\foxtrot{s} do not occur. Furthermore, merge information is lost in the
+event of fast-forward merges, which collapse the branch into the current
+branch.
 
 \begin{algorithm}
   \caption{Computing the generalized Merge Tree}

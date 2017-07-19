@@ -96,7 +96,7 @@ into the master branch.
         \foreach \x in {0, 1, 2, 3, 4, 5, 6, 7, 8}
     \node[shift={(\x, -0.6)}, color=black] {$t_\x$};
   \end{tikzpicture}
-  \caption{Example of a sequence of events performed in different
+  \caption{An example sequence of events performed in different
     repositories. The horizontal axis represents time. The branches and
     repositories are aligned horizontally, and color-coded. Each commit
     points to its parent. The initial commit is at time $t_0$, and the
@@ -304,31 +304,35 @@ computing the merge at commit 5 in Figure~\ref{fig:repoEvents}.
 $MergeAtMaster$, recurses along the children of the nodes it visits.
 Eventually every child of every node along the path will be visited at
 least once. Without loss of generality, suppose that the path recursed
-along is from node 5 to 6, 9, 10, and finally 12. The depth for each,
-except 12 (a merge into the master branch), is initialized to infinity,
-the merge into master is blank, and the next merge is blank. Merges into
-master trivially have a distance of 0 from the master branch, and it
-merges itself into the master branch. The recursion at 12 returns the
-triple $(0, \varnothing, 12)$ to the call from 10. 12 is a merge commit
-and 10 is not the first parent, so the temporary depth, $d_c$, is
-incremented to 1 and the temporary next merge, $next_c$, is changed to
-12. 1 is less than infinity, so the depth is set to 1, the merge to 12,
-and the next to 12. This returns the triple $(1, 12, 12)$ to the call
-from 9. 9 is the first parent of 10, so no changes are made to the
-temporary variables. The call to 9 recurses to the second child, 11. 11
-is a merge into the master so it returns $(0, \varnothing, 11)$ to the
-call from 9. 9 is not the first parent of 11, so the $d_c$ is
-incremented to 1 and $next_c$ is changed to 11. The distances $d_c$ and
-$d$ are the same, so to break the tie, we use the time. 12 was merged
-after 11, so 11 replaces 12 as the merge into the master branch for 9,
-as well as being the next merge. The call for 9 returns the triple $(1,
-11, 11)$ to the call for 6. 6 is not the first parent of 9, so $d_c$ is
-incremented and $next_c$ is changed to 9, as 9 merges 6. 2 is less than
-infinity, so the $d$ is changed to 2, the merge to 11, and the next
-merge to 9. The call to 6 returns the triple $(2, 11, 9)$ to the call
-for 5. The call for 5 recurses on the second child of 5, calling on 7,
-which calls 8, and then 9. 9 can continue, but if the implementation of
-the algorithm uses memoization, the call to 9 can immediately return the
+along is from node 5 to 6, 9, 10, and finally 12. 
+
+The depth for each, except 12 (a merge into the master branch), is
+initialized to infinity, the merge into master is blank, and the next
+merge is blank. Merges into master trivially have a distance of 0 from
+the master branch, and it merges itself into the master branch. The
+recursion at 12 returns the triple $(0, \varnothing, 12)$ to the call
+from 10. 12 is a merge commit and 10 is not the first parent, so the
+temporary depth, $d_c$, is incremented to 1 and the temporary next
+merge, $next_c$, is changed to 12. 1 is less than infinity, so the depth
+is set to 1, the merge to 12, and the next to 12. This returns the
+triple $(1, 12, 12)$ to the call from 9. 9 is the first parent of 10, so
+no changes are made to the temporary variables.
+
+The call to 9 recurses to the second child, 11. 11 is a merge into the
+master so it returns $(0, \varnothing, 11)$ to the call from 9. 9 is not
+the first parent of 11, so the $d_c$ is incremented to 1 and $next_c$ is
+changed to 11. The distances $d_c$ and $d$ are the same, so to break the
+tie, we use the time. 12 was merged after 11, so 11 replaces 12 as the
+merge into the master branch for 9, as well as being the next merge. The
+call for 9 returns the triple $(1, 11, 11)$ to the call for 6. 6 is not
+the first parent of 9, so $d_c$ is incremented and $next_c$ is changed
+to 9, as 9 merges 6. 2 is less than infinity, so the $d$ is changed to
+2, the merge to 11, and the next merge to 9. The call to 6 returns the
+triple $(2, 11, 9)$ to the call for 5. 
+
+The call for 5 recurses on the second child of 5, calling on 7, which
+calls 8, and then 9. 9 can continue, but if the implementation of the
+algorithm uses memoization, the call to 9 can immediately return the
 triple $(1, 11, 11)$ to the call for 8, and avoid an exponential
 runtime. 8 is not the first parent of 8, so $d_c$ is incremented to 2
 and $next_c$ is changed to 9. 2 is less than infinity, so $d$ is changed
@@ -354,8 +358,8 @@ number of non-merge commits in the merge.
 \begin{figure}[htbp]
         \centering
         \vspace{3mm}
-        {\fontsize{7}{9}
-        \begin{verbatim}
+        \fontsize{7}{9}
+        \begin{Verbatim}[frame=single]
 Merge: 8cbd84f fd8aa2c
 Author: Linus Torvalds <torvalds@linux-foundation.org>
 Date:   Tue Aug 10 15:38:19 2010 -0700
@@ -369,7 +373,7 @@ md: split out md_rdev_init
 md: be more careful setting MD_CHANGE_CLEAN
 md/raid5: ensure we create a unique name for kmem_cache...
 ...
-        \end{verbatim}}\vspace{-5mm}
+        \end{Verbatim}
         \caption{Example of how merges record a subset of commits being merged. The
                 commit only shows the first 20 one-line summaries messages for the 24
                 non-merge commits it merged. The ending ``\ldots'' is part of the log
@@ -392,7 +396,7 @@ using the command \verb|git log --merges --author='Torvalds'| and
 compared the number of commits stated in the log message with the number
 of commits in the \mt. We also used the summaries
 of the commits found in the merge (not necessarily all---see above) to
-make sure those commits were in their corresponding \mt For example, for
+make sure those commits were in their corresponding \mt. For example, for
 the merge in Figure~\ref{fig:sampleMerge} we would expect that the \mt
 rooted at \mycode{8cbd84f} contains 24 commits, and the one-line
 summaries corresponds to commits in that \mt. We also inspected those
