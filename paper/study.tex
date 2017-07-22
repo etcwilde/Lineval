@@ -52,7 +52,7 @@ about which aspects of each tool they preferred.
   \centering
   \caption{Summarization Tasks}
   \label{tab:summarization_tasks}
-  \begin{tabulary}{\linewidth}{LLL}
+  \begin{tabular}{lll}
     \toprule
     Task Set   & Task & Description\\\midrule
     Merge      & T4   & What is the series of merges involved with merging this
@@ -64,7 +64,7 @@ about which aspects of each tool they preferred.
     & T9   & Which file had the most changes?\\
     Modules    & T10  & Which modules does this \mt involve?\\
     \bottomrule
-  \end{tabulary}
+  \end{tabular}
 \end{table}
 
 
@@ -167,47 +167,17 @@ Table~\ref{tab:null_alt_hypoths}.
       files, etc... or is this good enough? It's already a huge and
       redundant table) }}
   \label{tab:null_alt_hypoths}
-  \begin{tabulary}{0.98\linewidth}{CCLL}
+  \begin{tabulary}{0.9\textwidth}{CCLL}
     \toprule
     Task & Metric             & Null Hypothesis                                                      & Alternative Hypothesis\\\midrule
-    T4   & \tiny{Commit}      & There is no difference on accuracy or timing between \comA and \comB & There is a difference on accuracy or timing between \comA and \comB \\
-    T4   & \tiny{Correctness} & \tool does not effect the correctness of the participants            & \tool does effect the correctness of the participants\\
-    T4   & \tiny{Accuracy}    & There is no difference between \tool and Gitk on accuracy            & There is a difference between \tool and Gitk on accuracy\\
-    T4   & \tiny{Timing}      & There is no difference between \tool and Gitk on timing              & There is a difference between \tool and Gitk on timing\\
+    T4-T10   & \tiny{Commit}      & There is no difference on accuracy or timing between \comA and \comB & There is a difference on accuracy or timing between \comA and \comB \\
+    T4-T10   & \tiny{Correctness} & \tool does not effect the correctness of the participants            & \tool does effect the correctness of the participants\\
+    T4-T10   & \tiny{Accuracy}    & There is no difference between \tool and Gitk on accuracy            & There is a difference between \tool and Gitk on accuracy\\
+    T4-T10   & \tiny{Timing}      & There is no difference between \tool and Gitk on timing              & There is a difference between \tool and Gitk on timing\\
 
-    T5   & \tiny{Commit}      & There is no difference on accuracy or timing between \comA and \comB & There is a difference on accuracy or timing between \comA and \comB \\
-    T5   & \tiny{Correctness} & \tool does not effect the correctness of the participants            & \tool does effect the correctness of the participants\\
-    T5   & \tiny{Accuracy}    & There is no difference between \tool and Gitk on accuracy            & There is a difference between \tool and Gitk on accuracy\\
-    T5   & \tiny{Timing}      & There is no difference between \tool and Gitk on timing              & There is a difference between \tool and Gitk on timing\\
-
-    T6   & \tiny{Commit}      & There is no difference on accuracy or timing between \comA and \comB & There is a difference on accuracy or timing between \comA and \comB \\
-    T6   & \tiny{Correctness} & \tool does not effect the correctness of the participants            & \tool does effect the correctness of the participants\\
-    T6   & \tiny{Accuracy}    & There is no difference between \tool and Gitk on accuracy            & There is a difference between \tool and Gitk on accuracy\\
-    T6   & \tiny{Timing}      & There is no difference between \tool and Gitk on timing              & There is a difference between \tool and Gitk on timing\\
-
-    T7   & \tiny{Commit}      & There is no difference on accuracy or timing between \comA and \comB & There is a difference on accuracy or timing between \comA and \comB \\
-    T7   & \tiny{Correctness} & \tool does not effect the correctness of the participants            & \tool does effect the correctness of the participants\\
-    T7   & \tiny{Accuracy}    & There is no difference between \tool and Gitk on accuracy            & There is a difference between \tool and Gitk on accuracy\\
-    T7   & \tiny{Timing}      & There is no difference between \tool and Gitk on timing              & There is a difference between \tool and Gitk on timing\\
-
-    T8   & \tiny{Commit}      & There is no difference on accuracy or timing between \comA and \comB & There is a difference on accuracy or timing between \comA and \comB \\
-    T8   & \tiny{Correctness} & \tool does not effect the correctness of the participants            & \tool does effect the correctness of the participants\\
-    T8   & \tiny{Accuracy}    & There is no difference between \tool and Gitk on accuracy            & There is a difference between \tool and Gitk on accuracy\\
-    T8   & \tiny{Timing}      & There is no difference between \tool and Gitk on timing              & There is a difference between \tool and Gitk on timing\\
-
-    T9   & \tiny{Commit}      & There is no difference on accuracy or timing between \comA and \comB & There is a difference on accuracy or timing between \comA and \comB \\
-    T9   & \tiny{Correctness} & \tool does not effect the correctness of the participants            & \tool does effect the correctness of the participants\\
-    T9   & \tiny{Accuracy}    & There is no difference between \tool and Gitk on accuracy            & There is a difference between \tool and Gitk on accuracy\\
-    T9   & \tiny{Timing}      & There is no difference between \tool and Gitk on timing              & There is a difference between \tool and Gitk on timing\\
-
-    T10   & \tiny{Commit}      & There is no difference on accuracy or timing between \comA and \comB & There is a difference on accuracy or timing between \comA and \comB \\
-    T10   & \tiny{Correctness} & \tool does not effect the correctness of the participants            & \tool does effect the correctness of the participants\\
-    T10   & \tiny{Accuracy}    & There is no difference between \tool and Gitk on accuracy            & There is a difference between \tool and Gitk on accuracy\\
-    T10   & \tiny{Timing}      & There is no difference between \tool and Gitk on timing              & There is a difference between \tool and Gitk on timing\\
     \bottomrule
   \end{tabulary}
 \end{table*}
-
 
 \textbf{The user-opinion} questions, listed in
 Table~\ref{tab:opinion_questions}, are designed to determine which tool
@@ -225,14 +195,14 @@ is meant to address this. % TODO add T12 results
   \centering
   \caption{User-Opinion Questions}
   \label{tab:opinion_questions}
-  \begin{tabulary}{0.9\linewidth}{LL}
+  \begin{tabular}{ll}
     \toprule
     Task & Description\\
     \midrule
     T11 & Given these tasks again, which tool would you prefer?\\
     T12 & Which aspects of each tool did you like and why?\\
     \bottomrule
-  \end{tabulary}
+  \end{tabular}
 \end{table}
 
 
@@ -485,7 +455,7 @@ both commits for the other tasks.
 
 \begin{figure}[htpb]
   \centering
-  \includegraphics[width=0.8\linewidth]{figures/userstudy/time/7.pdf}
+  \includegraphics[width=0.8\figwidth]{figures/userstudy/time/7.pdf}
   \caption{Unaggregated Timing results for T7}
   \label{fig:timing_t7}
 \end{figure}

@@ -1,5 +1,8 @@
 % vim:set et sw=2 ts=4 tw=72:
 
+\section{Design and Implementation}
+\label{sec:design}
+
 We constructed a web-based tool called \tool in order to navigate and
 inspect the \mt visualizations of the kernel. Creating the web-based
 tool enables users to use the system without having to install
@@ -25,7 +28,7 @@ the commit was authored, and the date the commit was committed.
 
 \begin{figure}[htpb]
   \centering
-  \includegraphics[width=\linewidth]{figures/linvis/search_results.png}
+  \includegraphics[width=\figwidth]{figures/linvis/search_results.png}
   \caption{A single \mt tree in the search results of \tool, showing
     the link to the root at the top and a table of the relevant commits
     in the bottom, sorted by relevance.}
@@ -68,7 +71,7 @@ module, and a details button to provide the links to those commits.
 
 \begin{figure}[htpb]
   \centering
-  \includegraphics[width=\linewidth]{figures/linvis/linvis_files.png}
+  \includegraphics[width=\figwidth]{figures/linvis/linvis_files.png}
   \caption{Table showing the modified files in a merge, with the second
   entry expanded to show the commit that makes the changes.}
   \label{fig:linvis_files}
@@ -84,7 +87,7 @@ modified by the author in this \mt (Figure~\ref{fig:linvis_authors}).
 
 \begin{figure}[htpb]
   \centering
-  \includegraphics[width=\linewidth]{figures/linvis/linvis_authors.png}
+  \includegraphics[width=\figwidth]{figures/linvis/linvis_authors.png}
   \caption{Table showing the authors who made changes in a merge. The
     entry for Randy Dunlap is expanded, showing the modifications to
     each file that were made by Randy.}
@@ -112,7 +115,7 @@ be shown. Conversely, if the selected event is the root, the entire
 
 \begin{figure}
         \centering
-        \includegraphics[width=0.9\linewidth]{figures/linvis/linvis_list_tree.png}
+        \includegraphics[width=0.9\figwidth]{figures/linvis/linvis_list_tree.png}
         \caption{The list tree visualization}
         \label{fig:linvis_list_tree}
 \end{figure}
@@ -146,7 +149,7 @@ the leaves are the commits.
 
 \begin{figure}[htpb]
   \centering
-  \includegraphics[width=0.8\linewidth]{figures/linvis/linvis_bubble.pdf}
+  \includegraphics[width=0.8\figwidth]{figures/linvis/linvis_bubble.pdf}
   \caption{The pack tree visualization, with the root depicted as the
     outer-most circle, containing all other nodes, the leaves depicted
     as white circles containing no other nodes. The currently selected

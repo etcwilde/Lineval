@@ -3,46 +3,41 @@
 \newif\ifdraft
 % \drafttrue
 
-\ifdraft
-        \documentclass[draft]{IEEEtran}
-        \def\baselinestretch{1}
-        % \setlength{\marginparwidth}{1.5cm}
-\else
-        \documentclass[conference]{IEEEtran}
-\fi
+\documentclass[AMA]{Wiley}
+
+\articletype{Empirical}
+
+\received{}
+\revised{}
+\accepted{}
 
 \input{preamble.tex}
+
+\raggedbottom
+
 
 \begin{document}
 
 \title{\TheTitle}
 
-\author{
-        \IEEEauthorblockA{\TheAuthors}
-        \IEEEauthorblockN{Department of Computer Science,
-                University of Victoria, Canada.}
-        \IEEEauthorblockA{Email: \TheEmails}
-}
+\author{Evan Wilde*}
+\author{Daniel M. German}
+
+\authormark{Evan Wilde \textsc{et al}}
+
+\address{\orgdiv{Department of Computer Science}, \orgname{University of Victoria}, \orgaddress{\state{British Columbia}, \country{Canada}}}
+
+\corres{*Evan Wilde. \email{etcwilde@uvic.ca}}
+
+
+\abstract[Summary]{\input{abstract.tex}}
+
+\keywords{\TheKeywords}
+
 \maketitle
 
-\begin{abstract}
-
-  \input{abstract.tex}
-
-\end{abstract}
-
-
-\begin{IEEEkeywords}
-  \TheKeywords
-\end{IEEEkeywords}
-
 \input{introduction.tex}
-
-\label{sec:background}
-
 \input{background.tex}
-
-
 \input{model.tex}
 
 \section{Visualizing the \mt of Linux}
@@ -95,23 +90,14 @@ of the merge, the committer of the merge, if it has been rebased, the
 log, the commit date, and the author date, and potentially, changes
 necessary to address conflicts during the merge.
 
-\section{Design and Implementation}
 
 \input{design.tex}
-
 \input{relatedwork.tex}
-
 \input{study.tex}
-
 \input{discussion.tex}
-
 \input{conclusion.tex}
 
-\balance
-
-% \nocite{*}
-
-\bibliographystyle{IEEEtran}
+\bibliographystyle{ama}
 \bibliography{references}
 
 \end{document}
